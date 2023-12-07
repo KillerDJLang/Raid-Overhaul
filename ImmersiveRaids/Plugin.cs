@@ -8,7 +8,7 @@ using System.IO;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("com.DJ.ImmersiveRaids", "DJs Immersive Raids", "1.0.0")]
+    [BepInPlugin("com.DJ.RaidOverhaul", "DJs Raid Overhaul", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
