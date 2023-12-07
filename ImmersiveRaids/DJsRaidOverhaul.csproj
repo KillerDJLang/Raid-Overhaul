@@ -17,6 +17,9 @@
 
 
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\Dependancies\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="aki-custom">
       <HintPath>..\Dependancies\aki-custom.dll</HintPath>
     </Reference>
