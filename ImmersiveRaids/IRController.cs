@@ -58,7 +58,7 @@ namespace DJsRaidOverhaul
             {
                 DoRandomEvent();
                 eventTimer = 0f;
-                timeToNextEvent = Random.Range(60F, 180F); // 1min to 30 mins
+                timeToNextEvent = Random.Range(1800f, 3600f); // 30mins to 1 hour
             }
 
             /*/
