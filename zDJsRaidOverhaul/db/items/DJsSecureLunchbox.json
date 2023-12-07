@@ -1,0 +1,67 @@
+{
+	"randomLootContainers": {
+        "DJsSecureLunchbox": {
+            "customReward": true,
+            "rewardTplPool": {
+                "loot": {
+                    "Crackers": {
+                        "5448ff904bdc2d6f028b456e": 1
+                    },
+                    "MeatCans": {
+                        "57347d7224597744596b4e72": 1,
+                        "57347da92459774491567cf5": 1
+                    },
+                    "VegiesCans": {
+                        "57347d692459774491567cf1": 1,
+                        "57347d8724597744596b4e76": 1
+                    },
+                    "Tea": {
+                        "5bc9be8fd4351e00334cae6e": 1,
+                        "5af0484c86f7740f02001f7f": 4
+                    },
+                    "Sweats": {
+                        "57505f6224597709a92585a9": 9,
+                        "59e3577886f774176a362503": 1
+                    },
+                    "Misc": {
+                        "590a373286f774287540368b": 1,
+                        "57347b8b24597737dd42e192": 8,
+                        "5e2af2bc86f7746d3f3c33fc": 1
+                    }
+                },
+                "chances": {
+                    "Crackers": {
+                        "min": 0,
+                        "max": 2,
+                        "nValue": 1
+                    },
+                    "MeatCans": {
+                        "min": 1,
+                        "max": 1,
+                        "nValue": 1
+                    },
+                    "VegiesCans": {
+                        "min": 1,
+                        "max": 1,
+                        "nValue": 1
+                    },
+                    "Tea": {
+                        "min": 0,
+                        "max": 1,
+                        "nValue": 4
+                    },
+                    "Sweats": {
+                        "min": 0,
+                        "max": 1,
+                        "nValue": 3
+                    },
+                    "Misc": {
+                        "min": 0,
+                        "max": 1,
+                        "nValue": 2
+                    }
+                }
+            }
+        }
+    }
+}
