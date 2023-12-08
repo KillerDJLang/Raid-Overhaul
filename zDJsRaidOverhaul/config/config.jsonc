@@ -19,7 +19,7 @@
         "Lighthouse": 35,           //Percent chance to get a random airdrop
         "Interchange": 35,         
         "Shoreline": 35,           
-        "Reserve": 50
+        "Reserve": 35
     }
   }
 }
