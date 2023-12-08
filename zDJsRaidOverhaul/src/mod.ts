@@ -1,4 +1,5 @@
 import { DependencyContainer }          from "tsyringe";
+
 import { IPreAkiLoadMod }               from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostDBLoadMod }               from "@spt-aki/models/external/IPostDBLoadMod";
 import { ILogger }                      from "@spt-aki/models/spt/utils/ILogger";
@@ -14,8 +15,7 @@ import { ILocations }                   from "@spt-aki/models/spt/server/ILocati
 import { JsonUtil }                     from "@spt-aki/utils/JsonUtil";
 import { VFS }                          from "@spt-aki/utils/VFS";
 import { ImporterUtil }                 from "@spt-aki/utils/ImporterUtil";
-
-import * as modConfig                   from "../config/config.json";
+import {jsonc}                          from "jsonc";
 import * as path                        from "path";
 
 const modName = "DJsRaidOverhaul";
@@ -127,7 +127,28 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const items =               db.templates.items;
         const handbook =            db.templates.handbook.Items;
         const modPath =             path.resolve(__dirname.toString()).split(path.sep).join("/")+"/";
-        const tables =              container.resolve<DatabaseServer>("DatabaseServer").getTables();
+        const databaseServer =      container.resolve<DatabaseServer>("DatabaseServer");
+        const tables =              databaseServer.getTables();
+        const QIconfigServer =      container.resolve("ConfigServer");
+        const QuestItems =          QIconfigServer.getConfig("aki-lostondeath");
+        const modConfig =           jsonc.parse(VFS.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+
+        
+        const botTypes = [
+            "usec",
+            "bear",
+            "exusec",
+            "followerbully",
+            "pmcbot",
+            "followersanitar",
+            "followertagilla",
+            "followergluharassault",
+            "followergluharsecurity",
+            "followergluharscout",
+            "followergluharsnipe",
+            "followerkojaniy",
+            "assault"
+        ];
 
         const mydb = ImporterUtil.loadRecursive(`${modPath}../db/`);
 
@@ -150,6 +171,17 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 "ParentId": hb.ParentId,
                 "Price": hb.Price
             });
+
+            for (const bot in tables.bots.types) {
+                for (const lootSlot in tables.bots.types[bot].inventory.items) {
+                    if (botTypes.includes(bot)) {
+                        if (tables.bots.types[bot].inventory.items[lootSlot].includes("5783c43d2459774bbe137486")) {
+                                tables.bots.types[bot].inventory.items.Backpack.push(itemId);
+                                tables.bots.types[bot].inventory.items.TacticalVest.push(itemId);
+                        }
+                    }
+                }
+            }
         }
         //logger.info("Test");
         // default localization
@@ -212,42 +244,10 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
           AirdropConfig.airdropChancePercent.shoreline = modConfig.Raid.ChangeAirdropValues.Interchange;
           AirdropConfig.airdropChancePercent.interchange = modConfig.Raid.ChangeAirdropValues.Shoreline;
           AirdropConfig.airdropChancePercent.reserve = modConfig.Raid.ChangeAirdropValues.Reserve;
-          AirdropConfig.planeVolume = modConfig.Raid.ChangeAirdropValues.PlaneVolume;
-          AirdropConfig.airdropMinStartTimeSeconds = modConfig.Raid.ChangeAirdropValues.MinStartTimeSeconds;
-          AirdropConfig.airdropMaxStartTimeSeconds = modConfig.Raid.ChangeAirdropValues.MaxStartTimeSeconds;
-        }
-
-        const botTypes = [
-            "usec",
-            "bear",
-            "exusec",
-            "followerbully",
-            "pmcbot",
-            "followersanitar",
-            "followertagilla",
-            "followergluharassault",
-            "followergluharsecurity",
-            "followergluharscout",
-            "followergluharsnipe",
-            "followerkojaniy",
-            "assault"
-        ];
-
-        for (const bot in tables.bots.types) {
-            for (const lootSlot in tables.bots.types[bot].inventory.items) {
-                for(const itemId in items){
-                    if (botTypes.includes(bot)) {
-                        if (tables.bots.types[bot].inventory.items[lootSlot].includes("590c5f0d86f77413997acfab")) {
-                                tables.bots.types[bot].inventory.items.Backpack.push(itemId);
-                                tables.bots.types[bot].inventory.items.TacticalVest.push(itemId);
-                        }
-                    }
-                }
-            }
         }
 
         for (const item in database.templates.items) {
-			if (database.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a" || database.templates.items[item]._parent === "5b5f6fd286f774093f2ecf0d" || database.templates.items[item]._parent === "5b5f6f8786f77447ed563642" || database.templates.items[item]._parent === "5b5f6f6c86f774093f2ecf0b") {
+			if (database.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
 				if (database.templates.items[item]._props.Grids[0]._props.filters[0]) {
 					database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
 				}
@@ -255,6 +255,27 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 		}
 		database.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
 
+
+        if(modConfig.Raid.SaveQuestItems)
+        {
+            QuestItems.questItems = false;
+        }
+        if (modConfig.Raid.NoRunThrough)
+        {
+            globals.exp.match_end.survived_exp_requirement = 0;
+            globals.exp.match_end.survived_seconds_requirement = 0;
+        }
+        
+        for (const id in items)
+        {
+            let base = items[id]
+
+            if (base._parent === "5447e1d04bdc2dff2f8b4567" && modConfig.Raid.LootableMelee)
+            {
+                items[id]._props.Unlootable = false
+                items[id]._props.UnlootableFromSide = [];
+            }
+        }
         logger.log("Finished Overhauling your raids. Watch your back out there.", "magenta") 
     }
     
