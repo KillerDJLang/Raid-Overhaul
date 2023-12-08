@@ -1,0 +1,25 @@
+{
+  "Raid":{
+    "ReduceFoodAndHydroDegrade":{       
+        "Enabled": true,
+        "EnergyDecay": 0.6,         //The rate at which you lose Energy and Hydration. Lower is slower decay
+        "HydroDecay": 0.6
+    },
+
+    "SaveQuestItems": true,         //If enabled saves quest items in your inventory on death
+
+    "NoRunThrough": true,           //Remove raid survived requirements
+
+    "LootableMelee": true,          //Makes melee weapons lootable
+
+    "ChangeAirdropValues":{
+        "Enabled": true,            //Enable airdrop changes          
+        "Customs": 35,          
+        "Woods": 35,                   
+        "Lighthouse": 35,           //Percent chance to get a random airdrop
+        "Interchange": 35,         
+        "Shoreline": 35,           
+        "Reserve": 50
+    }
+  }
+}
