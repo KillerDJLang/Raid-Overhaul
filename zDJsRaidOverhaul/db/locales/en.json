@@ -1,14 +1,24 @@
 {
     "templates": {
         "DJsSecureLunchbox": {
-            "Name": "DJs Scavenged Lunchbox",
+            "Name": "Scavenged Lunchbox",
             "ShortName": "ScavLunch",
             "Description": "A small lunchbox scavenged out in the field. Seems to still contain some food, if you can even call it that."
 		},
         "DJsSmallLunchbox": {
-            "Name": "DJs Food Care Package",
+            "Name": "Food Care Package",
             "ShortName": "CarePckg",
             "Description": "A small gift found out on the battlefield. Noone seems to know it's origin, but its a boon for those running low on provisions."
+		},
+        "DJsAmmoCrate": {
+            "Name": "Secure Ammo Container",
+            "ShortName": "SecAmmo",
+            "Description": "A secure container found while out looting the Reserve Base. Nobody knows what's inside but hopefully you'll find a use for it."
+		},
+        "DJsSurgicalSet": {
+            "Name": "Scavenged Surgical Supply Kit",
+            "ShortName": "SurgKit",
+            "Description": "A surgical supply kit found lying around the shoreline. Unsure of who it belonged to or what it was used for, but there has to be something of use inside."
 		}
     }
 }
