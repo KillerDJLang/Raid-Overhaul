@@ -1,0 +1,64 @@
+{
+	"randomLootContainers": {
+        "DJsSurgicalSet": {
+            "customReward": true,
+            "rewardTplPool": {
+				"loot": {
+					"MedsTier1": {
+						"5d02778e86f774203e7dedbe": 1,
+						"5755356824597772cb798962": 1,
+						"5af0454c86f7746bf20992e8": 1,
+						"5e8488fa988a8701445df1e4": 1,
+						"544fb37f4bdc2dee738b4567": 1
+					},
+					"MedsTier2": {
+						"5af0548586f7743a532b7e99": 1,
+						"590c678286f77426c9660122": 1,
+						"60098ad7c2240c0fe85c570a": 1,
+						"5d02797c86f774203f38e30a": 1,
+						"5755383e24597772cb798966": 1,
+						"544fb45d4bdc2dee738b4568": 1,
+						"5c10c8fd86f7743d7d706df3": 1
+					},
+					"MedsTier3": {
+						"590c657e86f77412b013051d": 1,
+						"5ed515e03a40a50460332579": 1,
+						"544fb3f34bdc2d03748b456a": 1,
+						"5ed5160a87bb8443d10680b5": 1,
+						"5c0e530286f7747fa1419862": 1,
+						"5c0e531d86f7747fa23f4d42": 1,
+						"5c0e534186f7747fa1419867": 1,
+						"5c0e533786f7747fa23f4d47": 1,
+						"5ed51652f6c34d2cc26336a1": 1
+					},
+					"MedsJackpot": {
+						"5c0530ee86f774697952d952": 1,
+                        "5af0534a86f7743b6f354284": 3
+					}
+				},
+				"chances": {
+					"MedsTier1": {
+						"min": 1,
+						"max": 4,
+						"nValue": 1
+					},
+					"MedsTier2": {
+						"min": 0,
+						"max": 2,
+						"nValue": 3
+					},
+					"MedsTier3": {
+						"min": 0,
+						"max": 1,
+						"nValue": 5
+					},
+					"MedsJackpot": {
+						"min": 0,
+						"max": 1,
+						"nValue": 10
+					}
+				}
+			}
+		}
+	}
+}
