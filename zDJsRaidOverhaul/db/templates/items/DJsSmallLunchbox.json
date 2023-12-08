@@ -9,7 +9,7 @@
             "Description": "ration",
             "Weight": 1.2,
             "BackgroundColor": "default",
-            "Width": 1,
+            "Width": 2,
             "Height": 2,
             "StackMaxSize": 1,
             "ItemSound": "food_snack",
