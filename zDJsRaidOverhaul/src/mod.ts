@@ -56,9 +56,13 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             const inventoryConfig = configServer.getConfig("aki-inventory");
             const SecLB = require("../db/items/DJsSecureLunchbox.json");
             const SmolLB = require("../db/items/DJsSmallLunchbox.json");
+            const AmmoLB = require("../db/items/DJsAmmoCrate.json");
+            const MedsLB = require("../db/items/DJsSurgicalSet.json");
 
         inventoryConfig.randomLootContainers["DJsSecureLunchbox"] = SecLB.randomLootContainers["DJsSecureLunchbox"];
         inventoryConfig.randomLootContainers["DJsSmallLunchbox"] = SmolLB.randomLootContainers["DJsSmallLunchbox"];
+        inventoryConfig.randomLootContainers["DJsAmmoCrate"] = AmmoLB.randomLootContainers["DJsAmmoCrate"];
+        inventoryConfig.randomLootContainers["DJsSurgicalSet"] = MedsLB.randomLootContainers["DJsSurgicalSet"];
         //
         //LootContainerAPI
         //
@@ -249,11 +253,11 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         for (const item in database.templates.items) {
 			if (database.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
 				if (database.templates.items[item]._props.Grids[0]._props.filters[0]) {
-					database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
+					database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet"]);
 				}
 			}
 		}
-		database.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
+		database.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet"]);
 
 
         if(modConfig.Raid.SaveQuestItems)
