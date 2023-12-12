@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
@@ -6,13 +6,14 @@ using DJsRaidOverhaul.Patches;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "0.1.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "0.2.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
         internal static IRController Script;
         internal static ManualLogSource logger;
         internal static ConfigEntry<bool> EnableEvents;
+        internal static ConfigEntry<bool> EnablePowerChanges;
         internal static BodyCleanup BCScript;
 
         internal static ConfigEntry<bool> DropBackPack;
@@ -40,6 +41,14 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
+
+            EnablePowerChanges = Config.Bind(
+                "1. Events",
+                "Enable Dynamic Power Changes",
+                true,
+                new ConfigDescription("If enabled, allows power to be turned on at a random point in your raids.",
+                null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
 
@@ -49,7 +58,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Enable body cleanup?",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
             TimeToClean = Config.Bind(
                 "2. Body Cleanup Configs",
@@ -65,7 +74,7 @@ namespace DJsRaidOverhaul
                 60,
                 new ConfigDescription("How far away should bodies be for cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
 
             DropBackPack = Config.Bind(
@@ -74,7 +83,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Enable the dropping of backpacks on death or cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
 
             DropBackPackChance = Config.Bind(
                 "3. Backpack Drop Configs", 
@@ -82,7 +91,7 @@ namespace DJsRaidOverhaul
                 0.3f,
                 new ConfigDescription("Chance of dropping a backpack on kill or cleanup.",
                 new AcceptableValueRange<float>(0f, 1f),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 2 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
             EffectFactor = Config.Bind(
@@ -123,6 +132,5 @@ namespace DJsRaidOverhaul
         {
             return EffectFactor.Value;
         }
-
     }
 }
