@@ -55,7 +55,7 @@
 					"Jackpot": {
 						"min": 0,
 						"max": 1,
-						"nValue": 10
+						"nValue": 13
 					}
 				}
 			}
