@@ -1,6 +1,6 @@
 {
   "name": "DJs Raid Overhaul",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "main": "src/mod.js",
     "license": "CC BY-NC-ND",
     "author": "DJ",
@@ -26,5 +26,8 @@
           "tsyringe": "4.8.0",
           "typescript": "5.2.2",
           "winston": "3.11.0"
-      }
+      },
+      "dependencies": {
+          "jsonc": "^2.0.0"
+    }
 }
