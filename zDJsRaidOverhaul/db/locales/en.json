@@ -19,6 +19,26 @@
             "Name": "Scavenged Surgical Supply Kit",
             "ShortName": "SurgKit",
             "Description": "A surgical supply kit found lying around the shoreline. Unsure of who it belonged to or what it was used for, but there has to be something of use inside."
+		},
+        "DJsWeaponCrate": {
+            "Name": "Locked Weapon Crate",
+            "ShortName": "LWCrate",
+            "Description": "A weapon crate that seems to have been left behind when the Rogues took over the Water Treatment Plant. The scavs that found it couldn't get it opened so everything should still be intact inside. Too bad they didn't bring the manifest along with it."
+		},
+        "RequisitionSlips": {
+            "Name": "Requisition Slips",
+            "ShortName": "Reqs",
+            "Description": "A requisition slip used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions."
+		},
+        "DJsModBox": {
+            "Name": "Scavenged Mod Box",
+            "ShortName": "SModBox",
+            "Description": "A box found near Kiba Arms by the Requisitions team. By the sound it seems to contain some weapon mods that will be useful to your coming firefights."
+		},
+        "DJsBarterCrate": {
+            "Name": "Scavenged Barter Crate",
+            "ShortName": "SBC",
+            "Description": "A crate scavenged from IDEA that looks to contain some miscellaneous trading goods. You might get lucky and pull something very rare indeed. Who knows."
 		}
     }
 }
