@@ -1,20 +1,20 @@
 {
-    "_id": "DJsSecureLunchbox",
-        "_name": "item_food_ration2",
+    "_id": "DJsModBox",
+        "_name": "item_mod_container",
         "_parent": "62f109593b54472778797866",
         "_type": "Item",
         "_props": {
-            "Name": "ration",
-            "ShortName": "ration",
-            "Description": "ration",
-            "Weight": 1.6,
+            "Name": "mods",
+            "ShortName": "mods",
+            "Description": "mods",
+            "Weight": 3.5,
             "BackgroundColor": "orange",
-            "Width": 1,
+            "Width": 2,
             "Height": 2,
             "StackMaxSize": 1,
-            "ItemSound": "food_snack",
+            "ItemSound": "ammo_pack_generic",
             "Prefab": {
-                "path": "assets/content/items/quest/item_quest_parcel/item_quest_parcel.bundle",
+                "path": "assets/content/items/barter/item_barter_electr_toughbook/item_barter_electr_toughbook.bundle",
                 "rcid": ""
             },
             "UsePrefab": {
@@ -58,8 +58,8 @@
             "Grids": [
                 {
                     "_name": "main",
-                    "_id": "Securelunchbox_grids",
-                    "_parent": "DJsSecureLunchbox",
+                    "_id": "ModBox_grids",
+                    "_parent": "DJsModBox",
                     "_props": {
                         "filters": [
                             {

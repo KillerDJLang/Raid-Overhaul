@@ -1,20 +1,20 @@
 {
-    "_id": "DJsSecureLunchbox",
-        "_name": "item_food_ration2",
+    "_id": "DJsBarterCrate",
+        "_name": "item_barter_container",
         "_parent": "62f109593b54472778797866",
         "_type": "Item",
         "_props": {
-            "Name": "ration",
-            "ShortName": "ration",
-            "Description": "ration",
-            "Weight": 1.6,
+            "Name": "barter",
+            "ShortName": "barter",
+            "Description": "barter",
+            "Weight": 2.5,
             "BackgroundColor": "orange",
-            "Width": 1,
+            "Width": 2,
             "Height": 2,
             "StackMaxSize": 1,
-            "ItemSound": "food_snack",
+            "ItemSound": "ammo_pack_generic",
             "Prefab": {
-                "path": "assets/content/items/quest/item_quest_parcel/item_quest_parcel.bundle",
+                "path": "assets/content/items/quest/item_quest_container_case_bank/item_quest_container_case_bank.bundle",
                 "rcid": ""
             },
             "UsePrefab": {
@@ -58,8 +58,8 @@
             "Grids": [
                 {
                     "_name": "main",
-                    "_id": "Securelunchbox_grids",
-                    "_parent": "DJsSecureLunchbox",
+                    "_id": "BarterCrate_grids",
+                    "_parent": "DJsBarterCrate",
                     "_props": {
                         "filters": [
                             {
