@@ -1,0 +1,160 @@
+{
+    "items": [
+        {
+            "_id": "RequisitionSlips",
+            "_tpl": "RequisitionSlips",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 99,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsAmmoCrate",
+            "_tpl": "DJsAmmoCrate",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 2,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsSecureLunchbox",
+            "_tpl": "DJsSecureLunchbox",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 3,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsSmallLunchbox",
+            "_tpl": "DJsSmallLunchbox",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 3,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsSurgicalSet",
+            "_tpl": "DJsSurgicalSet",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 2,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsWeaponCrate",
+            "_tpl": "DJsWeaponCrate",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 1,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsModBox",
+            "_tpl": "DJsModBox",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 1,
+                "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "DJsBarterCrate",
+            "_tpl": "DJsBarterCrate",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "StackObjectsCount": 10,
+                "UnlimitedCount": false
+            }
+        }
+    ],
+    "barter_scheme": {
+        "RequisitionSlips": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 54999
+                }
+            ]
+        ],
+        "DJsAmmoCrate": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 4
+                }
+            ]
+        ],
+        "DJsSecureLunchbox": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "DJsSmallLunchbox": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "DJsSurgicalSet": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "DJsWeaponCrate": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 7
+                }
+            ]
+        ],
+        "DJsModBox": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 4
+                }
+            ]
+        ],
+        "DJsBarterCrate": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 4
+                }
+            ]
+        ]
+    },
+    "loyal_level_items": {
+        "RequisitionSlips": 1,
+        "DJsAmmoCrate": 2,
+        "DJsSecureLunchbox": 1,
+        "DJsSmallLunchbox": 1,
+        "DJsSurgicalSet": 2,
+        "DJsWeaponCrate": 3,
+        "DJsModBox": 3,
+        "DJsBarterCrate": 1
+    }
+}
