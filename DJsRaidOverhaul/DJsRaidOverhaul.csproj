@@ -2,19 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <AssemblyName>ImmersiveRaids</AssemblyName>
-    <Description>A large overhaul for raids including loot, bots, events and dead body clean up.</Description>
+    <AssemblyName>DJsRaidOverhaul</AssemblyName>
+    <Description>A large overhaul for raids including events and dead body clean up.</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
 	<TargetSptAkiVersion>sptaki374</TargetSptAkiVersion>
   </PropertyGroup>
 
-
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Reference Include="0Harmony">

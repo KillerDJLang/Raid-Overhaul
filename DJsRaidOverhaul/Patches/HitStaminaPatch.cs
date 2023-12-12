@@ -2,7 +2,7 @@
 using EFT;
 using Aki.Reflection.Patching;
 
-namespace DJsRaidOverhaul
+namespace DJsRaidOverhaul.Patches
 {
     public class HitStaminaPatch : ModulePatch
     {

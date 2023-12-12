@@ -14,6 +14,7 @@ using EFT.Communications;
 using EFT.UI.BattleTimer;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
+using DJsRaidOverhaul.Patches;
 using TMPro;
 
 namespace DJsRaidOverhaul
@@ -22,8 +23,7 @@ namespace DJsRaidOverhaul
     {
         float timer;
         float eventTimer;
-        //float extractGearTimer;
-        float timeToNextEvent = Random.Range(60F, 180F);
+        float timeToNextEvent = Random.Range(60f, 1800f);
         bool exfilUIChanged = false;
 
         Player player
@@ -46,7 +46,6 @@ namespace DJsRaidOverhaul
             {
                 timer = 0f;
                 eventTimer = 0f;
-                //extractGearTimer = 0f;
                 return;
             }
 
@@ -58,17 +57,8 @@ namespace DJsRaidOverhaul
             {
                 DoRandomEvent();
                 eventTimer = 0f;
-                timeToNextEvent = Random.Range(1800f, 3600f); // 30mins to 1 hour
+                timeToNextEvent = Random.Range(1800f, 3600f);
             }
-
-            /*/
-            if (extractGearTimer >= 3600f)
-            {
-                if (player.Location != "Factory" && player.Location != "Laboratory")
-                    SendGearExtractCrate();
-                extractGearTimer = 0f;
-            }
-            /**/
 
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
                 if (!exfilUIChanged)
@@ -110,37 +100,42 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = Random.Range(0, 5);
+            float rand = Random.Range(0, 4);
 
             switch (rand)
             {
                 case 0:
                     DoArmorRepair();
                     break;
+
                 case 1:
                     if (skipFunny) DoRandomEvent();
                     DoFunny();
                     break;
+
                 case 2:
                     DoBlackoutEvent();
                     break;
+
                 case 3:
                     if (player.Location == "Factory" || player.Location == "Laboratory") DoRandomEvent();
                     DoAirdropEvent();
                     break;
+
                 case 4:
-                    DoLockDownEvent();
-                    break;
-                case 5:
                     ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
                     if (health.Current != health.Maximum)
                     {
-                    DoHealPlayer();
+                        DoHealPlayer();
                     break;
                     }
                     else DoRandomEvent();
                     break;
-                //case 6:
+
+                case 5:
+                    DoLockDownEvent();
+                    break;
+                    //case 7:
                     //DoHuntedEvent();
                     //break;
             }
@@ -150,15 +145,6 @@ namespace DJsRaidOverhaul
         void DoHuntedEvent()
         {
             NotificationManagerClass.DisplayMessageNotification("Hunted Event: AI will now hunt you down for 10 minutes.", ENotificationDurationType.Long, ENotificationIconType.Alert);
-        }
-        /**/
-
-        /*/
-        void SendGearExtractCrate()
-        {
-            NotificationManagerClass.DisplayMessageNotification("An extraction airdrop is being deployed so you can secure your gear, you'll have 5 minutes after it's touched down to do so.", ENotificationDurationType.Long, ENotificationIconType.Default);
-            AirdropBoxPatch.isExtractCrate = true;
-            gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
         }
         /**/
 
@@ -280,7 +266,6 @@ namespace DJsRaidOverhaul
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
-
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
     }
 }

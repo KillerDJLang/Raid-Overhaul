@@ -3,7 +3,7 @@ using UnityEngine;
 using Comfort.Common;
 using System.Threading.Tasks;
 
-namespace DJsRaidOverhaul
+namespace DJsRaidOverhaul.Patches
 {
     public class BodyCleanup : MonoBehaviour
     {

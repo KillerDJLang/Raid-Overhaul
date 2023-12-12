@@ -24,7 +24,7 @@ using Aki.Custom.Airdrops.Utils;
 using System.Collections.Generic;
 using Aki.Custom.Airdrops.Models;
 
-namespace DJsRaidOverhaul
+namespace DJsRaidOverhaul.Patches
 {
     public struct RaidTime
     {
@@ -261,7 +261,7 @@ namespace DJsRaidOverhaul
 
         struct UpdateProfileRequest
         {
-            [JsonProperty("profile")] // go figure
+            [JsonProperty("profile")]
             internal Profile player;
 
             internal UpdateProfileRequest(Profile profile) => player = profile;
