@@ -6,7 +6,7 @@
             "parentId": "hideout",
             "slotId": "hideout",
             "upd": {
-                "StackObjectsCount": 99,
+                "StackObjectsCount": 999999,
                 "UnlimitedCount": false
             }
         },
@@ -26,7 +26,7 @@
             "parentId": "hideout",
             "slotId": "hideout",
             "upd": {
-                "StackObjectsCount": 3,
+                "StackObjectsCount": 2,
                 "UnlimitedCount": false
             }
         },
@@ -66,7 +66,7 @@
             "parentId": "hideout",
             "slotId": "hideout",
             "upd": {
-                "StackObjectsCount": 1,
+                "StackObjectsCount": 2,
                 "UnlimitedCount": false
             }
         },
@@ -76,8 +76,370 @@
             "parentId": "hideout",
             "slotId": "hideout",
             "upd": {
-                "StackObjectsCount": 10,
+                "StackObjectsCount": 1,
                 "UnlimitedCount": false
+            }
+        },
+        {
+            "_id": "Aug30Mag",
+            "_tpl": "Aug30Maga",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "Aug42Mag",
+            "_tpl": "Aug42Maga",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 30
+            }
+        },
+        {
+            "_id": "Aug762Preset",
+            "_tpl": "Aug762a",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 3
+            }
+        },
+        {
+            "_id": "Aug42MagPreset",
+            "_tpl": "Aug42Maga",
+            "parentId": "Aug762Preset",
+            "slotId": "mod_magazine"
+        },
+        {
+            "_id": "Aug762PresetCH",
+            "_tpl": "62ebbc53e3c1e1ec7c02c44f",
+            "parentId": "Aug762Preset",
+            "slotId": "mod_charge"
+        },
+        {
+            "_id": "Aug762PresetRV",
+            "_tpl": "62e7c72df68e7a0676050c77",
+            "parentId": "Aug762Preset",
+            "slotId": "mod_reciever"
+        },
+        {
+            "_id": "Aug762PresetBRL",
+            "_tpl": "62e7c7f3c34ea971710c32fc",
+            "parentId": "Aug762PresetRV",
+            "slotId": "mod_barrel"
+        },
+        {
+            "_id": "Aug762PresetMB",
+            "_tpl": "630f28f0cadb1fe05e06f004",
+            "parentId": "Aug762PresetBRL",
+            "slotId": "mod_muzzle_000"
+        },
+        {
+            "_id": "Aug762PresetFG",
+            "_tpl": "634e61b0767cb15c4601a877",
+            "parentId": "Aug762PresetBRL",
+            "slotId": "mod_foregrip"
+        },
+        {
+            "_id": "Aug762PresetMNT",
+            "_tpl": "62ebd290c427473eff0baafb",
+            "parentId": "Aug762PresetRV",
+            "slotId": "mod_mount"
+        },
+        {
+            "_id": "MCM4",
+            "_tpl": "MCM4",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM457",
+            "_tpl": "MCM457",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM457Mag",
+            "_tpl": "MCM457Mag",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4300",
+            "_tpl": "MCM4300",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4300Mag",
+            "_tpl": "MCM4300Mag",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4545",
+            "_tpl": "MCM4545",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4545Mag",
+            "_tpl": "MCM4545Mag",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4762",
+            "_tpl": "MCM4762",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4762Mag",
+            "_tpl": "MCM4762Mag",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4939",
+            "_tpl": "MCM4939",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "MCM4939Mag",
+            "_tpl": "MCM4939Mag",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "mmac",
+            "_tpl": "61bc85697113f767765c7fe7",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "skanda",
+            "_tpl": "5d5d87f786f77427997cfaef",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "banshee",
+            "_tpl": "639343fce101f4caa40a4ef3",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "lbcr",
+            "_tpl": "5e9db13186f7742f845ee9d3",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "d3crx",
+            "_tpl": "5d5d85c586f774279a21cbdb",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "stitch",
+            "_tpl": "60a6220e953894617404b00a",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "thors",
+            "_tpl": "609e8540d5c319764c2bc2e9",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "korund",
+            "_tpl": "5f5f41476bdad616ad46d631",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "gen4",
+            "_tpl": "5b44d0de86f774503d30cba8",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "slick",
+            "_tpl": "5e4abb5086f77406975c9342",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "tictac",
+            "_tpl": "5b44cad286f77402a54ae7e5",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "t5redut",
+            "_tpl": "5ca21c6986f77479963115a7",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "lsh",
+            "_tpl": "5b432d215acfc4771e1c6624",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "tc800",
+            "_tpl": "5e4bfc1586f774264f7582d3",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "fast",
+            "_tpl": "5ea05cf85ad9772e6624305d",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "caiman",
+            "_tpl": "5f60b34a41e30a4ab12a6947",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "hjelm",
+            "_tpl": "61bca7cda0eae612383adf57",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+        },
+        {
+            "_id": "exfil",
+            "_tpl": "5e01ef6886f77445f643baa4",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
             }
         }
     ],
@@ -102,7 +464,7 @@
             [
                 {
                     "_tpl": "RequisitionSlips",
-                    "count": 1
+                    "count": 2
                 }
             ]
         ],
@@ -110,7 +472,7 @@
             [
                 {
                     "_tpl": "RequisitionSlips",
-                    "count": 2
+                    "count": 3
                 }
             ]
         ],
@@ -142,7 +504,263 @@
             [
                 {
                     "_tpl": "RequisitionSlips",
+                    "count": 5
+                }
+            ]
+        ],
+        "Aug30Mag": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "Aug42Mag": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "Aug762Preset": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "MCM4": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM4300": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM4300Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "MCM4545": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM4545Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "MCM457": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM457Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "MCM4762": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM4762Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "MCM4939": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "MCM4939Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "mmac": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "skanda": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 5
+                }
+            ]
+        ],
+        "banshee": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "d3crx": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "lbcr": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "stitch": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "thors": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "korund": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "gen4": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
                     "count": 4
+                }
+            ]
+        ],
+        "slick": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 7
+                }
+            ]
+        ],
+        "tictac": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "t5redut": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 5
+                }
+            ]
+        ],
+        "lsh": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "tc800": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "fast": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "caiman": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "hjelm": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "exfil": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
                 }
             ]
         ]
@@ -155,6 +773,38 @@
         "DJsSurgicalSet": 2,
         "DJsWeaponCrate": 3,
         "DJsModBox": 3,
-        "DJsBarterCrate": 1
+        "DJsBarterCrate": 1,
+        "Aug30Mag": 1,
+        "Aug42Mag": 1,
+        "Aug762Preset": 1,
+        "MCM4": 2,
+        "MCM4300": 3,
+        "MCM4300Mag": 3,
+        "MCM4545": 2,
+        "MCM4545Mag": 2,
+        "MCM457": 3,
+        "MCM457Mag": 3,
+        "MCM4762": 4,
+        "MCM4762Mag": 4,
+        "MCM4939": 3,
+        "MCM4939Mag": 3,
+        "mmac": 1,
+        "skanda": 3,
+        "banshee": 2,
+        "d3crx": 1,
+        "lbcr": 3,
+        "stitch": 2,
+        "thors": 1,
+        "korund": 2,
+        "gen4": 3,
+        "slick": 4,
+        "tictac": 2,
+        "t5redut": 4,
+        "lsh": 1,
+        "tc800": 2,
+        "fast": 1,
+        "caiman": 3,
+        "hjelm": 3,
+        "exfil": 4
     }
 }

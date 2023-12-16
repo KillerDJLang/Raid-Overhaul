@@ -39,6 +39,76 @@
             "Name": "Scavenged Barter Crate",
             "ShortName": "SBC",
             "Description": "A crate scavenged from IDEA that looks to contain some miscellaneous trading goods. You might get lucky and pull something very rare indeed. Who knows."
-	}
+		},
+        "Aug30Maga": {
+            "Name": "Steyr AUG 7.62x39 30-round magazine",
+            "ShortName": "AUG",
+            "Description": "A 30-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
+        },
+        "Aug42Maga": {
+            "Name": "Steyr AUG 7.62x39 42-round magazine",
+            "ShortName": "AUG",
+            "Description": "A 42-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
+        },
+        "Aug762a": {
+            "Name": "Sarias Modified AUG A3 7.62x39 assault rifle",
+            "ShortName": "AUG 762",
+            "Description": "Steyr AUG A3 is a 5.56x45 bullpup assault rifle, developed by the Austrian company Steyr-Daimler-Puch. AUG is known for good ergonomics, decent accuracy, low recoil and sufficient reliability. The rifle also stands out for its futuristic design. The A3 version features a bolt-catch button. This rifles has been modified to be compatible with 7.62x39mm caliber ammunition while retaining it's standout characteristics."    
+        },
+        "MCM4": {
+            "Name": "Multi-Calibre M4A1 Assault Rifle",
+            "ShortName": "MCM4",
+            "Description": "A Multi-Calibre variant of the standard M4A1 assault rifle. Modified to be compatible with 5.45, 5.56, 5.7, .300, 7.62 and 9x39 ammunition with the accompanying receivers."
+        },
+        "MCM457": {
+            "Name": "MCM4 5.7mm Receiver",
+            "ShortName": "MCM4 57",
+            "Description": "The MUR-1S modular upper receiver for AR-based weapons, manufactured by Vltor. Fitted with mounts for attaching additional equipment. Chambered in 5.7mm."
+        },
+        "MCM457Mag": {
+            "Name": "5.7mm Magpul PMAG 30-round magazine",
+            "ShortName": "MCM4 57Mag",
+            "Description": "A 30-round polymer Magpul PMAG magazine, for 5.7mm ammunition"
+        },
+        "MCM4300": {
+            "Name": "MCM4 .300 Receiver",
+            "ShortName": "MCM 300",
+            "Description": "The MUR-1S modular upper receiver for AR-based weapons, manufactured by Vltor. Fitted with mounts for attaching additional equipment. Chambered in .300 blackout."
+        },
+        "MCM4300Mag": {
+            "Name": ".300 blackout Magpul PMAG 30-round magazine",
+            "ShortName": "MCM4 300Mag",
+            "Description": "A 30-round polymer Magpul PMAG magazine, for .300 blackout ammunition"
+        },
+        "MCM4545": {
+            "Name": "MCM4 5.45x39mm Receiver",
+            "ShortName": "MCM4 545",
+            "Description": "The MUR-1S modular upper receiver for AR-based weapons, manufactured by Vltor. Fitted with mounts for attaching additional equipment. Chambered in 5.45x39mm."
+        },
+        "MCM4545Mag": {
+            "Name": "5.45x39mm Magpul PMAG 30-round magazine",
+            "ShortName": "MCM4 545Mag",
+            "Description": "A 30-round polymer Magpul PMAG magazine, for 5.45x39mm ammunition"
+        },
+        "MCM4762": {
+            "Name": "MCM4 7.62x39mm Receiver",
+            "ShortName": "MCM4 762",
+            "Description": "The MUR-1S modular upper receiver for AR-based weapons, manufactured by Vltor. Fitted with mounts for attaching additional equipment. Chambered in 7.62x39mm."
+        },
+        "MCM4762Mag": {
+            "Name": "7.62x39mm Magpul PMAG 30-round magazine",
+            "ShortName": "MCM4 762Mag",
+            "Description": "A 30-round polymer Magpul PMAG magazine, for 7.62x39mm ammunition"
+        },
+        "MCM4939": {
+            "Name": "MCM4 9x39mm Receiver",
+            "ShortName": "MCM4 939",
+            "Description": "The MUR-1S modular upper receiver for AR-based weapons, manufactured by Vltor. Fitted with mounts for attaching additional equipment. Chambered in 9x39mm."
+        },
+        "MCM4939Mag": {
+            "Name": "9x39mm Magpul PMAG 30-round magazine",
+            "ShortName": "MCM4 939Mag",
+            "Description": "A 30-round polymer Magpul PMAG magazine, for 9x39mm ammunition"
+        }
     }
 }

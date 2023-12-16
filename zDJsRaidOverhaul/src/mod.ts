@@ -80,7 +80,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             result.openRandomLootContainer = (pmcData, body, sessionID) => {
                 return RaidOverhaul.customOpenRandomLootContainer(pmcData, body, sessionID)
             }
-            }, {frequency: "Always"});
+        }, {frequency: "Always"});
 
         inventoryConfig.randomLootContainers["DJsSecureLunchbox"] = SecLB.randomLootContainers["DJsSecureLunchbox"];
         inventoryConfig.randomLootContainers["DJsSmallLunchbox"] = SmolLB.randomLootContainers["DJsSmallLunchbox"];
@@ -169,61 +169,10 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const traderConfig:         ITraderConfig = configServer.getConfig(ConfigTypes.TRADER);
         const jsonUtil:             JsonUtil = container.resolve<JsonUtil>("JsonUtil");
         const Ragfair =             configServer.getConfig("aki-ragfair");
-        const Profiles =            ["Standard", "Left Behind", "Prepare To Escape", "Edge Of Darkness", "SPT Zero to hero"]
-
-        for (const Profile of Profiles) {
-            tables.templates.profiles[Profile].bear.character.Inventory.items.find((x) => x.slotId == "SecuredContainer")._tpl = items["5732ee6a24597719ae0c0281"]
-            tables.templates.profiles[Profile].usec.character.Inventory.items.find((x) => x.slotId == "SecuredContainer")._tpl = items["5732ee6a24597719ae0c0281"]
-        }
+        const scdatabase =          container.resolve("DatabaseServer").getTables();
 
         logger.debug(`[${this.mod}] postDb Loading... `);
         logger.log("Overhauling your raids. Watch your back out there.", "magenta")
-
-        const cases = [
-		    {
-                "name": "Waist Pouch",
-                "itemID": "5732ee6a24597719ae0c0281",
-				"horizontal": 2,
-                "vertical":   4,
-                "removeFilters": true
-            },
-            {
-                "name": "Secure Container Alpha",
-                "itemID": "544a11ac4bdc2d470e8b456a",
-				"horizontal": 3,
-                "vertical":   3,
-                "removeFilters": true
-            },
-            {
-                "name": "Secure Container Beta",
-                "itemID": "5857a8b324597729ab0a0e7d",
-				"horizontal": 3,
-                "vertical":   4,				
-                "removeFilters": true
-                
-            },
-            {
-                "name": "Secure Container Gamma",
-                "itemID": "5857a8bc2459772bad15db29",
-				"horizontal": 4,
-                "vertical":   4,				
-                "removeFilters": true
-            },
-            {
-                "name": "Secure Container Epsilon",
-                "itemID": "59db794186f77448bc595262",
-				"horizontal": 4,
-                "vertical":   5,				
-                "removeFilters": true
-            },
-            {
-                "name": "Secure Container Kappa",
-                "itemID": "5c093ca986f7740a1867ab12",
-				"horizontal": 5,
-                "vertical":   5,				
-                "removeFilters": true
-            }
-        ];
         
         const botTypes = [
             "usec",
@@ -344,7 +293,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 
         if(modConfig.Raid.SaveQuestItems)
         {
-            QuestItems.questItems = false;
+            QuestItems.questItems === false;
         }
         if (modConfig.Raid.NoRunThrough)
         {
@@ -374,17 +323,12 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        let i = 0;
-        while (i < cases.length ){
-
-            items[cases[i].itemID]._props.Grids[0]._props.cellsH = cases[i].horizontal;
-            items[cases[i].itemID]._props.Grids[0]._props.cellsV = cases[i].vertical;
-                
-            if (cases[i].removeFilters === true) {
-                items[cases[i].itemID]._props.Grids[0]._props.filters = [];
-                i++;
-            }
-        }
+        scdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
+        scdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
+        scdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
+        scdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
+        scdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
+        scdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
 
         this.addTraderToDb(baseJson, tables, jsonUtil);
 
@@ -394,7 +338,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         
         Ragfair.dynamic.blacklist.custom.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "DJsModBox", "DJsBarterCrate"])
 
-            logger.debug(`[${this.mod}] postDb Loaded`);
+        logger.debug(`[${this.mod}] postDb Loaded`);
         }
     }
 
@@ -411,7 +355,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 			items: []
 		};
 		
-		let foundInRaid = false;
+		let foundInRaid = true;
 		
 
 		if (isSealedWeaponBox) {
