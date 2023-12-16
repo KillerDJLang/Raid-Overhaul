@@ -1,19 +1,22 @@
-using BepInEx;
+﻿using BepInEx;
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
+using EFT.Interactive;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using DJsRaidOverhaul.Patches;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "0.2.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
         internal static IRController Script;
         internal static ManualLogSource logger;
         internal static ConfigEntry<bool> EnableEvents;
-        internal static ConfigEntry<bool> EnablePowerChanges;
         internal static BodyCleanup BCScript;
 
         internal static ConfigEntry<bool> DropBackPack;
@@ -21,10 +24,11 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<float> TimeToClean;
         internal static ConfigEntry<int> DistToClean;
         internal static ConfigEntry<float> DropBackPackChance;
+        public static ConfigEntry<int> PowerOnChanceC;
+        public static ConfigEntry<int> PowerOnChanceI;
+        public static ConfigEntry<int> PowerOnChanceR;
 
-        private static ConfigEntry<float> EffectFactor;
-
-        internal static ConfigEntry<bool> Deafness;
+        private static ConfigEntry<float> factor;
 
         void Awake()
         {
@@ -41,24 +45,16 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
-
-            EnablePowerChanges = Config.Bind(
-                "1. Events",
-                "Enable Dynamic Power Changes",
-                true,
-                new ConfigDescription("If enabled, allows power to be turned on at a random point in your raids.",
-                null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
 
             EnableClean = Config.Bind(
                 "2. Body Cleanup Configs",
-                "Enable Clean",
+                "Enable Clean.",
                 true,
                 new ConfigDescription("Enable body cleanup?",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
 
             TimeToClean = Config.Bind(
                 "2. Body Cleanup Configs",
@@ -74,7 +70,7 @@ namespace DJsRaidOverhaul
                 60,
                 new ConfigDescription("How far away should bodies be for cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
 
 
             DropBackPack = Config.Bind(
@@ -83,7 +79,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Enable the dropping of backpacks on death or cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 1 }));
 
             DropBackPackChance = Config.Bind(
                 "3. Backpack Drop Configs", 
@@ -91,25 +87,41 @@ namespace DJsRaidOverhaul
                 0.3f,
                 new ConfigDescription("Chance of dropping a backpack on kill or cleanup.",
                 new AcceptableValueRange<float>(0f, 1f),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 2 }));
 
 
-            EffectFactor = Config.Bind(
+            factor = Config.Bind(
                 "4. Adrenaline", 
-                "Effect Factor", 
+                "Factor", 
                 50f, 
-                new ConfigDescription("Causes an adrenaline effect on hit. This is the factor to multiply the effect's strength by.", 
+                new ConfigDescription("The factor to multiply the effect's strength by.", 
                 new AcceptableValueRange<float>(0f, 100f),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
-            Deafness = Config.Bind(
-                "5. Deafness",
-                "Enable",
-                false,
-                new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.",
+            PowerOnChanceC = Config.Bind(
+                "5. Power",
+                "Power On Chance C",
+                100,
+                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 1 }));
+
+            PowerOnChanceI = Config.Bind(
+                "5. Power",
+                "Power On Chance I",
+                100,
+                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
+
+            PowerOnChanceR = Config.Bind(
+                "5. Power",
+                "Power On Chance R",
+                100,
+                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 3 }));
 
 
             new OnDeadPatch().Enable();
@@ -124,13 +136,67 @@ namespace DJsRaidOverhaul
             new WatchPatch().Enable();
             new EnableEntryPointPatch().Enable();
             new HitStaminaPatch().Enable();
-            new DeafnessPatch().Enable();
-            new GrenadeDeafnessPatch().Enable();
         }
 
         public static float GetFactor()
         {
-            return EffectFactor.Value;
+            return factor.Value;
+        }
+
+    }
+    public static class ActivateSwitches
+    {
+        public static void Start()
+        {
+            List<EFT.Interactive.Switch> PowerSwitches = UnityEngine.Object.FindObjectsOfType<EFT.Interactive.Switch>().ToList();
+
+            foreach (var switcher in PowerSwitches)
+            {
+                // Customs Power Switch
+                if (switcher.Id == "custom_DesignStuff_00034" && switcher.name == "reserve_electric_switcher_lever")
+                {
+                    int percent = RandomGen();
+
+                    if (percent <= Plugin.PowerOnChanceC.Value)
+                    {
+                        PowerSwitch(switcher);
+                    }
+                }
+
+                // Interchange Power Station 
+                if (switcher.Id == "Shopping_Mall_DesignStuff_00055" && switcher.name == "reserve_electric_switcher_lever")
+                {
+                    int percent = RandomGen();
+
+                    if (percent <= Plugin.PowerOnChanceI.Value)
+                    {
+                        PowerSwitch(switcher);
+                    }
+                }
+
+                // Reserve D2 Switch
+                if (switcher.Id == "autoId_00000_D2_LEVER" && switcher.name == "reserve_electric_switcher_lever")
+                {
+                    int percent = RandomGen();
+
+                    if (percent <= Plugin.PowerOnChanceR.Value)
+                    {
+                        PowerSwitch(switcher);
+                    }
+                }
+            }
+        }
+
+        private static int RandomGen()
+        {
+            System.Random chance = new System.Random();
+            int percent = chance.Next(1, 99);
+            return percent;
+        }
+        private static void PowerSwitch(EFT.Interactive.Switch switcher)
+        {
+            switcher.GetType().GetMethod("Open", BindingFlags.NonPublic | BindingFlags.Instance)
+                .Invoke(switcher, new object[0]);
         }
     }
 }

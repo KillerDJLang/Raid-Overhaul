@@ -1,4 +1,4 @@
-using EFT;
+﻿using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
@@ -23,8 +23,6 @@ namespace DJsRaidOverhaul
     {
         float timer;
         float eventTimer;
-        float PowerTimer;
-        float PowerOnTimeRange = Random.Range(60f, 180f);
         float timeToNextEvent = Random.Range(60f, 1800f);
         bool exfilUIChanged = false;
 
@@ -48,12 +46,12 @@ namespace DJsRaidOverhaul
             {
                 timer = 0f;
                 eventTimer = 0f;
-                PowerTimer = 0f;
                 return;
             }
 
             timer += Time.deltaTime;
             if (Plugin.EnableEvents.Value) eventTimer += Time.deltaTime;
+            //extractGearTimer += Time.deltaTime;
 
             if (eventTimer >= timeToNextEvent)
             {
@@ -62,16 +60,7 @@ namespace DJsRaidOverhaul
                 timeToNextEvent = Random.Range(1800f, 3600f);
             }
 
-            if (Plugin.EnablePowerChanges.Value) PowerTimer += Time.deltaTime;
-
-            if (PowerTimer >= PowerOnTimeRange)
-            {
-                PowerOn();
-                eventTimer = 0f;
-                PowerOnTimeRange = 999999f;
-            }
-
-                if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
+            if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
                 if (!exfilUIChanged)
                     ChangeExfilUI();
         }
@@ -118,25 +107,20 @@ namespace DJsRaidOverhaul
                 case 0:
                     DoArmorRepair();
                     break;
-
                 case 1:
                     if (skipFunny) DoRandomEvent();
                     DoFunny();
                     break;
-
                 case 2:
                     DoBlackoutEvent();
                     break;
-
                 case 3:
-                    DoPowerSurgeEvent();
-                    break;
-
-                case 4:
                     if (player.Location == "Factory" || player.Location == "Laboratory") DoRandomEvent();
                     DoAirdropEvent();
                     break;
-
+                case 4:
+                    DoLockDownEvent();
+                    break;
                 case 5:
                     ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
                     if (health.Current != health.Maximum)
@@ -146,11 +130,7 @@ namespace DJsRaidOverhaul
                     }
                     else DoRandomEvent();
                     break;
-
-                case 6:
-                    DoLockDownEvent();
-                    break;
-                    //case 7:
+                    //case 6:
                     //DoHuntedEvent();
                     //break;
             }
@@ -281,33 +261,6 @@ namespace DJsRaidOverhaul
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
-
-        async void DoPowerSurgeEvent()
-        {
-            foreach (Switch pSwitch in FindObjectsOfType<Switch>())
-            {
-                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-            }
-
-            NotificationManagerClass.DisplayMessageNotification("Power Surge Event: All power switches are enabled for 10 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
-            await Task.Delay(600000);
-
-            foreach (Switch pSwitch in FindObjectsOfType<Switch>())
-            {
-                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-            };
-
-            NotificationManagerClass.DisplayMessageNotification("Power Surge over", ENotificationDurationType.Long, ENotificationIconType.Quest);
-        }
-
-        void PowerOn()
-        {
-            foreach (Switch pSwitch in FindObjectsOfType<Switch>())
-            {
-                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-            }
-        }
-
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
     }
 }

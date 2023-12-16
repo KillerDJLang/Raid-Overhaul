@@ -1,4 +1,4 @@
-using EFT;
+﻿using EFT;
 using TMPro;
 using System;
 using EFT.UI.Map;
@@ -70,7 +70,7 @@ namespace DJsRaidOverhaul.Patches
                 await Task.Yield();
 
             BackendConfigSettingsClass globals = __instance.GetClientBackEndSession().BackEndConfig.Config;
-            globals.AllowSelectEntryPoint = true;
+            globals.AllowSelectEntryPoint = true; // not on server L
         }
     }
 
@@ -107,6 +107,11 @@ namespace DJsRaidOverhaul.Patches
     {
         protected override MethodBase GetTargetMethod() => typeof(MainTimerPanel).GetMethod("UpdateTimer", BindingFlags.Instance | BindingFlags.NonPublic);
 
+        // transpile as I need to edit in a really specific way
+        // basically I still need the call base.UpdateTimer() and return afterward
+        // Harmony has no injection for base and (__instance as TimerPanel) wont work as it will
+        // call it on the MainTimerPanel instance anyway and since I have that patched it'll
+        // cause an invocation loop and overload the stack
         [PatchTranspiler]
         static IEnumerable<CodeInstruction> Transpile(IEnumerable<CodeInstruction> instructions)
         {
@@ -120,6 +125,15 @@ namespace DJsRaidOverhaul.Patches
                     inst.opcode = OpCodes.Nop;
                 shift++;
             });
+
+            /*/
+            output:
+                IL_0000: ldarg.0
+                IL_0001: call      instance void EFT.UI.BattleTimer.TimerPanel::UpdateTimer()
+	            IL_0006: ret
+
+                then a bunch of other nop codes cause the CLR will piss itself if you try to leave the IL without it
+            /**/
 
             return instructions;
         }
@@ -154,6 +168,7 @@ namespace DJsRaidOverhaul.Patches
 
         [PatchPostfix]
         static void Postfix(ref WeatherController __instance) => __instance.WindController.CloudWindMultiplier = 1;
+        // weather controller is weird and makes the clouds REALLY fast if game time is set to local time
     }
 
     // WIP!!!! NOT DONE!!!
@@ -246,7 +261,7 @@ namespace DJsRaidOverhaul.Patches
 
         struct UpdateProfileRequest
         {
-            [JsonProperty("profile")]
+            [JsonProperty("profile")] // go figure
             internal Profile player;
 
             internal UpdateProfileRequest(Profile profile) => player = profile;
