@@ -13,7 +13,6 @@ namespace DJsRaidOverhaul
         internal static IRController Script;
         internal static ManualLogSource logger;
         internal static ConfigEntry<bool> EnableEvents;
-        internal static ConfigEntry<bool> EnablePowerChanges;
         internal static BodyCleanup BCScript;
         internal static ConfigEntry<bool> DropBackPack;
         internal static ConfigEntry<bool> EnableClean;
@@ -44,21 +43,13 @@ namespace DJsRaidOverhaul
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
-            EnablePowerChanges = Config.Bind(
-                "1. Events",
-                "Enable Dynamic Power Changes",
-                true,
-                new ConfigDescription("If enabled, allows power to be turned on at a random point in your raids.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
-
             RandomRangeMax = Config.Bind(
                "1. Events",
                "Random timer range maximum",
                30,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 2 }));
 
             RandomRangeMin = Config.Bind(
                "1. Events",
@@ -66,7 +57,7 @@ namespace DJsRaidOverhaul
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
             RandomDoorRangeMax = Config.Bind(
                "1. Events",
@@ -74,7 +65,7 @@ namespace DJsRaidOverhaul
                5,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
 
             RandomDoorRangeMin = Config.Bind(
                "1. Events",
@@ -82,7 +73,7 @@ namespace DJsRaidOverhaul
                1,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
 
 
             EnableClean = Config.Bind(

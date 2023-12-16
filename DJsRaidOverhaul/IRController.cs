@@ -161,7 +161,7 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = UnityEngine.Random.Range(0, 5);
+            float rand = UnityEngine.Random.Range(0, 4);
 
             switch (rand)
             {
@@ -179,15 +179,11 @@ namespace DJsRaidOverhaul
                     break;
 
                 case 3:
-                    DoPowerSurgeEvent();
-                    break;
-
-                case 4:
                     if (player.Location == "Factory" || player.Location == "Laboratory") DoRandomEvent();
                     DoAirdropEvent();
                     break;
 
-                case 5:
+                case 4:
                     ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
                     if (health.Current != health.Maximum)
                     {
@@ -197,10 +193,10 @@ namespace DJsRaidOverhaul
                     else DoRandomEvent();
                     break;
 
-                case 6:
+                case 5:
                     DoLockDownEvent();
                     break;
-                    //case 8:
+                    //case 6:
                     //DoHuntedEvent();
                     //break;
             }
@@ -330,24 +326,6 @@ namespace DJsRaidOverhaul
                 });
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
-        }
-
-        async void DoPowerSurgeEvent()
-        {
-            foreach (Switch pSwitch in _switchs)
-            {
-                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-            }
-
-            NotificationManagerClass.DisplayMessageNotification("Power Surge Event: All power switches are enabled for 10 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
-            await Task.Delay(600000);
-
-            foreach (Switch pSwitch in _switchs)
-            {
-                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-            };
-
-            NotificationManagerClass.DisplayMessageNotification("Power Surge over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
 
         private void PowerOn()
