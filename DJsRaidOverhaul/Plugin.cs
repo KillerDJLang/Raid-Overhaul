@@ -2,33 +2,30 @@
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
-using EFT.Interactive;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using DJsRaidOverhaul.Patches;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.0.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "0.3.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
         internal static IRController Script;
         internal static ManualLogSource logger;
         internal static ConfigEntry<bool> EnableEvents;
+        internal static ConfigEntry<bool> EnablePowerChanges;
         internal static BodyCleanup BCScript;
-
         internal static ConfigEntry<bool> DropBackPack;
         internal static ConfigEntry<bool> EnableClean;
         internal static ConfigEntry<float> TimeToClean;
         internal static ConfigEntry<int> DistToClean;
         internal static ConfigEntry<float> DropBackPackChance;
-        public static ConfigEntry<int> PowerOnChanceC;
-        public static ConfigEntry<int> PowerOnChanceI;
-        public static ConfigEntry<int> PowerOnChanceR;
-
-        private static ConfigEntry<float> factor;
+        internal static ConfigEntry<bool> Deafness;
+        internal static ConfigEntry<int> RandomRangeMin;
+        internal static ConfigEntry<int> RandomRangeMax;
+        internal static ConfigEntry<int> RandomDoorRangeMin;
+        internal static ConfigEntry<int> RandomDoorRangeMax;
+        private static ConfigEntry<float> EffectFactor;
 
         void Awake()
         {
@@ -47,14 +44,54 @@ namespace DJsRaidOverhaul
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
+            EnablePowerChanges = Config.Bind(
+                "1. Events",
+                "Enable Dynamic Power Changes",
+                true,
+                new ConfigDescription("If enabled, allows power to be turned on at a random point in your raids.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
+
+            RandomRangeMax = Config.Bind(
+               "1. Events",
+               "Random timer range maximum",
+               30,
+               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
+
+            RandomRangeMin = Config.Bind(
+               "1. Events",
+               "Random timer range minimum",
+               5,
+               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
+
+            RandomDoorRangeMax = Config.Bind(
+               "1. Events",
+               "Random Door timer range maximum",
+               5,
+               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
+
+            RandomDoorRangeMin = Config.Bind(
+               "1. Events",
+               "Random Door timer range minimum",
+               1,
+               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
+
 
             EnableClean = Config.Bind(
                 "2. Body Cleanup Configs",
-                "Enable Clean.",
+                "Enable Clean",
                 true,
                 new ConfigDescription("Enable body cleanup?",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
             TimeToClean = Config.Bind(
                 "2. Body Cleanup Configs",
@@ -70,7 +107,7 @@ namespace DJsRaidOverhaul
                 60,
                 new ConfigDescription("How far away should bodies be for cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
 
             DropBackPack = Config.Bind(
@@ -79,7 +116,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Enable the dropping of backpacks on death or cleanup.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
 
             DropBackPackChance = Config.Bind(
                 "3. Backpack Drop Configs", 
@@ -87,41 +124,25 @@ namespace DJsRaidOverhaul
                 0.3f,
                 new ConfigDescription("Chance of dropping a backpack on kill or cleanup.",
                 new AcceptableValueRange<float>(0f, 1f),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 2 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
-            factor = Config.Bind(
+            EffectFactor = Config.Bind(
                 "4. Adrenaline", 
-                "Factor", 
+                "Effect Factor", 
                 50f, 
-                new ConfigDescription("The factor to multiply the effect's strength by.", 
+                new ConfigDescription("Causes an adrenaline effect on hit. This is the factor to multiply the effect's strength by.", 
                 new AcceptableValueRange<float>(0f, 100f),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
-            PowerOnChanceC = Config.Bind(
-                "5. Power",
-                "Power On Chance C",
-                100,
-                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
+            Deafness = Config.Bind(
+                "5. Deafness",
+                "Enable",
+                false,
+                new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 1 }));
-
-            PowerOnChanceI = Config.Bind(
-                "5. Power",
-                "Power On Chance I",
-                100,
-                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
-
-            PowerOnChanceR = Config.Bind(
-                "5. Power",
-                "Power On Chance R",
-                100,
-                new ConfigDescription("The percent chance that power will be on at Raid Start. Default of 35.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 3 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
 
             new OnDeadPatch().Enable();
@@ -136,67 +157,13 @@ namespace DJsRaidOverhaul
             new WatchPatch().Enable();
             new EnableEntryPointPatch().Enable();
             new HitStaminaPatch().Enable();
+            new DeafnessPatch().Enable();
+            new GrenadeDeafnessPatch().Enable();
         }
 
         public static float GetFactor()
         {
-            return factor.Value;
-        }
-
-    }
-    public static class ActivateSwitches
-    {
-        public static void Start()
-        {
-            List<EFT.Interactive.Switch> PowerSwitches = UnityEngine.Object.FindObjectsOfType<EFT.Interactive.Switch>().ToList();
-
-            foreach (var switcher in PowerSwitches)
-            {
-                // Customs Power Switch
-                if (switcher.Id == "custom_DesignStuff_00034" && switcher.name == "reserve_electric_switcher_lever")
-                {
-                    int percent = RandomGen();
-
-                    if (percent <= Plugin.PowerOnChanceC.Value)
-                    {
-                        PowerSwitch(switcher);
-                    }
-                }
-
-                // Interchange Power Station 
-                if (switcher.Id == "Shopping_Mall_DesignStuff_00055" && switcher.name == "reserve_electric_switcher_lever")
-                {
-                    int percent = RandomGen();
-
-                    if (percent <= Plugin.PowerOnChanceI.Value)
-                    {
-                        PowerSwitch(switcher);
-                    }
-                }
-
-                // Reserve D2 Switch
-                if (switcher.Id == "autoId_00000_D2_LEVER" && switcher.name == "reserve_electric_switcher_lever")
-                {
-                    int percent = RandomGen();
-
-                    if (percent <= Plugin.PowerOnChanceR.Value)
-                    {
-                        PowerSwitch(switcher);
-                    }
-                }
-            }
-        }
-
-        private static int RandomGen()
-        {
-            System.Random chance = new System.Random();
-            int percent = chance.Next(1, 99);
-            return percent;
-        }
-        private static void PowerSwitch(EFT.Interactive.Switch switcher)
-        {
-            switcher.GetType().GetMethod("Open", BindingFlags.NonPublic | BindingFlags.Instance)
-                .Invoke(switcher, new object[0]);
+            return EffectFactor.Value;
         }
     }
 }

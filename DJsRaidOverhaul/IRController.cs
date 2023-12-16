@@ -15,16 +15,23 @@ using EFT.UI.BattleTimer;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
 using DJsRaidOverhaul.Patches;
+using System.Collections;
 using TMPro;
+using System;
 
 namespace DJsRaidOverhaul
 {
     public class IRController : MonoBehaviour
     {
-        float timer;
-        float eventTimer;
-        float timeToNextEvent = Random.Range(60f, 1800f);
         bool exfilUIChanged = false;
+
+        private bool _eventisRunning = false;
+        private bool _switchisRunning = false;
+        private bool _doorisRunning = false;
+        private Switch[] _switchs = null;
+        private Door[] _door = null;
+        private KeycardDoor [] _kdoor = null;
+        private LampController[] _lamp = null;
 
         Player player
         { get => gameWorld.MainPlayer; }
@@ -42,27 +49,81 @@ namespace DJsRaidOverhaul
             ? RaidTime.inverted
             : !((EDateTime)typeof(MatchMakerSelectionLocationScreen).GetField("edateTime_0", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen) == EDateTime.CURR);
 
-            if (!Ready())
+            if (!Ready() || !Plugin.EnableEvents.Value || _eventisRunning)
             {
-                timer = 0f;
-                eventTimer = 0f;
                 return;
             }
 
-            timer += Time.deltaTime;
-            if (Plugin.EnableEvents.Value) eventTimer += Time.deltaTime;
-            //extractGearTimer += Time.deltaTime;
-
-            if (eventTimer >= timeToNextEvent)
+            if (_switchs == null)
             {
-                DoRandomEvent();
-                eventTimer = 0f;
-                timeToNextEvent = Random.Range(1800f, 3600f);
+                _switchs = FindObjectsOfType<Switch>();
+            }
+
+            if (_door == null)
+            {
+                _door = FindObjectsOfType<Door>();
+            }
+
+            if (_kdoor == null)
+            {
+                _kdoor = FindObjectsOfType<KeycardDoor>();
+            }
+
+            if (_lamp == null)
+            {
+                _lamp = FindObjectsOfType<LampController>();
+            }
+
+            {
+                StaticManager.Instance.StartCoroutine(StartEvents());
+                _eventisRunning = true;
+            }
+
+            if (_door.Length > 0 && !_doorisRunning)
+            {
+                StaticManager.Instance.StartCoroutine(DoorEvents());
+                _doorisRunning = true;
+            }
+
+            if (_switchs.Length > 0 && !_switchisRunning)
+            {
+                StaticManager.Instance.StartCoroutine(PowerEvents());
+                _switchisRunning = true;
             }
 
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
-                if (!exfilUIChanged)
-                    ChangeExfilUI();
+            if (!exfilUIChanged)
+                ChangeExfilUI();
+        }
+
+        private IEnumerator StartEvents()
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomRangeMin.Value, Plugin.RandomRangeMax.Value) * 60f);
+
+            DoRandomEvent();
+
+            _eventisRunning = false;
+            yield break;
+        }
+
+        private IEnumerator DoorEvents()
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomDoorRangeMin.Value, Plugin.RandomDoorRangeMax.Value) * 60f);
+
+            DoUnlock();
+
+            _doorisRunning = false;
+            yield break;
+        }
+
+        private IEnumerator PowerEvents()
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomRangeMin.Value, Plugin.RandomRangeMax.Value) * 60f);
+
+            PowerOn();
+
+            _switchisRunning = false;
+            yield break;
         }
 
         // moved from patch impacted performance too much
@@ -100,27 +161,32 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = Random.Range(0, 5);
+            float rand = UnityEngine.Random.Range(0, 5);
 
             switch (rand)
             {
                 case 0:
                     DoArmorRepair();
                     break;
+
                 case 1:
                     if (skipFunny) DoRandomEvent();
                     DoFunny();
                     break;
+
                 case 2:
                     DoBlackoutEvent();
                     break;
+
                 case 3:
+                    DoPowerSurgeEvent();
+                    break;
+
+                case 4:
                     if (player.Location == "Factory" || player.Location == "Laboratory") DoRandomEvent();
                     DoAirdropEvent();
                     break;
-                case 4:
-                    DoLockDownEvent();
-                    break;
+
                 case 5:
                     ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
                     if (health.Current != health.Maximum)
@@ -130,7 +196,11 @@ namespace DJsRaidOverhaul
                     }
                     else DoRandomEvent();
                     break;
-                    //case 6:
+
+                case 6:
+                    DoLockDownEvent();
+                    break;
+                    //case 8:
                     //DoHuntedEvent();
                     //break;
             }
@@ -196,13 +266,13 @@ namespace DJsRaidOverhaul
         {
             LampController[] dontChangeOnEnd = new LampController[0];
 
-            foreach (Switch pSwitch in FindObjectsOfType<Switch>())
+            foreach (Switch switchs in _switchs)
             {
-                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
-                typeof(Switch).GetMethod("Lock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
+                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(switchs, null);
+                typeof(Switch).GetMethod("Lock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(switchs, null);
             }
 
-            foreach (LampController lamp in FindObjectsOfType<LampController>())
+            foreach (LampController lamp in _lamp)
             {
                 if (lamp.enabled == false)
                 {
@@ -213,7 +283,7 @@ namespace DJsRaidOverhaul
                 lamp.enabled = false;
             }
 
-            foreach (KeycardDoor door in FindObjectsOfType<KeycardDoor>())
+            foreach (KeycardDoor door in _kdoor)
             {
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 AudioSource.PlayClipAtPoint(door.DeniedBeep, door.gameObject.transform.position);
@@ -223,19 +293,19 @@ namespace DJsRaidOverhaul
 
             await Task.Delay(600000);
 
-            foreach (Switch pSwitch in FindObjectsOfType<Switch>())
+            foreach (Switch pSwitch in _switchs)
             {
                 typeof(Switch).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
             }
 
-            foreach (LampController lamp in FindObjectsOfType<LampController>())
+            foreach (LampController lamp in _lamp)
             {
                 if (dontChangeOnEnd.Contains(lamp)) continue;
                 lamp.Switch(Turnable.EState.On);
                 lamp.enabled = true;
             }
 
-            foreach (KeycardDoor door in FindObjectsOfType<KeycardDoor>())
+            foreach (KeycardDoor door in _kdoor)
                 await Task.Run(async () =>
                 {
                     int timesToBeep = 3;
@@ -261,6 +331,75 @@ namespace DJsRaidOverhaul
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
+
+        async void DoPowerSurgeEvent()
+        {
+            foreach (Switch pSwitch in _switchs)
+            {
+                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
+            }
+
+            NotificationManagerClass.DisplayMessageNotification("Power Surge Event: All power switches are enabled for 10 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
+            await Task.Delay(600000);
+
+            foreach (Switch pSwitch in _switchs)
+            {
+                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
+            };
+
+            NotificationManagerClass.DisplayMessageNotification("Power Surge over", ENotificationDurationType.Long, ENotificationIconType.Quest);
+        }
+
+        private void PowerOn()
+        {
+            System.Random random = new System.Random();
+
+            // Pick a random switch from the array
+            int selection = random.Next(_switchs.Length);
+            Switch _switch = _switchs[selection];
+
+            // Invoke the Open method on the selected switch
+            typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
+
+            // Send the player a notification of the event
+            NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
+
+            // Remove the switch from the list 
+            // to avoid duplicate attempts on the same switch.
+            RemoveAt(ref _switchs, selection);
+        }
+
+        private void DoUnlock()
+        {
+            System.Random random = new System.Random();
+            // Pick a random switch from the array
+            int selection = random.Next(_door.Length);
+            Door door = _door[selection];
+
+            // Invoke the Open method on the selected switch
+            typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+
+            // Send the player a notification of the event
+            NotificationManagerClass.DisplayMessageNotification("A door somewhere has been unlocked.", ENotificationDurationType.Default);
+
+            // Remove the switch from the list 
+            // to avoid duplicate attempts on the same switch.
+            RemoveAt(ref _door, selection);
+        }
+
+        static void RemoveAt<T>(ref T[] array, int index)
+        {
+            if (index >= 0 && index < array.Length)
+            {
+                for (int i = index; i < array.Length - 1; i++)
+                {
+                    array[i] = array[i + 1];
+                }
+
+                Array.Resize(ref array, array.Length - 1);
+            }
+        }
+
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
     }
 }
