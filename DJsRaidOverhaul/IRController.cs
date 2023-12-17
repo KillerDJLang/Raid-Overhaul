@@ -1,4 +1,4 @@
-﻿using EFT;
+using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
@@ -49,7 +49,7 @@ namespace DJsRaidOverhaul
             ? RaidTime.inverted
             : !((EDateTime)typeof(MatchMakerSelectionLocationScreen).GetField("edateTime_0", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen) == EDateTime.CURR);
 
-            if (!Ready() || !Plugin.EnableEvents.Value || _eventisRunning)
+            if (!Ready() || !Plugin.EnableEvents.Value)
             {
                 return;
             }
@@ -74,11 +74,6 @@ namespace DJsRaidOverhaul
                 _lamp = FindObjectsOfType<LampController>();
             }
 
-            {
-                StaticManager.Instance.StartCoroutine(StartEvents());
-                _eventisRunning = true;
-            }
-
             if (_door.Length > 0 && !_doorisRunning)
             {
                 StaticManager.Instance.StartCoroutine(DoorEvents());
@@ -89,6 +84,12 @@ namespace DJsRaidOverhaul
             {
                 StaticManager.Instance.StartCoroutine(PowerEvents());
                 _switchisRunning = true;
+            }
+
+            if (!_eventisRunning)
+            {
+                StaticManager.Instance.StartCoroutine(StartEvents());
+                _eventisRunning = true;
             }
 
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
@@ -118,7 +119,7 @@ namespace DJsRaidOverhaul
 
         private IEnumerator PowerEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomRangeMin.Value, Plugin.RandomRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomSwitchRangeMin.Value, Plugin.RandomSwitchRangeMax.Value) * 60f);
 
             PowerOn();
 
@@ -161,7 +162,7 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = UnityEngine.Random.Range(0, 4);
+            float rand = UnityEngine.Random.Range(5, 5);
 
             switch (rand)
             {
@@ -194,9 +195,13 @@ namespace DJsRaidOverhaul
                     break;
 
                 case 5:
+                    DoUnlockEvent();
+                    break;
+
+                case 6:
                     DoLockDownEvent();
                     break;
-                    //case 6:
+                    //case 7:
                     //DoHuntedEvent();
                     //break;
             }
@@ -262,10 +267,10 @@ namespace DJsRaidOverhaul
         {
             LampController[] dontChangeOnEnd = new LampController[0];
 
-            foreach (Switch switchs in _switchs)
+            foreach (Switch pSwitch in _switchs)
             {
-                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(switchs, null);
-                typeof(Switch).GetMethod("Lock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(switchs, null);
+                typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
+                typeof(Switch).GetMethod("Lock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
             }
 
             foreach (LampController lamp in _lamp)
@@ -328,40 +333,39 @@ namespace DJsRaidOverhaul
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
 
+        void DoUnlockEvent()
+        {
+            foreach (Door door in _door)
+            {
+                typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+            }
+
+            NotificationManagerClass.DisplayMessageNotification("Unlock event: All locked doors have been unlocked!", ENotificationDurationType.Long, ENotificationIconType.Default);
+        }
+
         private void PowerOn()
         {
             System.Random random = new System.Random();
 
-            // Pick a random switch from the array
             int selection = random.Next(_switchs.Length);
             Switch _switch = _switchs[selection];
 
-            // Invoke the Open method on the selected switch
             typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
 
-            // Send the player a notification of the event
             NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
 
-            // Remove the switch from the list 
-            // to avoid duplicate attempts on the same switch.
             RemoveAt(ref _switchs, selection);
         }
 
         private void DoUnlock()
         {
             System.Random random = new System.Random();
-            // Pick a random switch from the array
+
             int selection = random.Next(_door.Length);
             Door door = _door[selection];
 
-            // Invoke the Open method on the selected switch
             typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
 
-            // Send the player a notification of the event
-            NotificationManagerClass.DisplayMessageNotification("A door somewhere has been unlocked.", ENotificationDurationType.Default);
-
-            // Remove the switch from the list 
-            // to avoid duplicate attempts on the same switch.
             RemoveAt(ref _door, selection);
         }
 
