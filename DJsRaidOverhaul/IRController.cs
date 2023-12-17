@@ -162,7 +162,7 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = UnityEngine.Random.Range(5, 5);
+            float rand = UnityEngine.Random.Range(0, 5);
 
             switch (rand)
             {
