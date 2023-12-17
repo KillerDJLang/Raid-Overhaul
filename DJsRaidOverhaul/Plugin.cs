@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
@@ -6,7 +6,7 @@ using DJsRaidOverhaul.Patches;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "0.3.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
@@ -24,6 +24,8 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<int> RandomRangeMax;
         internal static ConfigEntry<int> RandomDoorRangeMin;
         internal static ConfigEntry<int> RandomDoorRangeMax;
+        internal static ConfigEntry<int> RandomSwitchRangeMin;
+        internal static ConfigEntry<int> RandomSwitchRangeMax;
         private static ConfigEntry<float> EffectFactor;
 
         void Awake()
@@ -62,7 +64,7 @@ namespace DJsRaidOverhaul
             RandomDoorRangeMax = Config.Bind(
                "1. Events",
                "Random Door timer range maximum",
-               5,
+               3,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 30),
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
@@ -74,6 +76,22 @@ namespace DJsRaidOverhaul
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 30),
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
+
+            RandomSwitchRangeMax = Config.Bind(
+               "1. Events",
+               "Random Switch timer range maximum",
+               15,
+               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
+
+            RandomSwitchRangeMin = Config.Bind(
+               "1. Events",
+               "Random Switch timer range minimum",
+               7,
+               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
+               new AcceptableValueRange<int>(1, 30),
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
 
 
             EnableClean = Config.Bind(
@@ -95,7 +113,7 @@ namespace DJsRaidOverhaul
             DistToClean = Config.Bind(
                 "2. Body Cleanup Configs", 
                 "Distance to Clean.", 
-                60,
+                15,
                 new ConfigDescription("How far away should bodies be for cleanup.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
