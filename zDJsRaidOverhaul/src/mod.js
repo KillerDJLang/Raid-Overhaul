@@ -141,26 +141,12 @@ class RaidOverhaul {
         const QuestItems = QIconfigServer.getConfig("aki-lostondeath");
         const modConfig = jsonc_1.jsonc.parse(VFS.readFile(path.resolve(__dirname, "../config/config.jsonc")));
         const traderConfig = configServer.getConfig(ConfigTypes_1.ConfigTypes.TRADER);
+        const botTypes = this.container.resolve("DatabaseServer").getTables().bots.types;
         const jsonUtil = container.resolve("JsonUtil");
         const Ragfair = configServer.getConfig("aki-ragfair");
         const scdatabase = container.resolve("DatabaseServer").getTables();
         logger.debug(`[${this.mod}] postDb Loading... `);
         logger.log("Overhauling your raids. Watch your back out there.", "magenta");
-        const botTypes = [
-            "usec",
-            "bear",
-            "exusec",
-            "followerbully",
-            "pmcbot",
-            "followersanitar",
-            "followertagilla",
-            "followergluharassault",
-            "followergluharsecurity",
-            "followergluharscout",
-            "followergluharsnipe",
-            "followerkojaniy",
-            "assault"
-        ];
         const mydb = ImporterUtil.loadRecursive(`${modPath}../db/`);
         const itemPath = `${modPath}../db/templates/items/`;
         const handbookPath = `${modPath}../db/templates/handbook/`;
@@ -251,13 +237,21 @@ class RaidOverhaul {
                     items[id]._props.UnlootableFromSide = [];
                 }
             }
-            for (const bot in tables.bots.types) {
-                for (const lootSlot in tables.bots.types[bot].inventory.items) {
-                    if (botTypes.includes(bot)) {
-                        if (tables.bots.types[bot].inventory.items[lootSlot].includes("5783c43d2459774bbe137486")) {
-                            tables.bots.types[bot].inventory.items.Backpack.push("RequisitionSlips");
-                            tables.bots.types[bot].inventory.items.TacticalVest.push("RequisitionSlips");
-                        }
+            for (const bot in botTypes) {
+                for (const lootSlot in botTypes[bot].inventory.items) {
+                    if (botTypes[bot].inventory.items[lootSlot].includes("5783c43d2459774bbe137486")) {
+                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
+                    }
+                }
+            }
+            for (const bot in botTypes) {
+                for (const lootSlot in botTypes[bot].inventory.items) {
+                    if (botTypes[bot].inventory.items[lootSlot].includes("5449016a4bdc2d6f028b456f")) {
+                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
                     }
                 }
             }
