@@ -1,4 +1,4 @@
-using BepInEx;
+﻿using BepInEx;
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
@@ -22,11 +22,7 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<bool> Deafness;
         internal static ConfigEntry<int> RandomRangeMin;
         internal static ConfigEntry<int> RandomRangeMax;
-        internal static ConfigEntry<int> RandomDoorRangeMin;
-        internal static ConfigEntry<int> RandomDoorRangeMax;
-        internal static ConfigEntry<int> RandomSwitchRangeMin;
-        internal static ConfigEntry<int> RandomSwitchRangeMax;
-        private static ConfigEntry<float> EffectFactor;
+        private static ConfigEntry<float> EffectStrength;
 
         void Awake()
         {
@@ -50,7 +46,7 @@ namespace DJsRaidOverhaul
                "Random timer range maximum",
                30,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(1, 30),
+               new AcceptableValueRange<int>(1, 60),
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 2 }));
 
             RandomRangeMin = Config.Bind(
@@ -58,40 +54,8 @@ namespace DJsRaidOverhaul
                "Random timer range minimum",
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
-               new AcceptableValueRange<int>(1, 30),
+               new AcceptableValueRange<int>(1, 60),
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
-
-            RandomDoorRangeMax = Config.Bind(
-               "1. Events",
-               "Random Door timer range maximum",
-               3,
-               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
-
-            RandomDoorRangeMin = Config.Bind(
-               "1. Events",
-               "Random Door timer range minimum",
-               1,
-               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
-               new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
-
-            RandomSwitchRangeMax = Config.Bind(
-               "1. Events",
-               "Random Switch timer range maximum",
-               15,
-               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
-
-            RandomSwitchRangeMin = Config.Bind(
-               "1. Events",
-               "Random Switch timer range minimum",
-               7,
-               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
-               new AcceptableValueRange<int>(1, 30),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
 
 
             EnableClean = Config.Bind(
@@ -136,11 +100,11 @@ namespace DJsRaidOverhaul
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
-            EffectFactor = Config.Bind(
+            EffectStrength = Config.Bind(
                 "4. Adrenaline", 
-                "Effect Factor", 
+                "Effect Strength", 
                 50f, 
-                new ConfigDescription("Causes an adrenaline effect on hit. This is the factor to multiply the effect's strength by.", 
+                new ConfigDescription("Causes an adrenaline effect on hit. This is how strong the effect will be multiplied by, as a percent.", 
                 new AcceptableValueRange<float>(0f, 100f),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
@@ -170,9 +134,9 @@ namespace DJsRaidOverhaul
             new GrenadeDeafnessPatch().Enable();
         }
 
-        public static float GetFactor()
+        public static float GetStrength()
         {
-            return EffectFactor.Value;
+            return EffectStrength.Value;
         }
     }
 }

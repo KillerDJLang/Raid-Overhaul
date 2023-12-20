@@ -14,7 +14,7 @@ namespace DJsRaidOverhaul.Patches
         [PatchPrefix]
         static bool Prefix(ref float staminaBurnRate)
         {
-            staminaBurnRate *= Plugin.GetFactor();
+            staminaBurnRate *= Plugin.GetStrength();
 
             return true;
         }

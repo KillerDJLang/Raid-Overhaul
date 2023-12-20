@@ -55,9 +55,9 @@ namespace DJsRaidOverhaul.Patches
                 float bulletSpeed = (float)shot.GetType().GetField("Speed", BindingFlags.Instance | BindingFlags.Public).GetValue(shot);
 
                 if (PlayerInfo.FC == __instance && GoodToDeafen(bulletSpeed))
-                    DoEarOuchie(false);
+                    DoEarDamage(false);
                 else if (TargetGoodToDeafen(__instance, bulletSpeed))
-                    DoEarOuchie(true);
+                    DoEarDamage(true);
             }
         }
 
@@ -65,7 +65,7 @@ namespace DJsRaidOverhaul.Patches
 
         static bool GoodToDeafen(float bulletSpeed) => !PlayerInfo.PlayerHasEarPro() && !PlayerInfo.FC.IsSilenced && (bulletSpeed > 343f || PlayerInfo.player.Environment == EnvironmentType.Indoor);
 
-        static void DoEarOuchie(bool invokedByBot)
+        static void DoEarDamage(bool invokedByBot)
         {
             if (!invokedByBot && PlayerInfo.FC.Item.AmmoCaliber == "86x70")
             {
