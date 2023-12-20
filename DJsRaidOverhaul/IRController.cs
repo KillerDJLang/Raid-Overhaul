@@ -26,8 +26,6 @@ namespace DJsRaidOverhaul
         bool exfilUIChanged = false;
 
         private bool _eventisRunning = false;
-        private bool _switchisRunning = false;
-        private bool _doorisRunning = false;
         private Switch[] _switchs = null;
         private Door[] _door = null;
         private KeycardDoor [] _kdoor = null;
@@ -74,18 +72,6 @@ namespace DJsRaidOverhaul
                 _lamp = FindObjectsOfType<LampController>();
             }
 
-            if (_door.Length > 0 && !_doorisRunning)
-            {
-                StaticManager.Instance.StartCoroutine(DoorEvents());
-                _doorisRunning = true;
-            }
-
-            if (_switchs.Length > 0 && !_switchisRunning)
-            {
-                StaticManager.Instance.StartCoroutine(PowerEvents());
-                _switchisRunning = true;
-            }
-
             if (!_eventisRunning)
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
@@ -101,29 +87,20 @@ namespace DJsRaidOverhaul
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomRangeMin.Value, Plugin.RandomRangeMax.Value) * 60f);
 
-            DoRandomEvent();
+            if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
+            {
+                DoRandomEvent();
+            }
+
+            else
+            {
+                _switchs = null;
+                _door = null;
+                _kdoor = null;
+                _lamp = null;
+            }
 
             _eventisRunning = false;
-            yield break;
-        }
-
-        private IEnumerator DoorEvents()
-        {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomDoorRangeMin.Value, Plugin.RandomDoorRangeMax.Value) * 60f);
-
-            DoUnlock();
-
-            _doorisRunning = false;
-            yield break;
-        }
-
-        private IEnumerator PowerEvents()
-        {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomSwitchRangeMin.Value, Plugin.RandomSwitchRangeMax.Value) * 60f);
-
-            PowerOn();
-
-            _switchisRunning = false;
             yield break;
         }
 
@@ -162,46 +139,78 @@ namespace DJsRaidOverhaul
 
         void DoRandomEvent(bool skipFunny = false)
         {
-            float rand = UnityEngine.Random.Range(0, 5);
+            float rand = UnityEngine.Random.Range(0, 30);
 
-            switch (rand)
-            {
-                case 0:
-                    DoArmorRepair();
-                    break;
-
-                case 1:
-                    if (skipFunny) DoRandomEvent();
-                    DoFunny();
-                    break;
-
-                case 2:
-                    DoBlackoutEvent();
-                    break;
-
-                case 3:
-                    if (player.Location == "Factory" || player.Location == "Laboratory") DoRandomEvent();
-                    DoAirdropEvent();
-                    break;
-
-                case 4:
-                    ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
-                    if (health.Current != health.Maximum)
-                    {
-                        DoHealPlayer();
+                switch (rand)
+                {
+                    case 0:
+                    case 1:
+                        if (skipFunny) DoRandomEvent();
+                        DoFunny();
                         break;
-                    }
-                    else DoRandomEvent();
-                    break;
 
-                case 5:
-                    DoUnlockEvent();
-                    break;
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoUnlock();
+                        else DoAirdropEvent();
+                        break;
 
-                case 6:
-                    DoLockDownEvent();
-                    break;
-                    //case 7:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        PowerOn();
+                        break;
+
+                    case 11:
+                    case 12:
+                    case 13:
+                        DoBlackoutEvent();
+                        break;
+
+                    case 14:
+                    case 15:
+                    case 16:
+                    case 17:
+                    case 18:
+                    case 19:
+                        DoUnlock();
+                        break;
+
+                    case 20:
+                        if (skipFunny) DoRandomEvent();
+                        DoFunny();
+                        break;
+
+                    case 21:
+                    case 22:                        
+                    case 23:
+                    case 24:
+                    case 25:
+                        DoArmorRepair();
+                        break;
+
+                    case 26:
+                    case 27:                        
+                    case 28:                        
+                    case 29:
+                    case 30:
+                        ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
+                        if (health.Current != health.Maximum)
+                        {
+                            DoHealPlayer();
+                            break;
+                        }
+                        DoRandomEvent();
+                        break;
+
+                    //case xx:
+                    //DoLockDownEvent();
+                    //break;
+                    //case xx:
                     //DoHuntedEvent();
                     //break;
             }
@@ -333,40 +342,61 @@ namespace DJsRaidOverhaul
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
 
-        void DoUnlockEvent()
-        {
-            foreach (Door door in _door)
-            {
-                typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-            }
-
-            NotificationManagerClass.DisplayMessageNotification("Unlock event: All locked doors have been unlocked!", ENotificationDurationType.Long, ENotificationIconType.Default);
-        }
-
         private void PowerOn()
         {
+            if (_switchs == null || _switchs.Length <= 0)
+            {
+                return;
+            }
+
             System.Random random = new System.Random();
 
             int selection = random.Next(_switchs.Length);
             Switch _switch = _switchs[selection];
 
-            typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
+            if (_switch.DoorState == EDoorState.Shut)
+            {
+                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
 
-            NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
+                NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
 
-            RemoveAt(ref _switchs, selection);
+                RemoveAt(ref _switchs, selection);
+            }
+
+            else
+            {
+                RemoveAt(ref _door, selection);
+                PowerOn();
+            }
         }
 
         private void DoUnlock()
         {
+            if (_door == null || _door.Length <= 0)
+            {
+                return;
+            }
+
             System.Random random = new System.Random();
 
             int selection = random.Next(_door.Length);
             Door door = _door[selection];
 
-            typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+            if (door.DoorState == EDoorState.Locked)
+            {
+                typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
 
-            RemoveAt(ref _door, selection);
+                NotificationManagerClass.DisplayMessageNotification("A random door has been unlocked.", ENotificationDurationType.Default);
+
+                RemoveAt(ref _door, selection);
+            }
+            
+            else
+            {
+                RemoveAt(ref _door, selection);
+                DoUnlock();
+            }
         }
 
         static void RemoveAt<T>(ref T[] array, int index)
