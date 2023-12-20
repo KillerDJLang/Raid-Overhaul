@@ -12,6 +12,8 @@
 
     "LootableMelee": true,          //Makes melee weapons lootable
 
+    "LootableArmbands": true,       //Makes armbands lootable
+
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
         "Customs": 35,          

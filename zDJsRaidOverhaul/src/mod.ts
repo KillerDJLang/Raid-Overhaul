@@ -297,23 +297,22 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        for (const bot in botTypes) {
-            for (const lootSlot in botTypes[bot].inventory.items) {
-                if (botTypes[bot].inventory.items[lootSlot].includes("5783c43d2459774bbe137486")) {
-                    botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
-                    botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                    botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
-                }
+        for (const id in items)
+        {
+            let base = items[id]
+
+            if (base._parent === "5b3f15d486f77432d0509248" && modConfig.Raid.LootableArmbands)
+            {
+                items[id]._props.Unlootable = false
+                items[id]._props.UnlootableFromSide = [];
             }
         }
 
         for (const bot in botTypes) {
             for (const lootSlot in botTypes[bot].inventory.items) {
-                if (botTypes[bot].inventory.items[lootSlot].includes("5449016a4bdc2d6f028b456f")) {
-                    botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
-                    botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                    botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
-                }
+                botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
             }
         }
 
