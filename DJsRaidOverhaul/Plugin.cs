@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using UnityEngine;
 using BepInEx.Logging;
 using BepInEx.Configuration;
@@ -24,6 +24,11 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<int> RandomRangeMax;
         private static ConfigEntry<float> EffectStrength;
 
+        internal static ConfigEntry<bool> NoJokesHere;
+        internal static ConfigEntry<bool> DisableBlackout;
+        internal static ConfigEntry<bool> DisableArmorRepair;
+        internal static ConfigEntry<bool> DisableHeal;
+
         void Awake()
         {
             logger = Logger;
@@ -39,7 +44,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 7 }));
 
             RandomRangeMax = Config.Bind(
                "1. Events",
@@ -47,7 +52,7 @@ namespace DJsRaidOverhaul
                30,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 2 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
 
             RandomRangeMin = Config.Bind(
                "1. Events",
@@ -55,7 +60,39 @@ namespace DJsRaidOverhaul
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
+
+            NoJokesHere = Config.Bind(
+               "1. Events",
+               "Disable Fun",
+                true,
+                new ConfigDescription("Disables the heart attack event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
+
+            DisableBlackout = Config.Bind(
+               "1. Events",
+               "Disable Blackout",
+                true,
+                new ConfigDescription("Disables the blackout event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
+
+            DisableArmorRepair = Config.Bind(
+               "1. Events",
+               "Disable Armor Repair",
+                true,
+                new ConfigDescription("Disables the armor repair event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
+
+            DisableHeal = Config.Bind(
+               "1. Events",
+               "Disable Heal",
+                true,
+                new ConfigDescription("Disables the healing event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 4 }));
 
 
             EnableClean = Config.Bind(
