@@ -137,7 +137,7 @@ namespace DJsRaidOverhaul
             }
         }
 
-        void DoRandomEvent(bool skipFunny = false)
+        void DoRandomEvent()
         {
             float rand = UnityEngine.Random.Range(0, 30);
 
@@ -145,16 +145,22 @@ namespace DJsRaidOverhaul
                 {
                     case 0:
                     case 1:
-                        if (skipFunny) DoRandomEvent();
-                        DoFunny();
+                        if (Plugin.NoJokesHere.Value == true) DoUnlock();
+                        else
+                        {
+                            DoFunny();
+                        }
                         break;
 
-                    case 2:
+                case 2:
                     case 3:
                     case 4:
                     case 5:
                         if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoUnlock();
-                        else DoAirdropEvent();
+                        else
+                        {
+                            DoAirdropEvent();
+                        }
                         break;
 
                     case 6:
@@ -168,7 +174,11 @@ namespace DJsRaidOverhaul
                     case 11:
                     case 12:
                     case 13:
-                        DoBlackoutEvent();
+                        if (Plugin.DisableBlackout.Value == true) PowerOn();
+                        else
+                        {
+                            DoBlackoutEvent();
+                        }
                         break;
 
                     case 14:
@@ -181,8 +191,11 @@ namespace DJsRaidOverhaul
                         break;
 
                     case 20:
-                        if (skipFunny) DoRandomEvent();
-                        DoFunny();
+                        if (Plugin.NoJokesHere.Value == true) PowerOn();
+                        else
+                        {
+                            DoFunny();
+                        }
                         break;
 
                     case 21:
@@ -190,7 +203,11 @@ namespace DJsRaidOverhaul
                     case 23:
                     case 24:
                     case 25:
-                        DoArmorRepair();
+                        if (Plugin.DisableArmorRepair.Value == true) DoUnlock();
+                        else
+                        {
+                            DoArmorRepair();
+                        }
                         break;
 
                     case 26:
@@ -198,13 +215,17 @@ namespace DJsRaidOverhaul
                     case 28:                        
                     case 29:
                     case 30:
-                        ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
-                        if (health.Current != health.Maximum)
+                        if (Plugin.DisableHeal.Value == true) DoUnlock();
+                        else
                         {
-                            DoHealPlayer();
-                            break;
+                            ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
+                            if (health.Current != health.Maximum)
+                            {
+                                DoHealPlayer();
+                                break;
+                            }
+                            DoRandomEvent();
                         }
-                        DoRandomEvent();
                         break;
 
                     //case xx:
@@ -258,7 +279,7 @@ namespace DJsRaidOverhaul
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
             await Task.Delay(10000);
             NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
-            await Task.Delay(2000); DoRandomEvent(true);
+            await Task.Delay(2000); DoRandomEvent();
         }
 
         async void DoLockDownEvent()
