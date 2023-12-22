@@ -14,6 +14,8 @@
 
     "LootableArmbands": true,       //Makes armbands lootable
 
+    "ContainerChanges": false,      //Enables the container size changes (conflicts with softcore)
+
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
         "Customs": 35,          

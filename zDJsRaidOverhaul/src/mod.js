@@ -188,6 +188,13 @@ class RaidOverhaul {
                     }
                 }
             }
+            const Mastering = db.globals.config.Mastering;
+            for (const weapon in mydb.globals.config.Mastering)
+                Mastering.push(mydb.globals.config.Mastering[weapon]);
+            for (const weapon in Mastering) {
+                if (Mastering[weapon].Name == "M4")
+                    Mastering[weapon].Templates.push("MCM4", "Aug762a", "STM46");
+            }
             for (let location in database.locations) {
                 if (location == "base")
                     continue;
@@ -237,30 +244,28 @@ class RaidOverhaul {
                     items[id]._props.UnlootableFromSide = [];
                 }
             }
-            for (const bot in botTypes) {
-                for (const lootSlot in botTypes[bot].inventory.items) {
-                    if (botTypes[bot].inventory.items[lootSlot].includes("5783c43d2459774bbe137486")) {
-                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
-                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                        botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
-                    }
+            for (const id in items) {
+                let base = items[id];
+                if (base._parent === "5b3f15d486f77432d0509248" && modConfig.Raid.LootableArmbands) {
+                    items[id]._props.Unlootable = false;
+                    items[id]._props.UnlootableFromSide = [];
                 }
             }
             for (const bot in botTypes) {
                 for (const lootSlot in botTypes[bot].inventory.items) {
-                    if (botTypes[bot].inventory.items[lootSlot].includes("5449016a4bdc2d6f028b456f")) {
-                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
-                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                        botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
-                    }
+                    botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                    botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                    botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
                 }
             }
-            scdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
-            scdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
-            scdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
-            scdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
-            scdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
-            scdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+            if (modConfig.Raid.ContainerChanges) {
+                scdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
+                scdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
+                scdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
+                scdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
+                scdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
+                scdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+            }
             this.addTraderToDb(baseJson, tables, jsonUtil);
             this.addTraderToLocales(tables, baseJson.name, "Requisitions Office", baseJson.nickname, baseJson.location, "A collection of Ex-PMC's and rogue Scavs who formed a group to aid others in Tarkov. They routinely scour the battlefield for any leftover supplies and aren't afraid to fight their old comrades for it. They may not be the most trustworthy but they do have some much needed provisions in stock.");
             Ragfair.traders[baseJson._id] = true;

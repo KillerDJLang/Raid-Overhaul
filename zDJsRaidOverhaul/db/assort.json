@@ -1629,7 +1629,97 @@
                 "UnlimitedCount": false,
                 "StackObjectsCount": 50
             }
-        }
+        },
+        {
+            "_id": "STM46Preset",
+            "_tpl": "STM46",
+            "parentId": "hideout",
+            "slotId": "hideout",
+            "upd": {
+                "UnlimitedCount": false,
+                "StackObjectsCount": 50
+            }
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f93",
+            "_tpl": "602e71bd53a60014f9705bfa",
+            "parentId": "STM46Preset",
+            "slotId": "mod_pistol_grip"
+          },
+          {
+            "_id": "STM46PresetMag",
+            "_tpl": "STM46Mag",
+            "parentId": "STM46Preset",
+            "slotId": "mod_magazine"
+          },
+          {
+            "_id": "STM46PresetRec",
+            "_tpl": "STM46Rec",
+            "parentId": "STM46Preset",
+            "slotId": "mod_reciever"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f96",
+            "_tpl": "603372b4da11d6478d5a07ff",
+            "parentId": "STM46PresetRec",
+            "slotId": "mod_barrel"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f97",
+            "_tpl": "60337f5dce399e10262255d1",
+            "parentId": "60479c3f420fac5ebc199f96",
+            "slotId": "mod_muzzle"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f98",
+            "_tpl": "6034e3cb0ddce744014cb870",
+            "parentId": "STM46PresetRec",
+            "slotId": "mod_handguard"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f99",
+            "_tpl": "602e3f1254072b51b239f713",
+            "parentId": "STM46Preset",
+            "slotId": "mod_stock_001"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f9a",
+            "_tpl": "602e620f9b513876d4338d9a",
+            "parentId": "60479c3f420fac5ebc199f99",
+            "slotId": "mod_stock_000"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f9b",
+            "_tpl": "6033749e88382f4fab3fd2c5",
+            "parentId": "STM46Preset",
+            "slotId": "mod_charge"
+          },
+          {
+            "_id": "60479c3f420fac5ebc199f9c",
+            "_tpl": "602f85fd9b513876d4338d9c",
+            "parentId": "STM46Preset",
+            "slotId": "mod_tactical_000"
+          },
+          {
+              "_id": "STM46Drum",
+              "_tpl": "STM46Drum",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "STM46Mag",
+              "_tpl": "STM46Mag",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          }
     ],
     "barter_scheme": {
         "RequisitionSlips": [
@@ -2095,6 +2185,30 @@
                     "count": 11
                 }
             ]
+        ],
+        "STM46Preset": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "STM46Mag": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 5499
+                }
+            ]
+        ],
+        "STM46Drum": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 14999
+                }
+            ]
         ]
     },
     "loyal_level_items": {
@@ -2155,6 +2269,9 @@
         "AXMCPreset": 4,
         "RDPreset": 2,
         "WRepairKit": 1,
-        "ARepairKit": 1
+        "ARepairKit": 1,
+        "STM46Preset": 1,
+        "STM46Mag": 1,
+        "STM46Drum": 1
     }
 }

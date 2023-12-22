@@ -232,6 +232,13 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
+        const Mastering = db.globals.config.Mastering
+        for (const weapon in mydb.globals.config.Mastering) Mastering.push(mydb.globals.config.Mastering[weapon]);
+        for (const weapon in Mastering) 
+        {
+            if (Mastering[weapon].Name == "M4") Mastering[weapon].Templates.push("MCM4", "Aug762a", "STM46");
+        }
+
         for (let location in database.locations)
         {
             if (location == "base") continue;
@@ -316,12 +323,14 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
+        if (modConfig.Raid.ContainerChanges) {
         scdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
         scdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
         scdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
         scdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
         scdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
         scdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+        }
 
         this.addTraderToDb(baseJson, tables, jsonUtil);
 

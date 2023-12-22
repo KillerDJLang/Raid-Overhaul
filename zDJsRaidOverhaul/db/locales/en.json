@@ -109,6 +109,26 @@
             "Name": "9x39mm Magpul PMAG 30-round magazine",
             "ShortName": "MCM4 939Mag",
             "Description": "A 30-round polymer Magpul PMAG magazine, for 9x39mm ammunition"
+        },
+        "STM46": {
+            "Name": "Soyuz-TM STM-46 Gen.2 4.6x30 carbine",
+            "ShortName": "STM 4.6x30",
+            "Description": "A PCC carbine with excellent performance already \"out of the box\", manufactured by Soyuz-TM Arms. Designed with the participation of world bronze medalist in Semi-Auto Rifle Vadim Mikhailov. Accuracy, speed, comfort of recoil. Compatible with custom 4.6x30mm magazines."
+        },
+        "STM46Drum": {
+            "Name": "Custom Glock 4.6x30 SGM Tactical 50-round drum magazine",
+            "ShortName": "STM46 Drum",
+            "Description": "A high-capacity 50-round magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine. Made in Korea and imported by SGM Tactical. Can hold even more than 50 rounds, but the manufacturer does not recommend loading more."
+        },
+        "STM46Mag": {
+            "Name": "Glock 4.6x30 \"Big Stick\" 33-round magazine",
+            "ShortName": "STM46 Mag",
+            "Description": "A factory-produced 33-round 4.6x30 magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine."
+        },
+        "STM46Rec": {
+            "Name": "STM-46 4.6x30 upper receiver",
+            "ShortName": "STM46 Rec",
+            "Description": "An upper receiver for the STM-46 Gen.2 4.6x30 carbine. Equipped with a mount for attaching additional tactical devices."
         }
     }
 }
