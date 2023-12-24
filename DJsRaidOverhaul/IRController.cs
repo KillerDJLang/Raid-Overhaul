@@ -39,7 +39,7 @@ namespace DJsRaidOverhaul
 
         RaidSettings raidSettings
         { get => Singleton<RaidSettings>.Instance; }
-
+        public DamageInfo Blunt { get; private set; }
 
         void Update()
         {
@@ -145,10 +145,10 @@ namespace DJsRaidOverhaul
                 {
                     case 0:
                     case 1:
-                        if (Plugin.NoJokesHere.Value == true) DoUnlock();
+                        if (Plugin.NoJokesHere.Value == true) DoFunny();
                         else
                         {
-                            DoFunny();
+                            DoDamageEvent();
                         }
                         break;
 
@@ -156,10 +156,13 @@ namespace DJsRaidOverhaul
                     case 3:
                     case 4:
                     case 5:
-                        if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoUnlock();
-                        else
+                        if (Plugin.DisableAirdrop.Value == true) DoRandomEvent();
                         {
-                            DoAirdropEvent();
+                            if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoUnlock();
+                            else
+                            {
+                                DoAirdropEvent();
+                            }
                         }
                         break;
 
@@ -174,7 +177,7 @@ namespace DJsRaidOverhaul
                     case 11:
                     case 12:
                     case 13:
-                        if (Plugin.DisableBlackout.Value == true) PowerOn();
+                        if (Plugin.DisableBlackout.Value == true) DoRandomEvent();
                         else
                         {
                             DoBlackoutEvent();
@@ -191,19 +194,19 @@ namespace DJsRaidOverhaul
                         break;
 
                     case 20:
-                        if (Plugin.NoJokesHere.Value == true) PowerOn();
+                        if (Plugin.NoJokesHere.Value == true) DoFunny();
                         else
                         {
-                            DoFunny();
+                            DoDamageEvent();
                         }
                         break;
 
-                    case 21:
+                case 21:
                     case 22:                        
                     case 23:
                     case 24:
                     case 25:
-                        if (Plugin.DisableArmorRepair.Value == true) DoUnlock();
+                        if (Plugin.DisableArmorRepair.Value == true) DoRandomEvent();
                         else
                         {
                             DoArmorRepair();
@@ -215,7 +218,7 @@ namespace DJsRaidOverhaul
                     case 28:                        
                     case 29:
                     case 30:
-                        if (Plugin.DisableHeal.Value == true) DoUnlock();
+                        if (Plugin.DisableHeal.Value == true) DoRandomEvent();
                         else
                         {
                             ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
@@ -248,6 +251,15 @@ namespace DJsRaidOverhaul
         {
             NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
             player.ActiveHealthController.RestoreFullHealth();
+        }
+
+        void DoDamageEvent()
+        {
+            NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
+            player.PlayerHealthController.DoContusion(4, 50);
+            player.ActiveHealthController.DoStun(5, 0);
+            player.ActiveHealthController.DoFracture(EBodyPart.LeftArm);
+            player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65, Blunt);
         }
 
         void DoArmorRepair()
