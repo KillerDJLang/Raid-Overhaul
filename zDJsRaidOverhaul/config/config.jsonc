@@ -16,6 +16,8 @@
 
     "ContainerChanges": false,      //Enables the container size changes (conflicts with softcore)
 
+    "PocketChanges": false,         //Enables the pocket size and special slot filter changes
+
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
         "Customs": 35,          
@@ -25,5 +27,17 @@
         "Shoreline": 35,           
         "Reserve": 35
     }
+  },
+
+  "Weight": {
+    "Enabled": false,
+    "MinWeight": 71,                //Minimum overweight limit  DEFAULT 21
+    "MaxWeight": 131,               //Maximum overweight limit  DEFAULT 81
+    "WalkMinWeight": 92,            //Minimum walk overweight limit  DEFAULT 42
+    "WalkMaxWeight": 120,           //Maximum walk overweight limit  DEFAULT 70
+    "WalkSpeedMinWeight": 84,       //Minimum walk speed overweight limit  DEFAULT 34
+    "WalkSpeedMaxWeight": 125,      //Maximum walk speed overweight limit  DEFAULT 75
+    "SprintMinWeight": 71,          //Minimum sprint speed overweight limit  DEFAULT 21
+    "SprintMaxWeight": 108          //Maximum sprint speed overweight limit  DEFAULT 58
   }
 }

@@ -170,7 +170,8 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const botTypes =            this.container.resolve<DatabaseServer>("DatabaseServer").getTables().bots.types
         const jsonUtil:             JsonUtil = container.resolve<JsonUtil>("JsonUtil");
         const Ragfair =             configServer.getConfig("aki-ragfair");
-        const scdatabase =          container.resolve("DatabaseServer").getTables();
+        const itemdatabase =        container.resolve("DatabaseServer").getTables();
+        const stamina =             db.globals.config.Stamina;
 
         logger.debug(`[${this.mod}] postDb Loading... `);
         logger.log("Overhauling your raids. Watch your back out there.", "magenta")
@@ -257,7 +258,19 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
           AirdropConfig.airdropChancePercent.shoreline = modConfig.Raid.ChangeAirdropValues.Interchange;
           AirdropConfig.airdropChancePercent.interchange = modConfig.Raid.ChangeAirdropValues.Shoreline;
           AirdropConfig.airdropChancePercent.reserve = modConfig.Raid.ChangeAirdropValues.Reserve;
-        }  
+        }
+        
+        if (modConfig.Weight.Enabled) 
+        {
+            stamina.BaseOverweightLimits["x"] = modConfig.Weight.MinWeight
+            stamina.BaseOverweightLimits["y"] = modConfig.Weight.MaxWeight
+            stamina.WalkOverweightLimits["x"] = modConfig.Weight.WalkMinWeight
+            stamina.WalkOverweightLimits["y"] = modConfig.Weight.WalkMaxWeight
+            stamina.WalkSpeedOverweightLimits["x"] = modConfig.Weight.WalkSpeedMinWeight
+            stamina.WalkSpeedOverweightLimits["y"] = modConfig.Weight.WalkSpeedMaxWeight
+            stamina.SprintOverweightLimits["x"] = modConfig.Weight.SprintMinWeight
+            stamina.SprintOverweightLimits["y"] = modConfig.Weight.SprintMaxWeight
+        }
         
         for (const itemID in items)
         {
@@ -324,12 +337,16 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         }
 
         if (modConfig.Raid.ContainerChanges) {
-        scdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
-        scdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
-        scdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
-        scdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
-        scdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
-        scdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+        itemdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
+        itemdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
+        itemdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
+        itemdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
+        itemdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
+        itemdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+        }
+
+        if (modConfig.Raid.PocketChanges) {
+        itemdatabase.templates.items["627a4e6b255f7527fb05a0f6"] = mydb.Pockets.Pockets["627a4e6b255f7527fb05a0f6"];
         }
 
         this.addTraderToDb(baseJson, tables, jsonUtil);

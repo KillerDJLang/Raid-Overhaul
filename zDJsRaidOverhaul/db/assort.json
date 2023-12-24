@@ -1719,6 +1719,36 @@
                   "UnlimitedCount": false,
                   "StackObjectsCount": 50
               }
+          },
+          {
+              "_id": "SSO",
+              "_tpl": "SSO",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "6SH",
+              "_tpl": "6SH",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "MBP",
+              "_tpl": "MBP",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
           }
     ],
     "barter_scheme": {
@@ -2209,6 +2239,30 @@
                     "count": 14999
                 }
             ]
+        ],
+        "SSO": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "6SH": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 4
+                }
+            ]
+        ],
+        "MBP": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
         ]
     },
     "loyal_level_items": {
@@ -2272,6 +2326,9 @@
         "ARepairKit": 1,
         "STM46Preset": 1,
         "STM46Mag": 1,
-        "STM46Drum": 1
+        "STM46Drum": 1,
+        "SSO": 1,
+        "6SH": 3,
+        "MBP": 2
     }
 }
