@@ -6,7 +6,7 @@ using DJsRaidOverhaul.Patches;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.0.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.1.1")]
     public class Plugin : BaseUnityPlugin
     {
         internal static GameObject Hook;
@@ -16,7 +16,7 @@ namespace DJsRaidOverhaul
         internal static BodyCleanup BCScript;
         internal static ConfigEntry<bool> DropBackPack;
         internal static ConfigEntry<bool> EnableClean;
-        internal static ConfigEntry<float> TimeToClean;
+        internal static ConfigEntry<int> TimeToClean;
         internal static ConfigEntry<int> DistToClean;
         internal static ConfigEntry<float> DropBackPackChance;
         internal static ConfigEntry<bool> Deafness;
@@ -28,6 +28,7 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<bool> DisableBlackout;
         internal static ConfigEntry<bool> DisableArmorRepair;
         internal static ConfigEntry<bool> DisableHeal;
+        internal static ConfigEntry<bool> DisableAirdrop;
 
         void Awake()
         {
@@ -44,7 +45,7 @@ namespace DJsRaidOverhaul
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 7 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 8 }));
 
             RandomRangeMax = Config.Bind(
                "1. Events",
@@ -52,7 +53,7 @@ namespace DJsRaidOverhaul
                30,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
 
             RandomRangeMin = Config.Bind(
                "1. Events",
@@ -60,12 +61,12 @@ namespace DJsRaidOverhaul
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 5 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
 
             NoJokesHere = Config.Bind(
                "1. Events",
-               "Disable Fun",
-                true,
+               "Disable Heart Attack",
+                false,
                 new ConfigDescription("Disables the heart attack event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
@@ -73,7 +74,7 @@ namespace DJsRaidOverhaul
             DisableBlackout = Config.Bind(
                "1. Events",
                "Disable Blackout",
-                true,
+                false,
                 new ConfigDescription("Disables the blackout event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
@@ -81,7 +82,7 @@ namespace DJsRaidOverhaul
             DisableArmorRepair = Config.Bind(
                "1. Events",
                "Disable Armor Repair",
-                true,
+                false,
                 new ConfigDescription("Disables the armor repair event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
@@ -89,10 +90,18 @@ namespace DJsRaidOverhaul
             DisableHeal = Config.Bind(
                "1. Events",
                "Disable Heal",
-                true,
+                false,
                 new ConfigDescription("Disables the healing event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 4 }));
+
+            DisableAirdrop = Config.Bind(
+               "1. Events",
+               "Disable Airdrop",
+                false,
+                new ConfigDescription("Disables the Airdrop event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 5 }));
 
 
             EnableClean = Config.Bind(
@@ -106,9 +115,9 @@ namespace DJsRaidOverhaul
             TimeToClean = Config.Bind(
                 "2. Body Cleanup Configs",
                 "Time to Clean", 
-                1800f,
-                new ConfigDescription("Time to clean bodies. Calculated in seconds.",
-                null,
+                3,
+                new ConfigDescription("Time to clean bodies. Calculated in minutes.",
+                new AcceptableValueRange<int>(1, 60),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
 
             DistToClean = Config.Bind(
