@@ -1,43 +1,53 @@
-﻿using EFT;
+using EFT;
 using UnityEngine;
 using Comfort.Common;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace DJsRaidOverhaul.Patches
 {
     public class BodyCleanup : MonoBehaviour
     {
-        float Timer { get; set; }
+        private bool _MaidOnStandby = false;
 
         void Update()
         {
-            if (!Ready())
+            if (!Ready() || !Plugin.EnableClean.Value)
             {
-                Timer = 0f;
                 return;
             }
 
-            if (Plugin.EnableClean.Value)
+            if (!_MaidOnStandby)
             {
-                Timer += Time.deltaTime;
-            }
-            if (Timer >= Plugin.TimeToClean.Value)
-            {
-                QueueCleanup();
-                Timer = 0f;
+                StaticManager.Instance.StartCoroutine(StartClean());
+                _MaidOnStandby = true;
             }
         }
 
-        async void QueueCleanup()
+        private IEnumerator StartClean()
         {
-            await Task.Delay(10000);
-            foreach (BotOwner bot in FindObjectsOfType<BotOwner>())
+            yield return new WaitForSeconds(Plugin.TimeToClean.Value * 60f);
+
+            if (Gameworld != null && Gameworld.AllAlivePlayersList != null && Gameworld.AllAlivePlayersList.Count > 0 && !(Myplayer is HideoutPlayer))
             {
-                if (!bot.HealthController.IsAlive && Vector3.Distance(Myplayer.Transform.position, bot.Transform.position) >= Plugin.DistToClean.Value)
+                Task.Delay(10000);
+                foreach (BotOwner bot in FindObjectsOfType<BotOwner>())
                 {
-                    bot.gameObject.SetActive(false);
+                    if (!bot.HealthController.IsAlive && UnityEngine.Vector3.Distance(Myplayer.Transform.position, bot.Transform.position) >= Plugin.DistToClean.Value)
+                    {
+                        bot.gameObject.SetActive(false);
+                    }
                 }
             }
+
+            else
+            {
+                _MaidOnStandby = false;
+                yield break;
+            }
+
+            _MaidOnStandby = false;
+            yield break;
         }
 
         public bool Ready() => Gameworld != null && Gameworld.AllAlivePlayersList != null && Gameworld.AllAlivePlayersList.Count > 0 && !(Myplayer is HideoutPlayer);
