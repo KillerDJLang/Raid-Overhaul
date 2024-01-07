@@ -1,0 +1,62 @@
+{
+    "randomLootContainers": {
+        "DJsSmallLunchbox": {
+			"customReward": true,
+            "rewardTplPool": {
+				"loot": {
+					"Snacks": {
+						"57347d3d245977448f7b7f61": 1,
+						"544fb6cc4bdc2d34748b456e": 1,
+						"5bc9c29cd4351e003562b8a3": 1
+					},
+					"FoodCans": {
+						"57347d5f245977448b40fa81": 1,
+						"57347d8724597744596b4e76": 1,
+						"57347d7224597744596b4e72": 1
+					},
+					"Food": {
+						"57347d692459774491567cf1": 1,
+						"635a758bfefc88a93f021b8a": 1
+					},
+					"Drink": {
+						"5448fee04bdc2dbc018b4567": 1,
+						"60098b1705871270cd5352a1": 1
+					},
+					"Misc": {
+						"5e2af2bc86f7746d3f3c33fc": 1,
+						"5bc9be8fd4351e00334cae6e": 3,
+						"5d1b33a686f7742523398398": 1
+					}
+				},
+				"chances": {
+					"Snacks": {
+						"min": 0,
+						"max": 2,
+						"nValue": 1
+					},
+					"FoodCans": {
+						"min": 1,
+						"max": 1,
+						"nValue": 1
+					},
+					"Food": {
+						"min": 0,
+						"max": 1,
+						"nValue": 3
+					},
+					"Drink": {
+						"min": 1,
+						"max": 1,
+						"nValue": 1
+					},
+					"Misc": {
+						"min": 0,
+						"max": 1,
+						"nValue": 10
+					
+					}
+				}
+			}
+		}
+	}
+}
