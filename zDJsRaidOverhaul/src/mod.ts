@@ -19,6 +19,7 @@ import { PreAkiModLoader }                  from "@spt-aki/loaders/PreAkiModLoad
 import { ImageRouter }                      from "@spt-aki/routers/ImageRouter";
 import { ITraderAssort, ITraderBase }       from "@spt-aki/models/eft/common/tables/ITrader";
 import { ITraderConfig, UpdateTime }        from "@spt-aki/models/spt/config/ITraderConfig";
+import { OnUpdateModService }               from "@spt-aki/services/mod/onUpdate/OnUpdateModService"
 import { Traders }                          from "@spt-aki/models/enums/Traders";
 
 import * as baseJson                        from "../db/base.json";
@@ -66,13 +67,14 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const inventoryConfig =         configServer.getConfig("aki-inventory");
         const traderConfig:             ITraderConfig = configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
 
-        const SecLB =       require("../db/items/DJsSecureLunchbox.json");
-        const SmolLB =      require("../db/items/DJsSmallLunchbox.json");
-        const AmmoLB =      require("../db/items/DJsAmmoCrate.json");
-        const MedsLB =      require("../db/items/DJsSurgicalSet.json");
-        const WeaponLB =    require("../db/items/DJsWeaponCrate.json");
-        const ModLB =       require("../db/items/DJsModBox.json");
-        const BarterLB =    require("../db/items/DJsBarterCrate.json");
+        const SecLB =               require("../db/items/DJsSecureLunchbox.json");
+        const SmolLB =              require("../db/items/DJsSmallLunchbox.json");
+        const AmmoLB =              require("../db/items/DJsAmmoCrate.json");
+        const MedsLB =              require("../db/items/DJsSurgicalSet.json");
+        const WeaponLB =            require("../db/items/DJsWeaponCrate.json");
+        const ModLB =               require("../db/items/DJsModBox.json");
+        const BarterLB =            require("../db/items/DJsBarterCrate.json");
+        const onUpdateModService =  container.resolve<OnUpdateModService>( "OnUpdateModService" );
 
         logger.debug(`[${this.mod}] preAki Loading... `);
 
@@ -109,6 +111,12 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             "ir-update-profile-route"
         );
 
+        onUpdateModService.registerOnUpdate(
+			"MyCustomOnUpdateMod",
+			( timeSinceLastRun: number ) => this.customFunctionThatRunsOnLoad( timeSinceLastRun ),
+			() => "custom-onupdate-mod"
+		);
+
         this.registerProfileImage(preAkiModLoader, imageRouter);
         
         this.setupTraderUpdateTime(traderConfig);
@@ -134,6 +142,17 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         }
         console.log(extractList)
     }
+
+    public customFunctionThatRunsOnLoad ( timeSinceLastRun: number ): boolean
+	{
+		if ( timeSinceLastRun > 30 * 60 )
+		{
+			this.modifyReqs();
+			return true;
+		}
+
+		return false;
+	}
 
     //
     //
@@ -166,7 +185,6 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const QIconfigServer =      container.resolve("ConfigServer");
         const QuestItems =          QIconfigServer.getConfig("aki-lostondeath");
         const modConfig =           jsonc.parse(VFS.readFile(path.resolve(__dirname, "../config/config.jsonc")));
-        const traderConfig:         ITraderConfig = configServer.getConfig(ConfigTypes.TRADER);
         const botTypes =            this.container.resolve<DatabaseServer>("DatabaseServer").getTables().bots.types
         const jsonUtil:             JsonUtil = container.resolve<JsonUtil>("JsonUtil");
         const Ragfair =             configServer.getConfig("aki-ragfair");
@@ -244,6 +262,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         {
             if (location == "base") continue;
             database.locations[location].base.EscapeTimeLimit = 9999999;
+            database.locations[location].base.EscapeTimeLimitCoop = 9999999;
         }
         
         if (modConfig.Raid.ReduceFoodAndHydroDegrade.Enabled) {
@@ -350,8 +369,8 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         }
 
         this.addTraderToDb(baseJson, tables, jsonUtil);
-
         this.addTraderToLocales(tables, baseJson.name, "Requisitions Office", baseJson.nickname, baseJson.location, "A collection of Ex-PMC's and rogue Scavs who formed a group to aid others in Tarkov. They routinely scour the battlefield for any leftover supplies and aren't afraid to fight their old comrades for it. They may not be the most trustworthy but they do have some much needed provisions in stock.");
+        this.modifyReqs();
 
         Ragfair.traders[baseJson._id] = true;
         
@@ -496,8 +515,41 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             locale[`${baseJson._id} Description`] = description;
         }
     }
-}
 
+    private modifyReqs (): void
+	{
+		for ( const item of assortJson.items )
+        {
+            if ( item.parentId != "hideout" )
+            {
+                continue;
+            }
+
+            let count = 0;
+
+            {
+                count = this.randomCount( 5, 5 )
+            }
+
+            if ( count < 0 )
+            {
+                count = 0;
+            }
+
+            item.upd.StackObjectsCount = count;
+
+            if ( item.upd.UnlimitedCount )
+            {
+                item.upd.UnlimitedCount = false;
+            }
+        }
+	}
+
+    private randomCount ( base: number, random: number ): number
+	{
+		return ( base + Math.floor( Math.random() * random * 2 ) - random )
+	}
+}
 
 interface IUpdateProfileRequest
 {

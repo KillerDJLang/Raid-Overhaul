@@ -1,67 +1,76 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AssemblyName>DJsRaidOverhaul</AssemblyName>
     <Description>A large overhaul for raids including events and dead body clean up.</Description>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-	<TargetSptAkiVersion>sptaki375</TargetSptAkiVersion>
+	<TargetSptAkiVersion>sptaki376</TargetSptAkiVersion>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Remove="Properties\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <None Remove="Properties\**" />
-  </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\Dependancies\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="aki-custom">
-      <HintPath>..\Dependancies\aki-custom.dll</HintPath>
-    </Reference>
-    <Reference Include="Aki.Common">
-      <HintPath>..\Dependancies\Aki.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Aki.Reflection">
-      <HintPath>..\Dependancies\Aki.Reflection.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\Dependancies\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx">
-      <HintPath>..\Dependancies\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="Comfort">
-      <HintPath>..\Dependancies\Comfort.dll</HintPath>
-    </Reference>
-    <Reference Include="ItemComponent.Types">
-      <HintPath>..\Dependancies\ItemComponent.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Dependancies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Sirenix.Serialization">
-      <HintPath>..\Dependancies\Sirenix.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\Dependancies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\Dependancies\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\Dependancies\UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\Dependancies\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\Dependancies\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="0Harmony">
+			<HintPath>..\..\376Deps\0Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="aki-custom">
+			<HintPath>..\..\376Deps\aki-custom.dll</HintPath>
+		</Reference>
+		<Reference Include="Aki.Common">
+			<HintPath>..\..\376Deps\Aki.Common.dll</HintPath>
+		</Reference>
+		<Reference Include="Aki.Reflection">
+			<HintPath>..\..\376Deps\Aki.Reflection.dll</HintPath>
+		</Reference>
+		<Reference Include="AnimationSystem.Types">
+		  <HintPath>..\..\376Deps\AnimationSystem.Types.dll</HintPath>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>..\..\376Deps\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="BepInEx">
+			<HintPath>..\..\376Deps\BepInEx.dll</HintPath>
+		</Reference>
+		<Reference Include="Comfort">
+			<HintPath>..\..\376Deps\Comfort.dll</HintPath>
+		</Reference>
+		<Reference Include="ItemComponent.Types">
+			<HintPath>..\..\376Deps\ItemComponent.Types.dll</HintPath>
+		</Reference>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>..\..\376Deps\Newtonsoft.Json.dll</HintPath>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>..\..\376Deps\Sirenix.Serialization.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>..\..\376Deps\Unity.TextMeshPro.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>..\..\376Deps\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AnimationModule">
+		  <HintPath>..\..\376Deps\UnityEngine.AnimationModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AssetBundleModule">
+		  <HintPath>..\..\376Deps\UnityEngine.AssetBundleModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.AudioModule">
+			<HintPath>..\..\376Deps\UnityEngine.AudioModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>..\..\376Deps\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+		  <HintPath>..\..\376Deps\UnityEngine.IMGUIModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+		  <HintPath>..\..\376Deps\UnityEngine.TextRenderingModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>..\..\376Deps\UnityEngine.UI.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 </Project>

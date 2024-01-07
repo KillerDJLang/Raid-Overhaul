@@ -23,6 +23,7 @@ using Aki.Reflection.Patching;
 using Aki.Custom.Airdrops.Utils;
 using System.Collections.Generic;
 using Aki.Custom.Airdrops.Models;
+using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul.Patches
 {
@@ -42,13 +43,20 @@ namespace DJsRaidOverhaul.Patches
             }
         }
 
+        // private static DateTime Now { get { return new DateTime(2024, 01, 01, 15, 0, 0); } }
+
         public static DateTime GetCurrTime() => DateTime.Now;
         public static DateTime GetInverseTime() => inverseTime;
         public static DateTime GetDateTime() => inverted ? GetInverseTime() : GetCurrTime();
+
+        // public static DateTime GetFacCurrTime() => RaidTime.Now;
+        // public static DateTime GetFacInverseTime() => inverseTime;
+        // public static DateTime GetFacDateTime() => inverted ? GetFacInverseTime() : GetFacCurrTime();
     }
 
     public class GameWorldPatch : ModulePatch
     {
+
         protected override MethodBase GetTargetMethod() => typeof(GameWorld).GetMethod("OnGameStarted", BindingFlags.Instance | BindingFlags.Public);
 
         [PatchPostfix]
@@ -156,7 +164,7 @@ namespace DJsRaidOverhaul.Patches
         static void Postfix(ref WeatherController __instance) => __instance.WindController.CloudWindMultiplier = 1;
     }
 
-    // WIP!!!! NOT DONE!!!
+    /*
     public class AirdropBoxPatch : ModulePatch
     {
         internal static bool isExtractCrate = false;
@@ -252,17 +260,26 @@ namespace DJsRaidOverhaul.Patches
             internal UpdateProfileRequest(Profile profile) => player = profile;
         }
     }
+    /**/
 
+    /*
     public class FactoryTimePatch : ModulePatch
     {
-        protected override MethodBase GetTargetMethod() => typeof(TarkovApplication).GetMethod("InternalStartGame", BindingFlags.Instance | BindingFlags.Public);
+        private static TarkovMaps Maps { get; set; }
 
-        [PatchPrefix]
-        static void Prefix(ref string gameMap)
+        protected override MethodBase GetTargetMethod() => typeof(GameWorld).GetMethod("OnGameStarted", BindingFlags.Instance | BindingFlags.Public);
+
+        [PatchPostfix]
+        static void Postfix(GameWorld __instance)
         {
-            if (gameMap.Contains("factory")) gameMap = RaidTime.GetDateTime().Hour >= 22 || RaidTime.GetDateTime().Hour < 6 ? "factory4_night" : "factory4_day";
+            if (Maps == TarkovMaps.Factory)
+            {
+                DateTime time = RaidTime.GetFacDateTime();
+                __instance.GameDateTime.Reset(time, time, 0);
+            }
         }
     }
+    /**/
 
     public class WatchPatch : ModulePatch
     {

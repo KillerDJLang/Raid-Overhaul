@@ -1,4 +1,4 @@
-using EFT;
+﻿using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
@@ -17,18 +17,17 @@ using System.Threading.Tasks;
 using DJsRaidOverhaul.Patches;
 using System.Collections;
 using TMPro;
-using System;
 
-namespace DJsRaidOverhaul
+namespace DJsRaidOverhaul.Controllers
 {
-    public class IRController : MonoBehaviour
+    public class EventController : MonoBehaviour
     {
         bool exfilUIChanged = false;
 
         private bool _eventisRunning = false;
         private Switch[] _switchs = null;
         private Door[] _door = null;
-        private KeycardDoor [] _kdoor = null;
+        private KeycardDoor[] _kdoor = null;
         private LampController[] _lamp = null;
 
         Player player
@@ -39,6 +38,7 @@ namespace DJsRaidOverhaul
 
         RaidSettings raidSettings
         { get => Singleton<RaidSettings>.Instance; }
+
         public DamageInfo Blunt { get; private set; }
 
         void Update()
@@ -75,19 +75,20 @@ namespace DJsRaidOverhaul
             if (!_eventisRunning)
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
-                _eventisRunning = true;
+
+                    _eventisRunning = true;
             }
 
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
-            if (!exfilUIChanged)
-                ChangeExfilUI();
+                if (!exfilUIChanged)
+                    ChangeExfilUI();
         }
 
         private IEnumerator StartEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.RandomRangeMin.Value, Plugin.RandomRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.EventRangeMin.Value, Plugin.EventRangeMax.Value) * 60f);
 
-            if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
+            if (Ready())
             {
                 DoRandomEvent();
             }
@@ -141,95 +142,89 @@ namespace DJsRaidOverhaul
         {
             float rand = UnityEngine.Random.Range(0, 30);
 
-                switch (rand)
-                {
-                    case 0:
-                    case 1:
-                        if (Plugin.NoJokesHere.Value == true) DoFunny();
-                        else
-                        {
-                            DoDamageEvent();
-                        }
-                        break;
+            switch (rand)
+            {
+                case 0:
+                case 1:
+                    if (Plugin.NoJokesHere.Value == true) DoFunny();
+                    else
+                    {
+                        DoDamageEvent();
+                    }
+                    break;
 
                 case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                        if (Plugin.DisableAirdrop.Value == true) DoRandomEvent();
-                        {
-                            if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoUnlock();
-                            else
-                            {
-                                DoAirdropEvent();
-                            }
-                        }
-                        break;
-
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                    case 10:
-                        PowerOn();
-                        break;
-
-                    case 11:
-                    case 12:
-                    case 13:
-                        if (Plugin.DisableBlackout.Value == true) DoRandomEvent();
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                    if (Plugin.DisableAirdrop.Value == true) DoRandomEvent();
+                    {
+                        if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoRandomEvent();
                         else
                         {
-                            DoBlackoutEvent();
+                            DoAirdropEvent();
                         }
-                        break;
+                    }
+                    break;
 
-                    case 14:
-                    case 15:
-                    case 16:
-                    case 17:
-                    case 18:
-                    case 19:
-                        DoUnlock();
-                        break;
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                    if (Plugin.DisableBlackout.Value == true) DoRandomEvent();
+                    else
+                    {
+                        DoBlackoutEvent();
+                    }
+                    break;
 
-                    case 20:
-                        if (Plugin.NoJokesHere.Value == true) DoFunny();
-                        else
-                        {
-                            DoDamageEvent();
-                        }
-                        break;
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                    if (Plugin.NoJokesHere.Value == true) DoFunny();
+                    else
+                    {
+                        DoDamageEvent();
+                    }
+                    break;
 
+                case 20:
                 case 21:
-                    case 22:                        
-                    case 23:
-                    case 24:
-                    case 25:
-                        if (Plugin.DisableArmorRepair.Value == true) DoRandomEvent();
-                        else
-                        {
-                            DoArmorRepair();
-                        }
-                        break;
+                case 22:
+                case 23:
+                case 24:
+                case 25:
+                    if (Plugin.DisableArmorRepair.Value == true) DoRandomEvent();
+                    else
+                    {
+                        DoArmorRepair();
+                    }
+                    break;
 
-                    case 26:
-                    case 27:                        
-                    case 28:                        
-                    case 29:
-                    case 30:
-                        if (Plugin.DisableHeal.Value == true) DoRandomEvent();
-                        else
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                    if (Plugin.DisableHeal.Value == true) DoRandomEvent();
+                    else
+                    {
+                        ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
+                        if (health.Current != health.Maximum)
                         {
-                            ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
-                            if (health.Current != health.Maximum)
-                            {
-                                DoHealPlayer();
-                                break;
-                            }
-                            DoRandomEvent();
+                            DoHealPlayer();
+                            break;
                         }
-                        break;
+                        DoRandomEvent();
+                    }
+                    break;
 
                     //case xx:
                     //DoLockDownEvent();
@@ -239,13 +234,6 @@ namespace DJsRaidOverhaul
                     //break;
             }
         }
-
-        /*/
-        void DoHuntedEvent()
-        {
-            NotificationManagerClass.DisplayMessageNotification("Hunted Event: AI will now hunt you down for 10 minutes.", ENotificationDurationType.Long, ENotificationIconType.Alert);
-        }
-        /**/
 
         void DoHealPlayer()
         {
@@ -265,20 +253,21 @@ namespace DJsRaidOverhaul
         void DoArmorRepair()
         {
             NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
-            player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((Item item) =>
+            player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((item) =>
             {
                 if (item.GetItemComponent<ArmorComponent>() != null) item.GetItemComponent<RepairableComponent>().Durability = item.GetItemComponent<RepairableComponent>().MaxDurability;
             });
         }
 
-        //async void DoHuntedEvent()
-        //{
-        //    NotificationManagerClass.DisplayMessageNotification("Hunted Event: The enemy knows your position, hold out as long as you can.", ENotificationDurationType.Long, ENotificationIconType.Alert);
-        //   raidSettings.WavesSettings.IsTaggedAndCursed = true;
-        //    await Task.Delay(10000);
-        //    NotificationManagerClass.DisplayMessageNotification("You survived, congratulations.", ENotificationDurationType.Long, ENotificationIconType.Default);
-        //    raidSettings.WavesSettings.IsTaggedAndCursed = false;
-        //}
+        /*
+        void DoHuntedEvent()
+        {
+            NotificationManagerClass.DisplayMessageNotification("Hunted Event: The enemy knows your position, hold out as long as you can.", ENotificationDurationType.Long, ENotificationIconType.Alert);
+
+            NotificationManagerClass.DisplayMessageNotification("You survived, congratulations.", ENotificationDurationType.Long, ENotificationIconType.Default);
+        }
+        /**/
+
 
         void DoAirdropEvent()
         {
@@ -294,6 +283,7 @@ namespace DJsRaidOverhaul
             await Task.Delay(2000); DoRandomEvent();
         }
 
+        /*
         async void DoLockDownEvent()
         {
             NotificationManagerClass.DisplayMessageNotification("Lockdown Event: All extracts are unavaliable for 15 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
@@ -304,6 +294,7 @@ namespace DJsRaidOverhaul
             EventExfilPatch.IsLockdown = false;
             NotificationManagerClass.DisplayMessageNotification("Lockdown Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
+        /**/
 
         async void DoBlackoutEvent()
         {
@@ -373,76 +364,6 @@ namespace DJsRaidOverhaul
                 });
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
-        }
-
-        private void PowerOn()
-        {
-            if (_switchs == null || _switchs.Length <= 0)
-            {
-                return;
-            }
-
-            System.Random random = new System.Random();
-
-            int selection = random.Next(_switchs.Length);
-            Switch _switch = _switchs[selection];
-
-            if (_switch.DoorState == EDoorState.Shut)
-            {
-                typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
-
-                NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
-
-                RemoveAt(ref _switchs, selection);
-            }
-
-            else
-            {
-                RemoveAt(ref _door, selection);
-                PowerOn();
-            }
-        }
-
-        private void DoUnlock()
-        {
-            if (_door == null || _door.Length <= 0)
-            {
-                return;
-            }
-
-            System.Random random = new System.Random();
-
-            int selection = random.Next(_door.Length);
-            Door door = _door[selection];
-
-            if (door.DoorState == EDoorState.Locked)
-            {
-                typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-
-                NotificationManagerClass.DisplayMessageNotification("A random door has been unlocked.", ENotificationDurationType.Default);
-
-                RemoveAt(ref _door, selection);
-            }
-            
-            else
-            {
-                RemoveAt(ref _door, selection);
-                DoUnlock();
-            }
-        }
-
-        static void RemoveAt<T>(ref T[] array, int index)
-        {
-            if (index >= 0 && index < array.Length)
-            {
-                for (int i = index; i < array.Length - 1; i++)
-                {
-                    array[i] = array[i + 1];
-                }
-
-                Array.Resize(ref array, array.Length - 1);
-            }
         }
 
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
