@@ -3,10 +3,7 @@ import { DependencyContainer }              from "tsyringe";
 import { IPreAkiLoadMod }                   from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostDBLoadMod }                   from "@spt-aki/models/external/IPostDBLoadMod";
 import { ILogger }                          from "@spt-aki/models/spt/utils/ILogger";
-import { StaticRouterModService }           from "@spt-aki/services/mod/staticRouter/StaticRouterModService";
-import { ProfileHelper }                    from "@spt-aki/helpers/ProfileHelper";
 import { DatabaseServer }                   from "@spt-aki/servers/DatabaseServer";
-import { IPmcData }                         from "@spt-aki/models/eft/common/IPmcData"
 import { IDatabaseTables }                  from "@spt-aki/models/spt/server/IDatabaseTables";
 import { IAirdropConfig }                   from "@spt-aki/models/spt/config/IAirdropConfig";
 import { ConfigServer }                     from "@spt-aki/servers/ConfigServer";
@@ -58,9 +55,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
     public preAkiLoad(container: DependencyContainer): void 
     {
         RaidOverhaul.container =        container;
-        const staticRouterModService =  container.resolve<StaticRouterModService>("StaticRouterModService");
         const logger =                  container.resolve<ILogger>("WinstonLogger");
-        const profileHelper =           container.resolve<ProfileHelper>("ProfileHelper");
         const preAkiModLoader:          PreAkiModLoader = container.resolve<PreAkiModLoader>("PreAkiModLoader");
         const imageRouter:              ImageRouter = container.resolve<ImageRouter>("ImageRouter");
         const configServer =            container.resolve("ConfigServer");
@@ -91,25 +86,6 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         inventoryConfig.randomLootContainers["DJsWeaponCrate"] = WeaponLB.randomLootContainers["DJsWeaponCrate"];
         inventoryConfig.randomLootContainers["DJsModBox"] = ModLB.randomLootContainers["DJsModBox"];
         inventoryConfig.randomLootContainers["DJsBarterCrate"] = BarterLB.randomLootContainers["DJsBarterCrate"];
-
-        staticRouterModService.registerStaticRouter
-        (
-            "inventoryupdaterouter",
-            [
-                {
-                    url: "/ir/profile/update",
-                    action: (url, info: IUpdateProfileRequest, sessionID, output) =>
-                    {
-                        const profile = profileHelper.getPmcProfile(sessionID);
-                        const hideout = info.player.Inventory.items;
-
-                        profile.Inventory.items = hideout;
-                        logger.info(`[IR] Imported extracted items to inventory (${profile._id})`);
-                    }
-                }
-            ],
-            "ir-update-profile-route"
-        );
 
         onUpdateModService.registerOnUpdate(
 			"MyCustomOnUpdateMod",
@@ -376,6 +352,9 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         
         Ragfair.dynamic.blacklist.custom.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "DJsModBox", "DJsBarterCrate"])
 
+        items["590c60fc86f77412b13fddcf"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
+        items["5d235bb686f77443f4331278"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
+
         logger.debug(`[${this.mod}] postDb Loaded`);
         }
     }
@@ -549,11 +528,6 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 	{
 		return ( base + Math.floor( Math.random() * random * 2 ) - random )
 	}
-}
-
-interface IUpdateProfileRequest
-{
-    player: IPmcData;
 }
 
 module.exports = { mod: new RaidOverhaul() };

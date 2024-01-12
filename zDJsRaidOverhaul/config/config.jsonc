@@ -2,27 +2,29 @@
   "Raid":{
     "ReduceFoodAndHydroDegrade":{       
         "Enabled": true,
-        "EnergyDecay": 0.6,           //The rate at which you lose Energy and Hydration. Lower is slower decay
+        "EnergyDecay": 0.6,         //The rate at which you lose Energy and Hydration. Lower is slower decay
         "HydroDecay": 0.6
     },
 
-    "SaveQuestItems": true,           //If enabled saves quest items in your inventory on death
+    "SaveQuestItems": true,         //If enabled saves quest items in your inventory on death
 
-    "NoRunThrough": true,             //Remove raid survived requirements
+    "NoRunThrough": true,           //Remove raid survived requirements
 
-    "LootableMelee": true,            //Makes melee weapons lootable
+    "LootableMelee": true,          //Makes melee weapons lootable
 
-    "LootableArmbands": true,         //Makes armbands lootable
+    "LootableArmbands": true,       //Makes armbands lootable
 
-    "ContainerChanges": false,        //Enables the container size changes (conflicts with softcore)
+    "ContainerChanges": true,       //Enables the container size changes (conflicts with softcore)
 
-    "PocketChanges": false,           //Enables the pocket size and special slot filter changes
+    "PocketChanges": true,          //Enables the pocket size and special slot filter changes
+
+    "RemoveFilters": true,          //Removes filters for backpacks and containers
 
     "ChangeAirdropValues":{
-        "Enabled": true,              //Enable airdrop changes          
+        "Enabled": true,            //Enable airdrop changes          
         "Customs": 35,          
         "Woods": 35,                   
-        "Lighthouse": 35,             //Percent chance to get a random airdrop
+        "Lighthouse": 35,           //Percent chance to get a random airdrop
         "Interchange": 35,         
         "Shoreline": 35,           
         "Reserve": 35
@@ -30,14 +32,14 @@
   },
 
   "Weight": {
-    "Enabled": false,
-    "MinWeight": 51,                //Minimum overweight limit  DEFAULT 21
-    "MaxWeight": 111,               //Maximum overweight limit  DEFAULT 81
-    "WalkMinWeight": 72,            //Minimum walk overweight limit  DEFAULT 42
-    "WalkMaxWeight": 100,           //Maximum walk overweight limit  DEFAULT 70
-    "WalkSpeedMinWeight": 64,       //Minimum walk speed overweight limit  DEFAULT 34
-    "WalkSpeedMaxWeight": 105,      //Maximum walk speed overweight limit  DEFAULT 75
-    "SprintMinWeight": 61,          //Minimum sprint speed overweight limit  DEFAULT 21
-    "SprintMaxWeight": 88           //Maximum sprint speed overweight limit  DEFAULT 58
+    "Enabled": true,
+    "MinWeight": 90,                //Minimum overweight limit  DEFAULT 21
+    "MaxWeight": 140,               //Maximum overweight limit  DEFAULT 81
+    "WalkMinWeight": 110,           //Minimum walk overweight limit  DEFAULT 42
+    "WalkMaxWeight": 150,           //Maximum walk overweight limit  DEFAULT 70
+    "WalkSpeedMinWeight": 120,      //Minimum walk speed overweight limit  DEFAULT 34
+    "WalkSpeedMaxWeight": 170,      //Maximum walk speed overweight limit  DEFAULT 75
+    "SprintMinWeight": 90,          //Minimum sprint speed overweight limit  DEFAULT 21
+    "SprintMaxWeight": 140          //Maximum sprint speed overweight limit  DEFAULT 58
   }
 }

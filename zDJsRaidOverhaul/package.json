@@ -1,10 +1,11 @@
 {
   "name": "DJs Raid Overhaul",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "main": "src/mod.js",
     "license": "CC BY-NC-ND 4.0",
     "author": "DJ",
     "akiVersion": "3.7.6",
+    "isBundleMod": true,
     "loadBefore": [],
     "loadAfter": [],
     "incompatibilities": [],
