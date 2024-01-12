@@ -1719,6 +1719,106 @@
                   "UnlimitedCount": false,
                   "StackObjectsCount": 50
               }
+          },
+          {
+              "_id": "RSAT1",
+              "_tpl": "RSAT1",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "RDragonEgg",
+              "_tpl": "RDragonEgg",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "RPatrolBackpack",
+              "_tpl": "RPatrolBackpack",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "SkullHM",
+              "_tpl": "SkullHM",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "Tor",
+              "_tpl": "Tor",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "TorFS",
+              "_tpl": "TorFS",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "NeoSteel",
+              "_tpl": "NeoSteel",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "NeoSteelM",
+              "_tpl": "NeoSteelM",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "StrikeballFM",
+              "_tpl": "StrikeballFM",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
+          },
+          {
+              "_id": "BallisticFM",
+              "_tpl": "BallisticFM",
+              "parentId": "hideout",
+              "slotId": "hideout",
+              "upd": {
+                  "UnlimitedCount": false,
+                  "StackObjectsCount": 50
+              }
           }
     ],
     "barter_scheme": {
@@ -2209,6 +2309,86 @@
                     "count": 14999
                 }
             ]
+        ],
+        "RSAT1": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 3
+                }
+            ]
+        ],
+        "RDragonEgg": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "RPatrolBackpack": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 4
+                }
+            ]
+        ],
+        "SkullHM": [
+            [
+                {
+                    "_tpl": "5449016a4bdc2d6f028b456f",
+                    "count": 7999
+                }
+            ]
+        ],
+        "Tor": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "TorFS": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "NeoSteel": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "NeoSteelM": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
+        ],
+        "StrikeballFM": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 1
+                }
+            ]
+        ],
+        "BallisticFM": [
+            [
+                {
+                    "_tpl": "RequisitionSlips",
+                    "count": 2
+                }
+            ]
         ]
     },
     "loyal_level_items": {
@@ -2272,6 +2452,16 @@
         "ARepairKit": 1,
         "STM46Preset": 1,
         "STM46Mag": 1,
-        "STM46Drum": 1
+        "STM46Drum": 1,
+        "RDragonEgg": 1,
+        "RPatrolBackpack": 1,
+        "RSAT1": 1,
+        "SkullHM": 1,
+        "Tor": 2,
+        "TorFS": 2,
+        "NeoSteel": 3,
+        "NeoSteelM": 3,
+        "StrikeballFM": 2,
+        "BallisticFM": 3
     }
 }

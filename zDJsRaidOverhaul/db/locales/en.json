@@ -129,6 +129,56 @@
             "Name": "STM-46 4.6x30 upper receiver",
             "ShortName": "STM46 Rec",
             "Description": "An upper receiver for the STM-46 Gen.2 4.6x30 carbine. Equipped with a mount for attaching additional tactical devices."
+        },
+        "RSAT1": {
+            "Name": "Custom Mystery Ranch SAT1 backpack (R)",
+            "ShortName": "SAT1 (R)",
+            "Description": "A custom Mystery Ranch SAT1 backpack that is part of the 2nd generation Ratnik gear kit for combat. The SAT1 tactical army backpack is a modernization of the 6B38 Permyachka model raid backpack. The raid 6Sh118 backpack is designed to carry fire support equipment, weapons, ammunition, elements of mountain equipment, as well as the personal belongings of individual soldiers. The backpack can be used during combat operations, long hikes, and raid events."
+        },
+        "RDragonEgg": {
+            "Name": "Custom Dragon Egg MK II (R)",
+            "ShortName": "MKII (R)",
+            "Description": "A custom backpack designed to carry large amounts of specialized medical equipment and supplies. Manufactured by London Bridge Trading and modified by the Requisitions Office."
+        },
+        "RPatrolBackpack": {
+            "Name": "Custom Tehinkom Patrol Backpack (R)",
+            "ShortName": "RBP (R)",
+            "Description": "A custom 60-liter Patrol backpack for carrying personal belongings and equipment through tough field conditions."
+        },
+        "SkullHM": {
+            "Name": "Ghost half-mask",
+            "ShortName": "Ghost",
+            "Description": "A half-mask with a skull print."
+        },
+        "TorFS": {
+            "Name": "NPP KlASS Tor-2 helmet face shield",
+            "ShortName": "Tor-2 FS",
+            "Description": "A special visor for the NPP KlASS Tor-2 helmet, made of heavy-duty glass."
+        },
+        "Tor": {
+            "Name": "NPP KlASS Tor-2 helmet (Olive Drab)",
+            "ShortName": "Tor-2",
+            "Description": "NPP KlASS Tor-2 is an assault protective helmet with a removable bullet-resistant visor and an integrated system for installing additional equipment (NVG, headsets, tactical lights, cameras, IR strobe lights, etc.)."
+        },
+        "NeoSteel": {
+            "Name": "Diamond Age NeoSteel High Cut helmet (Black)",
+            "ShortName": "NeoSteel",
+            "Description": "The Diamond Age NeoSteel helmet features a unique design that combines high-strength steel with composite materials to provide advanced protection against ballistic and impact threats. It is designed to withstand high velocity impacts and can provide protection against a variety of threats."
+        },
+        "NeoSteelM": {
+            "Name": "Diamond Age NeoSteel helmet ballistic mandible",
+            "ShortName": "NeoSteel",
+            "Description": "An extra ballistic protection with a special design for the Diamond Age NeoSteel helmet."
+        },
+        "StrikeballFM": {
+            "Name": "Death Shadow lightweight armored mask",
+            "ShortName": "Death Shadow",
+            "Description": "The \"Death Shadow\" mask for face protection, reinforced with aramid fibers."
+        },
+        "BallisticFM": {
+            "Name": "Atomic Defense CQCM ballistic mask (Black)",
+            "ShortName": "CQCM",
+            "Description": "Atomic Defense's CQCM ballistic mask provides protection against short-range weapons including pistols, shotguns and knives. This heavyweight reinforced mask covers the wearer's face completely. It features an inner lining and wraps slightly around the sides of the head for added protection. The mask also features five-point adjustable straps to ensure a comfortable and precise fit."
         }
     }
 }
