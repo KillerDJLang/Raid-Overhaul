@@ -36,7 +36,9 @@
                         "cellsV": 2,
                         "filters": [
                             {
-                                "ExcludedFilter": [],
+                                "ExcludedFilter": [
+                                    "5448bf274bdc2dfc2f8b456a"
+                                ],
                                 "Filter": [
                                     "54009119af1c881c07000029"
                                 ]
@@ -58,7 +60,9 @@
                         "cellsV": 2,
                         "filters": [
                             {
-                                "ExcludedFilter": [],
+                                "ExcludedFilter": [
+                                    "5448bf274bdc2dfc2f8b456a"
+                                ],
                                 "Filter": [
                                     "54009119af1c881c07000029"
                                 ]
@@ -80,7 +84,9 @@
                         "cellsV": 2,
                         "filters": [
                             {
-                                "ExcludedFilter": [],
+                                "ExcludedFilter": [
+                                    "5448bf274bdc2dfc2f8b456a"
+                                ],
                                 "Filter": [
                                     "54009119af1c881c07000029"
                                 ]
@@ -102,7 +108,9 @@
                         "cellsV": 2,
                         "filters": [
                             {
-                                "ExcludedFilter": [],
+                                "ExcludedFilter": [
+                                    "5448bf274bdc2dfc2f8b456a"
+                                ],
                                 "Filter": [
                                     "54009119af1c881c07000029"
                                 ]
