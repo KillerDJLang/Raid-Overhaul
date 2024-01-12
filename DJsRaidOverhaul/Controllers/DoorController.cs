@@ -15,7 +15,6 @@ namespace DJsRaidOverhaul.Controllers
         private Door[] _door = null;
         private KeycardDoor[] _kdoor = null;
         private bool _dooreventisRunning = false;
-        private bool _doorsAreRandomized = false;
 
         Player player
         { get => gameWorld.MainPlayer; }
@@ -27,7 +26,6 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (!Ready() || !Plugin.EnableDoorEvents.Value)
             {
-                _doorsAreRandomized = false;
                 return;
             }
 
@@ -50,12 +48,6 @@ namespace DJsRaidOverhaul.Controllers
             {
                 StaticManager.Instance.StartCoroutine(DoorEvents());
 
-                if (!_doorsAreRandomized)
-                {
-                    RandomizeDefaultDoors();
-                    _doorsAreRandomized = true;
-                }
-
                 _dooreventisRunning = true;
             }
         }
@@ -64,7 +56,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.DoorRangeMin.Value, Plugin.DoorRangeMax.Value) * 60f);
 
-            if (Ready())
+            if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
                 DoRandomUnlock();
             }
@@ -87,19 +79,19 @@ namespace DJsRaidOverhaul.Controllers
             switch (rand)
             {
                 case 0:
-                case 1:
-                    PowerOn();
-                    break;
-                case 2:
-                case 3:
                     DoKUnlock();
                     break;
+                case 1:
+                case 2:
+                case 3:
                 case 4:
                 case 5:
                 case 6:
                 case 7:
-                case 8:
                     DoUnlock();
+                    break;
+                case 8:
+                    PowerOn();
                     break;
             }
         }
@@ -108,6 +100,10 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_switchs == null || _switchs.Length <= 0)
             {
+                if (Plugin.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification("No switches available, returning.", ENotificationDurationType.Default);
+                }
                 return;
             }
 
@@ -116,16 +112,11 @@ namespace DJsRaidOverhaul.Controllers
             int selection = random.Next(_switchs.Length);
             Switch _switch = _switchs[selection];
 
-            if (!_switch.Operatable || !_switch.enabled)
-            {
-                return;
-            }
-
             if (_switch.DoorState == EDoorState.Shut)
             {
                 typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
 
-                if (Plugin.ExtraLogging.Value)
+                if (Plugin.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
                 }
@@ -144,6 +135,10 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_door == null || _door.Length <= 0)
             {
+                if (Plugin.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification("No locked doors available, returning.", ENotificationDurationType.Default);
+                }
                 return;
             }
 
@@ -152,17 +147,12 @@ namespace DJsRaidOverhaul.Controllers
             int selection = random.Next(_door.Length);
             Door door = _door[selection];
 
-            if (!door.Operatable || !door.enabled)
-            {
-                return;
-            }
-
             if (door.DoorState == EDoorState.Locked)
             {
                 typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
 
-                if (Plugin.ExtraLogging.Value)
+                if (Plugin.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -181,6 +171,10 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_kdoor == null || _kdoor.Length <= 0)
             {
+                if (Plugin.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification("No keycard doors available, returning.", ENotificationDurationType.Default);
+                }
                 return;
             }
 
@@ -189,17 +183,12 @@ namespace DJsRaidOverhaul.Controllers
             int selection = random.Next(_kdoor.Length);
             KeycardDoor kdoor = _kdoor[selection];
 
-            if (!kdoor.Operatable || !kdoor.enabled)
-            {
-                return;
-            }
-
             if (kdoor.DoorState == EDoorState.Locked)
             {
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
                 typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
 
-                if (Plugin.ExtraLogging.Value)
+                if (Plugin.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random keycard door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -214,7 +203,7 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
-        private void RandomizeDefaultDoors()
+        public static void RandomizeDefaultDoors()
         {
             FindObjectsOfType<Door>().ExecuteForEach(door =>
             {
@@ -242,12 +231,12 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     typeof(Door).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 }
-
-                if (Plugin.ExtraLogging.Value)
-                {
-                    NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
-                }
             });
+
+            if (Plugin.DebugLogging.Value)
+            {
+                NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
+            }
         }
 
         static void RemoveAt<T>(ref T[] array, int index)

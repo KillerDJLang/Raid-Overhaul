@@ -22,12 +22,11 @@ namespace DJsRaidOverhaul.Controllers
 {
     public class EventController : MonoBehaviour
     {
-        bool exfilUIChanged = false;
+        // bool exfilUIChanged = false;
 
         private bool _eventisRunning = false;
-        private Switch[] _switchs = null;
-        private Door[] _door = null;
-        private KeycardDoor[] _kdoor = null;
+        private Switch[] _pswitchs = null;
+        private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
 
         Player player
@@ -52,19 +51,14 @@ namespace DJsRaidOverhaul.Controllers
                 return;
             }
 
-            if (_switchs == null)
+            if (_pswitchs == null)
             {
-                _switchs = FindObjectsOfType<Switch>();
+                _pswitchs = FindObjectsOfType<Switch>();
             }
 
-            if (_door == null)
+            if (_keydoor == null)
             {
-                _door = FindObjectsOfType<Door>();
-            }
-
-            if (_kdoor == null)
-            {
-                _kdoor = FindObjectsOfType<KeycardDoor>();
+                _keydoor = FindObjectsOfType<KeycardDoor>();
             }
 
             if (_lamp == null)
@@ -79,25 +73,26 @@ namespace DJsRaidOverhaul.Controllers
                     _eventisRunning = true;
             }
 
+            /*
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
                 if (!exfilUIChanged)
                     ChangeExfilUI();
+            /**/
         }
 
         private IEnumerator StartEvents()
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.EventRangeMin.Value, Plugin.EventRangeMax.Value) * 60f);
 
-            if (Ready())
+            if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
                 DoRandomEvent();
             }
 
             else
             {
-                _switchs = null;
-                _door = null;
-                _kdoor = null;
+                _pswitchs = null;
+                _keydoor = null;
                 _lamp = null;
             }
 
@@ -106,6 +101,7 @@ namespace DJsRaidOverhaul.Controllers
         }
 
         // moved from patch impacted performance too much
+        /*
         async void ChangeExfilUI()
         {
             if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
@@ -137,6 +133,7 @@ namespace DJsRaidOverhaul.Controllers
                 exfilUIChanged = false;
             }
         }
+        /**/
 
         void DoRandomEvent()
         {
@@ -300,7 +297,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             LampController[] dontChangeOnEnd = new LampController[0];
 
-            foreach (Switch pSwitch in _switchs)
+            foreach (Switch pSwitch in _pswitchs)
             {
                 typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
                 typeof(Switch).GetMethod("Lock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
@@ -317,7 +314,7 @@ namespace DJsRaidOverhaul.Controllers
                 lamp.enabled = false;
             }
 
-            foreach (KeycardDoor door in _kdoor)
+            foreach (KeycardDoor door in _keydoor)
             {
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 AudioSource.PlayClipAtPoint(door.DeniedBeep, door.gameObject.transform.position);
@@ -327,7 +324,7 @@ namespace DJsRaidOverhaul.Controllers
 
             await Task.Delay(600000);
 
-            foreach (Switch pSwitch in _switchs)
+            foreach (Switch pSwitch in _pswitchs)
             {
                 typeof(Switch).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
             }
@@ -339,7 +336,7 @@ namespace DJsRaidOverhaul.Controllers
                 lamp.enabled = true;
             }
 
-            foreach (KeycardDoor door in _kdoor)
+            foreach (KeycardDoor door in _keydoor)
                 await Task.Run(async () =>
                 {
                     int timesToBeep = 3;

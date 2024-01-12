@@ -12,10 +12,12 @@ using System.Reflection;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.1")]
 
     public class Plugin : BaseUnityPlugin
     {
+        public const int TarkovVersion = 26535;
+
         internal static GameObject Hook;
         internal static EventController ECScript;
         internal static DoorController DCScript;
@@ -43,13 +45,11 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<bool> DisableHeal;
         internal static ConfigEntry<bool> DisableAirdrop;
 
-        internal static ConfigEntry<bool> ExtraLogging;
+        internal static ConfigEntry<bool> DebugLogging;
 
         internal static Dictionary<IAnimator, AnimatorOverrideController> Controllers;
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
-
-        public const int TarkovVersion = 26535;
 
         void Awake()
         {
@@ -85,35 +85,35 @@ namespace DJsRaidOverhaul
 
             DoorRangeMax = Config.Bind(
                "1. Events",
-               "Events timer range maximum",
+               "Door Events timer maximum range",
                3,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 9 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 8 }));
 
             DoorRangeMin = Config.Bind(
                "1. Events",
-               "Events timer range minimum",
+               "Door Events timer minimum range",
                1,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 8 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 9 }));
 
             EventRangeMax = Config.Bind(
                "1. Events",
-               "Random Events timer range maximum",
+               "Random Events timer maximum range",
                30,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
 
             EventRangeMin = Config.Bind(
                "1. Events",
-               "Random Events timer range minimum",
+               "Random Events timer minimum range",
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
 
             NoJokesHere = Config.Bind(
                "1. Events",
@@ -215,20 +215,20 @@ namespace DJsRaidOverhaul
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
-            ExtraLogging = Config.Bind(
-                "6. Extra Logging",
+
+            DebugLogging = Config.Bind(
+                "6. Debug Logging",
                 "Enable",
                 false,
                 new ConfigDescription("Enable extra notifications for debug purposes. Only really matters if you're testing shit lol.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
 
-
             new OnDeadPatch().Enable();
             new GameWorldPatch().Enable();
             new UIPanelPatch().Enable();
             new TimerUIPatch().Enable();
-            new EventExfilPatch().Enable();
+            // new EventExfilPatch().Enable();
             new WeatherControllerPatch().Enable();
             new GlobalsPatch().Enable();
             new WatchPatch().Enable();
@@ -238,6 +238,7 @@ namespace DJsRaidOverhaul
             new GrenadeDeafnessPatch().Enable();
             new GamePlayerOwnerPatch().Enable();
             new GameWorldDisposePatch().Enable();
+            new DefaultDoorOpenPatch().Enable();
             // new FactoryTimePatch().Enable();
             // new AirdropBoxPatch().Enable();
             Controllers = new Dictionary<IAnimator, AnimatorOverrideController>();
