@@ -133,6 +133,7 @@ namespace DJsRaidOverhaul.Patches
         }
     }
 
+    /*
     public class EventExfilPatch : ModulePatch
     {
         internal static bool IsLockdown = false;
@@ -155,6 +156,7 @@ namespace DJsRaidOverhaul.Patches
             __result = true;
         }
     }
+    /**/
 
     public class WeatherControllerPatch : ModulePatch
     {
@@ -289,6 +291,20 @@ namespace DJsRaidOverhaul.Patches
         static void Postfix(ref DateTime __result)
         {
             __result = RaidTime.GetDateTime();
+        }
+    }
+
+    public class DefaultDoorOpenPatch : ModulePatch
+    {
+        protected override MethodBase GetTargetMethod()
+        {
+            return typeof(GameWorld).GetMethod(nameof(GameWorld.OnGameStarted));
+        }
+
+        [PatchPrefix]
+        public static void PatchPrefix()
+        {
+            DoorController.RandomizeDefaultDoors();
         }
     }
 }
