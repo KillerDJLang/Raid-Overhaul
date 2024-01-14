@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using DJsRaidOverhaul.Patches;
 using System.Collections;
 using TMPro;
+using System.Collections.Generic;
+using System;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -70,7 +72,7 @@ namespace DJsRaidOverhaul.Controllers
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
 
-                    _eventisRunning = true;
+                _eventisRunning = true;
             }
 
             /*
@@ -135,111 +137,57 @@ namespace DJsRaidOverhaul.Controllers
         }
         /**/
 
+        
+        // Refactored random event picker to use actions inside of a dictionary with an associated weight.
+        // This code doesnt need to be modified ever. Simply add a new event and weight in the dictionary.
         void DoRandomEvent()
         {
-            float rand = UnityEngine.Random.Range(0, 30);
+            // Shuffle the list to randomize the order
+            Plugin.weightedMethods = Plugin.weightedMethods.OrderBy(_ => Guid.NewGuid()).ToList();
 
-            switch (rand)
+            // Calculate total weight
+            int totalWeight = Plugin.weightedMethods.Sum(pair => pair.Item2);
+
+            // Generate a random number between 1 and totalWeight
+            int randomNum = new System.Random().Next(1, totalWeight + 1);
+
+            // Find the method to call based on the random number
+            foreach (var (method, weight) in Plugin.weightedMethods)
             {
-                case 0:
-                case 1:
-                    if (Plugin.NoJokesHere.Value == true) DoFunny();
-                    else
-                    {
-                        DoDamageEvent();
-                    }
+                randomNum -= weight;
+                if (randomNum <= 0)
+                {
+                    // Call the selected method
+                    method();
                     break;
-
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                    if (Plugin.DisableAirdrop.Value == true) DoRandomEvent();
-                    {
-                        if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory") DoRandomEvent();
-                        else
-                        {
-                            DoAirdropEvent();
-                        }
-                    }
-                    break;
-
-                case 8:
-                case 9:
-                case 10:
-                case 11:
-                case 12:
-                case 13:
-                    if (Plugin.DisableBlackout.Value == true) DoRandomEvent();
-                    else
-                    {
-                        DoBlackoutEvent();
-                    }
-                    break;
-
-                case 14:
-                case 15:
-                case 16:
-                case 17:
-                case 18:
-                case 19:
-                    if (Plugin.NoJokesHere.Value == true) DoFunny();
-                    else
-                    {
-                        DoDamageEvent();
-                    }
-                    break;
-
-                case 20:
-                case 21:
-                case 22:
-                case 23:
-                case 24:
-                case 25:
-                    if (Plugin.DisableArmorRepair.Value == true) DoRandomEvent();
-                    else
-                    {
-                        DoArmorRepair();
-                    }
-                    break;
-
-                case 26:
-                case 27:
-                case 28:
-                case 29:
-                case 30:
-                    if (Plugin.DisableHeal.Value == true) DoRandomEvent();
-                    else
-                    {
-                        ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
-                        if (health.Current != health.Maximum)
-                        {
-                            DoHealPlayer();
-                            break;
-                        }
-                        DoRandomEvent();
-                    }
-                    break;
-
-                    //case xx:
-                    //DoLockDownEvent();
-                    //break;
-                    //case xx:
-                    //DoHuntedEvent();
-                    //break;
+                }
             }
         }
 
-        void DoHealPlayer()
+        public void DoHealPlayer()
         {
-            NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
-            player.ActiveHealthController.RestoreFullHealth();
+            if (Plugin.DisableHeal.Value)
+            {
+                return;
+            }
+
+            ValueStruct health = player.ActiveHealthController.GetBodyPartHealth(EBodyPart.Common);
+
+            if (health.Current != health.Maximum)
+            {
+                NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
+                player.ActiveHealthController.RestoreFullHealth();
+            }     
         }
 
-        void DoDamageEvent()
+        public void DoDamageEvent()
         {
+            if (Plugin.NoJokesHere.Value)
+            {
+                DoFunny();
+                return;
+            }
+              
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
             player.PlayerHealthController.DoContusion(4, 50);
             player.ActiveHealthController.DoStun(5, 0);
@@ -247,8 +195,13 @@ namespace DJsRaidOverhaul.Controllers
             player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65, Blunt);
         }
 
-        void DoArmorRepair()
+        public void DoArmorRepair()
         {
+            if (Plugin.DisableArmorRepair.Value)
+            {
+                return;
+            }
+
             NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
             player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((item) =>
             {
@@ -266,13 +219,18 @@ namespace DJsRaidOverhaul.Controllers
         /**/
 
 
-        void DoAirdropEvent()
+        public void DoAirdropEvent()
         {
+            if (Plugin.DisableAirdrop.Value)
+            {
+                return;
+            }
+
             gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
             NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.Default);
         }
 
-        async void DoFunny()
+        public async void DoFunny()
         {
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
             await Task.Delay(10000);
@@ -293,8 +251,13 @@ namespace DJsRaidOverhaul.Controllers
         }
         /**/
 
-        async void DoBlackoutEvent()
+        public async void DoBlackoutEvent()
         {
+            if (Plugin.DisableBlackout.Value)
+            {
+                return;
+            }
+
             LampController[] dontChangeOnEnd = new LampController[0];
 
             foreach (Switch pSwitch in _pswitchs)
@@ -335,7 +298,8 @@ namespace DJsRaidOverhaul.Controllers
                 lamp.Switch(Turnable.EState.On);
                 lamp.enabled = true;
             }
-
+            
+            
             foreach (KeycardDoor door in _keydoor)
                 await Task.Run(async () =>
                 {
@@ -359,6 +323,7 @@ namespace DJsRaidOverhaul.Controllers
                     return;
 
                 });
+            
 
             NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
