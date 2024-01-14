@@ -6,6 +6,7 @@ using System.Reflection;
 using EFT.Communications;
 using System.Collections;
 using System;
+using System.Linq;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -74,29 +75,29 @@ namespace DJsRaidOverhaul.Controllers
 
         void DoRandomUnlock()
         {
-            float rand = UnityEngine.Random.Range(0, 8);
+            // Shuffle the list to randomize the order
+            Plugin.weightedDoorMethods = Plugin.weightedDoorMethods.OrderBy(_ => Guid.NewGuid()).ToList();
 
-            switch (rand)
+            // Calculate total weight
+            int totalWeight = Plugin.weightedDoorMethods.Sum(pair => pair.Item2);
+
+            // Generate a random number between 1 and totalWeight
+            int randomNum = new System.Random().Next(1, totalWeight + 1);
+
+            // Find the method to call based on the random number
+            foreach (var (method, weight) in Plugin.weightedDoorMethods)
             {
-                case 0:
-                    DoKUnlock();
+                randomNum -= weight;
+                if (randomNum <= 0)
+                {
+                    // Call the selected method
+                    method();
                     break;
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                    DoUnlock();
-                    break;
-                case 8:
-                    PowerOn();
-                    break;
+                }
             }
         }
 
-        private void PowerOn()
+        public void PowerOn()
         {
             if (_switchs == null || _switchs.Length <= 0)
             {
@@ -131,7 +132,7 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
-        private void DoUnlock()
+        public void DoUnlock()
         {
             if (_door == null || _door.Length <= 0)
             {
@@ -167,7 +168,7 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
-        private void DoKUnlock()
+        public void DoKUnlock()
         {
             if (_kdoor == null || _kdoor.Length <= 0)
             {

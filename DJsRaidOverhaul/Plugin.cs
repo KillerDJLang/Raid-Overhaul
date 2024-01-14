@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.1")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.2")]
 
     public class Plugin : BaseUnityPlugin
     {
@@ -33,6 +33,7 @@ namespace DJsRaidOverhaul
         internal static ConfigEntry<bool> Deafness;
         private static ConfigEntry<float> EffectStrength;
 
+        internal static ConfigEntry<bool> TimeChanges;
         internal static ConfigEntry<bool> EnableEvents;
         internal static ConfigEntry<bool> EnableDoorEvents;
         internal static ConfigEntry<int> EventRangeMin;
@@ -51,6 +52,9 @@ namespace DJsRaidOverhaul
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
 
+        public static List<(Action, int)> weightedMethods;
+        public static List<(Action, int)> weightedDoorMethods;
+
         void Awake()
         {
             if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
@@ -66,6 +70,34 @@ namespace DJsRaidOverhaul
             DCScript = Hook.AddComponent<DoorController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
+
+            // List pair containing actions and associated weightings.
+            // Adjust the weightings to your liking.
+            // This needs to be here due to initialization problems otherwise....
+            weightedMethods = new List<(Action, int)>
+            {
+                (ECScript.DoDamageEvent,     1),
+                (ECScript.DoAirdropEvent,    4),
+                (ECScript.DoBlackoutEvent,   2),
+                (ECScript.DoFunny,           1),
+                (ECScript.DoHealPlayer,      4),
+                (ECScript.DoArmorRepair,     3)
+            };
+
+            weightedDoorMethods = new List<(Action, int)>
+            {
+                (DCScript.PowerOn,     1),
+                (DCScript.DoUnlock,    8),
+                (DCScript.DoKUnlock,   1)
+            };
+
+            TimeChanges = Config.Bind(
+                "1. Events",
+                "Enable Time Changes",
+                true,
+                new ConfigDescription("Sets the in game time to your system time.\nThis requires a restart to take effect after enabling or disabling!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 12 }));
 
             EnableEvents = Config.Bind(
                 "1. Events",
@@ -224,14 +256,18 @@ namespace DJsRaidOverhaul
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
 
-            new OnDeadPatch().Enable();
-            new GameWorldPatch().Enable();
-            new UIPanelPatch().Enable();
-            new TimerUIPatch().Enable();
-            // new EventExfilPatch().Enable();
-            new WeatherControllerPatch().Enable();
-            new GlobalsPatch().Enable();
-            new WatchPatch().Enable();
+
+            if (TimeChanges.Value)
+            {
+                new OnDeadPatch().Enable();
+                new GameWorldPatch().Enable();
+                new UIPanelPatch().Enable();
+                new TimerUIPatch().Enable();
+                // new EventExfilPatch().Enable();
+                new WeatherControllerPatch().Enable();
+                new GlobalsPatch().Enable();
+                new WatchPatch().Enable();
+            }
             new EnableEntryPointPatch().Enable();
             new HitStaminaPatch().Enable();
             new DeafnessPatch().Enable();
