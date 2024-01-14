@@ -51,6 +51,8 @@ namespace DJsRaidOverhaul
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
 
+        public static List<(Action, int)> weightedMethods;
+
         void Awake()
         {
             if (!VersionChecker.CheckEftVersion(Logger, Info, Config))
@@ -66,6 +68,19 @@ namespace DJsRaidOverhaul
             DCScript = Hook.AddComponent<DoorController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
+
+            // List pair containing actions and associated weightings.
+            // Adjust the weightings to your liking.
+            // This needs to be here due to initialization problems otherwise....
+            weightedMethods = new List<(Action, int)>
+            {
+                (ECScript.DoDamageEvent,     6),
+                (ECScript.DoAirdropEvent,    5),
+                (ECScript.DoBlackoutEvent,   4),
+                (ECScript.DoFunny,           3),
+                (ECScript.DoHealPlayer,      2),
+                (ECScript.DoArmorRepair,     1)
+            };
 
             EnableEvents = Config.Bind(
                 "1. Events",
