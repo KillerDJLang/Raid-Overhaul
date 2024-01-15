@@ -1,14 +1,14 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
+using System.IO;
 using UnityEngine;
 using BepInEx.Logging;
+using System.Reflection;
 using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
-using DJsRaidOverhaul.Controllers;
 using DrakiaXYZ.VersionChecker;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
+using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul
 {

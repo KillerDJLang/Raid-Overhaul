@@ -1,14 +1,12 @@
 ﻿using EFT;
+using System;
 using UnityEngine;
 using Comfort.Common;
 using EFT.Interactive;
 using System.Reflection;
 using EFT.Communications;
 using System.Collections;
-using System;
-using System.Linq;
 using DJsRaidOverhaul.Helpers;
-using System.Collections.Generic;
 
 namespace DJsRaidOverhaul.Controllers
 {

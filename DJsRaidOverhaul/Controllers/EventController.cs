@@ -1,5 +1,4 @@
 ﻿using EFT;
-using System;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
@@ -8,13 +7,14 @@ using Comfort.Common;
 using EFT.Interactive;
 using System.Reflection;
 using EFT.UI.Matchmaker;
+using System.Collections;
 using EFT.InventoryLogic;
 using EFT.Communications;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
 using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
-using System.Collections;
+
 
 namespace DJsRaidOverhaul.Controllers
 {
