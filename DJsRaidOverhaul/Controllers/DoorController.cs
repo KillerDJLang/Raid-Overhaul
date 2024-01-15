@@ -7,6 +7,7 @@ using EFT.Communications;
 using System.Collections;
 using System;
 using System.Linq;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -25,7 +26,7 @@ namespace DJsRaidOverhaul.Controllers
 
         void Update()
         {
-            if (!Ready() || !Plugin.EnableDoorEvents.Value)
+            if (!Ready() || !DJConfig.EnableDoorEvents.Value)
             {
                 return;
             }
@@ -55,7 +56,7 @@ namespace DJsRaidOverhaul.Controllers
 
         private IEnumerator DoorEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.DoorRangeMin.Value, Plugin.DoorRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(DJConfig.DoorRangeMin.Value, DJConfig.DoorRangeMax.Value) * 60f);
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
@@ -101,7 +102,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_switchs == null || _switchs.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No switches available, returning.", ENotificationDurationType.Default);
                 }
@@ -117,7 +118,7 @@ namespace DJsRaidOverhaul.Controllers
             {
                 typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
                 }
@@ -136,7 +137,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_door == null || _door.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No locked doors available, returning.", ENotificationDurationType.Default);
                 }
@@ -153,7 +154,7 @@ namespace DJsRaidOverhaul.Controllers
                 typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -172,7 +173,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_kdoor == null || _kdoor.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No keycard doors available, returning.", ENotificationDurationType.Default);
                 }
@@ -189,7 +190,7 @@ namespace DJsRaidOverhaul.Controllers
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
                 typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random keycard door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -234,7 +235,7 @@ namespace DJsRaidOverhaul.Controllers
                 }
             });
 
-            if (Plugin.DebugLogging.Value)
+            if (DJConfig.DebugLogging.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
             }

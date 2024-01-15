@@ -1,24 +1,20 @@
 ﻿using EFT;
+using System;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
 using System.Linq;
 using Comfort.Common;
-using UnityEngine.UI;
 using EFT.Interactive;
-using EFT.HealthSystem;
 using System.Reflection;
 using EFT.UI.Matchmaker;
 using EFT.InventoryLogic;
 using EFT.Communications;
-using EFT.UI.BattleTimer;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
+using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
 using System.Collections;
-using TMPro;
-using System.Collections.Generic;
-using System;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -44,14 +40,14 @@ namespace DJsRaidOverhaul.Controllers
 
         void Update()
         {
-            if (Plugin.TimeChanges.Value)
+            if (DJConfig.TimeChanges.Value)
             {
                 RaidTime.inverted = MonoBehaviourSingleton<MenuUI>.Instance == null || MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen == null
                 ? RaidTime.inverted
                 : !((EDateTime)typeof(MatchMakerSelectionLocationScreen).GetField("edateTime_0", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen) == EDateTime.CURR);
             }
 
-            if (!Ready() || !Plugin.EnableEvents.Value)
+            if (!Ready() || !DJConfig.EnableEvents.Value)
             {
                 return;
             }
@@ -87,7 +83,7 @@ namespace DJsRaidOverhaul.Controllers
 
         private IEnumerator StartEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.EventRangeMin.Value, Plugin.EventRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(DJConfig.EventRangeMin.Value, DJConfig.EventRangeMax.Value) * 60f);
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
@@ -168,7 +164,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoHealPlayer()
         {
-            if (!Plugin.DisableHeal.Value)
+            if (!DJConfig.DisableHeal.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
                 player.ActiveHealthController.RestoreFullHealth();
@@ -182,7 +178,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoDamageEvent()
         {
-            if (!Plugin.NoJokesHere.Value)
+            if (!DJConfig.NoJokesHere.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
                 player.PlayerHealthController.DoContusion(4, 50);
@@ -199,7 +195,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoArmorRepair()
         {
-            if (!Plugin.DisableArmorRepair.Value)
+            if (!DJConfig.DisableArmorRepair.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
                 player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((item) =>
@@ -226,7 +222,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-            if (Plugin.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
+            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
             {
                 DoRandomEvent();
             }
@@ -240,7 +236,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoFunny()
         {
-            if (Plugin.NoJokesHere.Value)
+            if (DJConfig.NoJokesHere.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
                 await Task.Delay(10000);
@@ -269,7 +265,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
-            if (!Plugin.DisableBlackout.Value)
+            if (!DJConfig.DisableBlackout.Value)
             {
                 LampController[] dontChangeOnEnd = new LampController[0];
 

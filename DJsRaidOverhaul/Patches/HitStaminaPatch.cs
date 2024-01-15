@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using EFT;
 using Aki.Reflection.Patching;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Patches
 {
@@ -14,7 +15,7 @@ namespace DJsRaidOverhaul.Patches
         [PatchPrefix]
         static bool Prefix(ref float staminaBurnRate)
         {
-            staminaBurnRate *= Plugin.GetStrength();
+            staminaBurnRate *= Utils.GetStrength();
 
             return true;
         }
