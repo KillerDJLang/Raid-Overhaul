@@ -21,6 +21,7 @@ namespace DJsRaidOverhaul
         internal static GameObject Hook;
         internal static EventController ECScript;
         internal static DoorController DCScript;
+        internal static SkillController SCScript; 
         internal static ManualLogSource logger;
         internal static BodyCleanup BCScript;
 
@@ -35,18 +36,18 @@ namespace DJsRaidOverhaul
                 throw new Exception("Invalid EFT Version");
             }
 
+            // Bind the configs
+            DJConfig.BindConfig(Config);
+
             logger = Logger;
             Logger.LogInfo("Loading Raid Overhaul");
             Hook = new GameObject("Event Object");
-            Hook = new GameObject("Door Object");
             ECScript = Hook.AddComponent<EventController>();
             DCScript = Hook.AddComponent<DoorController>();
+            SCScript = Hook.AddComponent<SkillController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
 
-            // Bind the configs
-            DJConfig.BindConfig(Config);
-            
             // Initialize the weightings
             Weighting.InitWeightings();
 

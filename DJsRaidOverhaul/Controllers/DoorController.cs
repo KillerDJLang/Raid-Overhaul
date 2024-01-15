@@ -17,11 +17,11 @@ namespace DJsRaidOverhaul.Controllers
         private KeycardDoor[] _kdoor = null;
         private bool _dooreventisRunning = false;
 
-        Player player
-        { get => gameWorld.MainPlayer; }
-
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
+
+        Player player
+        { get => gameWorld.MainPlayer; }
 
         void Update()
         {

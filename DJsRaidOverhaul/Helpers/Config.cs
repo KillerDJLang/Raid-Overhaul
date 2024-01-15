@@ -217,7 +217,7 @@ namespace DJsRaidOverhaul.Helpers
             DebugLogging = cfg.Bind(
                 "6. Debug Logging",
                 "Enable",
-                false,
+                true,
                 new ConfigDescription("Enable extra notifications for debug purposes. Only really matters if you're testing shit lol.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));

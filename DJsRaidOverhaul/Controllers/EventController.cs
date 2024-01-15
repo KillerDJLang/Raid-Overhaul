@@ -27,11 +27,11 @@ namespace DJsRaidOverhaul.Controllers
         private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
 
-        Player player
-        { get => gameWorld.MainPlayer; }
-
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
+
+        Player player
+        { get => gameWorld.MainPlayer; }
 
         RaidSettings raidSettings
         { get => Singleton<RaidSettings>.Instance; }
@@ -166,6 +166,8 @@ namespace DJsRaidOverhaul.Controllers
                 DoFunny();
             }
         }
+
+
 
         public void DoArmorRepair()
         {
