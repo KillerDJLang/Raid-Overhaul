@@ -26,11 +26,15 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<bool> DisableArmorRepair;
         public static ConfigEntry<bool> DisableHeal;
         public static ConfigEntry<bool> DisableAirdrop;
+        public static ConfigEntry<bool> DisableSkill;
+        public static ConfigEntry<bool> DisableMetabolism;
 
         public static ConfigEntry<bool> DebugLogging;
 
         public static void BindConfig(ConfigFile cfg)
         {
+            #region Events
+
             TimeChanges = cfg.Bind(
                 "1. Events",
                 "Enable Time Changes",
@@ -126,7 +130,26 @@ namespace DJsRaidOverhaul.Helpers
                 new ConfigDescription("Disables the Airdrop event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 5 }));
+            
+            DisableSkill = cfg.Bind(
+               "1. Events",
+               "Disable Skill Event",
+                false,
+                new ConfigDescription("Disables the Skill event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 6 }));
 
+            DisableMetabolism = cfg.Bind(
+               "1. Events",
+               "Disable Metabolism Event",
+                false,
+                new ConfigDescription("Disables the Metabolism event.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 7 }));
+
+            #endregion
+
+            #region Body Clean Up
 
             EnableClean = cfg.Bind(
                 "2. Body Cleanup Configs",
@@ -152,6 +175,9 @@ namespace DJsRaidOverhaul.Helpers
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
+            #endregion
+
+            #region Other
 
             DropBackPack = cfg.Bind(
                 "3. Backpack Drop Configs",
@@ -196,6 +222,7 @@ namespace DJsRaidOverhaul.Helpers
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
 
+            #endregion
         }
     }
 }
