@@ -24,13 +24,9 @@ namespace DJsRaidOverhaul
         internal static ManualLogSource logger;
         internal static BodyCleanup BCScript;
 
-
         internal static Dictionary<IAnimator, AnimatorOverrideController> Controllers;
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
-
-        public static List<(Action, int)> weightedMethods;
-        public static List<(Action, int)> weightedDoorMethods;
 
         void Awake()
         {
@@ -50,26 +46,9 @@ namespace DJsRaidOverhaul
 
             // Bind the configs
             DJConfig.BindConfig(Config);
-
-            // List pair containing actions and associated weightings.
-            // Adjust the weightings to your liking.
-            // This needs to be here due to initialization problems otherwise....
-            weightedMethods = new List<(Action, int)>
-            {
-                (ECScript.DoDamageEvent,     1),
-                (ECScript.DoAirdropEvent,    4),
-                (ECScript.DoBlackoutEvent,   2),
-                (ECScript.DoFunny,           1),
-                (ECScript.DoHealPlayer,      4),
-                (ECScript.DoArmorRepair,     3)
-            };
-
-            weightedDoorMethods = new List<(Action, int)>
-            {
-                (DCScript.PowerOn,     1),
-                (DCScript.DoUnlock,    8),
-                (DCScript.DoKUnlock,   1)
-            };
+            
+            // Initialize the weightings
+            Weighting.InitWeightings();
 
             if (DJConfig.TimeChanges.Value)
             {

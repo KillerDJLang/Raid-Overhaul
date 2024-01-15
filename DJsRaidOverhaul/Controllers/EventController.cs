@@ -87,7 +87,7 @@ namespace DJsRaidOverhaul.Controllers
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
 
             else
@@ -136,32 +136,6 @@ namespace DJsRaidOverhaul.Controllers
         }
         /**/
 
-        // Refactored random event picker to use actions inside of a dictionary with an associated weight.
-        // This code doesnt need to be modified ever. Simply add a new event and weight in the dictionary.
-        void DoRandomEvent()
-        {
-            // Shuffle the list to randomize the order
-            Plugin.weightedMethods = Plugin.weightedMethods.OrderBy(_ => Guid.NewGuid()).ToList();
-
-            // Calculate total weight
-            int totalWeight = Plugin.weightedMethods.Sum(pair => pair.Item2);
-
-            // Generate a random number between 1 and totalWeight
-            int randomNum = new System.Random().Next(1, totalWeight + 1);
-
-            // Find the method to call based on the random number
-            foreach (var (method, weight) in Plugin.weightedMethods)
-            {
-                randomNum -= weight;
-                if (randomNum <= 0)
-                {
-                    // Call the selected method
-                    method();
-                    break;
-                }
-            }
-        }
-
         public void DoHealPlayer()
         {
             if (!DJConfig.DisableHeal.Value)
@@ -172,7 +146,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
         }
 
@@ -206,7 +180,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
         }
 
@@ -224,7 +198,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
 
             else
@@ -241,7 +215,8 @@ namespace DJsRaidOverhaul.Controllers
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
                 await Task.Delay(10000);
                 NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
-                await Task.Delay(2000); DoRandomEvent();
+                await Task.Delay(2000); 
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
 
             else
@@ -322,7 +297,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedMethods);
             }
         }
 
