@@ -25,6 +25,11 @@ namespace DJsRaidOverhaul.Controllers
         // bool exfilUIChanged = false;
 
         private bool _eventisRunning = false;
+        private bool _airdropDisabled = false;
+        private bool _metabolismDisabled = false;
+
+        private int _skillEventCount = 0;
+
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
@@ -54,6 +59,12 @@ namespace DJsRaidOverhaul.Controllers
 
             if (!Ready() || !DJConfig.EnableEvents.Value)
             {
+                // Reset Events
+                if (_airdropDisabled != false)      { _airdropDisabled = false; }
+                if (_metabolismDisabled != false)   { _metabolismDisabled = false; }
+                
+                if (_skillEventCount != 0)          { _skillEventCount = 0; }       
+                    
                 return;
             }
 
@@ -310,6 +321,8 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoSkillEvent()
         {
+            if (_skillEventCount >= 3) { return; }
+
             if (!DJConfig.DisableSkill.Value)
             {
                 System.Random random = new System.Random();
@@ -328,6 +341,7 @@ namespace DJsRaidOverhaul.Controllers
                     if (level > 50 || level < 0) { return; }
 
                     selectedSkill.SetLevel(level + 1);
+                    _skillEventCount++;
                     NotificationManagerClass.DisplayMessageNotification("Skill Event: You've advanced a skill to the next level!", ENotificationDurationType.Long);
                 }
                 else
@@ -335,6 +349,7 @@ namespace DJsRaidOverhaul.Controllers
                     if (level <= 0) { return; }
 
                     selectedSkill.SetLevel(level - 1);
+                    _skillEventCount++;
                     NotificationManagerClass.DisplayMessageNotification("Skill Event: You've lost a skill level, unlucky!", ENotificationDurationType.Long);
                 }
             }
@@ -346,7 +361,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoMetabolismEvent()
         {
-            if (!DJConfig.DisableMetabolism.Value)
+            if (!DJConfig.DisableMetabolism.Value && !_metabolismDisabled)
             {
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
@@ -359,6 +374,7 @@ namespace DJsRaidOverhaul.Controllers
                 if (chance >= 0 && chance <= 33)
                 {
                     player.ActiveHealthController.DisableMetabolism();
+                    _metabolismDisabled = true;
                     NotificationManagerClass.DisplayMessageNotification("Metabolism Event: You've got an iron stomach, No hunger or hydration drain!", ENotificationDurationType.Long);
                 }
                 else if (chance >= 34f && chance <= 66)

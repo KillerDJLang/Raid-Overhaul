@@ -60,13 +60,13 @@ namespace DJsRaidOverhaul.Helpers
             weightedEvents = new List<(Action, int)>
             {
                 (Plugin.ECScript.DoDamageEvent,     1),
-                (Plugin.ECScript.DoAirdropEvent,    4),
+                (Plugin.ECScript.DoAirdropEvent,    6),
                 (Plugin.ECScript.DoBlackoutEvent,   2),
                 (Plugin.ECScript.DoFunny,           1),
-                (Plugin.ECScript.DoHealPlayer,      4),
+                (Plugin.ECScript.DoHealPlayer,      3),
                 (Plugin.ECScript.DoArmorRepair,     3),
-                (Plugin.ECScript.DoSkillEvent,      1),
-                (Plugin.ECScript.DoMetabolismEvent, 1)
+                (Plugin.ECScript.DoSkillEvent,      2),
+                (Plugin.ECScript.DoMetabolismEvent, 2)
             };
         }
     }
