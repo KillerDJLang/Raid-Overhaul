@@ -7,6 +7,7 @@ using System.Reflection;
 using EFT.InventoryLogic;
 using System.Threading.Tasks;
 using Aki.Reflection.Patching;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Patches
 {
@@ -48,7 +49,7 @@ namespace DJsRaidOverhaul.Patches
         [PatchPostfix]
         static void Postfix(Player.FirearmController __instance, object shot)
         {
-            if (Plugin.Deafness.Value)
+            if (DJConfig.Deafness.Value)
             {
                 if (PlayerInfo.player is HideoutPlayer) return;
 
@@ -103,7 +104,7 @@ namespace DJsRaidOverhaul.Patches
         [PatchPrefix]
         static void Prefix(Grenade __instance)
         {
-            if (Plugin.Deafness.Value)
+            if (DJConfig.Deafness.Value)
             {
                 float dist = Vector3.Distance(__instance.transform.position, PlayerInfo.player.Transform.position);
                 if (!PlayerInfo.PlayerHasEarPro() && dist <= 30)

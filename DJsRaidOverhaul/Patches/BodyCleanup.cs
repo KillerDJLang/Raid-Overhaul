@@ -3,6 +3,7 @@ using UnityEngine;
 using Comfort.Common;
 using System.Threading.Tasks;
 using System.Collections;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Patches
 {
@@ -12,7 +13,7 @@ namespace DJsRaidOverhaul.Patches
 
         void Update()
         {
-            if (!Ready() || !Plugin.EnableClean.Value)
+            if (!Ready() || !DJConfig.EnableClean.Value)
             {
                 return;
             }
@@ -26,14 +27,14 @@ namespace DJsRaidOverhaul.Patches
 
         private IEnumerator StartClean()
         {
-            yield return new WaitForSeconds(Plugin.TimeToClean.Value * 60f);
+            yield return new WaitForSeconds(DJConfig.TimeToClean.Value * 60f);
 
             if (Gameworld != null && Gameworld.AllAlivePlayersList != null && Gameworld.AllAlivePlayersList.Count > 0 && !(Myplayer is HideoutPlayer))
             {
                 Task.Delay(10000);
                 foreach (BotOwner bot in FindObjectsOfType<BotOwner>())
                 {
-                    if (!bot.HealthController.IsAlive && UnityEngine.Vector3.Distance(Myplayer.Transform.position, bot.Transform.position) >= Plugin.DistToClean.Value)
+                    if (!bot.HealthController.IsAlive && UnityEngine.Vector3.Distance(Myplayer.Transform.position, bot.Transform.position) >= DJConfig.DistToClean.Value)
                     {
                         bot.gameObject.SetActive(false);
                     }

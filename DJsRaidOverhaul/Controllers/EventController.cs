@@ -4,21 +4,19 @@ using JsonType;
 using UnityEngine;
 using System.Linq;
 using Comfort.Common;
-using UnityEngine.UI;
 using EFT.Interactive;
-using EFT.HealthSystem;
 using System.Reflection;
 using EFT.UI.Matchmaker;
+using System.Collections;
 using EFT.InventoryLogic;
 using EFT.Communications;
-using EFT.UI.BattleTimer;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
+using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
-using System.Collections;
-using TMPro;
-using System.Collections.Generic;
-using System;
+using System.Numerics;
+using HarmonyLib;
+using EFT.HealthSystem;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -27,15 +25,23 @@ namespace DJsRaidOverhaul.Controllers
         // bool exfilUIChanged = false;
 
         private bool _eventisRunning = false;
+        private bool _airdropDisabled = false;
+        private bool _metabolismDisabled = false;
+
+        private int _skillEventCount = 0;
+
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
 
+        GameWorld gameWorld
+        { get => Singleton<GameWorld>.Instance; }
+
         Player player
         { get => gameWorld.MainPlayer; }
 
-        GameWorld gameWorld
-        { get => Singleton<GameWorld>.Instance; }
+        SkillManager skillManager
+        { get => gameWorld.MainPlayer.Skills; }
 
         RaidSettings raidSettings
         { get => Singleton<RaidSettings>.Instance; }
@@ -44,15 +50,21 @@ namespace DJsRaidOverhaul.Controllers
 
         void Update()
         {
-            if (Plugin.TimeChanges.Value)
+            if (DJConfig.TimeChanges.Value)
             {
                 RaidTime.inverted = MonoBehaviourSingleton<MenuUI>.Instance == null || MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen == null
                 ? RaidTime.inverted
                 : !((EDateTime)typeof(MatchMakerSelectionLocationScreen).GetField("edateTime_0", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen) == EDateTime.CURR);
             }
 
-            if (!Ready() || !Plugin.EnableEvents.Value)
+            if (!Ready() || !DJConfig.EnableEvents.Value)
             {
+                // Reset Events
+                if (_airdropDisabled != false)      { _airdropDisabled = false; }
+                if (_metabolismDisabled != false)   { _metabolismDisabled = false; }
+                
+                if (_skillEventCount != 0)          { _skillEventCount = 0; }       
+                    
                 return;
             }
 
@@ -87,11 +99,11 @@ namespace DJsRaidOverhaul.Controllers
 
         private IEnumerator StartEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.EventRangeMin.Value, Plugin.EventRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(DJConfig.EventRangeMin.Value, DJConfig.EventRangeMax.Value) * 60f);
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -140,35 +152,9 @@ namespace DJsRaidOverhaul.Controllers
         }
         /**/
 
-        // Refactored random event picker to use actions inside of a dictionary with an associated weight.
-        // This code doesnt need to be modified ever. Simply add a new event and weight in the dictionary.
-        void DoRandomEvent()
-        {
-            // Shuffle the list to randomize the order
-            Plugin.weightedMethods = Plugin.weightedMethods.OrderBy(_ => Guid.NewGuid()).ToList();
-
-            // Calculate total weight
-            int totalWeight = Plugin.weightedMethods.Sum(pair => pair.Item2);
-
-            // Generate a random number between 1 and totalWeight
-            int randomNum = new System.Random().Next(1, totalWeight + 1);
-
-            // Find the method to call based on the random number
-            foreach (var (method, weight) in Plugin.weightedMethods)
-            {
-                randomNum -= weight;
-                if (randomNum <= 0)
-                {
-                    // Call the selected method
-                    method();
-                    break;
-                }
-            }
-        }
-
         public void DoHealPlayer()
         {
-            if (!Plugin.DisableHeal.Value)
+            if (!DJConfig.DisableHeal.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
                 player.ActiveHealthController.RestoreFullHealth();
@@ -176,13 +162,13 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 
         public void DoDamageEvent()
         {
-            if (!Plugin.NoJokesHere.Value)
+            if (!DJConfig.NoJokesHere.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
                 player.PlayerHealthController.DoContusion(4, 50);
@@ -197,9 +183,11 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
+
+
         public void DoArmorRepair()
         {
-            if (!Plugin.DisableArmorRepair.Value)
+            if (!DJConfig.DisableArmorRepair.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
                 player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((item) =>
@@ -210,7 +198,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 
@@ -226,9 +214,9 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-            if (Plugin.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
+            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -240,12 +228,13 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoFunny()
         {
-            if (Plugin.NoJokesHere.Value)
+            if (DJConfig.NoJokesHere.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
                 await Task.Delay(10000);
                 NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
-                await Task.Delay(2000); DoRandomEvent();
+                await Task.Delay(2000); 
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -269,7 +258,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
-            if (!Plugin.DisableBlackout.Value)
+            if (!DJConfig.DisableBlackout.Value)
             {
                 LampController[] dontChangeOnEnd = new LampController[0];
 
@@ -326,7 +315,96 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                DoRandomEvent();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public void DoSkillEvent()
+        {
+            if (_skillEventCount >= 3) { return; }
+
+            if (!DJConfig.DisableSkill.Value)
+            {
+                System.Random random = new System.Random();
+
+                int chance = random.Next(0, 100 + 1);
+                var selectedSkill = skillManager.DisplayList.RandomElement();
+                int level = selectedSkill.Level;
+
+                // If the skill is a locked skill, start over.
+                if (selectedSkill.Locked == true) { DoSkillEvent(); };
+
+                // 55% chance to roll a skill gain
+                // 45% chance to roll a skill loss
+                if (chance >= 0 && chance <= 55)
+                {
+                    if (level > 50 || level < 0) { return; }
+
+                    selectedSkill.SetLevel(level + 1);
+                    _skillEventCount++;
+                    NotificationManagerClass.DisplayMessageNotification("Skill Event: You've advanced a skill to the next level!", ENotificationDurationType.Long);
+                }
+                else
+                {
+                    if (level <= 0) { return; }
+
+                    selectedSkill.SetLevel(level - 1);
+                    _skillEventCount++;
+                    NotificationManagerClass.DisplayMessageNotification("Skill Event: You've lost a skill level, unlucky!", ENotificationDurationType.Long);
+                }
+            }
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public void DoMetabolismEvent()
+        {
+            if (!DJConfig.DisableMetabolism.Value && !_metabolismDisabled)
+            {
+                System.Random random = new System.Random();
+                int chance = random.Next(0, 100 + 1);
+
+                ConsoleScreen.Log(chance.ToString());
+
+                // 33% chance to disable metabolism for the raid
+                // 33% chance to increase metabolism rate by 20% for the raid
+                // 33% chance to reduce metabolism rate by 20% for the raid
+                if (chance >= 0 && chance <= 33)
+                {
+                    player.ActiveHealthController.DisableMetabolism();
+                    _metabolismDisabled = true;
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: You've got an iron stomach, No hunger or hydration drain!", ENotificationDurationType.Long);
+                }
+                else if (chance >= 34f && chance <= 66)
+                {
+                    AccessTools.Property(typeof(ActiveHealthController), "EnergyRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.EnergyRate * 0.80f);
+
+                    AccessTools.Property(typeof(ActiveHealthController), "HydrationRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.HydrationRate * 0.80f);
+
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has slowed. Decreased hunger and hydration drain!", ENotificationDurationType.Long);
+                }
+                else if (chance >= 67 && chance <= 100f)
+                {
+                    AccessTools.Property(typeof(ActiveHealthController), "EnergyRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.EnergyRate * 1.20f);
+
+                    AccessTools.Property(typeof(ActiveHealthController), "HydrationRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.HydrationRate * 1.20f);
+
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has fastened. Increased hunger and hydration drain!", ENotificationDurationType.Long);
+                }
+            }
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 

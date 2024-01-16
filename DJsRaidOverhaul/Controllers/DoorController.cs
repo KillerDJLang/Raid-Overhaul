@@ -1,12 +1,12 @@
 ﻿using EFT;
+using System;
 using UnityEngine;
 using Comfort.Common;
 using EFT.Interactive;
 using System.Reflection;
 using EFT.Communications;
 using System.Collections;
-using System;
-using System.Linq;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -17,15 +17,15 @@ namespace DJsRaidOverhaul.Controllers
         private KeycardDoor[] _kdoor = null;
         private bool _dooreventisRunning = false;
 
-        Player player
-        { get => gameWorld.MainPlayer; }
-
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
 
+        Player player
+        { get => gameWorld.MainPlayer; }
+
         void Update()
         {
-            if (!Ready() || !Plugin.EnableDoorEvents.Value)
+            if (!Ready() || !DJConfig.EnableDoorEvents.Value)
             {
                 return;
             }
@@ -55,11 +55,11 @@ namespace DJsRaidOverhaul.Controllers
 
         private IEnumerator DoorEvents()
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(Plugin.DoorRangeMin.Value, Plugin.DoorRangeMax.Value) * 60f);
+            yield return new WaitForSeconds(UnityEngine.Random.Range(DJConfig.DoorRangeMin.Value, DJConfig.DoorRangeMax.Value) * 60f);
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
-                DoRandomUnlock();
+                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
 
             else
@@ -73,35 +73,11 @@ namespace DJsRaidOverhaul.Controllers
             yield break;
         }
 
-        void DoRandomUnlock()
-        {
-            // Shuffle the list to randomize the order
-            Plugin.weightedDoorMethods = Plugin.weightedDoorMethods.OrderBy(_ => Guid.NewGuid()).ToList();
-
-            // Calculate total weight
-            int totalWeight = Plugin.weightedDoorMethods.Sum(pair => pair.Item2);
-
-            // Generate a random number between 1 and totalWeight
-            int randomNum = new System.Random().Next(1, totalWeight + 1);
-
-            // Find the method to call based on the random number
-            foreach (var (method, weight) in Plugin.weightedDoorMethods)
-            {
-                randomNum -= weight;
-                if (randomNum <= 0)
-                {
-                    // Call the selected method
-                    method();
-                    break;
-                }
-            }
-        }
-
         public void PowerOn()
         {
             if (_switchs == null || _switchs.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No switches available, returning.", ENotificationDurationType.Default);
                 }
@@ -110,14 +86,14 @@ namespace DJsRaidOverhaul.Controllers
 
             System.Random random = new System.Random();
 
-            int selection = random.Next(_switchs.Length);
+            int selection = random.Next(_switchs.Length + 1);
             Switch _switch = _switchs[selection];
 
             if (_switch.DoorState == EDoorState.Shut)
             {
                 typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(_switch, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random switch has been thrown.", ENotificationDurationType.Default);
                 }
@@ -128,7 +104,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                DoRandomUnlock();
+                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
         }
 
@@ -136,7 +112,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_door == null || _door.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No locked doors available, returning.", ENotificationDurationType.Default);
                 }
@@ -145,7 +121,7 @@ namespace DJsRaidOverhaul.Controllers
 
             System.Random random = new System.Random();
 
-            int selection = random.Next(_door.Length);
+            int selection = random.Next(_door.Length + 1);
             Door door = _door[selection];
 
             if (door.DoorState == EDoorState.Locked)
@@ -153,7 +129,7 @@ namespace DJsRaidOverhaul.Controllers
                 typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                 typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -164,7 +140,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                DoRandomUnlock();
+                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
         }
 
@@ -172,7 +148,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (_kdoor == null || _kdoor.Length <= 0)
             {
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("No keycard doors available, returning.", ENotificationDurationType.Default);
                 }
@@ -181,7 +157,7 @@ namespace DJsRaidOverhaul.Controllers
 
             System.Random random = new System.Random();
 
-            int selection = random.Next(_kdoor.Length);
+            int selection = random.Next(_kdoor.Length + 1);
             KeycardDoor kdoor = _kdoor[selection];
 
             if (kdoor.DoorState == EDoorState.Locked)
@@ -189,7 +165,7 @@ namespace DJsRaidOverhaul.Controllers
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
                 typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(kdoor, null);
 
-                if (Plugin.DebugLogging.Value)
+                if (DJConfig.DebugLogging.Value)
                 {
                     NotificationManagerClass.DisplayMessageNotification("A random keycard door has been unlocked.", ENotificationDurationType.Default);
                 }
@@ -200,7 +176,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                DoRandomUnlock();
+                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
         }
 
@@ -234,7 +210,7 @@ namespace DJsRaidOverhaul.Controllers
                 }
             });
 
-            if (Plugin.DebugLogging.Value)
+            if (DJConfig.DebugLogging.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
             }

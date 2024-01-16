@@ -1,18 +1,18 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
+using System.IO;
 using UnityEngine;
 using BepInEx.Logging;
-using BepInEx.Configuration;
-using DJsRaidOverhaul.Patches;
-using DJsRaidOverhaul.Controllers;
-using DrakiaXYZ.VersionChecker;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
+using DJsRaidOverhaul.Helpers;
+using DJsRaidOverhaul.Patches;
+using DrakiaXYZ.VersionChecker;
+using System.Collections.Generic;
+using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.2")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.3.0")]
 
     public class Plugin : BaseUnityPlugin
     {
@@ -24,36 +24,9 @@ namespace DJsRaidOverhaul
         internal static ManualLogSource logger;
         internal static BodyCleanup BCScript;
 
-        internal static ConfigEntry<bool> DropBackPack;
-        internal static ConfigEntry<bool> EnableClean;
-        internal static ConfigEntry<int> TimeToClean;
-        internal static ConfigEntry<int> DistToClean;
-        internal static ConfigEntry<float> DropBackPackChance;
-
-        internal static ConfigEntry<bool> Deafness;
-        private static ConfigEntry<float> EffectStrength;
-
-        internal static ConfigEntry<bool> TimeChanges;
-        internal static ConfigEntry<bool> EnableEvents;
-        internal static ConfigEntry<bool> EnableDoorEvents;
-        internal static ConfigEntry<int> EventRangeMin;
-        internal static ConfigEntry<int> EventRangeMax;
-        internal static ConfigEntry<int> DoorRangeMin;
-        internal static ConfigEntry<int> DoorRangeMax;
-        internal static ConfigEntry<bool> NoJokesHere;
-        internal static ConfigEntry<bool> DisableBlackout;
-        internal static ConfigEntry<bool> DisableArmorRepair;
-        internal static ConfigEntry<bool> DisableHeal;
-        internal static ConfigEntry<bool> DisableAirdrop;
-
-        internal static ConfigEntry<bool> DebugLogging;
-
         internal static Dictionary<IAnimator, AnimatorOverrideController> Controllers;
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
-
-        public static List<(Action, int)> weightedMethods;
-        public static List<(Action, int)> weightedDoorMethods;
 
         void Awake()
         {
@@ -62,202 +35,21 @@ namespace DJsRaidOverhaul
                 throw new Exception("Invalid EFT Version");
             }
 
+            // Bind the configs
+            DJConfig.BindConfig(Config);
+
             logger = Logger;
             Logger.LogInfo("Loading Raid Overhaul");
             Hook = new GameObject("Event Object");
-            Hook = new GameObject("Door Object");
             ECScript = Hook.AddComponent<EventController>();
             DCScript = Hook.AddComponent<DoorController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
 
-            // List pair containing actions and associated weightings.
-            // Adjust the weightings to your liking.
-            // This needs to be here due to initialization problems otherwise....
-            weightedMethods = new List<(Action, int)>
-            {
-                (ECScript.DoDamageEvent,     1),
-                (ECScript.DoAirdropEvent,    4),
-                (ECScript.DoBlackoutEvent,   2),
-                (ECScript.DoFunny,           1),
-                (ECScript.DoHealPlayer,      4),
-                (ECScript.DoArmorRepair,     3)
-            };
+            // Initialize the weightings
+            Weighting.InitWeightings();
 
-            weightedDoorMethods = new List<(Action, int)>
-            {
-                (DCScript.PowerOn,     1),
-                (DCScript.DoUnlock,    8),
-                (DCScript.DoKUnlock,   1)
-            };
-
-            TimeChanges = Config.Bind(
-                "1. Events",
-                "Enable Time Changes",
-                true,
-                new ConfigDescription("Sets the in game time to your system time.\nThis requires a restart to take effect after enabling or disabling!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 12 }));
-
-            EnableEvents = Config.Bind(
-                "1. Events",
-                "Enable Dynamic Events",
-                true,
-                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 11 }));
-
-            EnableDoorEvents = Config.Bind(
-                "1. Events",
-                "Enable Dynamic Door Events",
-                true,
-                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow door events to run or not.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 10 }));
-
-            DoorRangeMax = Config.Bind(
-               "1. Events",
-               "Door Events timer maximum range",
-               3,
-               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 8 }));
-
-            DoorRangeMin = Config.Bind(
-               "1. Events",
-               "Door Events timer minimum range",
-               1,
-               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
-               new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 9 }));
-
-            EventRangeMax = Config.Bind(
-               "1. Events",
-               "Random Events timer maximum range",
-               30,
-               new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 6 }));
-
-            EventRangeMin = Config.Bind(
-               "1. Events",
-               "Random Events timer minimum range",
-               5,
-               new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
-               new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 7 }));
-
-            NoJokesHere = Config.Bind(
-               "1. Events",
-               "Disable Heart Attack",
-                false,
-                new ConfigDescription("Disables the heart attack event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
-
-            DisableBlackout = Config.Bind(
-               "1. Events",
-               "Disable Blackout",
-                false,
-                new ConfigDescription("Disables the blackout event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
-
-            DisableArmorRepair = Config.Bind(
-               "1. Events",
-               "Disable Armor Repair",
-                false,
-                new ConfigDescription("Disables the armor repair event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
-
-            DisableHeal = Config.Bind(
-               "1. Events",
-               "Disable Heal",
-                false,
-                new ConfigDescription("Disables the healing event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 4 }));
-
-            DisableAirdrop = Config.Bind(
-               "1. Events",
-               "Disable Airdrop",
-                false,
-                new ConfigDescription("Disables the Airdrop event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 5 }));
-
-
-            EnableClean = Config.Bind(
-                "2. Body Cleanup Configs",
-                "Enable Clean",
-                true,
-                new ConfigDescription("Enable body cleanup?",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
-
-            TimeToClean = Config.Bind(
-                "2. Body Cleanup Configs",
-                "Time to Clean", 
-                15,
-                new ConfigDescription("Time to clean bodies. Calculated in minutes.",
-                new AcceptableValueRange<int>(1, 60),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
-
-            DistToClean = Config.Bind(
-                "2. Body Cleanup Configs", 
-                "Distance to Clean.", 
-                15,
-                new ConfigDescription("How far away should bodies be for cleanup.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
-
-
-            DropBackPack = Config.Bind(
-                "3. Backpack Drop Configs", 
-                "Drop Backpack", 
-                true,
-                new ConfigDescription("Enable the dropping of backpacks on death or cleanup.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
-
-            DropBackPackChance = Config.Bind(
-                "3. Backpack Drop Configs", 
-                "Backpack Drop Chance", 
-                0.3f,
-                new ConfigDescription("Chance of dropping a backpack on kill or cleanup.",
-                new AcceptableValueRange<float>(0f, 1f),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
-
-
-            EffectStrength = Config.Bind(
-                "4. Adrenaline", 
-                "Effect Strength", 
-                0f, 
-                new ConfigDescription("Causes an adrenaline effect on hit. This is how strong the effect will be multiplied by, as a percent.", 
-                new AcceptableValueRange<float>(0f, 100f),
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
-
-
-            Deafness = Config.Bind(
-                "5. Deafness",
-                "Enable",
-                false,
-                new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
-
-
-            DebugLogging = Config.Bind(
-                "6. Debug Logging",
-                "Enable",
-                false,
-                new ConfigDescription("Enable extra notifications for debug purposes. Only really matters if you're testing shit lol.",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 1 }));
-
-
-            if (TimeChanges.Value)
+            if (DJConfig.TimeChanges.Value)
             {
                 new OnDeadPatch().Enable();
                 new GameWorldPatch().Enable();
@@ -268,6 +60,7 @@ namespace DJsRaidOverhaul
                 new GlobalsPatch().Enable();
                 new WatchPatch().Enable();
             }
+
             new EnableEntryPointPatch().Enable();
             new HitStaminaPatch().Enable();
             new DeafnessPatch().Enable();
@@ -277,6 +70,7 @@ namespace DJsRaidOverhaul
             new DefaultDoorOpenPatch().Enable();
             // new FactoryTimePatch().Enable();
             // new AirdropBoxPatch().Enable();
+            
             Controllers = new Dictionary<IAnimator, AnimatorOverrideController>();
             SuitsLookup = new Dictionary<string, int>
             {
@@ -322,11 +116,6 @@ namespace DJsRaidOverhaul
             };
             var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             AnimationClips = AssetBundle.LoadFromFile($"{directory}/bundles/watch animations.bundle").LoadAllAssets<AnimationClip>();
-        }
-
-        public static float GetStrength()
-        {
-            return EffectStrength.Value;
         }
     }
 }
