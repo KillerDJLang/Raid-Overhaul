@@ -349,7 +349,7 @@ namespace DJsRaidOverhaul.Controllers
             if (!DJConfig.DisableMetabolism.Value)
             {
                 System.Random random = new System.Random();
-                int chance = random.Next(34, 100 + 1);
+                int chance = random.Next(0, 100 + 1);
 
                 ConsoleScreen.Log(chance.ToString());
 
