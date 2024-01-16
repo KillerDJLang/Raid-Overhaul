@@ -14,7 +14,9 @@ using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
 using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
-
+using System.Numerics;
+using HarmonyLib;
+using EFT.HealthSystem;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -32,6 +34,9 @@ namespace DJsRaidOverhaul.Controllers
 
         Player player
         { get => gameWorld.MainPlayer; }
+
+        SkillManager skillManager
+        { get => gameWorld.MainPlayer.Skills; }
 
         RaidSettings raidSettings
         { get => Singleton<RaidSettings>.Instance; }
@@ -87,7 +92,7 @@ namespace DJsRaidOverhaul.Controllers
 
             if (gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer))
             {
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -146,7 +151,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 
@@ -182,7 +187,7 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 
@@ -200,7 +205,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
             {
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -218,7 +223,7 @@ namespace DJsRaidOverhaul.Controllers
                 await Task.Delay(10000);
                 NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
                 await Task.Delay(2000); 
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -299,7 +304,91 @@ namespace DJsRaidOverhaul.Controllers
 
             else
             {
-                Weighting.DoRandomEvent(Weighting.weightedMethods);
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public void DoSkillEvent()
+        {
+            if (!DJConfig.DisableSkill.Value)
+            {
+                System.Random random = new System.Random();
+
+                int chance = random.Next(0, 100 + 1);
+                var selectedSkill = skillManager.DisplayList.RandomElement();
+                int level = selectedSkill.Level;
+
+                // If the skill is a locked skill, start over.
+                if (selectedSkill.Locked == true) { DoSkillEvent(); };
+
+                // 55% chance to roll a skill gain
+                // 45% chance to roll a skill loss
+                if (chance >= 0 && chance <= 55)
+                {
+                    if (level > 50 || level < 0) { return; }
+
+                    selectedSkill.SetLevel(level + 1);
+                    NotificationManagerClass.DisplayMessageNotification("Skill Event: You've advanced a skill to the next level!", ENotificationDurationType.Long);
+                }
+                else
+                {
+                    if (level <= 0) { return; }
+
+                    selectedSkill.SetLevel(level - 1);
+                    NotificationManagerClass.DisplayMessageNotification("Skill Event: You've lost a skill level, unlucky!", ENotificationDurationType.Long);
+                }
+            }
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public void DoMetabolismEvent()
+        {
+            if (!DJConfig.DisableMetabolism.Value)
+            {
+                System.Random random = new System.Random();
+                int chance = random.Next(34, 100 + 1);
+
+                ConsoleScreen.Log(chance.ToString());
+
+                // 33% chance to disable metabolism for the raid
+                // 33% chance to increase metabolism rate by 20% for the raid
+                // 33% chance to reduce metabolism rate by 20% for the raid
+                if (chance >= 0 && chance <= 33)
+                {
+                    player.ActiveHealthController.DisableMetabolism();
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: You've got an iron stomach, No hunger or hydration drain!", ENotificationDurationType.Long);
+                }
+                else if (chance >= 34f && chance <= 66)
+                {
+                    AccessTools.Property(typeof(ActiveHealthController), "EnergyRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.EnergyRate * 0.80f);
+
+                    AccessTools.Property(typeof(ActiveHealthController), "HydrationRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.HydrationRate * 0.80f);
+
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has slowed. Decreased hunger and hydration drain!", ENotificationDurationType.Long);
+                }
+                else if (chance >= 67 && chance <= 100f)
+                {
+                    AccessTools.Property(typeof(ActiveHealthController), "EnergyRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.EnergyRate * 1.20f);
+
+                    AccessTools.Property(typeof(ActiveHealthController), "HydrationRate").SetValue(
+                        player.ActiveHealthController,
+                        player.ActiveHealthController.HydrationRate * 1.20f);
+
+                    NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has fastened. Increased hunger and hydration drain!", ENotificationDurationType.Long);
+                }
+            }
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 

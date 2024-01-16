@@ -21,7 +21,6 @@ namespace DJsRaidOverhaul
         internal static GameObject Hook;
         internal static EventController ECScript;
         internal static DoorController DCScript;
-        internal static SkillController SCScript; 
         internal static ManualLogSource logger;
         internal static BodyCleanup BCScript;
 
@@ -44,7 +43,6 @@ namespace DJsRaidOverhaul
             Hook = new GameObject("Event Object");
             ECScript = Hook.AddComponent<EventController>();
             DCScript = Hook.AddComponent<DoorController>();
-            SCScript = Hook.AddComponent<SkillController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
 

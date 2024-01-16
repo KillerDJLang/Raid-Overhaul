@@ -7,7 +7,7 @@ namespace DJsRaidOverhaul.Helpers
 {
     public static class Weighting
     {
-        public static List<(Action, int)> weightedMethods;
+        public static List<(Action, int)> weightedEvents;
         public static List<(Action, int)> weightedDoorMethods;
 
         public static void InitWeightings()
@@ -40,6 +40,11 @@ namespace DJsRaidOverhaul.Helpers
             }
         }
 
+        private static void LoadWeightings()
+        {
+            //TODO: Load weightings from disk json
+        }
+
         private static void InitDoorWeighting()
         {
             weightedDoorMethods = new List<(Action, int)>
@@ -52,14 +57,16 @@ namespace DJsRaidOverhaul.Helpers
 
         private static void InitEventWeighting()
         {
-            weightedMethods = new List<(Action, int)>
+            weightedEvents = new List<(Action, int)>
             {
                 (Plugin.ECScript.DoDamageEvent,     1),
                 (Plugin.ECScript.DoAirdropEvent,    4),
                 (Plugin.ECScript.DoBlackoutEvent,   2),
                 (Plugin.ECScript.DoFunny,           1),
                 (Plugin.ECScript.DoHealPlayer,      4),
-                (Plugin.ECScript.DoArmorRepair,     3)
+                (Plugin.ECScript.DoArmorRepair,     3),
+                (Plugin.ECScript.DoSkillEvent,      1),
+                (Plugin.ECScript.DoMetabolismEvent, 1)
             };
         }
     }
