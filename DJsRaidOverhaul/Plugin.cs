@@ -12,7 +12,7 @@ using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.2.2")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.3.0")]
 
     public class Plugin : BaseUnityPlugin
     {
