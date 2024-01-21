@@ -336,10 +336,32 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         this.Ref.tables.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
         this.Ref.tables.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
         this.Ref.tables.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+
+            for (const container in this.Ref.tables.templates.items) 
+            {
+                if (this.Ref.tables.templates.items[container]._parent === "5448bf274bdc2dfc2f8b456a") 
+                {
+                    if (!this.Ref.tables.templates.items[container]._props.Grids[0]._props.filters) 
+                    {
+                        this.Ref.tables.templates.items[container]._props.Grids[0]._props.filters = unbreakWithSVM;
+                    }
+                }
+            }
         }
 
         if (modConfig.Raid.PocketChanges) {
             this.Ref.tables.templates.items["627a4e6b255f7527fb05a0f6"] = mydb.Pockets.Pockets["627a4e6b255f7527fb05a0f6"];
+
+            for (const pockets in this.Ref.tables.templates.items) 
+            {
+                if (this.Ref.tables.templates.items[pockets]._parent === "557596e64bdc2dc2118b4571") 
+                {
+                    if (!this.Ref.tables.templates.items[pockets]._props.Grids[0]._props.filters) 
+                    {
+                        this.Ref.tables.templates.items[pockets]._props.Grids[0]._props.filters = unbreakWithSVM;
+                    }
+                }
+            }
         }
 
         if (modConfig.Trader.Enabled)
