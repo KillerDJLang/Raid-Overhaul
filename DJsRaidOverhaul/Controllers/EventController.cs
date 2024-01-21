@@ -1,4 +1,4 @@
-﻿using EFT;
+using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
@@ -27,6 +27,8 @@ namespace DJsRaidOverhaul.Controllers
         private bool _eventisRunning = false;
         private bool _airdropDisabled = false;
         private bool _metabolismDisabled = false;
+        private bool _jokeEventHasRun = false;
+        private bool _airdropEventHasRun = false;
 
         private int _skillEventCount = 0;
 
@@ -62,7 +64,9 @@ namespace DJsRaidOverhaul.Controllers
                 // Reset Events
                 if (_airdropDisabled != false)      { _airdropDisabled = false; }
                 if (_metabolismDisabled != false)   { _metabolismDisabled = false; }
-                
+                if (_jokeEventHasRun != false)      { _jokeEventHasRun = false; }
+                if (_airdropEventHasRun != false)   { _airdropEventHasRun = false; }
+
                 if (_skillEventCount != 0)          { _skillEventCount = 0; }       
                     
                 return;
@@ -214,7 +218,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
+            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory" || _airdropEventHasRun)
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -223,17 +227,26 @@ namespace DJsRaidOverhaul.Controllers
             {
                 gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
                 NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.Default);
+
+                _airdropEventHasRun = true;
             }
         }
 
         public async void DoFunny()
         {
-            if (DJConfig.NoJokesHere.Value)
+            if (DJConfig.NoJokesHere.Value && !_jokeEventHasRun)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
                 await Task.Delay(10000);
                 NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
                 await Task.Delay(2000); 
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+
+                _jokeEventHasRun = true;
+            }
+
+            if (DJConfig.NoJokesHere.Value && _jokeEventHasRun)
+            {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
@@ -405,6 +418,32 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public static void RandomizeLampState()
+        {
+            FindObjectsOfType<LampController>().ExecuteForEach(lamp =>
+            {
+
+                if (lamp.enabled == false)
+                {
+                    return;
+                }
+
+                if (Random.Range(0, 100) < 80)
+                {
+                    if (lamp.enabled == true)
+                    {
+                        lamp.Switch(Turnable.EState.Off);
+                        lamp.enabled = false;
+                    }
+                }
+            });
+
+            if (DJConfig.DebugLogging.Value)
+            {
+                NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
             }
         }
 
