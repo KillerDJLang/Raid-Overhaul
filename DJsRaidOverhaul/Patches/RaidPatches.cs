@@ -1,4 +1,4 @@
-﻿using EFT;
+using EFT;
 using TMPro;
 using System;
 using EFT.UI.Map;
@@ -294,7 +294,7 @@ namespace DJsRaidOverhaul.Patches
         }
     }
 
-    public class DefaultDoorOpenPatch : ModulePatch
+    public class RandomizeDefaultStatePatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -305,6 +305,7 @@ namespace DJsRaidOverhaul.Patches
         public static void PatchPrefix()
         {
             DoorController.RandomizeDefaultDoors();
+            EventController.RandomizeLampState();
         }
     }
 }
