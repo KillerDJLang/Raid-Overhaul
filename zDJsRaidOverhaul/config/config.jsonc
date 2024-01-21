@@ -7,18 +7,13 @@
     },
 
     "SaveQuestItems": true,         //If enabled saves quest items in your inventory on death
-
     "NoRunThrough": true,           //Remove raid survived requirements
-
     "LootableMelee": true,          //Makes melee weapons lootable
-
     "LootableArmbands": true,       //Makes armbands lootable
-
-    "ContainerChanges": true,       //Enables the container size changes (conflicts with softcore)
-
-    "PocketChanges": true,          //Enables the pocket size and special slot filter changes
-
-    "RemoveFilters": true,          //Removes filters for backpacks and containers
+    "ContainerChanges": false,      //Enables the container size changes (conflicts with softcore)
+    "PocketChanges": false,         //Enables the pocket size and special slot filter changes
+    "EnableExtendedRaids": true,    //Enables the raid time changes making raid times essentially unlimited
+    "TimeLimit": 999,               //The raid time limit calculated in minutes
 
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
@@ -32,7 +27,7 @@
   },
 
   "Weight": {
-    "Enabled": true,
+    "Enabled": false,
     "MinWeight": 90,                //Minimum overweight limit  DEFAULT 21
     "MaxWeight": 140,               //Maximum overweight limit  DEFAULT 81
     "WalkMinWeight": 110,           //Minimum walk overweight limit  DEFAULT 42
@@ -41,5 +36,11 @@
     "WalkSpeedMaxWeight": 170,      //Maximum walk speed overweight limit  DEFAULT 75
     "SprintMinWeight": 90,          //Minimum sprint speed overweight limit  DEFAULT 21
     "SprintMaxWeight": 140          //Maximum sprint speed overweight limit  DEFAULT 58
+  },
+
+  "Trader": {
+    "Enabled": true,                //Enable the Requisition Office trader in your game
+    "AllowRandomization": true,     //Allow the Req Offices stock to be randomized
+    "RandomizationRange": 5         //The range for item count to be randomized if AllowRandomization is enabled. It will be this number +/- this number again. 5 allows the stock to be from 0-10 etc. 
   }
 }
