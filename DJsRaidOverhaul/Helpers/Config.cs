@@ -169,7 +169,7 @@ namespace DJsRaidOverhaul.Helpers
 
             DistToClean = cfg.Bind(
                 "2. Body Cleanup Configs",
-                "Distance to Clean.",
+                "Distance to Clean",
                 15,
                 new ConfigDescription("How far away should bodies be for cleanup.",
                 null,
