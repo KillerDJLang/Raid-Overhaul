@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using BepInEx;
 using System.IO;
 using UnityEngine;
@@ -12,7 +12,7 @@ using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.3.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.3.1")]
 
     public class Plugin : BaseUnityPlugin
     {
@@ -67,7 +67,7 @@ namespace DJsRaidOverhaul
             new GrenadeDeafnessPatch().Enable();
             new GamePlayerOwnerPatch().Enable();
             new GameWorldDisposePatch().Enable();
-            new DefaultDoorOpenPatch().Enable();
+            new RandomizeDefaultStatePatch().Enable();
             // new FactoryTimePatch().Enable();
             // new AirdropBoxPatch().Enable();
             
