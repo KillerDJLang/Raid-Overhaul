@@ -214,7 +214,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory")
+            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory" || _airdropDisabled)
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -222,6 +222,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
+                _airdropDisabled = true;
                 NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.Default);
             }
         }
@@ -365,8 +366,6 @@ namespace DJsRaidOverhaul.Controllers
             {
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
-
-                ConsoleScreen.Log(chance.ToString());
 
                 // 33% chance to disable metabolism for the raid
                 // 33% chance to increase metabolism rate by 20% for the raid
