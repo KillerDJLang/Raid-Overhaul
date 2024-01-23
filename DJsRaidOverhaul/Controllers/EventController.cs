@@ -2,7 +2,6 @@ using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
-using System.Linq;
 using Comfort.Common;
 using EFT.Interactive;
 using System.Reflection;
@@ -17,6 +16,8 @@ using DJsRaidOverhaul.Patches;
 using System.Numerics;
 using HarmonyLib;
 using EFT.HealthSystem;
+using Aki.Reflection.Utils;
+using static DJsRaidOverhaul.Plugin;
 
 namespace DJsRaidOverhaul.Controllers
 {
@@ -35,6 +36,8 @@ namespace DJsRaidOverhaul.Controllers
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
+
+        public static ISession Session;
 
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
@@ -273,8 +276,6 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (!DJConfig.DisableBlackout.Value)
             {
-                LampController[] dontChangeOnEnd = new LampController[0];
-
                 foreach (Switch pSwitch in _pswitchs)
                 {
                     typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
@@ -283,11 +284,6 @@ namespace DJsRaidOverhaul.Controllers
 
                 foreach (LampController lamp in _lamp)
                 {
-                    if (lamp.enabled == false)
-                    {
-                        dontChangeOnEnd.Append(lamp);
-                        continue;
-                    }
                     lamp.Switch(Turnable.EState.Off);
                     lamp.enabled = false;
                 }
@@ -309,7 +305,6 @@ namespace DJsRaidOverhaul.Controllers
 
                 foreach (LampController lamp in _lamp)
                 {
-                    if (dontChangeOnEnd.Contains(lamp)) continue;
                     lamp.Switch(Turnable.EState.On);
                     lamp.enabled = true;
                 }
@@ -421,30 +416,55 @@ namespace DJsRaidOverhaul.Controllers
 
         public static void RandomizeLampState()
         {
-            FindObjectsOfType<LampController>().ExecuteForEach(lamp =>
+            if (DJConfig.EnableRaidStartEvents.Value)
             {
-
-                if (lamp.enabled == false)
+                FindObjectsOfType<LampController>().ExecuteForEach(lamp =>
                 {
-                    return;
-                }
+                    System.Random random = new System.Random();
 
-                if (Random.Range(0, 100) < 80)
-                {
-                    if (lamp.enabled == true)
+                    int chance = random.Next(0, 100 + 1);
+
+                    if (chance is >= 50)
                     {
                         lamp.Switch(Turnable.EState.Off);
                         lamp.enabled = false;
-                    }
-                }
-            });
 
-            if (DJConfig.DebugLogging.Value)
-            {
-                NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
+                        if (DJConfig.DebugLogging.Value)
+                        {
+                            NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
+                        }
+                    }
+                });
             }
         }
 
+        public void DoLLEvent()
+        {
+            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null && !DJConfig.DisableTrader.Value)
+            {
+                System.Random random = new System.Random();
+
+                string[] traders = { "5c0647fdd443bc2504c2d371", "5ac3b934156ae10c4430e83c", "5a7c2eca46aef81a7ca2145d", "5935c25fb3acc3127c3d8cd9", "58330581ace78e27b8b10cee", "579dc571d53a0658a154fbec", "54cb57776803fa99248b456e", "54cb50c76803fa8b248b4571" };
+                var Trader = traders.RandomElement();
+
+                int chance = random.Next(0, 100 + 1);
+
+                Session = ClientAppUtils.GetMainApp().GetClientBackEndSession();
+
+                if (chance is >= 0 && chance is <= 49)
+                {
+                    Session.Profile.TradersInfo[Trader].SetStanding(+ 0.1);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default);
+                }
+
+                if (chance is >= 50 && chance is <= 100)
+                {
+                    Session.Profile.TradersInfo[Trader].SetStanding(- 0.05);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default);
+                }              
+            }
+        }
+        
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
     }
 }
