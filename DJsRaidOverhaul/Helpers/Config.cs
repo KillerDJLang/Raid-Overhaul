@@ -1,4 +1,4 @@
-﻿using BepInEx.Configuration;
+using BepInEx.Configuration;
 
 namespace DJsRaidOverhaul.Helpers
 {
@@ -17,6 +17,7 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<bool> TimeChanges;
         public static ConfigEntry<bool> EnableEvents;
         public static ConfigEntry<bool> EnableDoorEvents;
+        public static ConfigEntry<bool> EnableRaidStartEvents;
         public static ConfigEntry<int> EventRangeMin;
         public static ConfigEntry<int> EventRangeMax;
         public static ConfigEntry<int> DoorRangeMin;
@@ -28,6 +29,7 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<bool> DisableAirdrop;
         public static ConfigEntry<bool> DisableSkill;
         public static ConfigEntry<bool> DisableMetabolism;
+        public static ConfigEntry<bool> DisableTrader;
 
         public static ConfigEntry<bool> DebugLogging;
 
@@ -41,7 +43,15 @@ namespace DJsRaidOverhaul.Helpers
                 true,
                 new ConfigDescription("Sets the in game time to your system time.\nThis requires a restart to take effect after enabling or disabling!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 14 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 17 }));
+
+            EnableRaidStartEvents = cfg.Bind(
+                "1. Events",
+                "Enable Raid Start Events",
+                true,
+                new ConfigDescription("Dictates whether you allow the Door and Light randomization events to run on raid start or not.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 15 }));
 
             EnableEvents = cfg.Bind(
                 "1. Events",
@@ -49,7 +59,7 @@ namespace DJsRaidOverhaul.Helpers
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 13 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 14 }));
 
             EnableDoorEvents = cfg.Bind(
                 "1. Events",
@@ -57,7 +67,7 @@ namespace DJsRaidOverhaul.Helpers
                 true,
                 new ConfigDescription("Dictates whether the dynamic event timer should increment and allow door events to run or not.\nNote that this DOES NOT stop events that are already running!",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 12 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 13 }));
 
             DoorRangeMax = cfg.Bind(
                "1. Events",
@@ -65,7 +75,7 @@ namespace DJsRaidOverhaul.Helpers
                3,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 11 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 12 }));
 
             DoorRangeMin = cfg.Bind(
                "1. Events",
@@ -73,7 +83,7 @@ namespace DJsRaidOverhaul.Helpers
                1,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 10 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 11 }));
 
             EventRangeMax = cfg.Bind(
                "1. Events",
@@ -81,7 +91,7 @@ namespace DJsRaidOverhaul.Helpers
                25,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
                new AcceptableValueRange<int>(0, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 9 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 10 }));
 
             EventRangeMin = cfg.Bind(
                "1. Events",
@@ -89,11 +99,19 @@ namespace DJsRaidOverhaul.Helpers
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
                new AcceptableValueRange<int>(1, 60),
-               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 8 }));
+               new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 9 }));
+
+            DisableTrader = cfg.Bind(
+               "1. Events",
+               "Disable Trader Events",
+                false,
+                new ConfigDescription("Disables the Trader events.\nNote that this DOES NOT stop events that are already running!",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 8 }));
 
             NoJokesHere = cfg.Bind(
                "1. Events",
-               "Disable Heart Attack",
+               "Disable Heart Attack Event",
                 false,
                 new ConfigDescription("Disables the heart attack event.\nNote that this DOES NOT stop events that are already running!",
                 null,
@@ -101,7 +119,7 @@ namespace DJsRaidOverhaul.Helpers
 
             DisableBlackout = cfg.Bind(
                "1. Events",
-               "Disable Blackout",
+               "Disable Blackout Event",
                 false,
                 new ConfigDescription("Disables the blackout event.\nNote that this DOES NOT stop events that are already running!",
                 null,
@@ -109,7 +127,7 @@ namespace DJsRaidOverhaul.Helpers
 
             DisableArmorRepair = cfg.Bind(
                "1. Events",
-               "Disable Armor Repair",
+               "Disable Armor Repair Event",
                 false,
                 new ConfigDescription("Disables the armor repair event.\nNote that this DOES NOT stop events that are already running!",
                 null,
@@ -117,7 +135,7 @@ namespace DJsRaidOverhaul.Helpers
 
             DisableHeal = cfg.Bind(
                "1. Events",
-               "Disable Heal",
+               "Disable Heal Event",
                 false,
                 new ConfigDescription("Disables the healing event.\nNote that this DOES NOT stop events that are already running!",
                 null,
@@ -125,7 +143,7 @@ namespace DJsRaidOverhaul.Helpers
 
             DisableAirdrop = cfg.Bind(
                "1. Events",
-               "Disable Airdrop",
+               "Disable Airdrop Event",
                 false,
                 new ConfigDescription("Disables the Airdrop event.\nNote that this DOES NOT stop events that are already running!",
                 null,
