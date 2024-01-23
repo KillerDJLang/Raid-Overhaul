@@ -14,6 +14,7 @@
     "PocketChanges": false,         //Enables the pocket size and special slot filter changes
     "EnableExtendedRaids": true,    //Enables the raid time changes making raid times essentially unlimited
     "TimeLimit": 999,               //The raid time limit calculated in minutes
+    "ReqSlipsOnBosses": true,       //If true, req slips will only spawn on bosses, raiders and rogues. If false, they will spawn on all bot types (makes them way less rare)
 
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
