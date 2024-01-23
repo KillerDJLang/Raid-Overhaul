@@ -161,6 +161,35 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         const itemPath =        `${modPath}../db/templates/items/`;
         const handbookPath =    `${modPath}../db/templates/handbook/`;
 
+        const bossList = [
+            "bossKnight",
+            "bossGluhar",
+            "bossKojaniy",
+            "bossSanitar",
+            "bossBully",
+            "bossKilla",
+            "bossTagilla",
+            "bossZryachiy",
+            "bossBoar",
+            "followerbully",
+			"followertagilla",
+			"followergluharassault",
+			"followergluharscout",
+			"followergluharsecurity",
+			"followergluharsnipe",
+			"followerkojaniy",
+            "sectantPriest",
+            "pmcbot",
+            "exusec"
+        ]
+
+        const unbreakWithSVM = [
+            {
+                "Filter": ["54009119af1c881c07000029"],
+                "ExcludedFilter": [""]
+            }
+        ];
+
         this.Ref.logger.log("Overhauling your raids. Watch your back out there.", "magenta")
         
         for(const itemFile in mydb.templates.items)
@@ -321,21 +350,38 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        for (const bot in botTypes) {
-            for (const lootSlot in botTypes[bot].inventory.items) {
+        if (modConfig.ReqSlipsOnBosses === true)
+        {
+            for (const bot of bossList)
+            {
                 botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
                 botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
             }
         }
 
-        if (modConfig.Raid.ContainerChanges) {
-        this.Ref.tables.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
-        this.Ref.tables.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
-        this.Ref.tables.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
-        this.Ref.tables.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
-        this.Ref.tables.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
-        this.Ref.tables.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+        if (modConfig.ReqSlipsOnBosses === false)
+        {
+            for (const bot in botTypes)
+            {
+                for (const lootslot in this.Ref.tables.bots.types[bot].inventory.items)
+                {
+                    if (this.Ref.tables.bots.types[bot].inventory.items[lootslot].includes("5c94bbff86f7747ee735c08f" || "5c0e531d86f7747fa23f4d42" || "5ed5166ad380ab312177c100" || "5783c43d2459774bbe137486"))
+                    {
+                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                    }
+                }
+            }
+        }
+
+        if (modConfig.Raid.ContainerChanges) 
+        {
+            this.Ref.tables.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
+            this.Ref.tables.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
+            this.Ref.tables.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
+            this.Ref.tables.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
+            this.Ref.tables.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
+            this.Ref.tables.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
 
             for (const container in this.Ref.tables.templates.items) 
             {
@@ -349,7 +395,8 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        if (modConfig.Raid.PocketChanges) {
+        if (modConfig.Raid.PocketChanges) 
+        {
             this.Ref.tables.templates.items["627a4e6b255f7527fb05a0f6"] = mydb.Pockets.Pockets["627a4e6b255f7527fb05a0f6"];
 
             for (const pockets in this.Ref.tables.templates.items) 
