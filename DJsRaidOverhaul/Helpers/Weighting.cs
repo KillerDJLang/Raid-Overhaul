@@ -66,7 +66,8 @@ namespace DJsRaidOverhaul.Helpers
                 (Plugin.ECScript.DoHealPlayer,      3),
                 (Plugin.ECScript.DoArmorRepair,     3),
                 (Plugin.ECScript.DoSkillEvent,      2),
-                (Plugin.ECScript.DoMetabolismEvent, 2)
+                (Plugin.ECScript.DoMetabolismEvent, 2),
+                (Plugin.ECScript.DoLLEvent,         1)
             };
         }
     }
