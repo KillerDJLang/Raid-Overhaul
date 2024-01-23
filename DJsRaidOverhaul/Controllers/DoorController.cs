@@ -1,4 +1,4 @@
-﻿using EFT;
+using EFT;
 using System;
 using UnityEngine;
 using Comfort.Common;
@@ -182,37 +182,44 @@ namespace DJsRaidOverhaul.Controllers
 
         public static void RandomizeDefaultDoors()
         {
-            FindObjectsOfType<Door>().ExecuteForEach(door =>
+            if (DJConfig.EnableRaidStartEvents.Value)
             {
-                if (!door.Operatable || !door.enabled)
+                FindObjectsOfType<Door>().ExecuteForEach(door =>
                 {
-                    return;
-                }
+                    System.Random random = new System.Random();
 
-                if (door.DoorState != EDoorState.Shut && door.DoorState != EDoorState.Open)
+                    int chance = random.Next(0, 100 + 1);
+
+                    if (!door.Operatable || !door.enabled)
+                    {
+                        return;
+                    }
+
+                    if (door.DoorState != EDoorState.Shut && door.DoorState != EDoorState.Open)
+                    {
+                        return;
+                    }
+
+                    if (door.DoorState == EDoorState.Locked)
+                    {
+                        return;
+                    }
+
+                    if (chance is >= 50 && (door.DoorState == EDoorState.Shut))
+                    {
+                        typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                    }
+
+                    if (chance is >= 50 && (door.DoorState == EDoorState.Open))
+                    {
+                        typeof(Door).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                    }
+                });
+
+                if (DJConfig.DebugLogging.Value)
                 {
-                    return;
+                    NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
                 }
-
-                if (door.DoorState == EDoorState.Locked)
-                {
-                    return;
-                }
-
-                if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Shut))
-                {
-                    typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                }
-
-                if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Open))
-                {
-                    typeof(Door).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                }
-            });
-
-            if (DJConfig.DebugLogging.Value)
-            {
-                NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
             }
         }
 
