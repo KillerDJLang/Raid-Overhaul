@@ -81,7 +81,7 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     NotificationManagerClass.DisplayMessageNotification("No switches available, returning.", ENotificationDurationType.Default);
                 }
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
+                DoUnlock();
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
+                DoUnlock();
             }
         }
 
@@ -154,7 +154,7 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     NotificationManagerClass.DisplayMessageNotification("No keycard doors available, returning.", ENotificationDurationType.Default);
                 }
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
+                DoUnlock();
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
+                DoUnlock();
             }
         }
 
