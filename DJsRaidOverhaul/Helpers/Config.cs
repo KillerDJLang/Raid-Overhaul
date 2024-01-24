@@ -111,9 +111,9 @@ namespace DJsRaidOverhaul.Helpers
 
             DisableJokesAndFun = cfg.Bind(
                "2. Random Events",
-               "Disable Joke and Heart attack Events",
+               "Disable Joke Event",
                 false,
-                new ConfigDescription("Disables the Joke and Heart attack Events.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Disables the Joke event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 11 }));
 
@@ -121,7 +121,7 @@ namespace DJsRaidOverhaul.Helpers
                "2. Random Events",
                "Disable Weight Event",
                 false,
-                new ConfigDescription("Disables the Weight Event.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Disables the Weight event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 10 }));
 
@@ -129,7 +129,7 @@ namespace DJsRaidOverhaul.Helpers
                "2. Random Events",
                "Disable Berserk Event",
                 false,
-                new ConfigDescription("Disables the Berserk Event.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Disables the Berserk event.\nNote that this DOES NOT stop events that are already running!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 10 }));
 
@@ -213,7 +213,7 @@ namespace DJsRaidOverhaul.Helpers
                 "3. Body Cleanup Configs",
                 "Enable Clean",
                 true,
-                new ConfigDescription("Enable body cleanup?",
+                new ConfigDescription("Enable body cleanup event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
@@ -221,7 +221,7 @@ namespace DJsRaidOverhaul.Helpers
                 "3. Body Cleanup Configs",
                 "Time to Clean",
                 15,
-                new ConfigDescription("Time to clean bodies. Calculated in minutes.",
+                new ConfigDescription("The time to clean bodies calculated in minutes.",
                 new AcceptableValueRange<int>(1, 60),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
 
@@ -229,7 +229,7 @@ namespace DJsRaidOverhaul.Helpers
                 "3. Body Cleanup Configs",
                 "Distance to Clean",
                 15,
-                new ConfigDescription("How far away should bodies be for cleanup.",
+                new ConfigDescription("How far away bodies should be for cleanup.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
