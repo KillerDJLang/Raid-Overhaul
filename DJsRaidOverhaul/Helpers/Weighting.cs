@@ -57,20 +57,33 @@ namespace DJsRaidOverhaul.Helpers
 
         private static void InitEventWeighting()
         {
+            var _damageWeighting = DJConfig.NoJokesHere.Value ? 0 : 2;
+            var _airdropWeighting = DJConfig.DisableAirdrop.Value ? 0 : 8;
+            var _blackoutWeighting = DJConfig.DisableBlackout.Value ? 0 : 4;
+            var _jokeWeighting = DJConfig.DisableJokesAndFun.Value ? 0 : 2;
+            var _healWeighting = DJConfig.DisableHeal.Value ? 0 : 6;
+            var _armorWeighting = DJConfig.DisableArmorRepair.Value ? 0 : 7;
+            var _skillWeighting = DJConfig.DisableSkill.Value ? 0 : 3;
+            var _metWeighting = DJConfig.DisableMetabolism.Value ? 0 : 3;
+            var _malfWeighting = DJConfig.DisableMalfunction.Value ? 0 : 2;
+            var _traderWeighting = DJConfig.DisableTrader.Value ? 0 : 1;
+            var _berserkWeighting = DJConfig.DisableBerserk.Value ? 0 : 2;
+            var _weightWeightingLOL = DJConfig.DisableWeight.Value ? 0 : 2;
+
             weightedEvents = new List<(Action, int)>
             {
-                (Plugin.ECScript.DoDamageEvent,     2),
-                (Plugin.ECScript.DoAirdropEvent,    8),
-                (Plugin.ECScript.DoBlackoutEvent,   4),
-                (Plugin.ECScript.DoFunny,           2),
-                (Plugin.ECScript.DoHealPlayer,      6),
-                (Plugin.ECScript.DoArmorRepair,     7),
-                (Plugin.ECScript.DoSkillEvent,      3),
-                (Plugin.ECScript.DoMetabolismEvent, 3),
-                (Plugin.ECScript.DoMalfEvent,       2),
-                (Plugin.ECScript.DoLLEvent,         1),
-                (Plugin.ECScript.DoBerserkEvent,    2),
-                (Plugin.ECScript.DoWeightEvent,     2)
+                (Plugin.ECScript.DoDamageEvent,     _damageWeighting),
+                (Plugin.ECScript.DoAirdropEvent,    _airdropWeighting),
+                (Plugin.ECScript.DoBlackoutEvent,   _blackoutWeighting),
+                (Plugin.ECScript.DoFunny,           _jokeWeighting),
+                (Plugin.ECScript.DoHealPlayer,      _healWeighting),
+                (Plugin.ECScript.DoArmorRepair,     _armorWeighting),
+                (Plugin.ECScript.DoSkillEvent,      _skillWeighting),
+                (Plugin.ECScript.DoMetabolismEvent, _metWeighting),
+                (Plugin.ECScript.DoMalfEvent,       _malfWeighting),
+                (Plugin.ECScript.DoLLEvent,         _traderWeighting),
+                (Plugin.ECScript.DoBerserkEvent,    _berserkWeighting),
+                (Plugin.ECScript.DoWeightEvent,     _weightWeightingLOL)
             };
         }
     }
