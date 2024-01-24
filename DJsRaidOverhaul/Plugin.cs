@@ -9,11 +9,10 @@ using DJsRaidOverhaul.Patches;
 using DrakiaXYZ.VersionChecker;
 using System.Collections.Generic;
 using DJsRaidOverhaul.Controllers;
-using Comfort.Common;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.3.1")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.4.0")]
 
     public class Plugin : BaseUnityPlugin
     {
@@ -24,12 +23,12 @@ namespace DJsRaidOverhaul
         internal static DoorController DCScript;
         internal static ManualLogSource logger;
         internal static BodyCleanup BCScript;
-        internal static Plugin Instance;
-        internal static BackendConfigSettingsClass BackendConfig;
 
         internal static Dictionary<IAnimator, AnimatorOverrideController> Controllers;
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
+
+        public static ISession Session;
 
         void Awake()
         {
@@ -48,10 +47,6 @@ namespace DJsRaidOverhaul
             DCScript = Hook.AddComponent<DoorController>();
             BCScript = Hook.AddComponent<BodyCleanup>();
             DontDestroyOnLoad(Hook);
-
-            BackendConfig = Singleton<BackendConfigSettingsClass>.Instance;
-            Instance = this;
-            DontDestroyOnLoad(Instance);
 
             // Initialize the weightings
             Weighting.InitWeightings();
@@ -123,14 +118,6 @@ namespace DJsRaidOverhaul
             };
             var directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             AnimationClips = AssetBundle.LoadFromFile($"{directory}/bundles/watch animations.bundle").LoadAllAssets<AnimationClip>();
-        }
-
-        void Update()
-        {
-            if (BackendConfig == null && Singleton<BackendConfigSettingsClass>.Instantiated)
-            {
-                BackendConfig = Singleton<BackendConfigSettingsClass>.Instance;
-            }
         }
     }
 }
