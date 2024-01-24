@@ -254,7 +254,9 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         for (const weapon in mydb.globals.config.Mastering) Mastering.push(mydb.globals.config.Mastering[weapon]);
         for (const weapon in Mastering) 
         {
-            if (Mastering[weapon].Name == "M4") Mastering[weapon].Templates.push("MCM4", "Aug762a", "STM46");
+            if (Mastering[weapon].Name == "M4") Mastering[weapon].Templates.push("MCM4");
+            if (Mastering[weapon].Name == "AUG") Mastering[weapon].Templates.push("Aug762a");
+            if (Mastering[weapon].Name == "STM-9") Mastering[weapon].Templates.push("STM46");
         }
 
         if (modConfig.Raid.EnableExtendedRaids)
@@ -307,14 +309,19 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 item._props.Foldable = true
         }
 
-        for (const item in this.Ref.tables.templates.items) {
-			if (this.Ref.tables.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
-				if (this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0]) {
-					this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "RequisitionSlips", "DJsModBox", "DJsBarterCrate"]);
-				}
-			}
-		}
-		this.Ref.tables.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
+        if (modConfig.EnableSVMFix === false)
+        {
+            for (const item in this.Ref.tables.templates.items) {
+                if (this.Ref.tables.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
+                    if (this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0]) {
+                        this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "RequisitionSlips", "DJsModBox", "DJsBarterCrate"]);
+                    }
+                }
+            }
+            this.Ref.tables.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
+            this.Ref.tables.templates.items["590c60fc86f77412b13fddcf"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
+            this.Ref.tables.templates.items["5d235bb686f77443f4331278"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
+        }
 
 
         if(modConfig.Raid.SaveQuestItems)
@@ -354,7 +361,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         {
             for (const bot of bossList)
             {
-                botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
                 botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
             }
         }
@@ -367,7 +374,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 {
                     if (this.Ref.tables.bots.types[bot].inventory.items[lootslot].includes("5c94bbff86f7747ee735c08f" || "5c0e531d86f7747fa23f4d42" || "5ed5166ad380ab312177c100" || "5783c43d2459774bbe137486"))
                     {
-                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
                         botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
                     }
                 }
@@ -420,9 +427,6 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         }
         
         Ragfair.dynamic.blacklist.custom.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "DJsModBox", "DJsBarterCrate"])
-
-        items["590c60fc86f77412b13fddcf"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
-        items["5d235bb686f77443f4331278"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
     }
 
     static customOpenRandomLootContainer(pmcData, body, sessionID) {
