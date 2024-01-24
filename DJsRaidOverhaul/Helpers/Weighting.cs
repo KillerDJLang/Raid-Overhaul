@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -59,15 +59,18 @@ namespace DJsRaidOverhaul.Helpers
         {
             weightedEvents = new List<(Action, int)>
             {
-                (Plugin.ECScript.DoDamageEvent,     1),
-                (Plugin.ECScript.DoAirdropEvent,    6),
-                (Plugin.ECScript.DoBlackoutEvent,   2),
-                (Plugin.ECScript.DoFunny,           1),
-                (Plugin.ECScript.DoHealPlayer,      3),
-                (Plugin.ECScript.DoArmorRepair,     3),
-                (Plugin.ECScript.DoSkillEvent,      2),
-                (Plugin.ECScript.DoMetabolismEvent, 2),
-                (Plugin.ECScript.DoLLEvent,         1)
+                (Plugin.ECScript.DoDamageEvent,     2),
+                (Plugin.ECScript.DoAirdropEvent,    8),
+                (Plugin.ECScript.DoBlackoutEvent,   4),
+                (Plugin.ECScript.DoFunny,           2),
+                (Plugin.ECScript.DoHealPlayer,      6),
+                (Plugin.ECScript.DoArmorRepair,     7),
+                (Plugin.ECScript.DoSkillEvent,      3),
+                (Plugin.ECScript.DoMetabolismEvent, 3),
+                (Plugin.ECScript.DoMalfEvent,       2),
+                (Plugin.ECScript.DoLLEvent,         1),
+                (Plugin.ECScript.DoBerserkEvent,    2),
+                (Plugin.ECScript.DoWeightEvent,     2)
             };
         }
     }
