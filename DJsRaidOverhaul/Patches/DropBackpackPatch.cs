@@ -2,6 +2,7 @@
 using EFT;
 using System.Reflection;
 using Aki.Reflection.Patching;
+using DJsRaidOverhaul.Helpers;
 
 namespace DJsRaidOverhaul.Patches
 {
@@ -13,7 +14,7 @@ namespace DJsRaidOverhaul.Patches
         [PatchPostfix]
         private static void PatchPostFix(ref Player __instance)
         {
-            if (Plugin.DropBackPack.Value && Plugin.DropBackPackChance.Value > new Random().NextDouble())
+            if (DJConfig.DropBackPack.Value && DJConfig.DropBackPackChance.Value > new Random().NextDouble())
             {
                 __instance.DropBackpack();
             }

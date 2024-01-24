@@ -1,36 +1,30 @@
-import { DependencyContainer }              from "tsyringe";
+import { References }                       from "./Refs/References";
 
+import { DependencyContainer }              from "tsyringe";
 import { IPreAkiLoadMod }                   from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostDBLoadMod }                   from "@spt-aki/models/external/IPostDBLoadMod";
-import { ILogger }                          from "@spt-aki/models/spt/utils/ILogger";
-import { DatabaseServer }                   from "@spt-aki/servers/DatabaseServer";
-import { IDatabaseTables }                  from "@spt-aki/models/spt/server/IDatabaseTables";
-import { IAirdropConfig }                   from "@spt-aki/models/spt/config/IAirdropConfig";
 import { ConfigServer }                     from "@spt-aki/servers/ConfigServer";
-import { ConfigTypes }                      from "@spt-aki/models/enums/ConfigTypes";
-import { ILocations }                       from "@spt-aki/models/spt/server/ILocations";
 import { JsonUtil }                         from "@spt-aki/utils/JsonUtil";
-import { VFS }                              from "@spt-aki/utils/VFS";
 import { ImporterUtil }                     from "@spt-aki/utils/ImporterUtil";
-import { PreAkiModLoader }                  from "@spt-aki/loaders/PreAkiModLoader";
-import { ImageRouter }                      from "@spt-aki/routers/ImageRouter";
 import { ITraderAssort, ITraderBase }       from "@spt-aki/models/eft/common/tables/ITrader";
 import { ITraderConfig, UpdateTime }        from "@spt-aki/models/spt/config/ITraderConfig";
-import { OnUpdateModService }               from "@spt-aki/services/mod/onUpdate/OnUpdateModService"
 import { Traders }                          from "@spt-aki/models/enums/Traders";
+import { ConfigTypes }                      from "@spt-aki/models/enums/ConfigTypes";
+import { VFS }                              from "@spt-aki/utils/VFS";
+import { IDatabaseTables }                  from "@spt-aki/models/spt/server/IDatabaseTables";
+import { DatabaseServer }                   from "@spt-aki/servers/DatabaseServer";
+import { ILocations }                       from "@spt-aki/models/spt/server/ILocations";
+import { IAirdropConfig }                   from "@spt-aki/models/spt/config/IAirdropConfig";
 
 import * as baseJson                        from "../db/base.json";
 import * as assortJson                      from "../db/assort.json";
 import {jsonc}                              from "jsonc";
 import * as path                            from "path";
 
-const modName = "DJsRaidOverhaul";
-
 class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 {
     mod: string;
-    logger: ILogger;
-    private container: DependencyContainer;
+    private Ref: References = new References();
     private static container: DependencyContainer;
     modPath: string = path.normalize(path.join(__dirname, ".."));
 
@@ -54,24 +48,21 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
     */
     public preAkiLoad(container: DependencyContainer): void 
     {
-        RaidOverhaul.container =        container;
-        const logger =                  container.resolve<ILogger>("WinstonLogger");
-        const preAkiModLoader:          PreAkiModLoader = container.resolve<PreAkiModLoader>("PreAkiModLoader");
-        const imageRouter:              ImageRouter = container.resolve<ImageRouter>("ImageRouter");
-        const configServer =            container.resolve("ConfigServer");
-        const inventoryConfig =         configServer.getConfig("aki-inventory");
-        const traderConfig:             ITraderConfig = configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
+        this.Ref.preAkiLoad(container, "RaidOverhaul");
+        this.Ref.container =    container;
+        const vfs =             container.resolve<VFS>("VFS");
+        const modConfig =       jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+        const configServer =    container.resolve("ConfigServer");
+        const inventoryConfig = configServer.getConfig("aki-inventory");
+        const traderConfig:     ITraderConfig = configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
 
-        const SecLB =               require("../db/items/DJsSecureLunchbox.json");
-        const SmolLB =              require("../db/items/DJsSmallLunchbox.json");
-        const AmmoLB =              require("../db/items/DJsAmmoCrate.json");
-        const MedsLB =              require("../db/items/DJsSurgicalSet.json");
-        const WeaponLB =            require("../db/items/DJsWeaponCrate.json");
-        const ModLB =               require("../db/items/DJsModBox.json");
-        const BarterLB =            require("../db/items/DJsBarterCrate.json");
-        const onUpdateModService =  container.resolve<OnUpdateModService>( "OnUpdateModService" );
-
-        logger.debug(`[${this.mod}] preAki Loading... `);
+        const SecLB =           require("../db/items/DJsSecureLunchbox.json");
+        const SmolLB =          require("../db/items/DJsSmallLunchbox.json");
+        const AmmoLB =          require("../db/items/DJsAmmoCrate.json");
+        const MedsLB =          require("../db/items/DJsSurgicalSet.json");
+        const WeaponLB =        require("../db/items/DJsWeaponCrate.json");
+        const ModLB =           require("../db/items/DJsModBox.json");
+        const BarterLB =        require("../db/items/DJsBarterCrate.json");
 
 		container.afterResolution("InventoryCallbacks", (_t, result) => {
             result.openRandomLootContainer = (pmcData, body, sessionID) => {
@@ -87,36 +78,22 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         inventoryConfig.randomLootContainers["DJsModBox"] = ModLB.randomLootContainers["DJsModBox"];
         inventoryConfig.randomLootContainers["DJsBarterCrate"] = BarterLB.randomLootContainers["DJsBarterCrate"];
 
-        onUpdateModService.registerOnUpdate(
-			"MyCustomOnUpdateMod",
-			( timeSinceLastRun: number ) => this.customFunctionThatRunsOnLoad( timeSinceLastRun ),
-			() => "custom-onupdate-mod"
-		);
+        if (modConfig.Trader.Enabled)
+        {
+            if (modConfig.Trader.AllowRandomization)
+            {
+                this.Ref.onUpdateModService.registerOnUpdate(
+                    "MyCustomOnUpdateMod",
+                    ( timeSinceLastRun: number ) => this.customFunctionThatRunsOnLoad( timeSinceLastRun ),
+                    () => "custom-onupdate-mod"
+                );
+            }
 
-        this.registerProfileImage(preAkiModLoader, imageRouter);
-        
+        this.registerProfileImage();
         this.setupTraderUpdateTime(traderConfig);
 
         Traders["Requisitions"] = "Requisitions";
-        logger.debug(`[${this.mod}] preAki Loaded`);        
-    }
-
-    logAllMapAndExtractNames(dbLocations:ILocations):void{
-        const extractList = {}
-        for (const loc in dbLocations){
-
-            const thisLocExits = dbLocations[loc]?.base?.exits
-            if (!thisLocExits) continue
-
-            extractList[loc] = []
-
-            for (const e in thisLocExits){
-                const thisExit = thisLocExits[e]
-                extractList[loc].push(thisExit.Name)
-            }
-            
-        }
-        console.log(extractList)
+        }   
     }
 
     public customFunctionThatRunsOnLoad ( timeSinceLastRun: number ): boolean
@@ -130,6 +107,24 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 		return false;
 	}
 
+    logAllMapAndExtractNames( locations: ILocations ):void{
+        const extractList = {}
+        for (const loc in locations){
+
+            const thisLocExits = locations[loc]?.base?.exits
+            if (!thisLocExits) continue
+
+            extractList[loc] = []
+
+            for (const e in thisLocExits){
+                const thisExit = thisLocExits[e]
+                extractList[loc].push(thisExit.Name)
+            }
+            
+        }
+        console.log(extractList)
+    }
+
     //
     //
     //
@@ -142,43 +137,65 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
     */
     public postDBLoad(container: DependencyContainer)
     {
-        const database =            container.resolve<DatabaseServer>("DatabaseServer").getTables() as IDatabaseTables;
-        const globals =             database.globals.config;
-        this.container =            container
-        const logger =              this.container.resolve<ILogger>("WinstonLogger")
-        const configServer =        container.resolve<ConfigServer>("ConfigServer")
-        const AirdropConfig =       configServer.getConfig<IAirdropConfig>(ConfigTypes.AIRDROP);
-        const db =                  container.resolve<DatabaseServer>("DatabaseServer").getTables();
-        const ImporterUtil =        container.resolve<ImporterUtil>("ImporterUtil");
-        const JsonUtil =            container.resolve<JsonUtil>("JsonUtil");
-        const VFS =                 container.resolve<VFS>("VFS");
-        const locales =             db.locales.global;
-        const items =               db.templates.items;
-        const handbook =            db.templates.handbook.Items;
-        const modPath =             path.resolve(__dirname.toString()).split(path.sep).join("/")+"/";
-        const databaseServer =      container.resolve<DatabaseServer>("DatabaseServer");
-        const tables =              databaseServer.getTables();
-        const QIconfigServer =      container.resolve("ConfigServer");
-        const QuestItems =          QIconfigServer.getConfig("aki-lostondeath");
-        const modConfig =           jsonc.parse(VFS.readFile(path.resolve(__dirname, "../config/config.jsonc")));
-        const botTypes =            this.container.resolve<DatabaseServer>("DatabaseServer").getTables().bots.types
-        const jsonUtil:             JsonUtil = container.resolve<JsonUtil>("JsonUtil");
-        const Ragfair =             configServer.getConfig("aki-ragfair");
-        const itemdatabase =        container.resolve("DatabaseServer").getTables();
-        const stamina =             db.globals.config.Stamina;
+        this.Ref.postDBLoad(container);
+        this.Ref.container =    container
+        const databaseServer =  container.resolve<DatabaseServer>("DatabaseServer");
+        const tables =          databaseServer.getTables();
+        const configServer =    container.resolve<ConfigServer>("ConfigServer")
+        const ImporterUtil =    container.resolve<ImporterUtil>("ImporterUtil");
+        const JsonUtil =        container.resolve<JsonUtil>("JsonUtil");
+        const QuestItems =      configServer.getConfig("aki-lostondeath");
+        const Ragfair =         configServer.getConfig("aki-ragfair");
+        const AirdropConfig =   configServer.getConfig<IAirdropConfig>(ConfigTypes.AIRDROP);
+        const globals =         this.Ref.tables.globals.config;
+        const locales =         this.Ref.tables.locales.global;
+        const items =           this.Ref.tables.templates.items;
+        const handbook =        this.Ref.tables.templates.handbook.Items;
+        const stamina =         this.Ref.tables.globals.config.Stamina;
+        const botTypes =        this.Ref.tables.bots.types
+        const Mastering =       this.Ref.tables.globals.config.Mastering
+        const modPath =         path.resolve(__dirname.toString()).split(path.sep).join("/")+"/";
+        const vfs =             container.resolve<VFS>("VFS");
+        const modConfig =       jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+        const mydb =            ImporterUtil.loadRecursive(`${modPath}../db/`);
+        const itemPath =        `${modPath}../db/templates/items/`;
+        const handbookPath =    `${modPath}../db/templates/handbook/`;
 
-        logger.debug(`[${this.mod}] postDb Loading... `);
-        logger.log("Overhauling your raids. Watch your back out there.", "magenta")
+        const bossList = [
+            "bossKnight",
+            "bossGluhar",
+            "bossKojaniy",
+            "bossSanitar",
+            "bossBully",
+            "bossKilla",
+            "bossTagilla",
+            "bossZryachiy",
+            "bossBoar",
+            "followerbully",
+			"followertagilla",
+			"followergluharassault",
+			"followergluharscout",
+			"followergluharsecurity",
+			"followergluharsnipe",
+			"followerkojaniy",
+            "sectantPriest",
+            "pmcbot",
+            "exusec"
+        ]
 
-        const mydb = ImporterUtil.loadRecursive(`${modPath}../db/`);
+        const unbreakWithSVM = [
+            {
+                "Filter": ["54009119af1c881c07000029"],
+                "ExcludedFilter": [""]
+            }
+        ];
 
-
-        const itemPath = `${modPath}../db/templates/items/`;
-        const handbookPath = `${modPath}../db/templates/handbook/`;
+        this.Ref.logger.log("Overhauling your raids. Watch your back out there.", "magenta")
         
-        for(const itemFile in mydb.templates.items) {
-            const item = JsonUtil.deserialize(VFS.readFile(`${itemPath}${itemFile}.json`));
-            const hb = JsonUtil.deserialize(VFS.readFile(`${handbookPath}${itemFile}.json`));
+        for(const itemFile in mydb.templates.items)
+        {
+            const item = JsonUtil.deserialize(this.Ref.vfs.readFile(`${itemPath}${itemFile}.json`));
+            const hb = JsonUtil.deserialize(this.Ref.vfs.readFile(`${handbookPath}${itemFile}.json`));
 
             const itemId = item._id;
 
@@ -189,6 +206,12 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 "ParentId": hb.ParentId,
                 "Price": hb.Price
             });
+
+            if (modConfig.Trader.AllowRandomization)
+            {
+                this.modifyReqs();
+            }
+        }
 
         for (const localeID in locales)
         {
@@ -208,6 +231,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 
             }
         }
+
         for (const localeID in mydb.locales)
         {
             for (const id in mydb.locales[localeID].templates) {
@@ -227,18 +251,20 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        const Mastering = db.globals.config.Mastering
         for (const weapon in mydb.globals.config.Mastering) Mastering.push(mydb.globals.config.Mastering[weapon]);
         for (const weapon in Mastering) 
         {
             if (Mastering[weapon].Name == "M4") Mastering[weapon].Templates.push("MCM4", "Aug762a", "STM46");
         }
 
-        for (let location in database.locations)
+        if (modConfig.Raid.EnableExtendedRaids)
         {
-            if (location == "base") continue;
-            database.locations[location].base.EscapeTimeLimit = 9999999;
-            database.locations[location].base.EscapeTimeLimitCoop = 9999999;
+            for (let location in this.Ref.tables.locations)
+            {
+                if (location == "base") continue;
+                this.Ref.tables.locations[location].base.EscapeTimeLimit = modConfig.Raid.TimeLimit * 60;
+                this.Ref.tables.locations[location].base.EscapeTimeLimitCoop = modConfig.Raid.TimeLimit * 60;
+            }
         }
         
         if (modConfig.Raid.ReduceFoodAndHydroDegrade.Enabled) {
@@ -281,20 +307,21 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
                 item._props.Foldable = true
         }
 
-        for (const item in database.templates.items) {
-			if (database.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
-				if (database.templates.items[item]._props.Grids[0]._props.filters[0]) {
-					database.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "RequisitionSlips", "DJsModBox", "DJsBarterCrate"]);
+        for (const item in this.Ref.tables.templates.items) {
+			if (this.Ref.tables.templates.items[item]._parent === "5448bf274bdc2dfc2f8b456a") {
+				if (this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0]) {
+					this.Ref.tables.templates.items[item]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "RequisitionSlips", "DJsModBox", "DJsBarterCrate"]);
 				}
 			}
 		}
-		database.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
+		this.Ref.tables.templates.items["5c093db286f7740a1b2617e3"]._props.Grids[0]._props.filters[0].Filter.push(...["DJsSecureLunchbox", "DJsSmallLunchbox"]);
 
 
         if(modConfig.Raid.SaveQuestItems)
         {
             QuestItems.questItems === false;
         }
+        
         if (modConfig.Raid.NoRunThrough)
         {
             globals.exp.match_end.survived_exp_requirement = 0;
@@ -323,40 +350,79 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             }
         }
 
-        for (const bot in botTypes) {
-            for (const lootSlot in botTypes[bot].inventory.items) {
+        if (modConfig.ReqSlipsOnBosses === true)
+        {
+            for (const bot of bossList)
+            {
                 botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
                 botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
-                botTypes[bot].inventory.items.TacticalVest.push("RequisitionSlips");
             }
         }
 
-        if (modConfig.Raid.ContainerChanges) {
-        itemdatabase.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
-        itemdatabase.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
-        itemdatabase.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
-        itemdatabase.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
-        itemdatabase.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
-        itemdatabase.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+        if (modConfig.ReqSlipsOnBosses === false)
+        {
+            for (const bot in botTypes)
+            {
+                for (const lootslot in this.Ref.tables.bots.types[bot].inventory.items)
+                {
+                    if (this.Ref.tables.bots.types[bot].inventory.items[lootslot].includes("5c94bbff86f7747ee735c08f" || "5c0e531d86f7747fa23f4d42" || "5ed5166ad380ab312177c100" || "5783c43d2459774bbe137486"))
+                    {
+                        botTypes[bot].inventory.items.Backpack.push("RequisitionSlips");
+                        botTypes[bot].inventory.items.Pockets.push("RequisitionSlips");
+                    }
+                }
+            }
         }
 
-        if (modConfig.Raid.PocketChanges) {
-        itemdatabase.templates.items["627a4e6b255f7527fb05a0f6"] = mydb.Pockets.Pockets["627a4e6b255f7527fb05a0f6"];
+        if (modConfig.Raid.ContainerChanges) 
+        {
+            this.Ref.tables.templates.items["5732ee6a24597719ae0c0281"] = mydb.SecureContainers.WaistPouch["5732ee6a24597719ae0c0281"];
+            this.Ref.tables.templates.items["544a11ac4bdc2d470e8b456a"] = mydb.SecureContainers.Alpha["544a11ac4bdc2d470e8b456a"];
+            this.Ref.tables.templates.items["5857a8b324597729ab0a0e7d"] = mydb.SecureContainers.Beta["5857a8b324597729ab0a0e7d"];
+            this.Ref.tables.templates.items["5857a8bc2459772bad15db29"] = mydb.SecureContainers.Gamma["5857a8bc2459772bad15db29"];
+            this.Ref.tables.templates.items["59db794186f77448bc595262"] = mydb.SecureContainers.Epsilon["59db794186f77448bc595262"];
+            this.Ref.tables.templates.items["5c093ca986f7740a1867ab12"] = mydb.SecureContainers.Kappa["5c093ca986f7740a1867ab12"];
+
+            for (const container in this.Ref.tables.templates.items) 
+            {
+                if (this.Ref.tables.templates.items[container]._parent === "5448bf274bdc2dfc2f8b456a") 
+                {
+                    if (!this.Ref.tables.templates.items[container]._props.Grids[0]._props.filters) 
+                    {
+                        this.Ref.tables.templates.items[container]._props.Grids[0]._props.filters = unbreakWithSVM;
+                    }
+                }
+            }
         }
 
-        this.addTraderToDb(baseJson, tables, jsonUtil);
-        this.addTraderToLocales(tables, baseJson.name, "Requisitions Office", baseJson.nickname, baseJson.location, "A collection of Ex-PMC's and rogue Scavs who formed a group to aid others in Tarkov. They routinely scour the battlefield for any leftover supplies and aren't afraid to fight their old comrades for it. They may not be the most trustworthy but they do have some much needed provisions in stock.");
-        this.modifyReqs();
+        if (modConfig.Raid.PocketChanges) 
+        {
+            this.Ref.tables.templates.items["627a4e6b255f7527fb05a0f6"] = mydb.Pockets.Pockets["627a4e6b255f7527fb05a0f6"];
 
-        Ragfair.traders[baseJson._id] = true;
+            for (const pockets in this.Ref.tables.templates.items) 
+            {
+                if (this.Ref.tables.templates.items[pockets]._parent === "557596e64bdc2dc2118b4571") 
+                {
+                    if (!this.Ref.tables.templates.items[pockets]._props.Grids[0]._props.filters) 
+                    {
+                        this.Ref.tables.templates.items[pockets]._props.Grids[0]._props.filters = unbreakWithSVM;
+                    }
+                }
+            }
+        }
+
+        if (modConfig.Trader.Enabled)
+        {
+            this.addTraderToDb(baseJson, tables, JsonUtil);
+            this.addTraderToLocales(tables, baseJson.name, "Requisitions Office", baseJson.nickname, baseJson.location, "A collection of Ex-PMC's and rogue Scavs who formed a group to aid others in Tarkov. They routinely scour the battlefield for any leftover supplies and aren't afraid to fight their old comrades for it. They may not be the most trustworthy but they do have some much needed provisions in stock.");
+    
+            Ragfair.traders[baseJson._id] = true;
+        }
         
         Ragfair.dynamic.blacklist.custom.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "DJsModBox", "DJsBarterCrate"])
 
         items["590c60fc86f77412b13fddcf"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
         items["5d235bb686f77443f4331278"]._props.Grids[0]._props.filters[0].Filter.push("RequisitionSlips");
-
-        logger.debug(`[${this.mod}] postDb Loaded`);
-        }
     }
 
     static customOpenRandomLootContainer(pmcData, body, sessionID) {
@@ -439,11 +505,11 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
      * @param preAkiModLoader
      * @param imageRouter
      */
-    private registerProfileImage(preAkiModLoader: PreAkiModLoader, imageRouter: ImageRouter): void
+    private registerProfileImage(): void
     {
-        const imageFilepath = `./${preAkiModLoader.getModPath(this.mod)}res`;
+        const imageFilepath = `./${this.Ref.preAkiModLoader.getModPath(this.mod)}res`;
 
-        imageRouter.addRoute(baseJson.avatar.replace(".jpg", ""), `${imageFilepath}/Reqs.jpg`);
+        this.Ref.imageRouter.addRoute(baseJson.avatar.replace(".jpg", ""), `${imageFilepath}/Reqs.jpg`);
     }
 
     /**
@@ -497,6 +563,9 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 
     private modifyReqs (): void
 	{
+        const vfs =         this.Ref.container.resolve<VFS>("VFS");
+        const modConfig =   jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+
 		for ( const item of assortJson.items )
         {
             if ( item.parentId != "hideout" )
@@ -507,7 +576,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             let count = 0;
 
             {
-                count = this.randomCount( 5, 5 )
+                count = this.randomCount( modConfig.Trader.RandomizationRange, modConfig.Trader.RandomizationRange )
             }
 
             if ( count < 0 )
