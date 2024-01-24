@@ -30,14 +30,15 @@ namespace DJsRaidOverhaul.Controllers
         private bool _metabolismDisabled = false;
         private bool _jokeEventHasRun = false;
         private bool _airdropEventHasRun = false;
+        private bool _berserkEventHasRun = false;
+        private bool _malfEventHasRun = false;
+        private bool _weightEventHasRun = false;
 
         private int _skillEventCount = 0;
 
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
         private LampController[] _lamp = null;
-
-        public static ISession Session;
 
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
@@ -69,9 +70,12 @@ namespace DJsRaidOverhaul.Controllers
                 if (_metabolismDisabled != false)   { _metabolismDisabled = false; }
                 if (_jokeEventHasRun != false)      { _jokeEventHasRun = false; }
                 if (_airdropEventHasRun != false)   { _airdropEventHasRun = false; }
+                if (_berserkEventHasRun != false)   { _berserkEventHasRun = false; }
+                if (_malfEventHasRun != false)      { _malfEventHasRun = false; }
+                if (_weightEventHasRun != false)    { _weightEventHasRun = false; }
 
-                if (_skillEventCount != 0)          { _skillEventCount = 0; }       
-                    
+                if (_skillEventCount != 0)          { _skillEventCount = 0; }
+
                 return;
             }
 
@@ -175,13 +179,18 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoDamageEvent()
         {
-            if (!DJConfig.NoJokesHere.Value)
+            if (!DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
-                player.PlayerHealthController.DoContusion(4, 50);
-                player.ActiveHealthController.DoStun(5, 0);
+                player.ActiveHealthController.DoContusion(4f, 50f);
+                player.ActiveHealthController.DoStun(5f, 0f);
                 player.ActiveHealthController.DoFracture(EBodyPart.LeftArm);
-                player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65, Blunt);
+                player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65f, Blunt);
+            }
+
+            if (DJConfig.DisableJokesAndFun.Value)
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
 
             else
@@ -237,18 +246,27 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoFunny()
         {
-            if (DJConfig.NoJokesHere.Value && !_jokeEventHasRun)
+            if (DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value && !_jokeEventHasRun)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
+
                 await Task.Delay(10000);
+
                 NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
-                await Task.Delay(2000); 
+
+                await Task.Delay(2000);
+
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
 
                 _jokeEventHasRun = true;
             }
 
-            if (DJConfig.NoJokesHere.Value && _jokeEventHasRun)
+            if (DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value && _jokeEventHasRun)
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+
+            if (DJConfig.DisableJokesAndFun.Value)
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -408,6 +426,154 @@ namespace DJsRaidOverhaul.Controllers
                     NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has fastened. Increased hunger and hydration drain!", ENotificationDurationType.Long);
                 }
             }
+
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public async void DoMalfEvent()
+        {
+            var pItems = Session.Profile.Inventory.AllPlayerItems;
+
+            if (!DJConfig.DisableMalfunction.Value && !_malfEventHasRun)
+            {
+                _malfEventHasRun = true;
+
+                foreach (var item in pItems)
+                {
+                    if (item is Weapon weapon)
+                    {
+                        weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 2f;
+                        weapon.Template.DurabilityBurnRatio = weapon.Template.DurabilityBurnRatio * 2f;
+                        weapon.Template.HeatFactorByShot = weapon.Template.HeatFactorByShot * 2f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Be careful not to jam up!", ENotificationDurationType.Long);
+
+                await Task.Delay(60000);
+
+                foreach (var item in pItems)
+                {
+                    if (item is Weapon weapon)
+                    {
+                        weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 0.5f;
+                        weapon.Template.DurabilityBurnRatio = weapon.Template.DurabilityBurnRatio * 0.5f;
+                        weapon.Template.HeatFactorByShot = weapon.Template.HeatFactorByShot * 0.5f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Your weapon has had time to cool off, shouldn't have any more troubles!", ENotificationDurationType.Long);
+            }
+
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public void DoLLEvent()
+        {
+            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null && !DJConfig.DisableTrader.Value)
+            {
+                System.Random random = new System.Random();
+
+                var Trader = Utils.Traders.RandomElement();
+                int chance = random.Next(0, 100 + 1);
+
+                Session = ClientAppUtils.GetMainApp().GetClientBackEndSession();
+
+                if (chance is >= 0 && chance is <= 49)
+                {
+                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 0.1);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default);
+                }
+
+                else if (chance is >= 50 && chance is <= 100)
+                {
+                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 0.05);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default);
+                }
+            }
+
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public async void DoBerserkEvent()
+        {
+            var wItems = Session.Profile.Inventory.AllPlayerItems;
+
+            if (!DJConfig.DisableBerserk.Value && !_berserkEventHasRun)
+            {
+                _berserkEventHasRun = true;
+                player.ActiveHealthController.DoContusion(4f, 30f);
+                player.ActiveHealthController.DoStun(5f, 0f);
+
+                foreach (var item in wItems)
+                {
+                    if (item is Weapon weapon)
+                    {
+                        weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 0.5f;
+                        weapon.Template.Ergonomics = weapon.Template.Ergonomics * 2f;
+                        weapon.Template.RecoilForceUp = weapon.Template.RecoilForceUp * 0.5f;
+                        weapon.Template.RecoilForceBack = weapon.Template.RecoilForceBack * 0.5f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Berserk Event: You're seeing red, I feel bad for any scavs and PMCs in your way!", ENotificationDurationType.Long);
+
+                await Task.Delay(180000);
+
+                foreach (var item in wItems)
+                {
+                    if (item is Weapon weapon)
+                    {
+                        weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 2f;
+                        weapon.Template.Ergonomics = weapon.Template.Ergonomics * 0.5f;
+                        weapon.Template.RecoilForceUp = weapon.Template.RecoilForceUp * 2f;
+                        weapon.Template.RecoilForceBack = weapon.Template.RecoilForceBack * 2f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Berserk Event: Your vision has cleared up, I guess you got all your rage out!", ENotificationDurationType.Long);
+            }
+
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+        }
+
+        public async void DoWeightEvent()
+        {
+            var aItems = Session.Profile.Inventory.AllPlayerItems;
+
+            if (!DJConfig.DisableWeight.Value && !_weightEventHasRun)
+            {
+                _weightEventHasRun = true;
+
+                foreach (var aitem in aItems)
+                {
+                    if (aitem is Item item)
+                    {
+                        item.Template.Weight = item.Template.Weight * 2f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Weight Event: Better hunker down until you get your stamina back!", ENotificationDurationType.Long);
+
+                await Task.Delay(180000);
+
+                foreach (var aitem in aItems)
+                {
+                    if (aitem is Item item)
+                    {
+                        item.Template.Weight = item.Template.Weight * 0.5f;
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Weight Event: You're rested and ready to get back out there!", ENotificationDurationType.Long);
+            }
+
             else
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
@@ -424,47 +590,20 @@ namespace DJsRaidOverhaul.Controllers
 
                     int chance = random.Next(0, 100 + 1);
 
-                    if (chance is >= 50)
+                    if (chance is >= 70)
                     {
                         lamp.Switch(Turnable.EState.Off);
                         lamp.enabled = false;
-
-                        if (DJConfig.DebugLogging.Value)
-                        {
-                            NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
-                        }
                     }
                 });
-            }
-        }
 
-        public void DoLLEvent()
-        {
-            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null && !DJConfig.DisableTrader.Value)
-            {
-                System.Random random = new System.Random();
-
-                string[] traders = { "5c0647fdd443bc2504c2d371", "5ac3b934156ae10c4430e83c", "5a7c2eca46aef81a7ca2145d", "5935c25fb3acc3127c3d8cd9", "58330581ace78e27b8b10cee", "579dc571d53a0658a154fbec", "54cb57776803fa99248b456e", "54cb50c76803fa8b248b4571" };
-                var Trader = traders.RandomElement();
-
-                int chance = random.Next(0, 100 + 1);
-
-                Session = ClientAppUtils.GetMainApp().GetClientBackEndSession();
-
-                if (chance is >= 0 && chance is <= 49)
+                if (DJConfig.DebugLogging.Value)
                 {
-                    Session.Profile.TradersInfo[Trader].SetStanding(+ 0.1);
-                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default);
+                    NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
                 }
-
-                if (chance is >= 50 && chance is <= 100)
-                {
-                    Session.Profile.TradersInfo[Trader].SetStanding(- 0.05);
-                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default);
-                }              
             }
         }
-        
+
         public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
     }
 }
