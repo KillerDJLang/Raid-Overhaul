@@ -19,6 +19,7 @@ using EFT.HealthSystem;
 using Aki.Reflection.Utils;
 using static DJsRaidOverhaul.Plugin;
 
+
 namespace DJsRaidOverhaul.Controllers
 {
     public class EventController : MonoBehaviour
@@ -187,6 +188,7 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     if (item.GetItemComponent<ArmorComponent>() != null) item.GetItemComponent<RepairableComponent>().Durability = item.GetItemComponent<RepairableComponent>().MaxDurability;
                 });
+
         }
 
         /*
@@ -490,6 +492,7 @@ namespace DJsRaidOverhaul.Controllers
                 _weightEventHasRun = true;
 
                 foreach (var aitem in aItems)
+
                 {
                     if (aitem is Item item)
                     {
@@ -532,6 +535,7 @@ namespace DJsRaidOverhaul.Controllers
                         lamp.enabled = false;
                     }
                 });
+            
 
                 if (DJConfig.DebugLogging.Value)
                 {

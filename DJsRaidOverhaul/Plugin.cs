@@ -28,6 +28,7 @@ namespace DJsRaidOverhaul
         internal static Dictionary<string, int> SuitsLookup;
         internal static AnimationClip[] AnimationClips;
 
+
         public static ISession Session;
 
         void Awake()
@@ -50,6 +51,7 @@ namespace DJsRaidOverhaul
 
             // Initialize the weightings
             Weighting.InitWeightings();
+
 
             if (DJConfig.TimeChanges.Value)
             {
