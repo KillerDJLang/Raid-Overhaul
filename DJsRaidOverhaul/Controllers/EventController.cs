@@ -165,57 +165,28 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoHealPlayer()
         {
-            if (!DJConfig.DisableHeal.Value)
-            {
                 NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
                 player.ActiveHealthController.RestoreFullHealth();
-            }
-
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         public void DoDamageEvent()
         {
-            if (!DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value)
-            {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
                 player.ActiveHealthController.DoContusion(4f, 50f);
                 player.ActiveHealthController.DoStun(5f, 0f);
                 player.ActiveHealthController.DoFracture(EBodyPart.LeftArm);
                 player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65f, Blunt);
-            }
-
-            if (DJConfig.DisableJokesAndFun.Value)
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
-
-            else
-            {
-                DoFunny();
-            }
         }
 
 
 
         public void DoArmorRepair()
         {
-            if (!DJConfig.DisableArmorRepair.Value)
-            {
                 NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
                 player.Profile.Inventory.GetAllEquipmentItems().ExecuteForEach((item) =>
                 {
                     if (item.GetItemComponent<ArmorComponent>() != null) item.GetItemComponent<RepairableComponent>().Durability = item.GetItemComponent<RepairableComponent>().MaxDurability;
                 });
-            }
-
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         /*
@@ -230,7 +201,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-            if (DJConfig.DisableAirdrop.Value || player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory" || _airdropEventHasRun)
+            if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory" || _airdropEventHasRun)
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -246,7 +217,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoFunny()
         {
-            if (DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value && !_jokeEventHasRun)
+            if (!_jokeEventHasRun)
             {
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
 
@@ -261,19 +232,9 @@ namespace DJsRaidOverhaul.Controllers
                 _jokeEventHasRun = true;
             }
 
-            if (DJConfig.NoJokesHere.Value && !DJConfig.DisableJokesAndFun.Value && _jokeEventHasRun)
+            if (_jokeEventHasRun)
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
-
-            if (DJConfig.DisableJokesAndFun.Value)
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
-
-            else
-            {
-                DoDamageEvent();
             }
         }
 
@@ -292,8 +253,6 @@ namespace DJsRaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
-            if (!DJConfig.DisableBlackout.Value)
-            {
                 foreach (Switch pSwitch in _pswitchs)
                 {
                     typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(pSwitch, null);
@@ -337,20 +296,12 @@ namespace DJsRaidOverhaul.Controllers
                     }
 
                 NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
-            }
-
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         public void DoSkillEvent()
         {
             if (_skillEventCount >= 3) { return; }
 
-            if (!DJConfig.DisableSkill.Value)
-            {
                 System.Random random = new System.Random();
 
                 int chance = random.Next(0, 100 + 1);
@@ -378,16 +329,11 @@ namespace DJsRaidOverhaul.Controllers
                     _skillEventCount++;
                     NotificationManagerClass.DisplayMessageNotification("Skill Event: You've lost a skill level, unlucky!", ENotificationDurationType.Long);
                 }
-            }
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         public void DoMetabolismEvent()
         {
-            if (!DJConfig.DisableMetabolism.Value && !_metabolismDisabled)
+            if (!_metabolismDisabled)
             {
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
@@ -426,18 +372,13 @@ namespace DJsRaidOverhaul.Controllers
                     NotificationManagerClass.DisplayMessageNotification("Metabolism Event: Your metabolism has fastened. Increased hunger and hydration drain!", ENotificationDurationType.Long);
                 }
             }
-
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         public async void DoMalfEvent()
         {
             var pItems = Session.Profile.Inventory.AllPlayerItems;
 
-            if (!DJConfig.DisableMalfunction.Value && !_malfEventHasRun)
+            if (!_malfEventHasRun)
             {
                 _malfEventHasRun = true;
 
@@ -474,7 +415,7 @@ namespace DJsRaidOverhaul.Controllers
 
         public void DoLLEvent()
         {
-            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null && !DJConfig.DisableTrader.Value)
+            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null)
             {
                 System.Random random = new System.Random();
 
@@ -495,18 +436,13 @@ namespace DJsRaidOverhaul.Controllers
                     NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default);
                 }
             }
-
-            else
-            {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
-            }
         }
 
         public async void DoBerserkEvent()
         {
             var wItems = Session.Profile.Inventory.AllPlayerItems;
 
-            if (!DJConfig.DisableBerserk.Value && !_berserkEventHasRun)
+            if (!_berserkEventHasRun)
             {
                 _berserkEventHasRun = true;
                 player.ActiveHealthController.DoContusion(4f, 30f);
@@ -549,7 +485,7 @@ namespace DJsRaidOverhaul.Controllers
         {
             var aItems = Session.Profile.Inventory.AllPlayerItems;
 
-            if (!DJConfig.DisableWeight.Value && !_weightEventHasRun)
+            if (!_weightEventHasRun)
             {
                 _weightEventHasRun = true;
 
