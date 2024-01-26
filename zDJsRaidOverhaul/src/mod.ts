@@ -2,6 +2,7 @@ import { References }                       from "./Refs/References";
 
 import { DependencyContainer }              from "tsyringe";
 import { IPreAkiLoadMod }                   from "@spt-aki/models/external/IPreAkiLoadMod";
+import { IPostAkiLoadMod }                  from "@spt-aki/models/external/IPostAkiLoadMod";
 import { IPostDBLoadMod }                   from "@spt-aki/models/external/IPostDBLoadMod";
 import { ConfigServer }                     from "@spt-aki/servers/ConfigServer";
 import { JsonUtil }                         from "@spt-aki/utils/JsonUtil";
@@ -21,11 +22,11 @@ import * as assortJson                      from "../db/assort.json";
 import {jsonc}                              from "jsonc";
 import * as path                            from "path";
 
-class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
+class RaidOverhaul implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
 {
     mod: string;
     private Ref: References = new References();
-    private static container: DependencyContainer;
+    static container: DependencyContainer;
     modPath: string = path.normalize(path.join(__dirname, ".."));
 
     static filterIndex = [{
@@ -49,34 +50,18 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
     public preAkiLoad(container: DependencyContainer): void 
     {
         this.Ref.preAkiLoad(container, "RaidOverhaul");
-        this.Ref.container =    container;
-        const vfs =             container.resolve<VFS>("VFS");
-        const modConfig =       jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
-        const configServer =    container.resolve("ConfigServer");
-        const inventoryConfig = configServer.getConfig("aki-inventory");
-        const traderConfig:     ITraderConfig = configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
-
-        const SecLB =           require("../db/items/DJsSecureLunchbox.json");
-        const SmolLB =          require("../db/items/DJsSmallLunchbox.json");
-        const AmmoLB =          require("../db/items/DJsAmmoCrate.json");
-        const MedsLB =          require("../db/items/DJsSurgicalSet.json");
-        const WeaponLB =        require("../db/items/DJsWeaponCrate.json");
-        const ModLB =           require("../db/items/DJsModBox.json");
-        const BarterLB =        require("../db/items/DJsBarterCrate.json");
+        this.Ref.container =        container;
+        RaidOverhaul.container =    container;
+        const vfs =                 container.resolve<VFS>("VFS");
+        const modConfig =           jsonc.parse(vfs.readFile(path.resolve(__dirname, "../config/config.jsonc")));
+        const configServer =        container.resolve("ConfigServer");
+        const traderConfig:         ITraderConfig = configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
 
 		container.afterResolution("InventoryCallbacks", (_t, result) => {
-            result.openRandomLootContainer = (pmcData, body, sessionID) => {
-                return RaidOverhaul.customOpenRandomLootContainer(pmcData, body, sessionID)
-            }
-        }, {frequency: "Always"});
-
-        inventoryConfig.randomLootContainers["DJsSecureLunchbox"] = SecLB.randomLootContainers["DJsSecureLunchbox"];
-        inventoryConfig.randomLootContainers["DJsSmallLunchbox"] = SmolLB.randomLootContainers["DJsSmallLunchbox"];
-        inventoryConfig.randomLootContainers["DJsAmmoCrate"] = AmmoLB.randomLootContainers["DJsAmmoCrate"];
-        inventoryConfig.randomLootContainers["DJsSurgicalSet"] = MedsLB.randomLootContainers["DJsSurgicalSet"];
-        inventoryConfig.randomLootContainers["DJsWeaponCrate"] = WeaponLB.randomLootContainers["DJsWeaponCrate"];
-        inventoryConfig.randomLootContainers["DJsModBox"] = ModLB.randomLootContainers["DJsModBox"];
-        inventoryConfig.randomLootContainers["DJsBarterCrate"] = BarterLB.randomLootContainers["DJsBarterCrate"];
+			result.openRandomLootContainer = (pmcData, body, sessionID) => {
+				return RaidOverhaul.customOpenRandomLootContainer(pmcData, body, sessionID)
+			}
+		}, {frequency: "Always"});
 
         if (modConfig.Trader.Enabled)
         {
@@ -123,6 +108,38 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
             
         }
         console.log(extractList)
+    }
+
+    //
+    //
+    //
+    //
+    //
+    //
+
+    /**
+    * @param container container
+    */
+    public postAkiLoad(container: DependencyContainer): void     
+    {
+		const configServer =    container.resolve("ConfigServer");
+		const inventoryConfig = configServer.getConfig("aki-inventory");
+
+        const SecLB =           require("../db/items/DJsSecureLunchbox.json");
+        const SmolLB =          require("../db/items/DJsSmallLunchbox.json");
+        const AmmoLB =          require("../db/items/DJsAmmoCrate.json");
+        const MedsLB =          require("../db/items/DJsSurgicalSet.json");
+        const WeaponLB =        require("../db/items/DJsWeaponCrate.json");
+        const ModLB =           require("../db/items/DJsModBox.json");
+        const BarterLB =        require("../db/items/DJsBarterCrate.json");
+
+        inventoryConfig.randomLootContainers["DJsSecureLunchbox"] = SecLB.randomLootContainers["DJsSecureLunchbox"];
+        inventoryConfig.randomLootContainers["DJsSmallLunchbox"] = SmolLB.randomLootContainers["DJsSmallLunchbox"];
+        inventoryConfig.randomLootContainers["DJsAmmoCrate"] = AmmoLB.randomLootContainers["DJsAmmoCrate"];
+        inventoryConfig.randomLootContainers["DJsSurgicalSet"] = MedsLB.randomLootContainers["DJsSurgicalSet"];
+        inventoryConfig.randomLootContainers["DJsWeaponCrate"] = WeaponLB.randomLootContainers["DJsWeaponCrate"];
+        inventoryConfig.randomLootContainers["DJsModBox"] = ModLB.randomLootContainers["DJsModBox"];
+        inventoryConfig.randomLootContainers["DJsBarterCrate"] = BarterLB.randomLootContainers["DJsBarterCrate"];
     }
 
     //
@@ -429,10 +446,11 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
         Ragfair.dynamic.blacklist.custom.push(...["DJsSecureLunchbox", "DJsSmallLunchbox", "DJsAmmoCrate", "DJsSurgicalSet", "DJsWeaponCrate", "DJsModBox", "DJsBarterCrate"])
     }
 
-    static customOpenRandomLootContainer(pmcData, body, sessionID) {
+	static customOpenRandomLootContainer(pmcData, body, sessionID) {
 		const invCon = RaidOverhaul.container.resolve("InventoryController");
 		const randomUtil = RaidOverhaul.container.resolve("RandomUtil");
 		const weightRanHelp = RaidOverhaul.container.resolve("WeightedRandomHelper");
+		
 		const openedItem = pmcData.Inventory.items.find(x => x._id === body.item);
 		const containerDetails = invCon.itemHelper.getItem(openedItem._tpl);
 		const isSealedWeaponBox = containerDetails[1]._name.includes("event_container_airdrop");
@@ -442,11 +460,9 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 			items: []
 		};
 		
-		let foundInRaid = true;
+		let foundInRaid = false;
 		
-
 		if (isSealedWeaponBox) {
-
 			const containerSettings = invCon.inventoryHelper.getInventoryConfig().sealedAirdropContainer;
 			newItemRequest.items.push(...invCon.lootGenerator.getSealedWeaponCaseLoot(containerSettings));
 
@@ -460,7 +476,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 					const max = rewardContainerDetails.rewardTplPool.chances[itemCategory].max;
 					const nValue = rewardContainerDetails.rewardTplPool.chances[itemCategory].nValue;
 					const range = max - min;
-
+					
 					const itemCount = randomUtil.getBiasedRandomNumber(min, max, range, nValue);
 					
 					if (itemCount > 0) {
@@ -469,9 +485,7 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 							const existingItemInRequest = newItemRequest.items.find(x => x.item_id === chosenRewardItemTpl);
 							
 							if (existingItemInRequest) {
-
 								existingItemInRequest.count++;
-
 							} else {
 								newItemRequest.items.push({item_id: chosenRewardItemTpl, count: 1, isPreset: false});
 							}
@@ -486,7 +500,6 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 				}
 				
 			} else {
-
 				newItemRequest.items.push(...invCon.lootGenerator.getRandomLootContainerLoot(rewardContainerDetails));
 
 				foundInRaid = rewardContainerDetails.foundInRaid;
@@ -495,15 +508,11 @@ class RaidOverhaul implements IPreAkiLoadMod, IPostDBLoadMod
 
 		const output = invCon.eventOutputHolder.getOutput(sessionID);
 
-		// Find and delete opened item from player inventory
 		invCon.inventoryHelper.removeItem(pmcData, body.item, sessionID, output);
-
-		// Add random reward items to player inventory
 		invCon.inventoryHelper.addItem(pmcData, newItemRequest, output, sessionID, null, foundInRaid, null, true);
 
 		return output;
 	}
-
     
     /**
      * @param preAkiModLoader
