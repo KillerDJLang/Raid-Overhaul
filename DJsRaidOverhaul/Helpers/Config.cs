@@ -22,6 +22,7 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<int> EventRangeMax;
         public static ConfigEntry<int> DoorRangeMin;
         public static ConfigEntry<int> DoorRangeMax;
+
         public static ConfigEntry<bool> NoJokesHere;
         public static ConfigEntry<bool> DisableBlackout;
         public static ConfigEntry<bool> DisableArmorRepair;
@@ -34,6 +35,10 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<bool> DisableBerserk;
         public static ConfigEntry<bool> DisableWeight;
         public static ConfigEntry<bool> DisableJokesAndFun;
+
+        public static ConfigEntry<bool> DisablePowerOn;
+        public static ConfigEntry<bool> DisableDoorUnlock;
+        public static ConfigEntry<bool> DisableKDoorUnlock;
 
         public static ConfigEntry<bool> DebugLogging;
 
@@ -94,7 +99,7 @@ namespace DJsRaidOverhaul.Helpers
                "Random Events timer maximum range",
                25,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
-               new AcceptableValueRange<int>(0, 60),
+               new AcceptableValueRange<int>(1, 60),
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 2 }));
 
             EventRangeMin = cfg.Bind(
@@ -207,10 +212,38 @@ namespace DJsRaidOverhaul.Helpers
 
             #endregion
 
+            #region Door Events
+
+            DisablePowerOn = cfg.Bind(
+                "3. Door Events",
+                "Disable Power On event",
+                false,
+                new ConfigDescription("Disables the event to turn on Power Switches at random throughout the raid.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
+
+            DisableDoorUnlock = cfg.Bind(
+                "3. Door Events",
+                "Disable Door Unlock event",
+                false,
+                new ConfigDescription("Disables the event to unlock Doors at random throughout the raid.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
+
+            DisableKDoorUnlock = cfg.Bind(
+                "3. Door Events",
+                "Disable Keycard Door Unlock event",
+                false,
+                new ConfigDescription("Disables the event to unlock Keycard Doors at random throughout the raid.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
+
+            #endregion
+
             #region Body Clean Up
 
             EnableClean = cfg.Bind(
-                "3. Body Cleanup Configs",
+                "4. Body Cleanup Configs",
                 "Enable Clean",
                 true,
                 new ConfigDescription("Enable body cleanup event.",
@@ -218,7 +251,7 @@ namespace DJsRaidOverhaul.Helpers
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
             TimeToClean = cfg.Bind(
-                "3. Body Cleanup Configs",
+                "4. Body Cleanup Configs",
                 "Time to Clean",
                 15,
                 new ConfigDescription("The time to clean bodies calculated in minutes.",
@@ -226,7 +259,7 @@ namespace DJsRaidOverhaul.Helpers
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
 
             DistToClean = cfg.Bind(
-                "3. Body Cleanup Configs",
+                "4. Body Cleanup Configs",
                 "Distance to Clean",
                 15,
                 new ConfigDescription("How far away bodies should be for cleanup.",
@@ -238,7 +271,7 @@ namespace DJsRaidOverhaul.Helpers
             #region Other
 
             DropBackPack = cfg.Bind(
-                "4. Backpack Drop Configs",
+                "5. Backpack Drop Configs",
                 "Drop Backpack",
                 true,
                 new ConfigDescription("Enable the dropping of backpacks on death or cleanup.",
@@ -246,7 +279,7 @@ namespace DJsRaidOverhaul.Helpers
                 new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = true, Order = 2 }));
 
             DropBackPackChance = cfg.Bind(
-                "4. Backpack Drop Configs",
+                "5. Backpack Drop Configs",
                 "Backpack Drop Chance",
                 0.3f,
                 new ConfigDescription("Chance of dropping a backpack on kill or cleanup.",
@@ -255,7 +288,7 @@ namespace DJsRaidOverhaul.Helpers
 
 
             EffectStrength = cfg.Bind(
-                "5. Adrenaline",
+                "6. Adrenaline",
                 "Effect Strength",
                 0f,
                 new ConfigDescription("Causes an adrenaline effect on hit. This is how strong the effect will be multiplied by, as a percent.",
@@ -264,7 +297,7 @@ namespace DJsRaidOverhaul.Helpers
 
 
             Deafness = cfg.Bind(
-                "6. Deafness",
+                "7. Deafness",
                 "Enable",
                 false,
                 new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.",
@@ -273,7 +306,7 @@ namespace DJsRaidOverhaul.Helpers
 
 
             DebugLogging = cfg.Bind(
-                "7. Debug Logging",
+                "8. Debug Logging",
                 "Enable",
                 false,
                 new ConfigDescription("Enable extra notifications for debug purposes. Only really matters if you're testing shit lol.",
