@@ -47,11 +47,15 @@ namespace DJsRaidOverhaul.Helpers
 
         private static void InitDoorWeighting()
         {
+            var _switchWeighting = DJConfig.DisablePowerOn.Value ? 0 : 2;
+            var _doorWeighting = DJConfig.DisableDoorUnlock.Value ? 0 : 8;
+            var _keycardWeighting = DJConfig.DisableKDoorUnlock.Value ? 0 : 1;
+
             weightedDoorMethods = new List<(Action, int)>
             {
-                (Plugin.DCScript.PowerOn,     1),
-                (Plugin.DCScript.DoUnlock,    8),
-                (Plugin.DCScript.DoKUnlock,   1)
+                (Plugin.DCScript.PowerOn,     _switchWeighting),
+                (Plugin.DCScript.DoUnlock,    _doorWeighting),
+                (Plugin.DCScript.DoKUnlock,   _keycardWeighting)
             };
         }
 
