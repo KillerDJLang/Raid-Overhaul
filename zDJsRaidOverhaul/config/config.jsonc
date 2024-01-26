@@ -16,6 +16,8 @@
     "TimeLimit": 999,               //The raid time limit calculated in minutes
     "ReqSlipsOnBosses": true,       //If true, req slips will only spawn on bosses, raiders and rogues. If false, they will spawn on all bot types (makes them way less rare)
 
+    "EnableSVMFix": false,          //If true, the custom items won't be pushed to filters so you hopefully won't run into issues with Case Space Manager throwing out errors
+
     "ChangeAirdropValues":{
         "Enabled": true,            //Enable airdrop changes          
         "Customs": 35,          
