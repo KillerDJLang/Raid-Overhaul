@@ -269,11 +269,16 @@ namespace DJsRaidOverhaul.Controllers
 
                 foreach (KeycardDoor door in _keydoor)
                 {
-                    typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                    AudioSource.PlayClipAtPoint(door.DeniedBeep, door.gameObject.transform.position);
+                    if (_keydoor != null || _keydoor.Length >= 0)
+                    {
+                        {
+                            typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                            typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                        }
+                    }
                 }
 
-                NotificationManagerClass.DisplayMessageNotification("Blackout Event: All power switches and lights disabled for 10 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
+            NotificationManagerClass.DisplayMessageNotification("Blackout Event: All power switches and lights disabled for 10 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
 
                 await Task.Delay(600000);
 
@@ -288,16 +293,7 @@ namespace DJsRaidOverhaul.Controllers
                     lamp.enabled = true;
                 }
 
-                foreach (KeycardDoor door in _keydoor)
-                    if (_keydoor != null || _keydoor.Length >= 0)
-                    {
-                        {
-                            typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                            typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                        }
-                    }
-
-                NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
+            NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
         }
 
         public void DoSkillEvent()
