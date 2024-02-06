@@ -17,6 +17,10 @@ namespace DJsRaidOverhaul.Controllers
         private KeycardDoor[] _kdoor = null;
         private bool _dooreventisRunning = false;
 
+        private static int _doorChangedCount = 0;
+        private static int _doorNotChangedCount = 0;
+        private static int _lampCount = 0;
+
         GameWorld gameWorld
         { get => Singleton<GameWorld>.Instance; }
 
@@ -27,6 +31,10 @@ namespace DJsRaidOverhaul.Controllers
         {
             if (!Ready() || !DJConfig.EnableDoorEvents.Value)
             {
+                if (_lampCount != 0)            { _lampCount = 0; }
+                if (_doorChangedCount != 0)     { _doorChangedCount = 0; }
+                if (_doorNotChangedCount != 0)  { _doorNotChangedCount = 0; }
+
                 return;
             }
 
@@ -73,15 +81,25 @@ namespace DJsRaidOverhaul.Controllers
             yield break;
         }
 
+        #region Door Event Controller
+
         public void PowerOn()
         {
+            if (player.Location != "laboratory" && player.Location != "rezervbase" && player.Location != "bigmap" && player.Location != "interchange")
+            {
+                if (DJConfig.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification("No switches available on this map, returning.", ENotificationDurationType.Default);
+                }
+                return;
+            }
+
             if (_switchs == null || _switchs.Length <= 0)
             {
                 if (DJConfig.DebugLogging.Value)
                 {
-                    NotificationManagerClass.DisplayMessageNotification("No switches available, returning.", ENotificationDurationType.Default);
+                    NotificationManagerClass.DisplayMessageNotification("No switches left to open, returning.", ENotificationDurationType.Default);
                 }
-                DoUnlock();
                 return;
             }
 
@@ -105,7 +123,6 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                DoUnlock();
             }
         }
 
@@ -117,7 +134,6 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     NotificationManagerClass.DisplayMessageNotification("No locked doors available, returning.", ENotificationDurationType.Default);
                 }
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
                 return;
             }
 
@@ -142,19 +158,26 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
         }
 
         public void DoKUnlock()
         {
+            if (player.Location != "laboratory" && player.Location != "interchange")
+            {
+                if (DJConfig.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification("No keycard doors available on this map, returning.", ENotificationDurationType.Default);
+                }
+                return;
+            }
+
             if (_kdoor == null || _kdoor.Length <= 0)
             {
                 if (DJConfig.DebugLogging.Value)
                 {
-                    NotificationManagerClass.DisplayMessageNotification("No keycard doors available, returning.", ENotificationDurationType.Default);
+                    NotificationManagerClass.DisplayMessageNotification("No keycard doors left to open, returning.", ENotificationDurationType.Default);
                 }
-                DoUnlock();
                 return;
             }
 
@@ -179,9 +202,12 @@ namespace DJsRaidOverhaul.Controllers
             else
             {
                 RemoveAt(ref _door, selection);
-                DoUnlock();
             }
         }
+
+        #endregion
+
+        #region Random Raid Start Events
 
         public static void RandomizeDefaultDoors()
         {
@@ -189,42 +215,74 @@ namespace DJsRaidOverhaul.Controllers
             {
                 FindObjectsOfType<Door>().ExecuteForEach(door =>
                 {
-                    System.Random random = new System.Random();
-
-                    int chance = random.Next(0, 100 + 1);
 
                     if (!door.Operatable || !door.enabled)
                     {
+                        _doorNotChangedCount++;
                         return;
                     }
 
                     if (door.DoorState != EDoorState.Shut && door.DoorState != EDoorState.Open)
                     {
+                        _doorNotChangedCount++;
                         return;
                     }
 
                     if (door.DoorState == EDoorState.Locked)
                     {
+                        _doorNotChangedCount++;
                         return;
                     }
 
-                    if (chance is >= 50 && (door.DoorState == EDoorState.Shut))
+                    if (door.gameObject.layer != LayerMaskClass.InteractiveLayer)
                     {
-                        typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                        _doorNotChangedCount++;
+                        return;
                     }
 
-                    if (chance is >= 50 && (door.DoorState == EDoorState.Open))
+                    if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Shut))
+                    {
+                        typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                        _doorChangedCount++;
+                    }
+
+                    if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Open))
                     {
                         typeof(Door).GetMethod("Close", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                        _doorChangedCount++;
                     }
                 });
 
                 if (DJConfig.DebugLogging.Value)
                 {
-                    NotificationManagerClass.DisplayMessageNotification("Starting doors have been randomized.", ENotificationDurationType.Default);
+                    NotificationManagerClass.DisplayMessageNotification($"[{_doorChangedCount}] total Doors have had their states changed. [{_doorNotChangedCount}] haven't been modified.", ENotificationDurationType.Long, ENotificationIconType.Note);
                 }
             }
         }
+
+        public static void RandomizeLampState()
+        {
+            if (DJConfig.EnableRaidStartEvents.Value)
+            {
+                FindObjectsOfType<LampController>().ExecuteForEach(lamp =>
+                {
+                    if (UnityEngine.Random.Range(0, 100) < 25)
+                    {
+                        lamp.Switch(Turnable.EState.Off);
+                        lamp.enabled = false;
+                        _lampCount++;
+                    }
+                });
+
+
+                if (DJConfig.DebugLogging.Value)
+                {
+                    NotificationManagerClass.DisplayMessageNotification($"[{_lampCount}] total Lamps have been modified.", ENotificationDurationType.Long, ENotificationIconType.Note);
+                }
+            }
+        }
+
+        #endregion
 
         static void RemoveAt<T>(ref T[] array, int index)
         {
@@ -239,6 +297,9 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
-        public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
+        public bool Ready()
+        {
+            return gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
+        }
     }
 }
