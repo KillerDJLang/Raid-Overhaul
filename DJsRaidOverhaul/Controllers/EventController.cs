@@ -2,29 +2,30 @@ using EFT;
 using EFT.UI;
 using JsonType;
 using UnityEngine;
+using UnityEngine.UI;
+using HarmonyLib;
 using Comfort.Common;
-using EFT.Interactive;
-using System.Reflection;
-using EFT.UI.Matchmaker;
 using System.Collections;
+using System.Reflection;
+using EFT.Interactive;
+using EFT.HealthSystem;
+using EFT.UI.Matchmaker;
+using EFT.UI.BattleTimer;
 using EFT.InventoryLogic;
 using EFT.Communications;
+using Aki.Reflection.Utils;
 using Aki.Custom.Airdrops;
 using System.Threading.Tasks;
 using DJsRaidOverhaul.Helpers;
 using DJsRaidOverhaul.Patches;
-using System.Numerics;
-using HarmonyLib;
-using EFT.HealthSystem;
-using Aki.Reflection.Utils;
-using static DJsRaidOverhaul.Plugin;
 
+using static DJsRaidOverhaul.Plugin;
 
 namespace DJsRaidOverhaul.Controllers
 {
     public class EventController : MonoBehaviour
     {
-        // bool exfilUIChanged = false;
+        private bool _exfilUIChanged = false;
 
         private bool _eventisRunning = false;
         private bool _airdropDisabled = false;
@@ -36,6 +37,11 @@ namespace DJsRaidOverhaul.Controllers
         private bool _weightEventHasRun = false;
 
         private int _skillEventCount = 0;
+        private int _repairEventCount = 0;
+        private int _healthEventCount = 0;
+        private int _damageEventCount = 0;
+        private int _maxLLEventCount = 0;
+        private int _exfilEventCount = 0;
 
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
@@ -55,6 +61,8 @@ namespace DJsRaidOverhaul.Controllers
 
         public DamageInfo Blunt { get; private set; }
 
+        public EExfiltrationStatus AwaitsManualActivation { get; private set; }
+
         void Update()
         {
             if (DJConfig.TimeChanges.Value)
@@ -67,15 +75,20 @@ namespace DJsRaidOverhaul.Controllers
             if (!Ready() || !DJConfig.EnableEvents.Value)
             {
                 // Reset Events
-                if (_airdropDisabled != false)      { _airdropDisabled = false; }
-                if (_metabolismDisabled != false)   { _metabolismDisabled = false; }
-                if (_jokeEventHasRun != false)      { _jokeEventHasRun = false; }
-                if (_airdropEventHasRun != false)   { _airdropEventHasRun = false; }
-                if (_berserkEventHasRun != false)   { _berserkEventHasRun = false; }
-                if (_malfEventHasRun != false)      { _malfEventHasRun = false; }
-                if (_weightEventHasRun != false)    { _weightEventHasRun = false; }
+                if (_airdropDisabled != false) { _airdropDisabled = false; }
+                if (_metabolismDisabled != false) { _metabolismDisabled = false; }
+                if (_jokeEventHasRun != false) { _jokeEventHasRun = false; }
+                if (_airdropEventHasRun != false) { _airdropEventHasRun = false; }
+                if (_berserkEventHasRun != false) { _berserkEventHasRun = false; }
+                if (_malfEventHasRun != false) { _malfEventHasRun = false; }
+                if (_weightEventHasRun != false) { _weightEventHasRun = false; }
 
-                if (_skillEventCount != 0)          { _skillEventCount = 0; }
+                if (_skillEventCount != 0) { _skillEventCount = 0; }
+                if (_repairEventCount != 0) { _repairEventCount = 0; }
+                if (_healthEventCount != 0) { _healthEventCount = 0; }
+                if (_damageEventCount != 0) { _damageEventCount = 0; }
+                if (_maxLLEventCount != 0) { _maxLLEventCount = 0; }
+                if (_exfilEventCount != 0) { _exfilEventCount = 0; }
 
                 return;
             }
@@ -102,11 +115,13 @@ namespace DJsRaidOverhaul.Controllers
                 _eventisRunning = true;
             }
 
-            /*
-            if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
-                if (!exfilUIChanged)
+            if (EventExfilPatch.IsLockdown)
+            {
+                if (!_exfilUIChanged)
+                {
                     ChangeExfilUI();
-            /**/
+                }
+            }
         }
 
         private IEnumerator StartEvents()
@@ -129,28 +144,26 @@ namespace DJsRaidOverhaul.Controllers
             yield break;
         }
 
-        // moved from patch impacted performance too much
-        /*
         async void ChangeExfilUI()
         {
-            if (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
+            if (EventExfilPatch.IsLockdown)
             {
                 Color red = new Color(0.8113f, 0.0376f, 0.0714f, 0.8627f);
                 Color green = new Color(0.4863f, 0.7176f, 0.0157f, 0.8627f);
                 RectTransform mainDescription = (RectTransform)typeof(ExtractionTimersPanel).GetField("_mainDescription", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(FindObjectOfType<ExtractionTimersPanel>());
 
-                var text = mainDescription.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+                var text = mainDescription.gameObject.GetComponentInChildren<TMPro.TextMeshProUGUI>();
                 var box = mainDescription.gameObject.GetComponentInChildren<Image>();
 
-                text.text = EventExfilPatch.IsLockdown ? "Extraction unavailable" : EventExfilPatch.awaitDrop ? "Extracting gear - Exfils locked" : "Find an extraction point";
+                text.text = EventExfilPatch.IsLockdown ? "Extraction unavailable" : "Find an extraction point";
                 box.color = red;
 
                 foreach (ExitTimerPanel panel in FindObjectsOfType<ExitTimerPanel>())
                     panel.enabled = false;
 
-                exfilUIChanged = true;
+                _exfilUIChanged = true;
 
-                while (EventExfilPatch.IsLockdown || EventExfilPatch.awaitDrop)
+                while (EventExfilPatch.IsLockdown)
                     await Task.Yield();
 
                 text.text = "Find an extraction point";
@@ -159,27 +172,32 @@ namespace DJsRaidOverhaul.Controllers
                 foreach (ExitTimerPanel panel in FindObjectsOfType<ExitTimerPanel>())
                     panel.enabled = true;
 
-                exfilUIChanged = false;
+                _exfilUIChanged = false;
             }
         }
-        /**/
+
+        #region Core Events Controller
 
         public void DoHealPlayer()
         {
-                NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.");
-                player.ActiveHealthController.RestoreFullHealth();
+            if (_healthEventCount >= 2) { return; }
+
+            NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.", ENotificationDurationType.Long, ENotificationIconType.Default);
+            player.ActiveHealthController.RestoreFullHealth();
+            _healthEventCount++;
         }
 
         public void DoDamageEvent()
         {
-                NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.");
-                player.ActiveHealthController.DoContusion(4f, 50f);
-                player.ActiveHealthController.DoStun(5f, 0f);
-                player.ActiveHealthController.DoFracture(EBodyPart.LeftArm);
-                player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65f, Blunt);
+            if (_damageEventCount >= 1) { return; }
+
+            NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.", ENotificationDurationType.Long, ENotificationIconType.Alert);
+            player.ActiveHealthController.DoContusion(4f, 50f);
+            player.ActiveHealthController.DoStun(5f, 0f);
+            player.ActiveHealthController.DoFracture(EBodyPart.LeftArm);
+            player.ActiveHealthController.ApplyDamage(EBodyPart.Chest, 65f, Blunt);
+            _damageEventCount++;
         }
-
-
 
         public void DoArmorRepair()
         {
@@ -188,32 +206,21 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     if (item.GetItemComponent<ArmorComponent>() != null) item.GetItemComponent<RepairableComponent>().Durability = item.GetItemComponent<RepairableComponent>().MaxDurability;
                 });
-
         }
-
-        /*
-        void DoHuntedEvent()
-        {
-            NotificationManagerClass.DisplayMessageNotification("Hunted Event: The enemy knows your position, hold out as long as you can.", ENotificationDurationType.Long, ENotificationIconType.Alert);
-
-            NotificationManagerClass.DisplayMessageNotification("You survived, congratulations.", ENotificationDurationType.Long, ENotificationIconType.Default);
-        }
-        /**/
-
 
         public void DoAirdropEvent()
         {
-            if (player.Location == "factory4_day" || player.Location == "factory4_night" || player.Location == "laboratory" || _airdropEventHasRun)
+            if (player.Location != "factory4_day" && player.Location != "factory4_night" && player.Location != "laboratory" && !_airdropEventHasRun)
             {
-                Weighting.DoRandomEvent(Weighting.weightedEvents);
+                gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
+                NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+
+                _airdropEventHasRun = true;
             }
 
             else
             {
-                gameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
-                NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.Default);
-
-                _airdropEventHasRun = true;
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
 
@@ -225,7 +232,7 @@ namespace DJsRaidOverhaul.Controllers
 
                 await Task.Delay(10000);
 
-                NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Default);
+                NotificationManagerClass.DisplayMessageNotification("jk", ENotificationDurationType.Long, ENotificationIconType.Friend);
 
                 await Task.Delay(2000);
 
@@ -239,19 +246,6 @@ namespace DJsRaidOverhaul.Controllers
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
-
-        /*
-        async void DoLockDownEvent()
-        {
-            NotificationManagerClass.DisplayMessageNotification("Lockdown Event: All extracts are unavaliable for 15 minutes", ENotificationDurationType.Long, ENotificationIconType.Alert);
-            EventExfilPatch.IsLockdown = true;
-
-            await Task.Delay(900000);
-
-            EventExfilPatch.IsLockdown = false;
-            NotificationManagerClass.DisplayMessageNotification("Lockdown Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
-        }
-        /**/
 
         public async void DoBlackoutEvent()
         {
@@ -271,10 +265,8 @@ namespace DJsRaidOverhaul.Controllers
                 {
                     if (_keydoor != null || _keydoor.Length >= 0)
                     {
-                        {
-                            typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                            typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
-                        }
+                        typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
+                        typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(door, null);
                     }
                 }
 
@@ -293,7 +285,7 @@ namespace DJsRaidOverhaul.Controllers
                     lamp.enabled = true;
                 }
 
-            NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Quest);
+            NotificationManagerClass.DisplayMessageNotification("Blackout Event over", ENotificationDurationType.Long, ENotificationIconType.Default);
         }
 
         public void DoSkillEvent()
@@ -386,12 +378,13 @@ namespace DJsRaidOverhaul.Controllers
                     {
                         weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 2f;
                         weapon.Template.DurabilityBurnRatio = weapon.Template.DurabilityBurnRatio * 2f;
-                        weapon.Template.HeatFactorByShot = weapon.Template.HeatFactorByShot * 2f;
+                        weapon.Template.Ergonomics = weapon.Template.Ergonomics * 0.5f;
                     }
                 }
-                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Be careful not to jam up!", ENotificationDurationType.Long);
 
-                await Task.Delay(60000);
+                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Be careful not to jam up!", ENotificationDurationType.Long, ENotificationIconType.Alert);
+
+                await Task.Delay(300000);
 
                 foreach (var item in pItems)
                 {
@@ -399,10 +392,11 @@ namespace DJsRaidOverhaul.Controllers
                     {
                         weapon.Template.BaseMalfunctionChance = weapon.Template.BaseMalfunctionChance * 0.5f;
                         weapon.Template.DurabilityBurnRatio = weapon.Template.DurabilityBurnRatio * 0.5f;
-                        weapon.Template.HeatFactorByShot = weapon.Template.HeatFactorByShot * 0.5f;
+                        weapon.Template.Ergonomics = weapon.Template.Ergonomics * 2f;
                     }
                 }
-                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Your weapon has had time to cool off, shouldn't have any more troubles!", ENotificationDurationType.Long);
+
+                NotificationManagerClass.DisplayMessageNotification("Malfunction Event: Your weapon has had time to cool off, shouldn't have any more troubles!", ENotificationDurationType.Long, ENotificationIconType.Default);
             }
 
             else
@@ -456,6 +450,7 @@ namespace DJsRaidOverhaul.Controllers
                         weapon.Template.RecoilForceBack = weapon.Template.RecoilForceBack * 0.5f;
                     }
                 }
+
                 NotificationManagerClass.DisplayMessageNotification("Berserk Event: You're seeing red, I feel bad for any scavs and PMCs in your way!", ENotificationDurationType.Long);
 
                 await Task.Delay(180000);
@@ -470,6 +465,7 @@ namespace DJsRaidOverhaul.Controllers
                         weapon.Template.RecoilForceBack = weapon.Template.RecoilForceBack * 2f;
                     }
                 }
+
                 NotificationManagerClass.DisplayMessageNotification("Berserk Event: Your vision has cleared up, I guess you got all your rage out!", ENotificationDurationType.Long);
             }
 
@@ -515,31 +511,68 @@ namespace DJsRaidOverhaul.Controllers
             }
         }
 
-        public static void RandomizeLampState()
+        public async void DoMaxLLEvent()
         {
-            if (DJConfig.EnableRaidStartEvents.Value)
+            if (_maxLLEventCount >= 1) { return; }
+
+            if (Session == null && ClientAppUtils.GetMainApp().GetClientBackEndSession() != null)
             {
-                FindObjectsOfType<LampController>().ExecuteForEach(lamp =>
+                Session = ClientAppUtils.GetMainApp().GetClientBackEndSession();
+                var Traders = Utils.Traders;
+
+                _maxLLEventCount++;
+
+                foreach (var Trader in Traders)
                 {
-                    System.Random random = new System.Random();
-
-                    int chance = random.Next(0, 100 + 1);
-
-                    if (chance is >= 70)
                     {
-                        lamp.Switch(Turnable.EState.Off);
-                        lamp.enabled = false;
+                        Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 1);
                     }
-                });
-            
-
-                if (DJConfig.DebugLogging.Value)
-                {
-                    NotificationManagerClass.DisplayMessageNotification("Starting lamp state has been modified.", ENotificationDurationType.Default);
                 }
+                NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders have maxed out standing. Better get to them in the next ten minutes!", ENotificationDurationType.Default, ENotificationIconType.Mail);
+
+                await Task.Delay(600000);
+
+                foreach (var Trader in Traders)
+                {
+                    {
+                        Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                    }
+                }
+                NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders standing has been set back to normal. This is a fickle business after all.", ENotificationDurationType.Default, ENotificationIconType.Mail);
             }
         }
 
-        public bool Ready() => gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
+        public async void DoLockDownEvent()
+        {
+            if (_exfilEventCount >= 1) { return; }
+
+            var exfils = FindObjectsOfType<ExfiltrationPoint>();
+
+            NotificationManagerClass.DisplayMessageNotification("Lockdown Event: All extracts are unavaliable for 15 minutes", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+            EventExfilPatch.IsLockdown = true;
+
+            foreach (var exfil in exfils)
+            {
+                exfil.Disable(AwaitsManualActivation);
+            }
+            _exfilEventCount++;
+
+            await Task.Delay(600000);
+
+            foreach (var exfil in exfils)
+            {
+                exfil.Enable();
+            }
+
+            NotificationManagerClass.DisplayMessageNotification("Lockdown Event: Extracts are available again. Time to get out of there!", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+            EventExfilPatch.IsLockdown = false;
+        }
+
+        #endregion
+
+        public bool Ready()
+        {
+            return gameWorld != null && gameWorld.AllAlivePlayersList != null && gameWorld.AllAlivePlayersList.Count > 0 && !(player is HideoutPlayer);
+        }
     }
 }
