@@ -1,0 +1,96 @@
+{
+  "Raid": {
+    "ReduceFoodAndHydroDegrade":{       
+        "Enabled": true,
+        "EnergyDecay": 0.6,         //The rate at which you lose Energy and Hydration. Lower is slower decay
+        "HydroDecay": 0.6
+    },
+
+    "SaveQuestItems": true,         //If enabled saves quest items in your inventory on death
+    "NoRunThrough": true,           //Remove raid survived requirements
+    "LootableMelee": true,          //Makes melee weapons lootable
+    "LootableArmbands": true,       //Makes armbands lootable
+    "ContainerChanges": false,      //Enables the container size changes (conflicts with softcore)
+    "PocketChanges": false,         //Enables the pocket size and special slot filter changes
+    "EnableExtendedRaids": true,    //Enables the raid time changes making raid times essentially unlimited
+    "TimeLimit": 999,               //The raid time limit calculated in minutes
+    "ReqSlipsOnBosses": true,       //If true, req slips will only spawn on bosses, raiders and rogues. If false, they will spawn on all bot types (makes them way less rare)
+    "EnableSVMFix": false,          //If true, the custom items won't be pushed to filters so you hopefully won't run into issues with Case Space Manager throwing out errors
+    "HolsterAnything": true,        //If true, you will be able to put any weapon in your holster slot
+    "LowerExamineTime": false,      //Lowers the time required to examine items
+
+    "ChangeAirdropValues":{         //Enable airdrop changes
+        "Enabled": true,             
+        "Customs": 35,          
+        "Woods": 35,                   
+        "Lighthouse": 35,           //Percent chance to get a random airdrop
+        "Interchange": 35,         
+        "Shoreline": 35,           
+        "Reserve": 35
+    }
+  },
+
+  "Weight": {
+    "Enabled": false,
+    "MinWeight": 90,                //Minimum overweight limit  DEFAULT 21
+    "MaxWeight": 140,               //Maximum overweight limit  DEFAULT 81
+    "WalkMinWeight": 110,           //Minimum walk overweight limit  DEFAULT 42
+    "WalkMaxWeight": 150,           //Maximum walk overweight limit  DEFAULT 70
+    "WalkSpeedMinWeight": 120,      //Minimum walk speed overweight limit  DEFAULT 34
+    "WalkSpeedMaxWeight": 170,      //Maximum walk speed overweight limit  DEFAULT 75
+    "SprintMinWeight": 90,          //Minimum sprint speed overweight limit  DEFAULT 21
+    "SprintMaxWeight": 140,         //Maximum sprint speed overweight limit  DEFAULT 58
+  },
+
+  "Trader": {
+    "Enabled": true,                //Enable the Requisition Office trader in your game
+    "AllowRandomization": true,     //Allow the Req Offices stock to be randomized
+    "RandomizationRange": 5,        //The range for item count to be randomized if AllowRandomization is enabled. It will be this number +/- this number again. So 5 allows the stock to be from 0-10 
+    "AmmoRandomizationRange": 150,  //The range for Ammo count to be randomized if AllowRandomization is enabled. It will be this number +/- this number again. So 150 allows the stock to be from 0-300 
+    "DisableFleaBlacklist": false,  //Disables the flea market blacklist from BSG
+    "LL1Items": false,              //Sets all trader assort items to be available at loyalty level 1 
+  },
+
+  "Insurance": {                    //Enables modification of insurance return time. The numbers here are return time in hours
+    "Enabled": false,                
+    "PraporMinReturn": 2,
+    "PraporMaxReturn": 4,
+    "TherapistMinReturn": 1,
+    "TherapistMaxReturn": 2
+  },
+
+  "BasicStackTuning": {             //Enables the basic stack multiplier. It will multiply the total stacks for ammo by whatever number you put in the "StackMultiplier" section
+    "Enabled": false,               
+    "StackMultiplier": 5
+  },
+
+  "AdvancedStackTuning": {          //Enables the advanced stack multiplier. This is the total stacks for each type of ammo individually
+    "Enabled": false,               
+    "ShotgunStack": 100,
+    "FlaresAndUBGL": 5,
+    "SniperStack": 100,
+    "SMGStack": 250,
+    "RifleStack": 150
+  },
+
+  "MoneyStackMultiplier": {         //Enables the money stack multiplier. Total money stack will be the number you put in the "MoneyMultiplier" section    
+    "Enabled": false,               
+    "MoneyMultiplier": 5000000
+  },
+
+  "Loot": {                         //Enables the static and loose loot multipliers. Both types of loot will be multiplied per map by whatever number you put in it's respective section
+    "EnableLootOptions": false,     
+    "Locations": {
+      "Customs": 2,
+      "FactoryDay": 2,
+      "FactoryNight": 2,
+      "Interchange": 2,
+      "Labs": 2,
+      "Reserve": 2,
+      "Shoreline": 2,
+      "Woods": 2,
+      "Lighthouse": 2,
+      "Streets": 2
+    }
+  }
+}
