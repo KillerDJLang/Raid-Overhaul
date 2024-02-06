@@ -12,7 +12,7 @@ using DJsRaidOverhaul.Controllers;
 
 namespace DJsRaidOverhaul
 {
-    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.4.0")]
+    [BepInPlugin("DJ.RaidOverhaul", "DJs Raid Overhaul", "1.5.0")]
 
     public class Plugin : BaseUnityPlugin
     {
@@ -59,21 +59,27 @@ namespace DJsRaidOverhaul
                 new GameWorldPatch().Enable();
                 new UIPanelPatch().Enable();
                 new TimerUIPatch().Enable();
-                // new EventExfilPatch().Enable();
                 new WeatherControllerPatch().Enable();
                 new GlobalsPatch().Enable();
                 new WatchPatch().Enable();
             }
 
+            if (DJConfig.EnableAdrenaline.Value)
+            {
+                new HitStaminaPatch().Enable();
+            }
+
+            if (DJConfig.Deafness.Value)
+            {
+                new DeafnessPatch().Enable();
+                new GrenadeDeafnessPatch().Enable();
+            }
+
             new EnableEntryPointPatch().Enable();
-            new HitStaminaPatch().Enable();
-            new DeafnessPatch().Enable();
-            new GrenadeDeafnessPatch().Enable();
             new GamePlayerOwnerPatch().Enable();
             new GameWorldDisposePatch().Enable();
             new RandomizeDefaultStatePatch().Enable();
-            // new FactoryTimePatch().Enable();
-            // new AirdropBoxPatch().Enable();
+            new EventExfilPatch().Enable();
 
             Controllers = new Dictionary<IAnimator, AnimatorOverrideController>();
             SuitsLookup = new Dictionary<string, int>

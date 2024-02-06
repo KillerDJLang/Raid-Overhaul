@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 
 namespace DJsRaidOverhaul.Helpers
@@ -14,8 +13,11 @@ namespace DJsRaidOverhaul.Helpers
             "5935c25fb3acc3127c3d8cd9",     //Peacekeeper 
             "5a7c2eca46aef81a7ca2145d",     //Mechanic 
             "5ac3b934156ae10c4430e83c",     //Ragman 
-            "5c0647fdd443bc2504c2d371"      //Jaeger 
+            "5c0647fdd443bc2504c2d371",     //Jaeger 
+            "Requisitions"                  //Req Shop
         };
+
+        public static readonly string ReqID = "Requisitions";
 
         public static float GetStrength()
         {

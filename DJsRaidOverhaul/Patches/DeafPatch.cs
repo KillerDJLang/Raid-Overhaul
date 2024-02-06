@@ -104,14 +104,11 @@ namespace DJsRaidOverhaul.Patches
         [PatchPrefix]
         static void Prefix(Grenade __instance)
         {
-            if (DJConfig.Deafness.Value)
+            float dist = Vector3.Distance(__instance.transform.position, PlayerInfo.player.Transform.position);
+            if (!PlayerInfo.PlayerHasEarPro() && dist <= 30)
             {
-                float dist = Vector3.Distance(__instance.transform.position, PlayerInfo.player.Transform.position);
-                if (!PlayerInfo.PlayerHasEarPro() && dist <= 30)
-                {
-                    PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
-                    PlayerInfo.player.ActiveHealthController.DoContusion(30 / (dist / 2), 100 / dist);
-                }
+                PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
+                PlayerInfo.player.ActiveHealthController.DoContusion(30 / (dist / 2), 100 / dist);
             }
         }
     }

@@ -1,0 +1,131 @@
+{
+  "544a11ac4bdc2d470e8b456a": {
+    "_id": "544a11ac4bdc2d470e8b456a",
+    "_name": "Контейнер Альфа",
+    "_parent": "5448bf274bdc2dfc2f8b456a",
+    "_props": {
+      "AnimationVariantsNumber": 0,
+      "BackgroundColor": "violet",
+      "BlocksArmorVest": false,
+      "CanPutIntoDuringTheRaid": true,
+      "CanRequireOnRagfair": false,
+      "CanSellOnRagfair": false,
+      "CantRemoveFromSlotsDuringRaid": [
+        "SecuredContainer"
+      ],
+      "ConflictingItems": [],
+      "Description": "",
+      "DiscardLimit": -1,
+      "DiscardingBlock": true,
+      "DropSoundType": "None",
+      "ExamineExperience": 10,
+      "ExamineTime": 1,
+      "ExaminedByDefault": true,
+      "ExtraSizeDown": 0,
+      "ExtraSizeForceAdd": false,
+      "ExtraSizeLeft": 0,
+      "ExtraSizeRight": 0,
+      "ExtraSizeUp": 0,
+      "Grids": [
+        {
+          "_id": "55d718044bdc2d87028b456d",
+          "_name": "a1",
+          "_parent": "544a11ac4bdc2d470e8b456a",
+          "_props": {
+            "cellsH": 2,
+            "cellsV": 2,
+            "filters": [
+              {
+                "ExcludedFilter": [
+                  "5447e1d04bdc2dff2f8b4567"
+                ],
+                "Filter": [
+                  "54009119af1c881c07000029"
+                ]
+              }
+            ],
+            "isSortingTable": false,
+            "maxCount": 0,
+            "maxWeight": 0,
+            "minCount": 0
+          },
+          "_proto": "55d329c24bdc2d892f8b4567"
+        },
+        {
+          "_id": "55d718044bdc2d87028b456d",
+          "_name": "a2",
+          "_parent": "544a11ac4bdc2d470e8b456a",
+          "_props": {
+            "cellsH": 2,
+            "cellsV": 2,
+            "filters": [
+              {
+                "ExcludedFilter": [
+                  "5447e1d04bdc2dff2f8b4567"
+                ],
+                "Filter": [
+                  "54009119af1c881c07000029"
+                ]
+              }
+            ],
+            "isSortingTable": false,
+            "maxCount": 0,
+            "maxWeight": 0,
+            "minCount": 0
+          },
+          "_proto": "55d329c24bdc2d892f8b4567"
+        }
+      ],
+      "Height": 2,
+      "HideEntrails": true,
+      "InsuranceDisabled": false,
+      "IsAlwaysAvailableForInsurance": false,
+      "IsLockedafterEquip": false,
+      "IsSpecialSlotOnly": false,
+      "IsUnbuyable": false,
+      "IsUndiscardable": false,
+      "IsUngivable": false,
+      "IsUnremovable": false,
+      "IsUnsaleable": false,
+      "ItemSound": "container_case",
+      "LootExperience": 0,
+      "MergesWithChildren": false,
+      "Name": "Защищенный контейнер Альфа",
+      "NotShownInSlot": false,
+      "Prefab": {
+        "path": "assets/content/items/meds/first_aid_box/item_meds_first_aid_box.bundle",
+        "rcid": ""
+      },
+      "QuestItem": false,
+      "QuestStashMaxCount": 0,
+      "RagFairCommissionModifier": 1,
+      "RepairCost": 0,
+      "RepairSpeed": 0,
+      "SearchSound": "cashregister_looting",
+      "ShortName": "A-secured",
+      "Slots": [],
+      "StackMaxSize": 1,
+      "StackObjectsCount": 1,
+      "Unlootable": false,
+      "UnlootableFromSide": [],
+      "UnlootableFromSlot": "FirstPrimaryWeapon",
+      "UsePrefab": {
+        "path": "",
+        "rcid": ""
+      },
+      "Weight": 0.6,
+      "Width": 2,
+      "containType": [],
+      "isSecured": true,
+      "lootFilter": [],
+      "maxCountSpawn": 0,
+      "minCountSpawn": 0,
+      "openedByKeyID": [],
+      "sizeHeight": 2,
+      "sizeWidth": 2,
+      "spawnRarity": "Common",
+      "spawnTypes": "None"
+    },
+    "_type": "Item"
+  }
+}

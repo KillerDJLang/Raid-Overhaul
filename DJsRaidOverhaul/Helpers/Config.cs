@@ -2,7 +2,6 @@ using BepInEx.Configuration;
 
 namespace DJsRaidOverhaul.Helpers
 {
-    // Not named Config because of an ambiguous reference
     public static class DJConfig
     {
         public static ConfigEntry<bool> DropBackPack;
@@ -13,6 +12,7 @@ namespace DJsRaidOverhaul.Helpers
 
         public static ConfigEntry<bool> Deafness;
         public static ConfigEntry<float> EffectStrength;
+        public static ConfigEntry<bool> EnableAdrenaline;
 
         public static ConfigEntry<bool> TimeChanges;
         public static ConfigEntry<bool> EnableEvents;
@@ -24,21 +24,23 @@ namespace DJsRaidOverhaul.Helpers
         public static ConfigEntry<int> DoorRangeMax;
 
         public static ConfigEntry<bool> NoJokesHere;
-        public static ConfigEntry<bool> DisableBlackout;
-        public static ConfigEntry<bool> DisableArmorRepair;
-        public static ConfigEntry<bool> DisableHeal;
-        public static ConfigEntry<bool> DisableAirdrop;
-        public static ConfigEntry<bool> DisableSkill;
-        public static ConfigEntry<bool> DisableMetabolism;
-        public static ConfigEntry<bool> DisableMalfunction;
-        public static ConfigEntry<bool> DisableTrader;
-        public static ConfigEntry<bool> DisableBerserk;
-        public static ConfigEntry<bool> DisableWeight;
-        public static ConfigEntry<bool> DisableJokesAndFun;
+        public static ConfigEntry<bool> Blackout;
+        public static ConfigEntry<bool> ArmorRepair;
+        public static ConfigEntry<bool> Heal;
+        public static ConfigEntry<bool> Airdrop;
+        public static ConfigEntry<bool> Skill;
+        public static ConfigEntry<bool> Metabolism;
+        public static ConfigEntry<bool> Malfunction;
+        public static ConfigEntry<bool> Trader;
+        public static ConfigEntry<bool> Berserk;
+        public static ConfigEntry<bool> Overweight;
+        public static ConfigEntry<bool> JokesAndFun;
+        public static ConfigEntry<bool> ShoppingSpree;
+        public static ConfigEntry<bool> ExfilLockdown;
 
-        public static ConfigEntry<bool> DisablePowerOn;
-        public static ConfigEntry<bool> DisableDoorUnlock;
-        public static ConfigEntry<bool> DisableKDoorUnlock;
+        public static ConfigEntry<bool> PowerOn;
+        public static ConfigEntry<bool> DoorUnlock;
+        public static ConfigEntry<bool> KDoorUnlock;
 
         public static ConfigEntry<bool> DebugLogging;
 
@@ -47,39 +49,39 @@ namespace DJsRaidOverhaul.Helpers
             #region Core Events
 
             TimeChanges = cfg.Bind(
-                "1. Core Events",
-                "Enable Time Changes",
+                "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
+                "Time Changes",
                 true,
-                new ConfigDescription("Sets the in game time to your system time.\nThis requires a restart to take effect after enabling or disabling!",
+                new ConfigDescription("Sets the in game time to your system time.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 8 }));
 
             EnableRaidStartEvents = cfg.Bind(
-                "1. Core Events",
-                "Enable Raid Start Events",
+                "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
+                "Raid Start Events",
                 true,
                 new ConfigDescription("Dictates whether you allow the Door and Light randomization events to run on raid start or not.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 7 }));
 
             EnableEvents = cfg.Bind(
-                "1. Core Events",
-                "Enable Dynamic Events",
+                "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
+                "Dynamic Events",
                 true,
-                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow events to run or not.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 6 }));
 
             EnableDoorEvents = cfg.Bind(
-                "1. Core Events",
-                "Enable Dynamic Door Events",
+                "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
+                "Dynamic Door Events",
                 true,
-                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow door events to run or not.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Dictates whether the dynamic event timer should increment and allow door events to run or not.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 5 }));
 
             DoorRangeMax = cfg.Bind(
-               "1. Core Events",
+               "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
                "Door Events timer maximum range",
                3,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
@@ -87,7 +89,7 @@ namespace DJsRaidOverhaul.Helpers
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 4 }));
 
             DoorRangeMin = cfg.Bind(
-               "1. Core Events",
+               "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
                "Door Events timer minimum range",
                1,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
@@ -95,7 +97,7 @@ namespace DJsRaidOverhaul.Helpers
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 3 }));
 
             EventRangeMax = cfg.Bind(
-               "1. Core Events",
+               "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
                "Random Events timer maximum range",
                25,
                new ConfigDescription("The time is in minutes, cannot be lower than the minimum",
@@ -103,7 +105,7 @@ namespace DJsRaidOverhaul.Helpers
                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 2 }));
 
             EventRangeMin = cfg.Bind(
-               "1. Core Events",
+               "1. Core Events  (Changing Any Of The Event Sections Requires Restart)",
                "Random Events timer minimum range",
                5,
                new ConfigDescription("The time is in minutes, cannot be higher than the maximum",
@@ -114,99 +116,115 @@ namespace DJsRaidOverhaul.Helpers
 
             #region Random Events
 
-            DisableJokesAndFun = cfg.Bind(
+            ExfilLockdown = cfg.Bind(
                "2. Random Events",
-               "Disable Joke Event",
-                false,
-                new ConfigDescription("Disables the Joke event.\nNote that this DOES NOT stop events that are already running!",
+               "Lockdown Event",
+                true,
+                new ConfigDescription("Disable/Enable the Extract Lockdown event.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 11 }));
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 14 }));
 
-            DisableWeight = cfg.Bind(
+            ShoppingSpree = cfg.Bind(
                "2. Random Events",
-               "Disable Weight Event",
-                false,
-                new ConfigDescription("Disables the Weight event.\nNote that this DOES NOT stop events that are already running!",
+               "Shopping Spree Event",
+                true,
+                new ConfigDescription("Disable/Enable the Shopping Spree event.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 13 }));
+
+            JokesAndFun = cfg.Bind(
+               "2. Random Events",
+               "Joke Event",
+                true,
+                new ConfigDescription("Disable/Enable the Joke event.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 12 }));
+
+            Overweight = cfg.Bind(
+               "2. Random Events",
+               "Overweight Event",
+                true,
+                new ConfigDescription("Disable/Enable the Overweight event.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 11 }));
+
+            Berserk = cfg.Bind(
+               "2. Random Events",
+               "Berserk Event",
+                true,
+                new ConfigDescription("Disable/Enable the Berserk event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 10 }));
 
-            DisableBerserk = cfg.Bind(
+            Trader = cfg.Bind(
                "2. Random Events",
-               "Disable Berserk Event",
-                false,
-                new ConfigDescription("Disables the Berserk event.\nNote that this DOES NOT stop events that are already running!",
-                null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 10 }));
-
-            DisableTrader = cfg.Bind(
-               "2. Random Events",
-               "Disable Trader Events",
-                false,
-                new ConfigDescription("Disables the Trader events.\nNote that this DOES NOT stop events that are already running!",
+               "Trader Events",
+                true,
+                new ConfigDescription("Disable/Enable the Trader events.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 9 }));
 
-            DisableMalfunction = cfg.Bind(
+            Malfunction = cfg.Bind(
                "2. Random Events",
-               "Disable Malfunction Event",
+               "Malfunction Event",
                 false,
-                new ConfigDescription("Disables the Malfunction event.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Disable/Enable the Malfunction event.",
                 null,
-                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 8 }));
+                new ConfigurationManagerAttributes { IsAdvanced = true, ShowRangeAsPercent = false, Order = 8 }));
 
             NoJokesHere = cfg.Bind(
                "2. Random Events",
-               "Disable Heart Attack Event",
+               "Heart Attack Event",
                 false,
-                new ConfigDescription("Disables the heart attack event.\nNote that this DOES NOT stop events that are already running!",
+                new ConfigDescription("Disable/Enable the heart attack event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 7 }));
 
-            DisableBlackout = cfg.Bind(
+            Blackout = cfg.Bind(
                "2. Random Events",
-               "Disable Blackout Event",
-                false,
-                new ConfigDescription("Disables the blackout event.\nNote that this DOES NOT stop events that are already running!",
+               "Blackout Event",
+                true,
+                new ConfigDescription("Disable/Enable the blackout event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 6 }));
 
-            DisableArmorRepair = cfg.Bind(
+            ArmorRepair = cfg.Bind(
                "2. Random Events",
-               "Disable Armor Repair Event",
-                false,
-                new ConfigDescription("Disables the armor repair event.\nNote that this DOES NOT stop events that are already running!",
+               "Armor Repair Event",
+                true,
+                new ConfigDescription("Disable/Enable the armor repair event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 5 }));
 
-            DisableHeal = cfg.Bind(
+            Heal = cfg.Bind(
                "2. Random Events",
-               "Disable Heal Event",
-                false,
-                new ConfigDescription("Disables the healing event.\nNote that this DOES NOT stop events that are already running!",
+               "Heal Event",
+                true,
+                new ConfigDescription("Disable/Enable the healing event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 4 }));
 
-            DisableAirdrop = cfg.Bind(
+            Airdrop = cfg.Bind(
                "2. Random Events",
-               "Disable Airdrop Event",
-                false,
-                new ConfigDescription("Disables the Airdrop event.\nNote that this DOES NOT stop events that are already running!",
+               "Airdrop Event",
+                true,
+                new ConfigDescription("Disable/Enable the Airdrop event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
-            
-            DisableSkill = cfg.Bind(
+
+            Skill = cfg.Bind(
                "2. Random Events",
-               "Disable Skill Event",
-                false,
-                new ConfigDescription("Disables the Skill event.\nNote that this DOES NOT stop events that are already running!",
+               "Skill Event",
+                true,
+                new ConfigDescription("Disable/Enable the Skill event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
 
-            DisableMetabolism = cfg.Bind(
+            Metabolism = cfg.Bind(
                "2. Random Events",
-               "Disable Metabolism Event",
-                false,
-                new ConfigDescription("Disables the Metabolism event.\nNote that this DOES NOT stop events that are already running!",
+               "Metabolism Event",
+                true,
+                new ConfigDescription("Disable/Enable the Metabolism event.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
@@ -214,27 +232,27 @@ namespace DJsRaidOverhaul.Helpers
 
             #region Door Events
 
-            DisablePowerOn = cfg.Bind(
+            PowerOn = cfg.Bind(
                 "3. Door Events",
-                "Disable Power On event",
-                false,
-                new ConfigDescription("Disables the event to turn on Power Switches at random throughout the raid.",
+                "Power On event",
+                true,
+                new ConfigDescription("Disable/Enable the event to turn on Power Switches at random throughout the raid.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 3 }));
 
-            DisableDoorUnlock = cfg.Bind(
+            DoorUnlock = cfg.Bind(
                 "3. Door Events",
-                "Disable Door Unlock event",
-                false,
-                new ConfigDescription("Disables the event to unlock Doors at random throughout the raid.",
+                "Door Unlock event",
+                true,
+                new ConfigDescription("Disable/Enable the event to unlock Doors at random throughout the raid.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
 
-            DisableKDoorUnlock = cfg.Bind(
+            KDoorUnlock = cfg.Bind(
                 "3. Door Events",
-                "Disable Keycard Door Unlock event",
-                false,
-                new ConfigDescription("Disables the event to unlock Keycard Doors at random throughout the raid.",
+                "Keycard Door Unlock event",
+                true,
+                new ConfigDescription("Disable/Enable the event to unlock Keycard Doors at random throughout the raid.",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
@@ -287,10 +305,18 @@ namespace DJsRaidOverhaul.Helpers
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
 
 
+            EnableAdrenaline = cfg.Bind(
+                "6. Adrenaline",
+                "Enable Adrenaline Effect",
+                false,
+                new ConfigDescription("Enables the adrenaline effect on hit. If enabled, modify the strength with the 'EffectStrength' option ",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 2 }));
+
             EffectStrength = cfg.Bind(
                 "6. Adrenaline",
                 "Effect Strength",
-                0f,
+                30f,
                 new ConfigDescription("Causes an adrenaline effect on hit. This is how strong the effect will be multiplied by, as a percent.",
                 new AcceptableValueRange<float>(0f, 100f),
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = true, Order = 1 }));
@@ -300,7 +326,7 @@ namespace DJsRaidOverhaul.Helpers
                 "7. Deafness",
                 "Enable",
                 false,
-                new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.",
+                new ConfigDescription("Enable deafness changes. Make sure you have your ear protection on.\nThis requires a restart to take effect after enabling or disabling!",
                 null,
                 new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 1 }));
 
