@@ -47,9 +47,9 @@ namespace DJsRaidOverhaul.Helpers
 
         private static void InitDoorWeighting()
         {
-            var _switchWeighting = DJConfig.DisablePowerOn.Value ? 0 : 2;
-            var _doorWeighting = DJConfig.DisableDoorUnlock.Value ? 0 : 8;
-            var _keycardWeighting = DJConfig.DisableKDoorUnlock.Value ? 0 : 1;
+            var _switchWeighting = DJConfig.PowerOn.Value ? 2 : 0;
+            var _doorWeighting = DJConfig.DoorUnlock.Value ? 10 : 0;
+            var _keycardWeighting = DJConfig.KDoorUnlock.Value ? 1 : 0;
 
             weightedDoorMethods = new List<(Action, int)>
             {
@@ -61,18 +61,20 @@ namespace DJsRaidOverhaul.Helpers
 
         private static void InitEventWeighting()
         {
-            var _damageWeighting = DJConfig.NoJokesHere.Value ? 0 : 2;
-            var _airdropWeighting = DJConfig.DisableAirdrop.Value ? 0 : 8;
-            var _blackoutWeighting = DJConfig.DisableBlackout.Value ? 0 : 4;
-            var _jokeWeighting = DJConfig.DisableJokesAndFun.Value ? 0 : 2;
-            var _healWeighting = DJConfig.DisableHeal.Value ? 0 : 6;
-            var _armorWeighting = DJConfig.DisableArmorRepair.Value ? 0 : 7;
-            var _skillWeighting = DJConfig.DisableSkill.Value ? 0 : 3;
-            var _metWeighting = DJConfig.DisableMetabolism.Value ? 0 : 3;
-            var _malfWeighting = DJConfig.DisableMalfunction.Value ? 0 : 2;
-            var _traderWeighting = DJConfig.DisableTrader.Value ? 0 : 1;
-            var _berserkWeighting = DJConfig.DisableBerserk.Value ? 0 : 2;
-            var _weightWeightingLOL = DJConfig.DisableWeight.Value ? 0 : 2;
+            var _damageWeighting = DJConfig.NoJokesHere.Value ? 4 : 0;
+            var _airdropWeighting = DJConfig.Airdrop.Value ? 16 : 0;
+            var _blackoutWeighting = DJConfig.Blackout.Value ? 8 : 0;
+            var _jokeWeighting = DJConfig.JokesAndFun.Value ? 4 : 0;
+            var _healWeighting = DJConfig.Heal.Value ? 12 : 0;
+            var _armorWeighting = DJConfig.ArmorRepair.Value ? 14 : 0;
+            var _skillWeighting = DJConfig.Skill.Value ? 6 : 0;
+            var _metWeighting = DJConfig.Metabolism.Value ? 6 : 0;
+            var _malfWeighting = DJConfig.Malfunction.Value ? 4 : 0;
+            var _traderWeighting = DJConfig.Trader.Value ? 3 : 0;
+            var _berserkWeighting = DJConfig.Berserk.Value ? 4 : 0;
+            var _overweightWeightingLOL = DJConfig.Overweight.Value ? 4 : 0;
+            var _maxLLWeighting = DJConfig.ShoppingSpree.Value ? 1 : 0;
+            var _exfilWeightings = DJConfig.ExfilLockdown.Value ? 1 : 0;
 
             weightedEvents = new List<(Action, int)>
             {
@@ -87,7 +89,9 @@ namespace DJsRaidOverhaul.Helpers
                 (Plugin.ECScript.DoMalfEvent,       _malfWeighting),
                 (Plugin.ECScript.DoLLEvent,         _traderWeighting),
                 (Plugin.ECScript.DoBerserkEvent,    _berserkWeighting),
-                (Plugin.ECScript.DoWeightEvent,     _weightWeightingLOL)
+                (Plugin.ECScript.DoWeightEvent,     _overweightWeightingLOL),
+                (Plugin.ECScript.DoMaxLLEvent,      _maxLLWeighting),
+                (Plugin.ECScript.DoLockDownEvent,   _exfilWeightings)
             };
         }
     }
