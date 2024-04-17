@@ -15,7 +15,7 @@ export class pushTraderFeatures
         //assortUtils.generateAmmoTypeData(tables, BaseClasses, vfs);
 
         //Get preset data from globals
-        assortUtils.getPresets(fs, path, hashUtil);  
+        //assortUtils.getPresets(fs, path, hashUtil);  
                  
         //Get trader assorts from trader helper
         //assortUtils.getAssorts(traderHelper ,vfs);
@@ -33,18 +33,24 @@ export class pushTraderFeatures
         traderData.addReqSlips();
         traderData.addFlares();
         
-        for (var presetCount = 1; presetCount <randomUtil.getInt(20, 35); presetCount++) traderData.addPresets(presetCount, debugLogging);
+        for (var wepPresetCount = 1; wepPresetCount <randomUtil.getInt(17, 34); wepPresetCount++) traderData.addWeaponPresets(wepPresetCount, debugLogging);
+        for (var gearPresetCount = 1; gearPresetCount <randomUtil.getInt(15, 30); gearPresetCount++) traderData.addGearPresets(gearPresetCount, debugLogging);
+
+        if (debugLogging)
+        {
+            logger.log(`[${logstring}] ${wepPresetCount} total weapon presets have been added`, LogTextColor.GREEN);
+            logger.log(`[${logstring}] ${gearPresetCount} total gear presets have been added`, LogTextColor.GREEN);
+        }
 
         if (modConfig.EnableCustomItems)
         {
             traderData.addStaticItems(probHelper, debugLogging);
-            for (var customPresetCount = 1; customPresetCount <randomUtil.getInt(1, 4); customPresetCount++) traderData.addCustomPresets(customPresetCount, debugLogging);  
-        }
+            for (var customPresetCount = 1; customPresetCount <randomUtil.getInt(1, 4); customPresetCount++) traderData.addCustomPresets(customPresetCount, debugLogging);
 
-        if (debugLogging)
-        {
-            logger.log(`[${logstring}] ${presetCount} total weapon and gear presets have been added`, LogTextColor.GREEN);
-            logger.log(`[${logstring}] ${customPresetCount} total custom presets have been added`, LogTextColor.GREEN);
+            if (debugLogging)
+            {
+                logger.log(`[${logstring}] ${customPresetCount} total custom presets have been added`, LogTextColor.GREEN);                    
+            }
         }
 
         //Add custom quests

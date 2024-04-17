@@ -1,11 +1,11 @@
 {
   "name": "Raid Overhaul",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "src/mod.js",
   "isBundleMod": true,
   "license": "CC BY-NC-ND 4.0",
   "author": "DJ",
-  "akiVersion": "3.8.0",
+  "akiVersion": "~3.8",
   "loadBefore": [],
   "loadAfter": [],
   "incompatibilities": [],

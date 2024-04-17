@@ -2465,6 +2465,11 @@ export class ItemGenerator
       }, tables, ragfair, jsonUtil);
 
       newItem.addToWeaponShelf("Judge");
+      this.utils.addToStaticLoot(tables, "5909d89086f77472591234a0", "Judge", 2);
+      this.utils.addToStaticLoot(tables, "5909d7cf86f77470ee57d75a", "Judge", 2);
+      this.utils.addToStaticLoot(tables, "5909d76c86f77471e53d2adf", "Judge", 2);
+      this.utils.addToStaticLoot(tables, "5909d5ef86f77467974efbd8", "Judge", 2);
+      this.utils.addToStaticLoot(tables, "578f87ad245977356274f2cc", "Judge", 2);
       //#endregion
       //
       //
@@ -2892,6 +2897,11 @@ export class ItemGenerator
       }, tables, ragfair, jsonUtil);
 
       newItem.addToWeaponShelf("Jury");
+      this.utils.addToStaticLoot(tables, "5909d89086f77472591234a0", "Jury", 2);
+      this.utils.addToStaticLoot(tables, "5909d7cf86f77470ee57d75a", "Jury", 2);
+      this.utils.addToStaticLoot(tables, "5909d76c86f77471e53d2adf", "Jury", 2);
+      this.utils.addToStaticLoot(tables, "5909d5ef86f77467974efbd8", "Jury", 2);
+      this.utils.addToStaticLoot(tables, "578f87ad245977356274f2cc", "Jury", 2);
       //#endregion
       //
       //
@@ -3232,6 +3242,12 @@ export class ItemGenerator
       }, tables, ragfair, jsonUtil);
     
       newItem.addToWeaponShelf("Executioner");
+      this.utils.addToStaticLoot(tables, "5909d89086f77472591234a0", "Executioner", 2);
+      this.utils.addToStaticLoot(tables, "5909d7cf86f77470ee57d75a", "Executioner", 2);
+      this.utils.addToStaticLoot(tables, "5909d76c86f77471e53d2adf", "Executioner", 2);
+      this.utils.addToStaticLoot(tables, "5909d5ef86f77467974efbd8", "Executioner", 2);
+      this.utils.addToStaticLoot(tables, "578f87ad245977356274f2cc", "Executioner", 2);
+
       //#endregion
     }
 

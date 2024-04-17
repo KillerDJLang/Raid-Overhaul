@@ -137,6 +137,32 @@ export class Utils
             }
         });
     }
+
+    public getItemInHandbook(itemID, tables, logger) 
+    {
+        try 
+        {
+            return tables.templates.handbook.Items.find((i) => i.Id === itemID)
+        } 
+
+        catch (error) 
+        {
+            logger.warning(`\nError getting Handbook ID for ${itemID}`)
+        }
+    }
+
+    public getItemName(itemID, locale = "en", tables) 
+    {
+        if (tables.locales.global[locale][`${itemID} Name`] != undefined) 
+        {
+            return tables.locales.global[locale][`${itemID} Name`]
+        } 
+        
+        else 
+        {
+            return tables.templates.items[itemID]?._name
+        }
+    }
     //#endregion
     //
     //
@@ -826,6 +852,7 @@ export class AssortUtils
                 && item._type !== "Node"
                 && item._id !== "6389c92d52123d5dd17f8876"
                 && item._id !== "6389c8c5dbfd5e4b95197e6b"
+                && item._id !== "6389c8fb46b54c634724d847"
                 && item._id !== "LotusKeycard"
                 && item._props.Prefab.path !== ""){itemArray.push(item._id)}
 
@@ -1007,12 +1034,13 @@ export class AssortUtils
                 && item._props.QuestItem !== true
                 && item._type !== "Node"
                 && item._id !== "DeadArmband"
+                && item._props.Slots == null
                 && item._props.Prefab.path !== ""){gearArray.push(item._id)}
 
             if (item._parent === BaseClasses.HEADWEAR 
                 && item._props.QuestItem !== true
                 && item._type !== "Node"
-                && item._id !== "DeadArmband"
+                && item._props.Slots == null
                 && item._props.Prefab.path !== ""){gearArray.push(item._id)}
 
             if (item._parent === BaseClasses.VISORS 

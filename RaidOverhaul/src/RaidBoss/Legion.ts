@@ -411,7 +411,6 @@ export class LegionData
     static modifySpawnChance(info: any, output: any)
     {
         let bossLegionChance = 15
-        let hasRun = false
 
         const legionSpawnPath =     path.join(__dirname, '../../config/LegionChance.json');
         const spawnChance =         JSON.parse(fs.readFileSync(legionSpawnPath, "utf8"));
@@ -420,40 +419,34 @@ export class LegionData
         const aggressorName =       pmcData.Stats.Eft.Aggressor?.Name?.toLowerCase();
         bossLegionChance =          spawnChance?.legionChance ?? 15;
 
-        if (info.exit === "survived" && !hasRun)
-        {
-            bossLegionChance += 2.5;
-            hasRun = true;
-        }
-
-        if (info.exit === "runner" && !hasRun)
-        {
-            bossLegionChance += 1;
-            hasRun = true;
-        }
-
-        if (info.exit === "Left" && !hasRun)
-        {
-            bossLegionChance += 1;
-            hasRun = true;
-        }
-
-        if (info.exit === "killed" && !hasRun)
-        {
-            bossLegionChance /= 4;
-            hasRun = true;
-        }
-
-        if (victimRoles?.includes("bosslegion") && !hasRun)
-        {
-            bossLegionChance /= 2;
-            hasRun = true;
-        }
-
-        if (aggressorName === "legion" && !hasRun)
+        if (victimRoles?.includes("bosslegion"))
         {
             bossLegionChance = 15;
-            hasRun = true;
+        }
+
+        if (aggressorName === "legion")
+        {
+            bossLegionChance /= 2;
+        }
+
+        if (info.exit === "survived")
+        {
+            bossLegionChance += 2.5;
+        }
+
+        if (info.exit === "runner")
+        {
+            bossLegionChance += 1;
+        }
+
+        if (info.exit === "Left")
+        {
+            bossLegionChance += 1;
+        }
+
+        if (info.exit === "killed")
+        {
+            bossLegionChance /= 4;
         }
 
         if (bossLegionChance > 100)

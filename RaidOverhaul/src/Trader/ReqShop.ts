@@ -16,7 +16,8 @@ import { AssortUtils, TraderUtils, Utils }      from "../Refs/Utils";
 import { Currency }                             from "../Refs/Enums";
 
 import * as customPresetArray   from "../Refs/ArrayFiles/Items/customPresets.json";
-import * as presetArray         from "../Refs/ArrayFiles/Items/presetArray.json";
+import * as weaponPresetArray   from "../Refs/ArrayFiles/Items/weaponPresets.json";
+import * as gearPresetArray     from "../Refs/ArrayFiles/Items/gearPresets.json";
 import * as dialogue            from "../../db/dialogue.json";
 import * as services            from "../../db/services.json";
 import * as baseJson            from "../../db/base.json";
@@ -175,7 +176,7 @@ export class TraderData
 
         plateArray.forEach((item) => 
         {
-            if (probabilityHelper.rollChance(37, 100))
+            if (probabilityHelper.rollChance(23, 100))
             {
                 const randomAssortCount =   this.randomUtil.randInt(0, 10);
                 const randomReqSlipCount =  this.randomUtil.randInt(1, 10);
@@ -544,19 +545,12 @@ export class TraderData
         this.assortUtils =                      new AssortUtils(hashUtil, this.ref.logger);
 
         const randomAssortCount =       this.randomUtil.randInt(1, 5);
-        const randomReqSlipCount =      this.randomUtil.randInt(1, 3);
-        const randomRoubleCount =       this.randomUtil.randInt(44999, 67999);
+        const randomReqSlipCount =      this.randomUtil.randInt(2, 6);
 
         this.assortUtils.createSingleAssortItem("62178be9d0050232da3485d9")
                         .addStackCount(randomAssortCount)
                         .addLoyaltyLevel(1)
                         .addBarterCost(Currency.ReqSlips, randomReqSlipCount)
-                        .export(tables.traders[baseJson._id], false);
-
-        this.assortUtils.createSingleAssortItem("62178be9d0050232da3485d9")
-                        .addStackCount(randomAssortCount)
-                        .addLoyaltyLevel(1)
-                        .addMoneyCost(Currency.Roubles, randomRoubleCount)
                         .export(tables.traders[baseJson._id], false);
     }
 
@@ -564,7 +558,7 @@ export class TraderData
     //
     //
 
-    public addPresets(count, debugLogging): void
+    public addWeaponPresets(count, debugLogging): void 
     {
         const databaseServer: DatabaseServer =  container.resolve<DatabaseServer>("DatabaseServer");
         const hashUtil: HashUtil =              container.resolve<HashUtil>("HashUtil");
@@ -574,7 +568,7 @@ export class TraderData
         const randomAssortCount =   this.randomUtil.randInt(0, 10);
         const randomReqSlipCount =  this.randomUtil.randInt(2, 6);
         const randomLoyaltyLevel =  this.randomUtil.randInt(1, 4);
-        var keys =                  Object.keys(presetArray);
+        var keys =                  Object.keys(weaponPresetArray);
         const shuffledKeys =        this.utils.shuffle(keys).shift();
 
         if (shuffledKeys == "undefined")
@@ -583,9 +577,9 @@ export class TraderData
 
             try
             {
-                this.logger.log(`[${this.logString}] ${presetArray[reshuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
+                this.logger.log(`[${this.logString}] ${weaponPresetArray[reshuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
 
-                this.assortUtils.createComplexAssortItem(presetArray[reshuffledKeys]._items)
+                this.assortUtils.createComplexAssortItem(weaponPresetArray[reshuffledKeys]._items)
                                 .addMoneyCost(Currency.ReqSlips, randomReqSlipCount)
                                 .addStackCount(randomAssortCount)
                                 .addLoyaltyLevel(randomLoyaltyLevel)
@@ -604,10 +598,71 @@ export class TraderData
             {
                 if (debugLogging)
                 {
-                    this.logger.log(`[${this.logString}] ${presetArray[shuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
+                    this.logger.log(`[${this.logString}] ${weaponPresetArray[shuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
                 }
 
-                this.assortUtils.createComplexAssortItem(presetArray[shuffledKeys]._items)
+                this.assortUtils.createComplexAssortItem(weaponPresetArray[shuffledKeys]._items)
+                                .addMoneyCost(Currency.ReqSlips, randomReqSlipCount)
+                                .addStackCount(randomAssortCount)
+                                .addLoyaltyLevel(randomLoyaltyLevel)
+                                .export(tables.traders[baseJson._id], true);
+                                count++
+            }
+            catch(error)
+            {
+                return;
+            }
+        }
+    }
+
+    //
+    //
+    //
+
+    public addGearPresets(count, debugLogging): void 
+    {
+        const databaseServer: DatabaseServer =  container.resolve<DatabaseServer>("DatabaseServer");
+        const hashUtil: HashUtil =              container.resolve<HashUtil>("HashUtil");
+        const tables =                          databaseServer.getTables();
+        this.assortUtils =                      new AssortUtils(hashUtil, this.ref.logger);
+
+        const randomAssortCount =   this.randomUtil.randInt(0, 10);
+        const randomReqSlipCount =  this.randomUtil.randInt(1, 6);
+        const randomLoyaltyLevel =  this.randomUtil.randInt(1, 4);
+        var keys =                  Object.keys(gearPresetArray);
+        const shuffledKeys =        this.utils.shuffle(keys).shift();
+
+        if (shuffledKeys == "undefined")
+        {
+            const reshuffledKeys = this.utils.shuffle(keys).shift();
+
+            try
+            {
+                this.logger.log(`[${this.logString}] ${gearPresetArray[reshuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
+
+                this.assortUtils.createComplexAssortItem(gearPresetArray[reshuffledKeys]._items)
+                                .addMoneyCost(Currency.ReqSlips, randomReqSlipCount)
+                                .addStackCount(randomAssortCount)
+                                .addLoyaltyLevel(randomLoyaltyLevel)
+                                .export(tables.traders[baseJson._id], true);
+                                count++
+            }
+            catch(error)
+            {
+                return;
+            }
+        }
+
+        else
+        {
+            try
+            {
+                if (debugLogging)
+                {
+                    this.logger.log(`[${this.logString}] ${gearPresetArray[shuffledKeys]._name} has been added to the Req Shop`, LogTextColor.GREEN);
+                }
+
+                this.assortUtils.createComplexAssortItem(gearPresetArray[shuffledKeys]._items)
                                 .addMoneyCost(Currency.ReqSlips, randomReqSlipCount)
                                 .addStackCount(randomAssortCount)
                                 .addLoyaltyLevel(randomLoyaltyLevel)

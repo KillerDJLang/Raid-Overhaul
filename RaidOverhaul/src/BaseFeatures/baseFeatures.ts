@@ -39,11 +39,13 @@ export class Base
         const maps =            configServer.getConfig<ILocationConfig>(ConfigTypes.LOCATION);
         const weatherConfig =   configServer.getConfig<IWeatherConfig>(ConfigTypes.WEATHER);
         const airdropConfig =   configServer.getConfig<IAirdropConfig>(ConfigTypes.AIRDROP);
+        const handbookBase =    tables.templates.handbook;
         const presets =         tables.globals;
         const globals =         tables.globals.config;
         const items =           tables.templates.items;
         const stamina =         tables.globals.config.Stamina;
         const traders =         tables.traders;
+
 
         const randomEventList = [
             "Halloween",
@@ -160,6 +162,16 @@ export class Base
             for (const id in items)
             {
             items[id]._props.ExamineTime = 0.1
+            }
+        }
+
+        for (const flare in handbookBase.Items)
+        {
+            const flareHb = handbookBase.Items.find((x) => x.Id === "62178be9d0050232da3485d9")
+
+            if (handbookBase.Items[flare].Id == flareHb)
+            {
+                handbookBase.Items[flare].Price == 59999
             }
         }
         //#endregion

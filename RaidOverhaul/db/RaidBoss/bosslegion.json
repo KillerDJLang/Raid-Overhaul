@@ -2168,25 +2168,13 @@
   },
   "inventory": {
     "Ammo": {
-      "Caliber68x51": {
-        "6529243824cbe3c74a05e5c1": 50,
-        "6529302b8c26af6326029fb7": 50
-      },
-      "Caliber762x35": {
-        "5fbe3ffdf8b6a877a729ea82": 14,
-        "5fd20ff893a8961fc660a954": 109,
-        "619636be6db0f2477964e710": 67,
-        "6196364158ef8c428c287d9f": 19,
-        "64b8725c4b75259c590fa899": 34
-      },
-      "Caliber9x19PARA": {
-        "56d59d3ad2720bdb418b4577": 1,
-        "5a3c16fe86f77452b62de32a": 89,
-        "5c0d56a986f774449d5de529": 499,
-        "5c3df7d588a4501f290594e5": 1,
-        "5c925fa22e221601da359b7b": 499,
-        "5efb0e16aeb21837e749c7ff": 105,
-        "64b7bbb74b75259c590fa897": 1
+      "Caliber9x39": {
+        "5c0d688c86f77413ae3407b2": 15,
+        "61962d879bb3d20b0946d385": 15,
+        "57a0dfb82459774d3078b56c": 1,
+        "57a0e5022459774d1673f889": 1,
+        "5c0d668f86f7747ccb7f13b2": 1,
+        "6576f96220d53a5b8f3e395e": 1
       },
       "Caliber57x28": {
         "5cc80f38e4a949001152b560": 1
@@ -2208,7 +2196,6 @@
       "Eyewear": {},
       "FaceCover": {},
       "FirstPrimaryWeapon": {
-        "58948c8e86f77409493f7266": 1,
         "5fbcc1d9016cce60e8341ab3": 1,
         "65290f395ae2ae97b80fdf2d": 3
       },
@@ -2222,13 +2209,15 @@
         "5af99e9186f7747c447120b8": 1
       },
       "Scabbard": {
-        "6540d2162ae6d96b540afcaf": 2,
-        "5c0126f40db834002a125382": 2,
+        "6540d2162ae6d96b540afcaf": 3,
+        "5c0126f40db834002a125382": 1,
         "5c010e350db83400232feec7": 2,
         "601948682627df266209af05": 2,
-        "5bffe7930db834001b734a39": 2
+        "5bffe7930db834001b734a39": 3
       },
-      "SecondPrimaryWeapon": {},
+      "SecondPrimaryWeapon": {
+        "58948c8e86f77409493f7266": 1
+      },
       "SecuredContainer": {
         "5c0a794586f77461c458f892": 1
       },
@@ -2289,7 +2278,10 @@
         "5e42c83786f7742a021fdf3c": 1,
         "5ede7a8229445733cb4c18e2": 1,
         "5ede7b0c6d23e5473e6e8c66": 1,
-        "RequisitionSlips": 1
+        "RequisitionSlips": 1,
+        "Judge": 1,
+        "Jury": 1,
+        "Executioner": 1
       },
       "Pockets": {
         "5448ba0b4bdc2d02308b456c": 2,
@@ -2455,7 +2447,13 @@
         "5d6e68b3a4b9361bca7e50b5": 1771,
         "5d6e68d1a4b93622fe60e845": 1711,
         "5d6e68dea4b9361bcc29e659": 2071,
-        "5d6e6911a4b9361bd5780d52": 2131
+        "5d6e6911a4b9361bd5780d52": 2131,
+        "5c0d688c86f77413ae3407b2": 1500,
+        "61962d879bb3d20b0946d385": 1299,
+        "57a0dfb82459774d3078b56c": 150,
+        "57a0e5022459774d1673f889": 150,
+        "5c0d668f86f7747ccb7f13b2": 150,
+        "6576f96220d53a5b8f3e395e": 150
       },
       "SpecialLoot": {},
       "TacticalVest": {
@@ -2472,7 +2470,10 @@
         "5c0e531d86f7747fa23f4d42": 300,
         "5c0e533786f7747fa23f4d47": 275,
         "5c0e530286f7747fa1419862": 225,
-        "RequisitionSlips": 1199
+        "RequisitionSlips": 1199,
+        "Judge": 199,
+        "Jury": 199,
+        "Executioner": 199
       }
     },
     "mods": {
