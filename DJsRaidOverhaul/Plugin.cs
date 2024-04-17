@@ -51,7 +51,7 @@ namespace DJsRaidOverhaul
                 throw new Exception("Invalid EFT Version");
             }
 
-            Traverse.Create(typeof(BotSettingsRepoClass)).Field<Dictionary<WildSpawnType, BotSettingsValuesClass>>("dictionary_0").Value.Add((WildSpawnType)199, 
+            Traverse.Create(typeof(BotSettingsRepoClass)).Field<Dictionary<WildSpawnType, BotSettingsValuesClass>>("dictionary_0").Value.Add((WildSpawnType)199,
                                                                                       new BotSettingsValuesClass(true, false, true, "ScavRole/Boss", ETagStatus.Solo));
 
             // Bind the configs
