@@ -1,0 +1,101 @@
+{
+    "EnableCustomBoss": true,                       //Enables the Legion custom boss. If disabled req shop will be unlocked by default and quests will be modified
+    "RemoveFromSwag": false,                        //Disables Legion in SWAG prior to uninstalling Raid Overhaul. TURN THIS TO TRUE AND RUN THE SERVER ONCE BEFORE UNINSTALLING!!!
+    "EnableCustomItems": true,                      //Enables the custom weapons and attachments. Doesn't affect the gear and Req Slips as those are heavily tied into the boss and shop
+    "EnableTimeChanges": false,                      //Enable the client time changes syncing the in game time to your irl time
+    "EnableWatchAnimations": false,                  //Enable the custom watch animations for checking time left in raid
+    "BackupProfile": true,                          //Creates a backup of your most recent profile on startup, to a max of 3 profiles. After 3 it will delete and replace the oldest backup
+    "Raid": {
+        "ReduceFoodAndHydroDegrade": {              //The rate at which you lose Energy and Hydration. Lower is slower decay
+            "Enabled": true,
+            "EnergyDecay": 0.6,
+            "HydroDecay": 0.6
+        },
+        "SaveQuestItems": true,                     //If enabled saves quest items in your inventory on death
+        "NoRunThrough": true,                      //Remove raid survived requirements
+        "LootableMelee": false,                     //Makes melee weapons lootable
+        "LootableArmbands": false,                  //Makes armbands lootable
+        "EnableExtendedRaids": true,                //Enables the raid time limit changes making raid times essentially unlimited
+        "TimeLimit": 999,                           //The raid time limit calculated in minutes
+        "HolsterAnything": true,                    //If true, you will be able to put any weapon in your holster slot
+        "LowerExamineTime": true,                   //Lowers the time required to examine items
+        "SpecialSlotChanges": true,                 //Enables the special slot filter changes allowing anything into them
+        "ChangeAirdropValues": {                    //Enable airdrop changes. Each maps value is a percent chance to get a random airdrop on that map
+            "Enabled": false,
+            "Customs": 35,
+            "Woods": 35,
+            "Lighthouse": 35,
+            "Interchange": 35,
+            "Shoreline": 35,
+            "Reserve": 35
+        }
+    },
+    "PocketChanges": {
+        "Enabled": false,                           //Enables the pocket size and filter changes
+        "Pocket1": {                                //A combined horizontal value above 6 will push your special slots off screen so uhh...dont get too crazy lmao
+            "Vertical": 1,
+            "Horizontal": 1
+        },
+        "Pocket2": {
+            "Vertical": 2,
+            "Horizontal": 1
+        },
+        "Pocket3": {
+            "Vertical": 2,
+            "Horizontal": 1
+        },
+        "Pocket4": {
+            "Vertical": 1,
+            "Horizontal": 1
+        }
+    },
+    "WeightChanges": {                              //Multiplies all weight thresholds by whatever number is inputted into the "WeightMultiplier" field
+        "Enabled": true,
+        "WeightMultiplier": 2
+    },
+    "Trader": {
+        "DisableFleaBlacklist": true,               //Disables the flea market blacklist from BSG
+        "LL1Items": false,                          //Sets all req shop assort items to be available at loyalty level 1 
+        "RemoveFirRequirementsForQuests": true,    //Pretty self explanatory here. Removes quesr found in raid requirements
+    },
+    "Insurance": {                                  //Enables modification of insurance return time. The numbers here are return time in hours
+        "Enabled": true,
+        "PraporMinReturn": 2,
+        "PraporMaxReturn": 4,
+        "TherapistMinReturn": 1,
+        "TherapistMaxReturn": 2
+    },
+    "BasicStackTuning": {                           //Enables the basic stack multiplier. It will multiply the total stacks for ammo by whatever number you put in the "StackMultiplier" section
+        "Enabled": true,
+        "StackMultiplier": 5
+    },
+    "AdvancedStackTuning": {                        //Enables the advanced stack multiplier. This is the total stacks for each type of ammo individually
+        "Enabled": false,
+        "ShotgunStack": 100,
+        "FlaresAndUBGL": 5,
+        "SniperStack": 100,
+        "SMGStack": 250,
+        "RifleStack": 150
+    },
+    "MoneyStackMultiplier": {                       //Enables the money stack multiplier. Total money stack will be the number you put in the "MoneyMultiplier" section
+        "Enabled": true,
+        "MoneyMultiplier": 10
+    },
+    "LootChanges": {                                //Enables the static, marked room, and loose loot multipliers. All types of loot will be multiplied per map by whatever number you put in it's respective section
+        "EnableLootOptions": false,
+        "StaticLootMultiplier": 3,
+        "LooseLootMultiplier": 2,
+        "MarkedRoomLootMultiplier": 3
+    },
+    "Events": {
+        "EnableWeatherOptions": true,               //Enables the weather modification options. Seriously, only enable one or I'll have to bonk you...
+        "AllSeasons": false,                        //Picks a random implemented season on raid start
+        "NoWinter": false,                          //Same as above minus winter in case you find the spring/summer to winter shift too jarring
+        "SeasonalProgression": true,                //Progresses through all of the implemented seasons as you complete raids
+        "WinterWonderland": false,                  //All snow all the time baby!!!
+        "RandomizedSeasonalEvents": true,           //Casts a random number from 0-100. If it's over 85 it will start a random seasonal event
+    },
+    "Debug": {
+        "ExtraLogging": false,                      //Don't enable this unless you really like having your server console flooded with info that you don't need or care about
+    }
+}

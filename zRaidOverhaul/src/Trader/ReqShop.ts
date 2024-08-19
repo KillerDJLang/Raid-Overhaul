@@ -32,7 +32,7 @@ export class TraderData {
         private ref: References,
         private utils: Utils,
     ) {
-        this.mod = "RaidOverhaul";
+        this.mod = "zRaidOverhaul";
         this.logString = "AssortMaker";
     }
 

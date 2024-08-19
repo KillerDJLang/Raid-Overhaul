@@ -40,7 +40,7 @@ export class Base {
 
         if (modConfig.Raid.EnableExtendedRaids) {
             for (const location in this.ref.tables.locations) {
-                if (location == "base") continue;
+                if (location === "base") continue;
 
                 this.ref.tables.locations[location].base.EscapeTimeLimit = modConfig.Raid.TimeLimit * 60;
                 this.ref.tables.locations[location].base.EscapeTimeLimitCoop = modConfig.Raid.TimeLimit * 60;
@@ -210,6 +210,7 @@ export class Base {
                     },
                     _proto: "55d329c24bdc2d892f8b4567",
                 },
+                // biome-ignore lint/style/noCommaOperator: <explanation>
             ]),
                 (uhPockets._props.Grids = [
                     {
@@ -292,8 +293,8 @@ export class Base {
                         },
                         _proto: "55d329c24bdc2d892f8b4567",
                     },
-                ]),
-                this.utils.stopHurtingMeSVM("627a4e6b255f7527fb05a0f6");
+                ]);
+            this.utils.stopHurtingMeSVM("627a4e6b255f7527fb05a0f6");
             this.utils.stopHurtingMeSVM("65e080be269cbd5c5005e529");
         }
 
@@ -381,7 +382,7 @@ export class Base {
         }
 
         for (const flare in handbookBase.Items) {
-            if (handbookBase.Items[flare].Id == whiteFlare) {
+            if (handbookBase.Items[flare].Id === whiteFlare) {
                 handbookBase.Items[flare].Price = 89999;
             }
         }
@@ -473,7 +474,9 @@ export class Base {
         }
         modConfig.Trader.LL1Items;
         if (modConfig.Trader.LL1Items) {
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
             for (const item in this.ref.tables.traders["Requisitions"].assort.loyal_level_items) {
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 this.ref.tables.traders["Requisitions"].assort.loyal_level_items[item] = 1;
             }
         }
@@ -485,7 +488,7 @@ export class Base {
         if (modConfig.Trader.RemoveFirRequirementsForQuests) {
             for (const q in this.quests()) {
                 const quest = this.quests()[q];
-                if (quest && quest.conditions && quest.conditions.AvailableForFinish) {
+                if (quest?.conditions?.AvailableForFinish) {
                     const availableForFinish = quest.conditions.AvailableForFinish;
                     for (const requirement in availableForFinish) {
                         if (availableForFinish[requirement].onlyFoundInRaid) {
@@ -559,6 +562,7 @@ export class Base {
         const markedRoomCustoms = this.ref.tables.locations.bigmap.looseLoot.spawnpoints;
         const markedRoomReserve = this.ref.tables.locations.rezervbase.looseLoot.spawnpoints;
         const markedRoomStreets = this.ref.tables.locations.tarkovstreets.looseLoot.spawnpoints;
+        const markedRoomLighthouse = this.ref.tables.locations.lighthouse.looseLoot.spawnpoints;
 
         if (modConfig.LootChanges.EnableLootOptions) {
             maps.looseLootMultiplier.bigmap = modConfig.LootChanges.LooseLootMultiplier;
@@ -649,6 +653,19 @@ export class Base {
                 sSP.template.Position.y < 1.5
             ) {
                 sSP.probability *= modConfig.LootChanges.MarkedRoomLootMultiplier;
+            }
+        }
+
+        for (const lSP of markedRoomStreets) {
+            if (
+                lSP.template.Position.x > 319 &&
+                lSP.template.Position.x < 330 &&
+                lSP.template.Position.z > 482 &&
+                lSP.template.Position.z < 489 &&
+                lSP.template.Position.y > 5 &&
+                lSP.template.Position.y < 6.5
+            ) {
+                lSP.probability *= modConfig.LootChanges.MarkedRoomLootMultiplier;
             }
         }
     }

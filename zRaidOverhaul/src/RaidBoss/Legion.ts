@@ -1,17 +1,17 @@
 import { container } from "tsyringe";
 
-import { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
-import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
+import type { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseService } from "@spt/services/DatabaseService";
-import { JsonUtil } from "@spt/utils/JsonUtil";
-import { RandomUtil } from "@spt/utils/RandomUtil";
-import { VFS } from "@spt/utils/VFS";
-import { configFile, legionProgression } from "../Refs/Enums";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ConfigServer } from "@spt/servers/ConfigServer";
+import type { DatabaseService } from "@spt/services/DatabaseService";
+import type { JsonUtil } from "@spt/utils/JsonUtil";
+import type { RandomUtil } from "@spt/utils/RandomUtil";
+import type { VFS } from "@spt/utils/VFS";
+import type { configFile, legionProgression } from "../Refs/Enums";
 
 const botSettings = require("../Refs/ArrayFiles/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
@@ -21,6 +21,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 export class LegionData {
+    // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor() {}
 
     static LoadBossData(modConfig: configFile): void {
@@ -31,9 +32,12 @@ export class LegionData {
         const jsonUtil = container.resolve<JsonUtil>("JsonUtil");
         const configServer = container.resolve<ConfigServer>("ConfigServer");
         const botConfig = configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const preset: any = botConfig.presetBatch;
         const escortAmount = randomUtil.randInt(1, 4).toString();
-        const diffType = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
+        //const diffType = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
+        const bossDifficulty = "impossible";
+        const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortType = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
         const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
 
@@ -48,16 +52,17 @@ export class LegionData {
 
         if (modConfig.Debug.ExtraLogging) {
             logger.log(`[${logString}] Current spawn chance for Legion is [${bossLegionChance}]`, LogTextColor.BLUE);
-            logger.log(`[${logString}] Current Boss and Escort Difficulty is [${diffType}]`, LogTextColor.BLUE);
+            logger.log(`[${logString}] Current Boss Difficulty is [${bossDifficulty}]`, LogTextColor.BLUE);
+            logger.log(`[${logString}] Current Escort Difficulty is [${escortDifficulty}]`, LogTextColor.BLUE);
             logger.log(`[${logString}] Current Escort type is [${escortType}]`, LogTextColor.BLUE);
             logger.log(`[${logString}] Current number of Escorts is [${escortAmount}]`, LogTextColor.BLUE);
         }
 
         let bossLegionSpawn: BossLocationSpawn = {
             BossChance: bossLegionChance,
-            BossDifficult: diffType,
+            BossDifficult: bossDifficulty,
             BossEscortAmount: escortAmount,
-            BossEscortDifficult: diffType,
+            BossEscortDifficult: escortDifficulty,
             BossEscortType: escortType,
             BossName: "bosslegion",
             BossPlayer: false,
@@ -79,7 +84,7 @@ export class LegionData {
             try {
                 tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion));
             } catch (error) {
-                logger.error(`[${logString}] Error loading default Legion files:` + error);
+                logger.error(`[${logString}] Error loading default Legion files: ${error}`);
             }
         }
 
@@ -87,7 +92,7 @@ export class LegionData {
             try {
                 tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion2));
             } catch (error) {
-                logger.error(`[${logString}] Error loading default Legion files:` + error);
+                logger.error(`[${logString}] Error loading default Legion files: ${error}`);
             }
         }
 
@@ -152,12 +157,12 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                this.modifySwagLegionSettings();
+                LegionData.modifySwagLegionSettings();
             }
 
             fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
         } catch (error) {
-            logger.error(`[${logString}] Error adding Legion to SWAG:` + error);
+            logger.error(`[${logString}] Error adding Legion to SWAG: ${error}`);
         }
     }
 
@@ -170,8 +175,9 @@ export class LegionData {
         const vfs = container.resolve<VFS>("VFS");
         const randomUtil = container.resolve<RandomUtil>("RandomUtil");
         const type = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
-        const bossDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
-        const escortDifficulty = "impossible";
+        //const bossDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
+        const bossDifficulty = "impossible";
+        const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortCount = randomUtil.randInt(1, 4).toString();
         const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
@@ -315,10 +321,11 @@ export class LegionData {
             const customSettingsFile = JSON.stringify(customSettings, null, 2);
             vfs.writeFile("./user/mods/SWAG/config/custom/legion.json", customSettingsFile);
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Legion patterns in SWAG:` + error);
+            logger.error(`[${logString}] Error modifying Legion patterns in SWAG: ${error}`);
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     static modifySpawnChance(info: any, output: any) {
         let bossLegionChance = 15;
 

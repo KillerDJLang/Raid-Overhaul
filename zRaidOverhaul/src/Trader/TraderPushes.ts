@@ -16,7 +16,7 @@ export class pushTraderFeatures {
     ) {}
 
     public pushExports(modPath: any, modConfig: configFile): void {
-        const modName = "RaidOverhaul";
+        const modName = "zRaidOverhaul";
 
         //Add Req Shop to the game
         this.traderData.pushTrader();

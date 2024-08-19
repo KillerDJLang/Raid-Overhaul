@@ -25,6 +25,7 @@ const EventWeightingsConfig = require("../config/EventWeightings.json");
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import JSON5 from "json5";
 import * as baseJson from "../db/base.json";
 
 class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
@@ -60,7 +61,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     }
 
     constructor() {
-        RaidOverhaul.modName = "RaidOverhaul";
+        RaidOverhaul.modName = "Raid Overhaul";
     }
 
     public preSptLoad(container: DependencyContainer): void {
@@ -74,11 +75,9 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             container.resolve<StaticRouterModService>("StaticRouterModService");
         const dynamicRouterModService: DynamicRouterModService =
             container.resolve<DynamicRouterModService>("DynamicRouterModService");
-        const configPath = path.resolve(__dirname, "../config/config.json");
         const weatherConfigPath = path.resolve(__dirname, "../config/SeasonsProgressionFile.json");
-        const modConfig = this.ref.jsonUtil.deserialize(
-            fs.readFileSync(configPath, "utf-8"),
-            "config.json",
+        const modConfig = JSON5.parse(
+            this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5")),
         ) as configFile;
         const weatherConfig = this.ref.jsonUtil.deserialize(
             fs.readFileSync(weatherConfigPath, "utf-8"),
@@ -286,7 +285,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             if (this.ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
                 LegionData.swagPatch();
                 this.ref.logger.logWithColor(
-                    "[RaidOverhaul] SWAG detected, modifying Legion patterns.",
+                    "[Raid Overhaul] SWAG detected, modifying Legion patterns.",
                     LogTextColor.MAGENTA,
                 );
             }
@@ -297,7 +296,6 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         this.ref.postDBLoad(container);
 
         const traderConfig: ITraderConfig = this.ref.configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
-        const ragfair: IRagfairConfig = this.ref.configServer.getConfig<IRagfairConfig>(ConfigTypes.RAGFAIR);
 
         //Imports
         const traderData = new TraderData(traderConfig, this.ref, this.utils);
@@ -307,10 +305,8 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
 
         //For new items
         const modPath = path.resolve(__dirname.toString()).split(path.sep).join("/") + "/";
-        const configPath = path.resolve(__dirname, "../config/config.json");
-        const modConfig = this.ref.jsonUtil.deserialize(
-            fs.readFileSync(configPath, "utf-8"),
-            "config.json",
+        const modConfig = JSON5.parse(
+            this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5")),
         ) as configFile;
 
         //Random message on server on startup
@@ -329,23 +325,23 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         //Remove boss from SWAG
         if (modConfig.RemoveFromSwag) {
             LegionData.RemoveLegionPatch();
-
-            return this.ref.logger.error(
-                `[${RaidOverhaul.modName}] Removing Legion from Swag config. Ready to uninstall.`,
-            );
+            this.ref.logger.error(`[${RaidOverhaul.modName}] Removing Legion from Swag config. Ready to uninstall.`);
+            return;
         }
 
         //Check for proper install
         if (!RaidOverhaul.pluginDepCheck()) {
-            return this.ref.logger.error(
+            this.ref.logger.error(
                 `[${RaidOverhaul.modName}] Error, client portion of Raid Overhaul is missing from BepInEx/plugins folder.\nPlease install correctly.`,
             );
+            return;
         }
 
         if (!RaidOverhaul.preloaderDepCheck()) {
-            return this.ref.logger.error(
+            this.ref.logger.error(
                 `[${RaidOverhaul.modName}] Error, Legion Boss Preloader is missing from BepInEx/patchers folder.\nPlease install correctly.`,
             );
+            return;
         }
 
         //Load all custom items
@@ -367,9 +363,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             itemGenerator.createCustomItems("../../db/ItemGen/Weapons");
             itemGenerator.createCustomItems("../../db/ItemGen/Gear");
         }
-        this.ref.tables.locations["laboratory"].base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
-        ragfair.dynamic.blacklist.custom.push(...["66a2fc9886fbd5d38c5ca2a6"]);
-        ragfair.dynamic.blacklist.custom.push(...["66a2fc926af26cc365283f23"]);
+        this.ref.tables.locations.laboratory.base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
 
         // Load custom boss data
         if (modConfig.EnableCustomBoss) {
