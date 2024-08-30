@@ -302,8 +302,6 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         const modFeatures = new Base(this.utils, this.ref);
         const itemGenerator = new ItemGenerator(this.ref);
         const traderFeatures = new pushTraderFeatures(this.utils, this.ref, traderData);
-
-        //For new items
         const modPath = path.resolve(__dirname.toString()).split(path.sep).join("/") + "/";
         const modConfig = JSON5.parse(
             this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5")),
@@ -344,6 +342,18 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             return;
         }
 
+        this.loadCustomItems(itemGenerator, modConfig);
+        this.loadTraderData(traderFeatures, modFeatures, modConfig, modPath);
+        this.pushModFeatures(modFeatures, modConfig);
+        this.pushBossData(itemGenerator, modConfig);
+
+        this.ref.logger.logWithColor(
+            `[${RaidOverhaul.modName}] has finished modifying your raids. ${randomMessage}.`,
+            LogTextColor.CYAN,
+        );
+    }
+
+    private loadCustomItems(itemGenerator: ItemGenerator, modConfig: configFile) {
         //Load all custom items
         itemGenerator.createCustomItems("../../db/ItemGen/Currency");
         itemGenerator.createCustomItems("../../db/ItemGen/ConstItems");
@@ -364,39 +374,43 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             itemGenerator.createCustomItems("../../db/ItemGen/Gear");
         }
         this.ref.tables.locations.laboratory.base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
+    }
 
-        // Load custom boss data
-        if (modConfig.EnableCustomBoss) {
-            itemGenerator.createClothingTop(legionClothes.Shirt);
-            itemGenerator.createClothingBottom(legionClothes.Pants);
-            LegionData.LoadBossData(modConfig);
-            traderFeatures.pushExports(modPath, modConfig);
-        }
-
-        if (!modConfig.EnableCustomBoss) {
-            traderFeatures.pushExports2(modPath, modConfig);
-            LegionData.RemoveLegionPatch();
-        }
-
+    private loadTraderData(traderFeatures: pushTraderFeatures, modFeatures: Base, modConfig: configFile, modPath) {
         // Load Trader Data
-        traderFeatures.buildReqAssort(modConfig);
+        if (modConfig.EnableCustomBoss) {
+            traderFeatures.pushExports(modPath, modConfig);
+            traderFeatures.buildReqAssort(modConfig);
+            modFeatures.traderTweaks(modConfig);
+        } else if (!modConfig.EnableCustomBoss) {
+            traderFeatures.pushExports2(modPath, modConfig);
+            traderFeatures.buildReqAssort(modConfig);
+            modFeatures.traderTweaks(modConfig);
+        }
+    }
 
+    private pushModFeatures(modFeatures: Base, modConfig: configFile) {
         //Push all of the mods base features
         modFeatures.raidChanges(modConfig);
         modFeatures.itemChanges(modConfig);
         modFeatures.lootChanges(modConfig);
         modFeatures.stackChanges(modConfig);
-        modFeatures.traderTweaks(modConfig);
         modFeatures.eventChanges(modConfig);
         modFeatures.weightChanges(modConfig);
         if (modConfig.Events.EnableWeatherOptions && modConfig.Events.WinterWonderland) {
             modFeatures.weatherChangesWinterWonderland(modConfig);
         }
+    }
 
-        this.ref.logger.logWithColor(
-            `[${RaidOverhaul.modName}] has finished modifying your raids. ${randomMessage}.`,
-            LogTextColor.CYAN,
-        );
+    private pushBossData(itemGenerator: ItemGenerator, modConfig: configFile) {
+        // Load custom boss data
+        if (modConfig.EnableCustomBoss) {
+            itemGenerator.createClothingTop(legionClothes.Shirt);
+            itemGenerator.createClothingBottom(legionClothes.Pants);
+            LegionData.LoadBossData(modConfig);
+        } else {
+            LegionData.RemoveLegionPatch();
+        }
     }
 }
 //      \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/     \('_')/
