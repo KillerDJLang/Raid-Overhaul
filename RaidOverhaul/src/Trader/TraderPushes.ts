@@ -1,9 +1,9 @@
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
-import { configFile } from "../Refs/Enums";
-import { References } from "../Refs/References";
-import { Utils } from "../Refs/Utils";
-import { TraderData } from "../Trader/ReqShop";
+import type { configFile } from "../Utils/Enums";
+import type { References } from "../Utils/References";
+import type { Utils } from "../Utils/Utils";
+import type { TraderData } from "./ReqShop";
 
 import * as baseJson from "../../db/base.json";
 import * as baseJson2 from "../../db/base2.json";
@@ -15,6 +15,7 @@ export class pushTraderFeatures {
         private traderData: TraderData,
     ) {}
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public pushExports(modPath: any, modConfig: configFile): void {
         const modName = "RaidOverhaul";
 
@@ -35,6 +36,7 @@ export class pushTraderFeatures {
         this.utils.addQuests(this.ref.tables, this.ref.imageRouter, modPath, modName, modConfig.Debug.ExtraLogging);
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public pushExports2(modPath: any, modConfig: configFile): void {
         const modName = "RaidOverhaul";
 
@@ -79,12 +81,16 @@ export class pushTraderFeatures {
             this.traderData.addAmmo();
         }
 
-        for (var wepPresetCount = 0; wepPresetCount < this.ref.randomUtil.getInt(18, 37); wepPresetCount++)
-            this.traderData.addWeaponPresets(wepPresetCount, modConfig.Debug.ExtraLogging);
-        for (var gearPresetCount = 0; gearPresetCount < this.ref.randomUtil.getInt(15, 33); gearPresetCount++)
-            this.traderData.addGearPresets(gearPresetCount, modConfig.Debug.ExtraLogging);
-
-        //18, 34 and 12, 30
+        // biome-ignore lint/style/noVar: <explanation>
+        // biome-ignore lint/correctness/noInnerDeclarations: <explanation>
+        for (var wepPresetCount = 0; wepPresetCount < this.ref.randomUtil.getInt(18, 37); wepPresetCount++) {
+            this.traderData.addWeaponPresets(modConfig.Debug.ExtraLogging);
+        }
+        // biome-ignore lint/style/noVar: <explanation>
+        // biome-ignore lint/correctness/noInnerDeclarations: <explanation>
+        for (var gearPresetCount = 0; gearPresetCount < this.ref.randomUtil.getInt(15, 33); gearPresetCount++) {
+            this.traderData.addGearPresets(modConfig.Debug.ExtraLogging);
+        }
 
         if (modConfig.Debug.ExtraLogging) {
             this.ref.logger.log(

@@ -26,7 +26,7 @@ namespace RaidOverhaul
     {
         public static string modPath = Path.Combine(Environment.CurrentDirectory, "user", "mods", "RaidOverhaul");
         public static string pluginPath = Path.Combine(Environment.CurrentDirectory, "BepInEx", "plugins", "RaidOverhaul");
-        public static string legionJsonPath = Path.Combine(Environment.CurrentDirectory, "BepInEx", "plugins", "RaidOverhaul", "Flags", "normalLegionSettings.json");
+        public static string legionJsonPath = Path.Combine(Environment.CurrentDirectory, "BepInEx", "plugins", "RaidOverhaul", "Resources", "normalLegionSettings.json");
         public static TextAsset legionText;
 
         internal static GameObject Hook;
@@ -136,7 +136,7 @@ namespace RaidOverhaul
             new LegionSmethodPatch().Enable();
 
             if (ConfigController.ServerConfig.RaidChanges.SpecialSlotChanges) {
-                new SpecialSlotViewPatch().Enable();
+                //new SpecialSlotViewPatch().Enable();
             }
 
             if (ConfigController.ServerConfig.WatchAnimations && watchAnimsDetected == false) {

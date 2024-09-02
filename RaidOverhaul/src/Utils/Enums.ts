@@ -1,4 +1,4 @@
-import { Item } from "@spt/models/eft/common/tables/IItem";
+import type { Item } from "@spt/models/eft/common/tables/IItem";
 
 //#region Enums
 export enum Currency {

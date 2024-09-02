@@ -1,42 +1,38 @@
-import { DependencyContainer } from "tsyringe";
+import type { DependencyContainer } from "tsyringe";
 
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Traders } from "@spt/models/enums/Traders";
-import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
-import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
-import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
+import type { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
+import type { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
+import type { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
+import type { ITraderConfig } from "@spt/models/spt/config/ITraderConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
-import { ImageRouter } from "@spt/routers/ImageRouter";
-import { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
-import { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 
 import { Base } from "./BaseFeatures/baseFeatures";
 import { ItemGenerator } from "./CustomItems/ItemGenerator";
 import { LegionData } from "./RaidBoss/Legion";
-import { configFile, seasonalProgression } from "./Refs/Enums";
-import { References } from "./Refs/References";
-import { Utils } from "./Refs/Utils";
 import { TraderData } from "./Trader/ReqShop";
 import { pushTraderFeatures } from "./Trader/TraderPushes";
-
-const legionClothes = require("../db/ItemGen/Clothes/LegionClothing.json");
-const EventWeightingsConfig = require("../config/EventWeightings.json");
+import { DynamicRouters } from "./Utils/DynamicRouterHooks";
+import type { configFile } from "./Utils/Enums";
+import { Logger } from "./Utils/Logger";
+import { References } from "./Utils/References";
+import { StaticRouters } from "./Utils/StaticRouterHooks";
+import { Utils } from "./Utils/Utils";
 
 import * as fs from "node:fs";
 import * as path from "node:path";
 import JSON5 from "json5";
 import * as baseJson from "../db/base.json";
 
-class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
-    static modName: string;
-    protected profilePath: string;
+const legionClothes = require("../db/ItemGen/Clothes/LegionClothing.json");
 
-    static container: DependencyContainer;
-    public imageRouter: ImageRouter;
+class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
+    static modName = "Raid Overhaul";
 
     private ref: References = new References();
-    private utils: Utils = new Utils(this.ref);
+    private logger: Logger = new Logger(this.ref);
+    private utils: Utils = new Utils(this.ref, this.logger);
 
     private static pluginDepCheck(): boolean {
         const pluginRO = "raidoverhaul.dll";
@@ -60,29 +56,17 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         }
     }
 
-    constructor() {
-        RaidOverhaul.modName = "Raid Overhaul";
-    }
-
     public preSptLoad(container: DependencyContainer): void {
         this.ref.preSptLoad(container);
         const ragfair = this.ref.configServer.getConfig<IRagfairConfig>(ConfigTypes.RAGFAIR);
         const traderConfig: ITraderConfig = this.ref.configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
-        const traderData = new TraderData(traderConfig, this.ref, this.utils);
-        const modFeatures = new Base(this.utils, this.ref);
+        const traderData = new TraderData(traderConfig, this.ref, this.utils, this.logger);
+        const staticRouters = new StaticRouters(this.ref, this.utils, this.logger);
+        const dynamicRouters = new DynamicRouters(this.ref, this.utils, this.logger);
 
-        const staticRouterModService: StaticRouterModService =
-            container.resolve<StaticRouterModService>("StaticRouterModService");
-        const dynamicRouterModService: DynamicRouterModService =
-            container.resolve<DynamicRouterModService>("DynamicRouterModService");
-        const weatherConfigPath = path.resolve(__dirname, "../config/SeasonsProgressionFile.json");
         const modConfig = JSON5.parse(
             this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5")),
         ) as configFile;
-        const weatherConfig = this.ref.jsonUtil.deserialize(
-            fs.readFileSync(weatherConfigPath, "utf-8"),
-            "config.json",
-        ) as seasonalProgression;
 
         if (modConfig.RemoveFromSwag) {
             return;
@@ -91,203 +75,19 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         traderData.registerProfileImage();
         traderData.setupTraderUpdateTime();
 
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         Traders["Requisitions"] = "Requisitions";
         ragfair.traders[baseJson._id] = true;
 
-        //Backup profile
-        staticRouterModService.registerStaticRouter(
-            `${RaidOverhaul.modName}-/client/game/start`,
-            [
-                {
-                    url: "/client/game/start",
-                    action: async (url: string, info: string, sessionID: string, output: string) => {
-                        const profileInfo = this.ref.profileHelper.getFullProfile(sessionID);
-
-                        if (modConfig.BackupProfile) {
-                            this.utils.profileBackup(
-                                RaidOverhaul.modName,
-                                sessionID,
-                                path,
-                                profileInfo,
-                                this.ref.randomUtil,
-                            );
-                        }
-                        return output;
-                    },
-                },
-            ],
-            "spt",
-        );
-
-        //Get and send configs to the client
-        staticRouterModService.registerStaticRouter(
-            "GetEventConfig",
-            [
-                {
-                    url: "/RaidOverhaul/GetEventConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
-                        const EventWeightings = EventWeightingsConfig;
-
-                        return JSON.stringify(EventWeightings);
-                    },
-                },
-            ],
-            "spt",
-        );
-
-        staticRouterModService.registerStaticRouter(
-            "GetServerConfig",
-            [
-                {
-                    url: "/RaidOverhaul/GetServerConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
-                        const ServerConfig = modConfig;
-
-                        return JSON.stringify(ServerConfig);
-                    },
-                },
-            ],
-            "spt",
-        );
-
-        staticRouterModService.registerStaticRouter(
-            "GetWeatherConfig",
-            [
-                {
-                    url: "/RaidOverhaul/GetWeatherConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
-                        const WeatherConfig = weatherConfig;
-
-                        return JSON.stringify(WeatherConfig);
-                    },
-                },
-            ],
-            "spt",
-        );
-
-        //#region Randomize weather pre-raid
-        if (modConfig.Events.EnableWeatherOptions) {
-            if (
-                modConfig.Events.NoWinter &&
-                !modConfig.Events.AllSeasons &&
-                !modConfig.Events.SeasonalProgression &&
-                !modConfig.Events.WinterWonderland
-            ) {
-                staticRouterModService.registerStaticRouter(
-                    `[${RaidOverhaul.modName}]-/client/items`,
-                    [
-                        {
-                            url: "/client/items",
-                            action: async (url, info, sessionId, output) => {
-                                modFeatures.weatherChangesNoWinter(modConfig);
-                                return output;
-                            },
-                        },
-                    ],
-                    "spt",
-                );
-            }
-
-            if (
-                modConfig.Events.AllSeasons &&
-                !modConfig.Events.NoWinter &&
-                !modConfig.Events.SeasonalProgression &&
-                !modConfig.Events.WinterWonderland
-            ) {
-                staticRouterModService.registerStaticRouter(
-                    `[${RaidOverhaul.modName}]-/client/items`,
-                    [
-                        {
-                            url: "/client/items",
-                            action: async (url, info, sessionId, output) => {
-                                modFeatures.weatherChangesAllSeasons(modConfig);
-                                return output;
-                            },
-                        },
-                    ],
-                    "spt",
-                );
-            }
-
-            if (
-                modConfig.Events.SeasonalProgression &&
-                !modConfig.Events.AllSeasons &&
-                !modConfig.Events.NoWinter &&
-                !modConfig.Events.WinterWonderland
-            ) {
-                staticRouterModService.registerStaticRouter(
-                    `[${RaidOverhaul.modName}]-/client/items`,
-                    [
-                        {
-                            url: "/client/items",
-                            action: async (url, info, sessionId, output) => {
-                                modFeatures.seasonProgression(modConfig);
-                                return output;
-                            },
-                        },
-                    ],
-                    "spt",
-                );
-            }
-        }
-        //#endregion
-
-        //Log from the client to the server if in debug build in the client and extra debug logging is enabled in the server
-        if (modConfig.Debug.ExtraLogging) {
-            dynamicRouterModService.registerDynamicRouter(
-                `DynamicReportError${RaidOverhaul.modName}`,
-                [
-                    {
-                        url: "/RaidOverhaul/LogToServer/",
-                        action: async (url: string) => {
-                            const urlParts = url.split("/");
-                            const clientMessage = urlParts[urlParts.length - 1];
-
-                            const regex = /%20/g;
-                            this.utils.logToServer(clientMessage.replace(regex, " "), this.ref.logger);
-
-                            return JSON.stringify({ resp: "OK" });
-                        },
-                    },
-                ],
-                "LogToServer",
-            );
-        }
-
-        //Modify trader rep and legion chance post raid
-        staticRouterModService.registerStaticRouter(
-            `${RaidOverhaul.modName}:RaidSaved`,
-            [
-                {
-                    url: "/raid/profile/save",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
-                        TraderData.traderRepLogic(info, sessionId, this.ref.traderHelper);
-                        if (modConfig.EnableCustomBoss) {
-                            TraderData.legionRepLogic(info, sessionId, this.ref.traderHelper);
-                            LegionData.modifySpawnChance(info, output);
-                            LegionData.LoadBossData(modConfig);
-                            if (this.ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
-                                LegionData.swagPatch();
-                            }
-                        }
-                        if (!modConfig.EnableCustomBoss) {
-                            TraderData.noBossRepLogic(info, sessionId, this.ref.traderHelper);
-                        }
-                        return output;
-                    },
-                },
-            ],
-            "spt",
-        );
+        //Register router hooks
+        staticRouters.registerHooks();
+        dynamicRouters.registerHooks();
 
         //Patch Legion into SWAG patterns
         if (modConfig.EnableCustomBoss) {
             if (this.ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
                 LegionData.swagPatch();
-                this.ref.logger.logWithColor(
-                    "[Raid Overhaul] SWAG detected, modifying Legion patterns.",
-                    LogTextColor.MAGENTA,
-                );
+                this.logger.log("SWAG detected, modifying Legion patterns.", LogTextColor.MAGENTA);
             }
         }
     }
@@ -298,11 +98,11 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         const traderConfig: ITraderConfig = this.ref.configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
 
         //Imports
-        const traderData = new TraderData(traderConfig, this.ref, this.utils);
-        const modFeatures = new Base(this.utils, this.ref);
+        const traderData = new TraderData(traderConfig, this.ref, this.utils, this.logger);
+        const modFeatures = new Base(this.utils, this.ref, this.logger);
         const itemGenerator = new ItemGenerator(this.ref);
         const traderFeatures = new pushTraderFeatures(this.utils, this.ref, traderData);
-        const modPath = path.resolve(__dirname.toString()).split(path.sep).join("/") + "/";
+        const modPath = `${path.resolve(__dirname.toString()).split(path.sep).join("/")}/`;
         const modConfig = JSON5.parse(
             this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5")),
         ) as configFile;
@@ -323,21 +123,21 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         //Remove boss from SWAG
         if (modConfig.RemoveFromSwag) {
             LegionData.RemoveLegionPatch();
-            this.ref.logger.error(`[${RaidOverhaul.modName}] Removing Legion from Swag config. Ready to uninstall.`);
+            this.logger.logError("Removing Legion from Swag config. Ready to uninstall.");
             return;
         }
 
         //Check for proper install
         if (!RaidOverhaul.pluginDepCheck()) {
-            this.ref.logger.error(
-                `[${RaidOverhaul.modName}] Error, client portion of Raid Overhaul is missing from BepInEx/plugins folder.\nPlease install correctly.`,
+            this.logger.logError(
+                "Error, client portion of Raid Overhaul is missing from BepInEx/plugins folder.\nPlease install correctly.",
             );
             return;
         }
 
         if (!RaidOverhaul.preloaderDepCheck()) {
-            this.ref.logger.error(
-                `[${RaidOverhaul.modName}] Error, Legion Boss Preloader is missing from BepInEx/patchers folder.\nPlease install correctly.`,
+            this.logger.logError(
+                "Error, Legion Boss Preloader is missing from BepInEx/patchers folder.\nPlease install correctly.",
             );
             return;
         }
@@ -347,10 +147,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         this.pushModFeatures(modFeatures, modConfig);
         this.pushBossData(itemGenerator, modConfig);
 
-        this.ref.logger.logWithColor(
-            `[${RaidOverhaul.modName}] has finished modifying your raids. ${randomMessage}.`,
-            LogTextColor.CYAN,
-        );
+        this.logger.log(`has finished modifying your raids. ${randomMessage}.`, LogTextColor.CYAN);
     }
 
     private loadCustomItems(itemGenerator: ItemGenerator, modConfig: configFile) {
@@ -361,10 +158,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         if (modConfig.EnableCustomItems) {
             if (this.ref.preSptModLoader.getImportedModsNames().includes("SPT-Realism")) {
                 itemGenerator.createCustomItems("../../db/ItemGen/Ammo Realism");
-                this.ref.logger.logWithColor(
-                    "[RaidOverhaul] Realism detected, modifying custom ammunition.",
-                    LogTextColor.MAGENTA,
-                );
+                this.logger.log("Realism detected, modifying custom ammunition.", LogTextColor.MAGENTA);
             }
 
             if (!this.ref.preSptModLoader.getImportedModsNames().includes("SPT-Realism")) {

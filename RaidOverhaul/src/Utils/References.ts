@@ -16,6 +16,7 @@ import { SaveServer } from "@spt/servers/SaveServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RagfairPriceService } from "@spt/services/RagfairPriceService";
 import { CustomItemService } from "@spt/services/mod/CustomItemService";
+import { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
 import { OnUpdateModService } from "@spt/services/mod/onUpdate/OnUpdateModService";
 import { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -33,6 +34,7 @@ export class References {
     public itemHelper: ItemHelper;
     public logger: ILogger;
     public staticRouter: StaticRouterModService;
+    public dynamicRouter: DynamicRouterModService;
     public onUpdateModService: OnUpdateModService;
 
     public database: DatabaseServer;
@@ -62,6 +64,7 @@ export class References {
         this.itemHelper = container.resolve<ItemHelper>("ItemHelper");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.staticRouter = container.resolve<StaticRouterModService>("StaticRouterModService");
+        this.dynamicRouter = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.onUpdateModService = container.resolve<OnUpdateModService>("OnUpdateModService");
         this.randomUtil = container.resolve<RandomUtil>("RandomUtil");
         this.database = container.resolve<DatabaseServer>("DatabaseServer");

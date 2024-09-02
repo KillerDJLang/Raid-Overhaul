@@ -1,26 +1,30 @@
-import { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
-import { Item } from "@spt/models/eft/common/tables/IItem";
-import { Props } from "@spt/models/eft/common/tables/ITemplateItem";
-import { IBarterScheme, ITrader } from "@spt/models/eft/common/tables/ITrader";
-import { ITraderAssort, ITraderBase } from "@spt/models/eft/common/tables/ITrader";
-import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
-import { ITraderConfig, UpdateTime } from "@spt/models/spt/config/ITraderConfig";
+import type { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
+import type { Item } from "@spt/models/eft/common/tables/IItem";
+import type { Props } from "@spt/models/eft/common/tables/ITemplateItem";
+import type { IBarterScheme, ITrader } from "@spt/models/eft/common/tables/ITrader";
+import type { ITraderAssort, ITraderBase } from "@spt/models/eft/common/tables/ITrader";
+import type { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
+import type { ITraderConfig, UpdateTime } from "@spt/models/spt/config/ITraderConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
-import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
-import { ImageRouter } from "@spt/routers/ImageRouter";
-import { HashUtil } from "@spt/utils/HashUtil";
-import { JsonUtil } from "@spt/utils/JsonUtil";
+import type { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ImageRouter } from "@spt/routers/ImageRouter";
+import type { HashUtil } from "@spt/utils/HashUtil";
+import type { JsonUtil } from "@spt/utils/JsonUtil";
 
-import { Currency } from "../Refs/Enums";
-import { References } from "../Refs/References";
+import { Currency } from "./Enums";
+import type { Logger } from "./Logger";
+import type { References } from "./References";
 
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as baseJson from "../../db/base.json";
 
 export class Utils {
-    constructor(public ref: References) {}
+    constructor(
+        public ref: References,
+        public logger: Logger,
+    ) {}
 
     //#region Base Utils
     public randomCount(base: number, random: number): number {
@@ -30,6 +34,7 @@ export class Utils {
     public loadFiles(dirPath, extName, cb): void {
         if (!fs.existsSync(dirPath)) return;
         const dir = fs.readdirSync(dirPath, { withFileTypes: true });
+        // biome-ignore lint/complexity/noForEach: <explanation>
         dir.forEach((item) => {
             const itemPath = path.normalize(`${dirPath}/${item.name}`);
             if (item.isDirectory()) this.loadFiles(itemPath, extName, cb);
@@ -64,10 +69,7 @@ export class Utils {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(
-                `[${modName}] Loaded ${imageCount} custom images and ${questCount} custom quests.`,
-                "cyan",
-            );
+            this.logger.log(`Loaded ${imageCount} custom images and ${questCount} custom quests.`, LogTextColor.CYAN);
         }
     }
 
@@ -98,31 +100,36 @@ export class Utils {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(
+            this.logger.log(
                 `[${modName}] Loaded ${imageCount} custom images and ${questCount} custom quests.`,
-                "cyan",
+                LogTextColor.CYAN,
             );
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public shuffle(array: string[]): any {
         return array.sort(() => Math.random() - 0.5);
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public shufflePop(array: string[]): any {
         return this.shuffle(array).pop().toString();
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public shuffleShift(array: string[]): any {
         return this.shuffle(array).shift().toString();
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public shufflePullTwo(array: string[]): any {
         return this.shuffle(array).pop().toString() && this.shuffle(array).shift().toString();
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public logToServer(message: string, logger: any): void {
-        logger.log("[Raid Overhaul] " + message, LogTextColor.CYAN);
+        logger.log(`[Raid Overhaul] ${message}`, LogTextColor.CYAN);
     }
 
     public profileBackup(modName, sessionID: string, path, profile: ISptProfile, randomUtil): void {
@@ -131,14 +138,14 @@ export class Utils {
         const randomNum = randomUtil.randInt(1, 20).toString();
         const date = new Date();
         const day = date.toISOString().slice(0, 10);
-        const backupName = backupPath + sessionID + "_" + "RO" + "_" + day + "_" + randomNum + "-backup.json";
+        const backupName = `${backupPath + sessionID}_RO_${day}_${randomNum}-backup.json`;
         const profileCount = this.ref.vfs
             .getFilesOfType(backupPath, "json")
             .sort((a, b) => fs.statSync(a).ctimeMs - fs.statSync(b).ctimeMs);
         const maxBackups = 3;
 
         if (!this.ref.vfs.exists(backupPath)) {
-            this.ref.logger.log(`${modName}: "${backupPath}" has been created`, LogTextColor.MAGENTA);
+            this.logger.log(`"${backupPath}" has been created`, LogTextColor.MAGENTA);
             this.ref.vfs.createDir(backupPath);
         }
 
@@ -149,9 +156,9 @@ export class Utils {
         }
 
         fs.writeFile(backupName, profileData, { encoding: "utf8", flag: "w", mode: 0o666 }, (err) => {
-            if (err) console.log(`[${modName}] Error Backing Up Profile;` + err);
+            if (err) this.logger.log(`Error Backing Up Profile: ${err}`);
             else {
-                this.ref.logger.log(`[${modName}] Profile backup successful.`, LogTextColor.MAGENTA);
+                this.logger.log("Profile backup successful.", LogTextColor.MAGENTA);
             }
         });
     }
@@ -161,13 +168,14 @@ export class Utils {
             const hbItem = this.ref.tables.templates.handbook.Items.find((i) => i.Id === itemID);
             return hbItem.Price;
         } catch (error) {
-            this.ref.logger.warning(`\nError getting Handbook ID for ${itemID}`);
+            this.logger.logWarning(`\nError getting Handbook ID for ${itemID}`);
         }
     }
 
     public getFleaPrice(itemID: string): number {
-        if (typeof this.ref.tables.templates.prices[itemID] != "undefined") {
+        if (typeof this.ref.tables.templates.prices[itemID] !== "undefined") {
             return this.ref.tables.templates.prices[itemID];
+            // biome-ignore lint/style/noUselessElse: <explanation>
         } else {
             return this.getItemInHandbook(itemID);
         }
@@ -183,9 +191,11 @@ export class Utils {
 
     public buildBaseAssort(
         ItemID: string,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         assortUtils: any,
         StockCount: number,
         LoyaltyLevelToPush: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         if (Math.round(this.getFleaPrice(ItemID)) <= 49999) {
@@ -218,13 +228,18 @@ export class Utils {
 
     public buildPresetAssort(
         PresetID,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         assortUtils: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         ArrayToPull: any,
         ItemKeys: string,
         StockCount: number,
         LoyaltyLevelToPush: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         logstring: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         presetName: any,
     ) {
         const presetPrice = Math.round(this.ref.ragfairPriceService.getFleaPriceForOfferItems(PresetID));
@@ -232,7 +247,7 @@ export class Utils {
         const formCost = Math.ceil(presetPrice / this.getFleaPrice("66292e79a4d9da25e683ab55"));
 
         try {
-            if (presetPrice <= 0 || presetPrice == undefined) {
+            if (presetPrice <= 0 || presetPrice === undefined) {
                 assortUtils.createComplexOffer(
                     ArrayToPull,
                     ItemKeys,
@@ -254,16 +269,14 @@ export class Utils {
                 assortUtils.createComplexOffer(ArrayToPull, ItemKeys, StockCount, LoyaltyLevelToPush, slipCost, tables);
             }
         } catch (error) {
-            this.ref.logger.log(
-                `[${logstring}] Error loading ${presetName} => ${error}, skipping preset.`,
-                LogTextColor.RED,
-            );
+            this.logger.log(`Error loading ${presetName} => ${error}, skipping preset.`, LogTextColor.RED);
         }
     }
 
     public getItemName(itemID: string, locale = "en") {
-        if (this.ref.tables.locales.global[locale][`${itemID} Name`] != undefined) {
+        if (this.ref.tables.locales.global[locale][`${itemID} Name`] !== undefined) {
             return this.ref.tables.locales.global[locale][`${itemID} Name`];
+            // biome-ignore lint/style/noUselessElse: <explanation>
         } else {
             return this.ref.tables.templates.items[itemID]?._name;
         }
@@ -303,6 +316,7 @@ export class Utils {
 export class TraderUtils {
     //#region Trader Base Utils
     public registerProfileImage(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         baseJson: any,
         modName: string,
         preSptModLoader: PreSptModLoader,
@@ -315,6 +329,7 @@ export class TraderUtils {
 
     public setTraderUpdateTime(
         traderConfig: ITraderConfig,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         baseJson: any,
         minSeconds: number,
         maxSeconds: number,
@@ -330,10 +345,13 @@ export class TraderUtils {
     }
 
     public addTraderToDb(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         traderDetailsToAdd: any,
         tables: IDatabaseTables,
         jsonUtil: JsonUtil,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         dialogueToAdd: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         servicesToAdd: any,
     ): void {
         tables.traders[traderDetailsToAdd._id] = {
@@ -361,6 +379,7 @@ export class TraderUtils {
     }
 
     public addTraderToLocales(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         baseJson: any,
         tables: IDatabaseTables,
         fullName: string,
@@ -614,8 +633,11 @@ export class AssortUtils {
     public getCustomPresets(
         StockCount: number,
         LoyaltyLevel: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         importerUtil: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         ragfairPriceService: any,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         const profiles = importerUtil.loadRecursive("user/profiles/");
@@ -656,6 +678,7 @@ export class AssortUtils {
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public getPresetReqCost(PresetID, ragfairPriceService: any, tables: any): number {
         return Math.ceil(
             ragfairPriceService.getFleaPriceForOfferItems(PresetID) /
@@ -663,14 +686,17 @@ export class AssortUtils {
         );
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public getFleaPrice(itemID: string, tables: any): number {
-        if (typeof tables.templates.prices[itemID] != "undefined") {
+        if (typeof tables.templates.prices[itemID] !== "undefined") {
             return tables.templates.prices[itemID];
+            // biome-ignore lint/style/noUselessElse: <explanation>
         } else {
             return this.getItemInHandbook(itemID, tables);
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public getItemInHandbook(itemID: string, tables: any): number {
         try {
             const hbItem = tables.templates.handbook.Items.find((i) => i.Id === itemID);
@@ -685,6 +711,7 @@ export class AssortUtils {
         StockCount: number,
         LoyaltyLevelToPush: number,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createSingleAssortItem(ItemToAdd)
@@ -698,8 +725,10 @@ export class AssortUtils {
         ItemToAdd: string,
         StockCount: number,
         LoyaltyLevelToPush: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         CurrencyToUse: any,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createSingleAssortItem(ItemToAdd)
@@ -715,6 +744,7 @@ export class AssortUtils {
         LoyaltyLevelToPush: number,
         BarterToUse: string,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createSingleAssortItem(ItemToAdd)
@@ -725,11 +755,13 @@ export class AssortUtils {
     }
 
     public createComplexOffer(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         ArrayToPull: any,
         ItemKeys: string,
         StockCount: number,
         LoyaltyLevelToPush: number,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createComplexAssortItem(ArrayToPull[ItemKeys]._items)
@@ -740,11 +772,13 @@ export class AssortUtils {
     }
 
     public createComplexFormOffer(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         ArrayToPull: any,
         ItemKeys: string,
         StockCount: number,
         LoyaltyLevelToPush: number,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createComplexAssortItem(ArrayToPull[ItemKeys]._items)
@@ -755,10 +789,12 @@ export class AssortUtils {
     }
 
     public createPresetFormOffer(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         PresetItem: any,
         StockCount: number,
         LoyaltyLevelToPush: number,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createComplexAssortItem(PresetItem)
@@ -769,10 +805,12 @@ export class AssortUtils {
     }
 
     public createPresetSlipOffer(
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         PresetItem: any,
         StockCount: number,
         LoyaltyLevelToPush: number,
         ReqCost: number,
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         tables: any,
     ) {
         this.createComplexAssortItem(PresetItem)

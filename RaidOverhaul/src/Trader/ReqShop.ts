@@ -1,20 +1,22 @@
 import { container } from "tsyringe";
 
-import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { ITraderConfig, UpdateTime } from "@spt/models/spt/config/ITraderConfig";
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type { ITraderConfig, UpdateTime } from "@spt/models/spt/config/ITraderConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
-import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 
 import { AllItemList } from "../CustomItems/GenEnums";
-import { Currency } from "../Refs/Enums";
-import { References } from "../Refs/References";
-import { AssortUtils, TraderUtils, Utils } from "../Refs/Utils";
+import { Currency } from "../Utils/Enums";
+import type { Logger } from "../Utils/Logger";
+import type { References } from "../Utils/References";
+import type { Utils } from "../Utils/Utils";
+import { AssortUtils, TraderUtils } from "../Utils/Utils";
 
-const customPresetArray = require("../Refs/ArrayFiles/customPresets.json");
-const weaponPresetArray = require("../Refs/ArrayFiles/weaponPresets.json");
-const gearPresetArray = require("../Refs/ArrayFiles/gearPresets.json");
-const items = require("../Refs/ArrayFiles/shopArrays.json");
+const customPresetArray = require("../Utils/ArrayFiles/customPresets.json");
+const weaponPresetArray = require("../Utils/ArrayFiles/weaponPresets.json");
+const gearPresetArray = require("../Utils/ArrayFiles/gearPresets.json");
+const items = require("../Utils/ArrayFiles/shopArrays.json");
 const dialogue = require("../../db/dialogue.json");
 const services = require("../../db/services.json");
 
@@ -31,6 +33,7 @@ export class TraderData {
         private traderConfig: ITraderConfig,
         private ref: References,
         private utils: Utils,
+        public logger: Logger,
     ) {
         this.mod = "RaidOverhaul";
         this.logString = "AssortMaker";
@@ -109,8 +112,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.plates.forEach((item) => {
             if (this.ref.probHelper.rollChance(20, 100)) {
                 this.utils.buildBaseAssort(
@@ -125,7 +129,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total plates have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total plates have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -139,8 +143,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.meds.forEach((item) => {
             if (this.ref.probHelper.rollChance(25, 100)) {
                 this.utils.buildBaseAssort(
@@ -155,7 +160,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total meds have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total meds have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -169,8 +174,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.gear.forEach((item) => {
             if (this.ref.probHelper.rollChance(12, 100)) {
                 this.utils.buildBaseAssort(
@@ -185,10 +191,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(
-                `[${this.logString}] ${count} total pieces of gear have been added`,
-                LogTextColor.GREEN,
-            );
+            this.logger.log(`${count} total pieces of gear have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -202,8 +205,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.mods.forEach((item) => {
             if (this.ref.probHelper.rollChance(7, 100)) {
                 this.utils.buildBaseAssort(
@@ -218,10 +222,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(
-                `[${this.logString}] ${count} total pieces of gear have been added`,
-                LogTextColor.GREEN,
-            );
+            this.logger.log(`${count} total pieces of gear have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -235,8 +236,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(50, 300);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.ammo.forEach((item) => {
             if (this.ref.probHelper.rollChance(17, 100)) {
                 this.utils.buildBaseAssort(
@@ -251,7 +253,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total types of ammo have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total types of ammo have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -265,8 +267,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.items.forEach((item) => {
             if (this.ref.probHelper.rollChance(13, 100)) {
                 this.utils.buildBaseAssort(
@@ -281,7 +284,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total items have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total items have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -295,8 +298,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.weaponBase.forEach((item) => {
             if (this.ref.probHelper.rollChance(11, 100)) {
                 this.utils.buildBaseAssort(
@@ -311,7 +315,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total weapons have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total weapons have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -324,8 +328,9 @@ export class TraderData {
         //#region Special Items
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
 
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.special.forEach((item) => {
             if (this.ref.probHelper.rollChance(10, 100)) {
                 const randomAssortCount = this.ref.randomUtil.randInt(0, 1);
@@ -341,15 +346,13 @@ export class TraderData {
                         this.ref.tables,
                     );
                 } catch (error) {
-                    this.ref.logger.error(
-                        `[${this.logString}] Error loading Special Items from Fluid Assort Trader Generator:` + error,
-                    );
+                    this.logger.logError(`Error loading Special Items from Fluid Assort Trader Generator: ${error}`);
                 }
             }
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total special items have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total special items have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -363,8 +366,9 @@ export class TraderData {
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
         const randomAssortCount = this.ref.randomUtil.randInt(0, 7);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var count = 0;
+        let count = 0;
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         items.staticItems.forEach((item) => {
             if (this.ref.probHelper.rollChance(23, 100)) {
                 this.utils.buildBaseAssort(
@@ -379,7 +383,7 @@ export class TraderData {
         });
 
         if (debugLogging) {
-            this.ref.logger.log(`[${this.logString}] ${count} total static items have been added`, LogTextColor.GREEN);
+            this.logger.log(`${count} total static items have been added`, LogTextColor.GREEN);
         }
         //#endregion
     }
@@ -583,17 +587,17 @@ export class TraderData {
     //
     //
 
-    public addWeaponPresets(count: number, debugLogging: boolean): void {
+    public addWeaponPresets(debugLogging: boolean): void {
         //#region Weapon Presets
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
 
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var keys = Object.keys(weaponPresetArray);
+        const keys = Object.keys(weaponPresetArray);
         const shuffledKeys = this.utils.shuffle(keys).shift();
 
         try {
-            if (shuffledKeys == "undefined") {
+            if (shuffledKeys === "undefined") {
                 const reshuffledKeys = this.utils.shuffle(keys).shift();
 
                 this.utils.buildPresetAssort(
@@ -607,11 +611,10 @@ export class TraderData {
                     this.logString,
                     weaponPresetArray[reshuffledKeys]._name,
                 );
-                count++;
 
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${weaponPresetArray[reshuffledKeys]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${weaponPresetArray[reshuffledKeys]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -627,20 +630,16 @@ export class TraderData {
                     this.logString,
                     weaponPresetArray[shuffledKeys]._name,
                 );
-                count++;
 
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${weaponPresetArray[shuffledKeys]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${weaponPresetArray[shuffledKeys]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
             }
         } catch (error) {
-            this.ref.logger.log(
-                `[${this.logString}] Error loading weapon preset => ${error}, skipping.`,
-                LogTextColor.RED,
-            );
+            this.logger.log(`Error loading weapon preset => ${error}, skipping.`, LogTextColor.RED);
         }
         //#endregion
     }
@@ -649,17 +648,17 @@ export class TraderData {
     //
     //
 
-    public addGearPresets(count: number, debugLogging: boolean): void {
+    public addGearPresets(debugLogging: boolean): void {
         //#region Gear Presets
         this.assortUtils = new AssortUtils(this.ref.hashUtil, this.ref.logger);
 
         const randomAssortCount = this.ref.randomUtil.randInt(0, 10);
         const randomLoyaltyLevel = this.ref.randomUtil.randInt(1, 4);
-        var keys = Object.keys(gearPresetArray);
+        const keys = Object.keys(gearPresetArray);
         const shuffledKeys = this.utils.shuffle(keys).shift();
 
         try {
-            if (shuffledKeys == "undefined") {
+            if (shuffledKeys === "undefined") {
                 const reshuffledKeys = this.utils.shuffle(keys).shift();
 
                 this.utils.buildPresetAssort(
@@ -673,11 +672,10 @@ export class TraderData {
                     this.logString,
                     gearPresetArray[reshuffledKeys]._name,
                 );
-                count++;
 
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${gearPresetArray[reshuffledKeys]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${gearPresetArray[reshuffledKeys]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -693,20 +691,16 @@ export class TraderData {
                     this.logString,
                     gearPresetArray[shuffledKeys]._name,
                 );
-                count++;
 
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${gearPresetArray[shuffledKeys]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${gearPresetArray[shuffledKeys]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
             }
         } catch (error) {
-            this.ref.logger.log(
-                `[${this.logString}] Error loading gear preset => ${error}, skipping.`,
-                LogTextColor.RED,
-            );
+            this.logger.log(`Error loading gear preset => ${error}, skipping.`, LogTextColor.RED);
         }
         //#endregion
     }
@@ -745,8 +739,8 @@ export class TraderData {
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a705236745f8648ad53e"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a705236745f8648ad53e"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -760,17 +754,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a70f59ffa60ecae8e733"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a70f59ffa60ecae8e733"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -784,17 +776,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a717ff5912103bdf740d"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a717ff5912103bdf740d"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -808,17 +798,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a72ac62d870df2cbdb86"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a72ac62d870df2cbdb86"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -832,17 +820,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a731bd4c9ff51d29aaaf"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a731bd4c9ff51d29aaaf"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -856,17 +842,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621a739fb888fa092777660"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621a739fb888fa092777660"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -880,17 +864,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(10, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["66282d088ae153cc12239517"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["66282d088ae153cc12239517"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -904,17 +886,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(10, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["66282dc3786b67507908d9f6"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["66282dc3786b67507908d9f6"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -928,17 +908,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(10, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["66282e057a8efc7fb524a0e7"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["66282e057a8efc7fb524a0e7"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -952,17 +930,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6632bb0f334f6b4b261ebfea"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6632bb0f334f6b4b261ebfea"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -976,17 +952,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(20, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6632bab6994fd274f96e64fb"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6632bab6994fd274f96e64fb"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -1000,17 +974,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(15, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621b36441f789405703caa7"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621b36441f789405703caa7"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -1024,17 +996,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(30, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621b3a294b2a82f3e040046"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621b3a294b2a82f3e040046"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -1048,17 +1018,15 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
 
         if (this.ref.probHelper.rollChance(30, 100)) {
             try {
                 if (debugLogging) {
-                    this.ref.logger.log(
-                        `[${this.logString}] ${customPresetArray["6621b3d68b97256266b89703"]._name} has been added to the Req Shop`,
+                    this.logger.log(
+                        `${customPresetArray["6621b3d68b97256266b89703"]._name} has been added to the Req Shop`,
                         LogTextColor.GREEN,
                     );
                 }
@@ -1072,9 +1040,7 @@ export class TraderData {
                     this.ref.tables,
                 );
             } catch (error) {
-                this.ref.logger.error(
-                    `[${this.logString}] Error loading Custom Presets from Fluid Assort Trader Generator:` + error,
-                );
+                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
             }
         }
         //#endregion
@@ -1084,6 +1050,7 @@ export class TraderData {
     //
     //
     //#region Reputation Change Logic
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     static traderRepLogic(info: any, sessionId: string, traderHelper: any): void {
         const logger = container.resolve<ILogger>("WinstonLogger");
         const logString = "Rep Logic";
@@ -1091,22 +1058,26 @@ export class TraderData {
         try {
             if (info.exit === "Left") {
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (info.exit === "killed") {
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (info.exit === "runner") {
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (info.exit === "survived") {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.03);
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on Successful Raid Exfil:` + error);
+            logger.error(`[${logString}] Error modifying Trader Rep on Successful Raid Exfil: ${error}`);
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     static legionRepLogic(info: any, sessionId: string, traderHelper: any): void {
         const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "LegionRepLogic";
+        const logString = "Raid Overhaul";
 
         try {
             const pmcData: IPmcData = info.profile;
@@ -1115,50 +1086,64 @@ export class TraderData {
             if (victimRole?.includes("bosslegion")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossboar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossbully")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossgluhar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskilla")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossknight")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskojaniy")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskolontay")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosssanitar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosstagilla")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosszryachiy")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("followerbigpipe")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("followerbirdeye")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else {
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion:` + error);
+            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion: ${error}`);
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     static noBossRepLogic(info: any, sessionId: string, traderHelper: any): void {
         const logger = container.resolve<ILogger>("WinstonLogger");
         const logString = "NoBossRepLogic";
@@ -1170,44 +1155,56 @@ export class TraderData {
             if (victimRole?.includes("bossboar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossbully")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossgluhar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskilla")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bossknight")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskojaniy")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosskolontay")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosssanitar")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosstagilla")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("bosszryachiy")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("followerbigpipe")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else if (victimRole?.includes("followerbirdeye")) {
                 traderHelper.addStandingToTrader(sessionId, "Requisitions", 0.15);
                 return;
+                // biome-ignore lint/style/noUselessElse: <explanation>
             } else {
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion:` + error);
+            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion: ${error}`);
         }
     }
     //#endregion

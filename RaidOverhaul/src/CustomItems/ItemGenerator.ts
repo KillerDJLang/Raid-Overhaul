@@ -1,12 +1,12 @@
-import { ILocation } from "@spt/models/eft/common/ILocation";
-import { HandbookItem } from "@spt/models/eft/common/tables/IHandbookBase";
-import { Item } from "@spt/models/eft/common/tables/IItem";
-import { Props } from "@spt/models/eft/common/tables/ITemplateItem";
-import { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
+import type { ILocation } from "@spt/models/eft/common/ILocation";
+import type { HandbookItem } from "@spt/models/eft/common/tables/IHandbookBase";
+import type { Item } from "@spt/models/eft/common/tables/IItem";
+import type { Props } from "@spt/models/eft/common/tables/ITemplateItem";
+import type { IBarterScheme } from "@spt/models/eft/common/tables/ITrader";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
-import { References } from "../Refs/References";
+import type { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
+import type { NewItemFromCloneDetails } from "@spt/models/spt/mod/NewItemDetails";
+import type { References } from "../Utils/References";
 import { AllItemList, HandbookIDs, SlotsIDs } from "./GenEnums";
 
 import * as fs from "node:fs";
@@ -27,6 +27,7 @@ export class ItemGenerator {
 
         for (const newId in this.itemConfig) {
             const itemConfig = this.itemConfig[newId];
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
             const tempClone = AllItemList[itemConfig["ItemToClone"]] || itemConfig["ItemToClone"];
             const itemToClone = tempClone;
 
@@ -95,21 +96,25 @@ export class ItemGenerator {
 
     private createHandbook(itemConfig: CustomItemFormat[string], itemID: string): HandbookItem {
         const tables = this.ref.tables;
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         const tempClone = AllItemList[itemConfig["ItemToClone"]] || itemConfig["ItemToClone"];
         const itemToClone = tempClone;
 
         if (itemConfig.Handbook !== undefined) {
             const tempHBParent =
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 HandbookIDs[itemConfig["Handbook"]["HandbookParent"]] || itemConfig["Handbook"]["HandbookParent"];
             const hbParent = tempHBParent;
 
             const handbookEntry: HandbookItem = {
                 Id: itemID,
                 ParentId: hbParent,
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 Price: itemConfig["Handbook"]["HandbookPrice"],
             };
 
             return handbookEntry;
+            // biome-ignore lint/style/noUselessElse: <explanation>
         } else {
             const hbBase = tables.templates.handbook.Items.find((i) => i.Id === itemToClone);
 
@@ -233,6 +238,7 @@ export class ItemGenerator {
         const locations = tables.locations;
 
         if (Array.isArray(itemConfig.LootPush?.LootContainersToAdd)) {
+            // biome-ignore lint/complexity/noForEach: <explanation>
             itemConfig.LootPush?.LootContainersToAdd.forEach((lootContainer) => {
                 const tempLC = AllItemList[lootContainer] || lootContainer;
                 const staticLC = tempLC;
@@ -243,10 +249,12 @@ export class ItemGenerator {
                 };
 
                 for (const map in locations) {
+                    // biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
                     if (locations.hasOwnProperty(map)) {
                         const location: ILocation = locations[map];
                         if (location.staticLoot) {
                             const staticLoot = location.staticLoot;
+                            // biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
                             if (staticLoot.hasOwnProperty(staticLC)) {
                                 const staticContainer = staticLoot[staticLC];
                                 if (staticContainer) {
@@ -265,6 +273,7 @@ export class ItemGenerator {
         const items = tables.templates.items;
 
         if (Array.isArray(itemConfig.CasePush?.CaseFiltersToAdd)) {
+            // biome-ignore lint/complexity/noForEach: <explanation>
             itemConfig.CasePush?.CaseFiltersToAdd.forEach((caseToAdd) => {
                 const tempCases = AllItemList[caseToAdd] || caseToAdd;
                 const cases = tempCases;
@@ -326,8 +335,10 @@ export class ItemGenerator {
     private combineItems(itemDirectory: string) {
         const modules = fs.readdirSync(path.join(__dirname, itemDirectory));
 
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const combinedModules: any = {};
 
+        // biome-ignore lint/complexity/noForEach: <explanation>
         modules.forEach((modFile) => {
             const filesPath = path.join(__dirname, itemDirectory, modFile);
             const fileContents = fs.readFileSync(filesPath, "utf-8");
@@ -345,11 +356,13 @@ export class ItemGenerator {
         const presets = tables.globals.ItemPresets;
 
         if (itemConfig.PresetPush !== undefined) {
+            // biome-ignore lint/complexity/noForEach: <explanation>
             customPresets.forEach((preset) => {
                 const finalPreset: PresetFormat = {
                     _changeWeaponName: preset._changeWeaponName,
                     _encyclopedia: preset._encyclopedia || undefined,
                     _id: preset._id,
+                    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                     _items: preset._items.map((itemData: any) => {
                         const item: Item = {
                             _id: itemData._id,
@@ -397,6 +410,7 @@ export class ItemGenerator {
 
             finalPreset._items.push({ _id: basePresetID, _tpl: itemID });
 
+            // biome-ignore lint/complexity/noForEach: <explanation>
             tables.templates.items[itemID]._props.Slots.forEach((slot) => {
                 if (slot._name !== "mod_nvg") {
                     finalPreset._items.push({
@@ -414,12 +428,13 @@ export class ItemGenerator {
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     private addToQuests(quests: any, condition: string, target: string, newTarget: string): void {
         for (const quest of Object.keys(quests)) {
             const questConditions = quests[quest];
             for (const nextCondition of questConditions.conditions.AvailableForFinish) {
                 const nextConditionData = nextCondition;
-                if (nextConditionData.conditionType == condition && nextConditionData.target.includes(target)) {
+                if (nextConditionData.conditionType === condition && nextConditionData.target.includes(target)) {
                     nextConditionData.target.push(newTarget);
                 }
             }
@@ -430,6 +445,7 @@ export class ItemGenerator {
     //
     //
     //#region Clothing Gen
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public createClothingTop(newTopConfig: any): void {
         const tables = this.ref.tables;
         const newTop = structuredClone(tables.templates.customization["5d28adcb86f77429242fc893"]);
@@ -489,6 +505,7 @@ export class ItemGenerator {
         }
     }
 
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     public createClothingBottom(newBottomConfig: any): void {
         const tables = this.ref.tables;
         const newBottom = structuredClone(tables.templates.customization["5d5e7f4986f7746956659f8a"]);

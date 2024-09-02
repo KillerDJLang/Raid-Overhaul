@@ -11,9 +11,9 @@ import type { DatabaseService } from "@spt/services/DatabaseService";
 import type { JsonUtil } from "@spt/utils/JsonUtil";
 import type { RandomUtil } from "@spt/utils/RandomUtil";
 import type { VFS } from "@spt/utils/VFS";
-import type { configFile, legionProgression } from "../Refs/Enums";
+import type { configFile, legionProgression } from "../Utils/Enums";
 
-const botSettings = require("../Refs/ArrayFiles/botInfo.json");
+const botSettings = require("../Utils/ArrayFiles/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
 const bosslegion2 = require("../../db/RaidBoss/bosslegion2.json");
 
@@ -75,13 +75,17 @@ export class LegionData {
         };
 
         preset.bosslegion = 1;
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         botConfig.equipment["bosslegion"] = botSettings.equipmentSettings;
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         botConfig.itemSpawnLimits["bosslegion"] = {};
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
         botConfig.walletLoot["bosslegion"] = botConfig.walletLoot["bossgluhar"];
         botConfig.bosses.push("bosslegion");
 
         if (modConfig.EnableCustomItems) {
             try {
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion));
             } catch (error) {
                 logger.error(`[${logString}] Error loading default Legion files: ${error}`);
@@ -90,6 +94,7 @@ export class LegionData {
 
         if (!modConfig.EnableCustomItems) {
             try {
+                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
                 tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion2));
             } catch (error) {
                 logger.error(`[${logString}] Error loading default Legion files: ${error}`);

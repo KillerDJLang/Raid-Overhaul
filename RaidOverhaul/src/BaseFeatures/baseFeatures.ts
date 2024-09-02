@@ -1,19 +1,21 @@
-import { IConfig } from "@spt/models/eft/common/IGlobals";
-import { IQuest } from "@spt/models/eft/common/tables/IQuest";
+import type { IConfig } from "@spt/models/eft/common/IGlobals";
+import type { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Season } from "@spt/models/enums/Season";
-import { IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
-import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
-import { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
-import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
+import type { IAirdropConfig } from "@spt/models/spt/config/IAirdropConfig";
+import type { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
+import type { ILostOnDeathConfig } from "@spt/models/spt/config/ILostOnDeathConfig";
+import type { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
+import type { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
-import { AllBots, configFile } from "../Refs/Enums";
-import { References } from "../Refs/References";
-import { Utils } from "../Refs/Utils";
+import { AllBots } from "../Utils/Enums";
+import type { configFile } from "../Utils/Enums";
+import type { Logger } from "../Utils/Logger";
+import type { References } from "../Utils/References";
+import type { Utils } from "../Utils/Utils";
 
-const ammoList = require("../Refs/ArrayFiles/ammoStackList.json");
+const ammoList = require("../Utils/ArrayFiles/ammoStackList.json");
 const globalPresets = require("../../db/Presets/Globals.json");
 const modName = "Raid Overhaul";
 
@@ -24,6 +26,7 @@ export class Base {
     constructor(
         private utils: Utils,
         private ref: References,
+        private logger: Logger,
     ) {}
 
     globals(): IConfig {
@@ -538,8 +541,8 @@ export class Base {
         }
 
         if (modConfig.BasicStackTuning.Enabled && modConfig.AdvancedStackTuning.Enabled) {
-            this.ref.logger.log(
-                `[${modName}] Error multiplying your ammo stacks. Make sure you only have ONE of the Stack Tuning options enabled`,
+            this.logger.log(
+                "Error multiplying your ammo stacks. Make sure you only have ONE of the Stack Tuning options enabled",
                 LogTextColor.RED,
             );
         }
@@ -686,7 +689,7 @@ export class Base {
             if (modConfig.Events.RandomizedSeasonalEvents) {
                 if (this.ref.probHelper.rollChance(15, 100)) {
                     this.globals().EventType.push(randomEvent);
-                    this.ref.logger.log(`[${modName}] ${randomEvent} event has been loaded`, LogTextColor.MAGENTA);
+                    this.logger.log(`${randomEvent} event has been loaded`, LogTextColor.MAGENTA);
                 }
             }
         }
@@ -705,31 +708,31 @@ export class Base {
 
             if (weatherChance >= 1 && weatherChance <= 20) {
                 weatherConfig.overrideSeason = Season.SUMMER;
-                this.ref.logger.log(`[${modName}] Summer is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Summer is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 21 && weatherChance <= 40) {
                 weatherConfig.overrideSeason = Season.AUTUMN;
-                this.ref.logger.log(`[${modName}] Autumn is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 41 && weatherChance <= 60) {
                 weatherConfig.overrideSeason = Season.WINTER;
-                this.ref.logger.log(`[${modName}] Winter is coming.`, LogTextColor.MAGENTA);
+                this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 61 && weatherChance <= 80) {
                 weatherConfig.overrideSeason = Season.SPRING;
-                this.ref.logger.log(`[${modName}] Spring is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Spring is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 81 && weatherChance <= 100) {
                 weatherConfig.overrideSeason = Season.STORM;
-                this.ref.logger.log(`[${modName}] Storm is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Storm is active.", LogTextColor.MAGENTA);
 
                 return;
             }
@@ -743,8 +746,8 @@ export class Base {
             (modConfig.Events.NoWinter && modConfig.Events.AllSeasons) ||
             (modConfig.Events.SeasonalProgression && modConfig.Events.AllSeasons)
         ) {
-            this.ref.logger.log(
-                `[${modName}] Error modifying your weather. Make sure you only have ONE of the weather options enabled`,
+            this.logger.log(
+                "Error modifying your weather. Make sure you only have ONE of the weather options enabled",
                 LogTextColor.RED,
             );
 
@@ -765,25 +768,25 @@ export class Base {
 
             if (weatherChance >= 1 && weatherChance <= 25) {
                 weatherConfig.overrideSeason = Season.SUMMER;
-                this.ref.logger.log(`[${modName}] Summer is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Summer is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 26 && weatherChance <= 50) {
                 weatherConfig.overrideSeason = Season.AUTUMN;
-                this.ref.logger.log(`[${modName}] Autumn is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 51 && weatherChance <= 75) {
                 weatherConfig.overrideSeason = Season.SPRING;
-                this.ref.logger.log(`[${modName}] Spring is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Spring is active.", LogTextColor.MAGENTA);
 
                 return;
             }
             if (weatherChance >= 76 && weatherChance <= 100) {
                 weatherConfig.overrideSeason = Season.STORM;
-                this.ref.logger.log(`[${modName}] Storm is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Storm is active.", LogTextColor.MAGENTA);
 
                 return;
             }
@@ -797,8 +800,8 @@ export class Base {
             (modConfig.Events.NoWinter && modConfig.Events.AllSeasons) ||
             (modConfig.Events.SeasonalProgression && modConfig.Events.AllSeasons)
         ) {
-            this.ref.logger.log(
-                `[${modName}] Error modifying your weather. Make sure you only have ONE of the weather options enabled`,
+            this.logger.log(
+                "Error modifying your weather. Make sure you only have ONE of the weather options enabled",
                 LogTextColor.RED,
             );
 
@@ -816,10 +819,7 @@ export class Base {
             !modConfig.Events.SeasonalProgression
         ) {
             weatherConfig.overrideSeason = Season.WINTER;
-            this.ref.logger.log(
-                `[${modName}] Snow is active. It's a whole fuckin' winter wonderland out there.`,
-                LogTextColor.MAGENTA,
-            );
+            this.logger.log(`Snow is active. It's a whole fuckin' winter wonderland out there.`, LogTextColor.MAGENTA);
 
             return;
         }
@@ -832,8 +832,8 @@ export class Base {
             (modConfig.Events.NoWinter && modConfig.Events.AllSeasons) ||
             (modConfig.Events.SeasonalProgression && modConfig.Events.AllSeasons)
         ) {
-            this.ref.logger.log(
-                `[${modName}] Error modifying your weather. Make sure you only have ONE of the weather options enabled`,
+            this.logger.log(
+                "Error modifying your weather. Make sure you only have ONE of the weather options enabled",
                 LogTextColor.RED,
             );
 
@@ -854,7 +854,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Spring is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Spring is active.", LogTextColor.MAGENTA);
             }
 
             return;
@@ -865,7 +865,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Storm is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Storm is active.", LogTextColor.MAGENTA);
             }
 
             return;
@@ -877,7 +877,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Summer is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Summer is active.", LogTextColor.MAGENTA);
             }
 
             return;
@@ -889,7 +889,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Autumn is active.`, LogTextColor.MAGENTA);
+                this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
             }
 
             return;
@@ -901,7 +901,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Winter is coming.`, LogTextColor.MAGENTA);
+                this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
             }
 
             return;
@@ -912,7 +912,7 @@ export class Base {
             seasonsProgression.seasonsProgression = RaidsRun;
             fs.writeFileSync(seasonsProgressionFile, JSON.stringify(seasonsProgression, null, 4));
             if (modConfig.Debug.ExtraLogging) {
-                this.ref.logger.log(`[${modName}] Winter has passed.`, LogTextColor.MAGENTA);
+                this.logger.log("Winter has passed.", LogTextColor.MAGENTA);
             }
 
             return;
