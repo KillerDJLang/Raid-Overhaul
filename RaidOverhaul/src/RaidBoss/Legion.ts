@@ -1,5 +1,6 @@
 import { container } from "tsyringe";
 
+import type { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import type { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -24,7 +25,15 @@ export class LegionData {
     // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor() {}
 
-    static LoadBossData(modConfig: configFile): void {
+    public static modLoc = path.join(__dirname, "..", "..");
+    public static legionFileChance: number;
+    public static progressFile: {
+        legionChance: number;
+    };
+
+    static LoadBossData(modConfig: configFile, profileID: string): void {
+        let bossLegionChance = 15;
+
         const logger = container.resolve<ILogger>("WinstonLogger");
         const logString = "Boss Legion";
         const tables = container.resolve<DatabaseService>("DatabaseService").getTables();
@@ -32,6 +41,7 @@ export class LegionData {
         const jsonUtil = container.resolve<JsonUtil>("JsonUtil");
         const configServer = container.resolve<ConfigServer>("ConfigServer");
         const botConfig = configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
+        const preSptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const preset: any = botConfig.presetBatch;
         const escortAmount = randomUtil.randInt(1, 4).toString();
@@ -39,105 +49,119 @@ export class LegionData {
         const bossDifficulty = "impossible";
         const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortType = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
-        const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
 
-        let bossLegionChance = 15;
-
-        try {
-            const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
-            bossLegionChance = spawnChance?.legionChance ?? 15;
-        } catch (error) {
-            console.log("Can't find Legion spawn chance file. Make sure you have it in your config folder.");
-        }
-
-        if (modConfig.Debug.ExtraLogging) {
-            logger.log(`[${logString}] Current spawn chance for Legion is [${bossLegionChance}]`, LogTextColor.BLUE);
-            logger.log(`[${logString}] Current Boss Difficulty is [${bossDifficulty}]`, LogTextColor.BLUE);
-            logger.log(`[${logString}] Current Escort Difficulty is [${escortDifficulty}]`, LogTextColor.BLUE);
-            logger.log(`[${logString}] Current Escort type is [${escortType}]`, LogTextColor.BLUE);
-            logger.log(`[${logString}] Current number of Escorts is [${escortAmount}]`, LogTextColor.BLUE);
-        }
-
-        let bossLegionSpawn: BossLocationSpawn = {
-            BossChance: bossLegionChance,
-            BossDifficult: bossDifficulty,
-            BossEscortAmount: escortAmount,
-            BossEscortDifficult: escortDifficulty,
-            BossEscortType: escortType,
-            BossName: "bosslegion",
-            BossPlayer: false,
-            BossZone: "?",
-            RandomTimeSpawn: false,
-            Time: -1,
-            TriggerId: "",
-            TriggerName: "",
-            spawnMode: ["regular", "pve"],
-        };
-
-        preset.bosslegion = 1;
-        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-        botConfig.equipment["bosslegion"] = botSettings.equipmentSettings;
-        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-        botConfig.itemSpawnLimits["bosslegion"] = {};
-        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-        botConfig.walletLoot["bosslegion"] = botConfig.walletLoot["bossgluhar"];
-        botConfig.bosses.push("bosslegion");
-
-        if (modConfig.EnableCustomItems) {
+        if (fs.existsSync(legionSpawnPath)) {
             try {
-                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-                tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion));
+                const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
+                bossLegionChance = spawnChance?.legionChance ?? 15;
             } catch (error) {
-                logger.error(`[${logString}] Error loading default Legion files: ${error}`);
+                console.log("Can't find Legion spawn chance file. Make sure you have it in your config folder.");
             }
-        }
 
-        if (!modConfig.EnableCustomItems) {
-            try {
-                // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-                tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion2));
-            } catch (error) {
-                logger.error(`[${logString}] Error loading default Legion files: ${error}`);
+            if (modConfig.Debug.ExtraLogging) {
+                logger.log(
+                    `[${logString}] Current spawn chance for Legion is [${bossLegionChance}]`,
+                    LogTextColor.BLUE,
+                );
+                logger.log(`[${logString}] Current Boss Difficulty is [${bossDifficulty}]`, LogTextColor.BLUE);
+                logger.log(`[${logString}] Current Escort Difficulty is [${escortDifficulty}]`, LogTextColor.BLUE);
+                logger.log(`[${logString}] Current Escort type is [${escortType}]`, LogTextColor.BLUE);
+                logger.log(`[${logString}] Current number of Escorts is [${escortAmount}]`, LogTextColor.BLUE);
             }
-        }
 
-        for (const location of Object.values(tables.locations)) {
-            if (location.base) {
-                const zonesString =
-                    location.base.Id === "factory4_night"
-                        ? tables.locations.factory4_day.base.OpenZones
-                        : location.base.OpenZones;
-                if (!zonesString) {
-                    continue;
+            let bossLegionSpawn: BossLocationSpawn = {
+                BossChance: bossLegionChance,
+                BossDifficult: bossDifficulty,
+                BossEscortAmount: escortAmount,
+                BossEscortDifficult: escortDifficulty,
+                BossEscortType: escortType,
+                BossName: "bosslegion",
+                BossPlayer: false,
+                BossZone: "?",
+                RandomTimeSpawn: false,
+                Time: -1,
+                TriggerId: "",
+                TriggerName: "",
+                spawnMode: ["regular", "pve"],
+            };
+
+            preset.bosslegion = 1;
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+            botConfig.equipment["bosslegion"] = botSettings.equipmentSettings;
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+            botConfig.itemSpawnLimits["bosslegion"] = {};
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+            botConfig.walletLoot["bosslegion"] = botConfig.walletLoot["bossgluhar"];
+            botConfig.bosses.push("bosslegion");
+
+            if (modConfig.EnableCustomItems) {
+                try {
+                    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+                    tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion));
+                } catch (error) {
+                    logger.error(`[${logString}] Error loading default Legion files: ${error}`);
                 }
-
-                const foundOpenZones = zonesString
-                    .split(",")
-                    .map((zone) => zone.trim())
-                    .filter((zone) => zone && !zone.includes("Snipe"));
-
-                if (foundOpenZones.length === 0) {
-                    continue;
-                }
-
-                const randomIndex = Math.floor(Math.random() * foundOpenZones.length);
-                const randomZone = foundOpenZones[randomIndex];
-
-                bossLegionSpawn = {
-                    ...bossLegionSpawn,
-                    BossZone: randomZone,
-                };
-                location.base.BossLocationSpawn.push(bossLegionSpawn);
             }
+
+            if (!modConfig.EnableCustomItems) {
+                try {
+                    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+                    tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion2));
+                } catch (error) {
+                    logger.error(`[${logString}] Error loading default Legion files: ${error}`);
+                }
+            }
+
+            for (const location of Object.values(tables.locations)) {
+                if (location.base) {
+                    const zonesString =
+                        location.base.Id === "factory4_night"
+                            ? tables.locations.factory4_day.base.OpenZones
+                            : location.base.OpenZones;
+                    if (!zonesString) {
+                        continue;
+                    }
+
+                    const foundOpenZones = zonesString
+                        .split(",")
+                        .map((zone) => zone.trim())
+                        .filter((zone) => zone && !zone.includes("Snipe"));
+
+                    if (foundOpenZones.length === 0) {
+                        continue;
+                    }
+
+                    const randomIndex = Math.floor(Math.random() * foundOpenZones.length);
+                    const randomZone = foundOpenZones[randomIndex];
+
+                    bossLegionSpawn = {
+                        ...bossLegionSpawn,
+                        BossZone: randomZone,
+                    };
+                    location.base.BossLocationSpawn.push(bossLegionSpawn);
+                }
+            }
+
+            //Patch Legion into SWAG patterns
+            if (preSptModLoader.getImportedModsNames().includes("SWAG")) {
+                LegionData.swagPatch(profileID);
+                logger.log("SWAG detected, modifying Legion patterns.", LogTextColor.MAGENTA);
+            }
+        } else {
+            logger.warning(`[${logString}] No progress file exists for this profile, this is normal. Creating...`);
+            LegionData.createLegionProgressFile(profileID, bossLegionChance);
+            logger.log(`[${logString}] Progression file for ${profileID} created.`, LogTextColor.MAGENTA);
         }
     }
 
-    static swagPatch(): void {
+    static swagPatch(profileID: string): void {
         let bossLegionChance = 15;
 
         const logger = container.resolve<ILogger>("WinstonLogger");
         const logString = "Boss Legion";
-        const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
+
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
 
@@ -150,10 +174,12 @@ export class LegionData {
             }
 
             if (swagBossConfig.CustomBosses.legion.useProgressSpawnChance) {
+                swagBossConfig.CustomBosses.legion.useProgressSpawnChance = false; //temp until nooky can change the swag path for the progress file
                 swagBossConfig.CustomBosses.legion.customs = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.factory = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.factory_night = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.groundzero = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.groundzero_high = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.interchange = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.laboratory = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.lighthouse = bossLegionChance;
@@ -162,7 +188,22 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                LegionData.modifySwagLegionSettings();
+                LegionData.modifySwagLegionSettings(profileID);
+            } else {
+                swagBossConfig.CustomBosses.legion.customs = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.factory = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.factory_night = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.groundzero = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.groundzero_high = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.interchange = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.laboratory = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.lighthouse = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.reserve = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.shoreline = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
+                swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
+
+                LegionData.modifySwagLegionSettings(profileID);
             }
 
             fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
@@ -171,7 +212,7 @@ export class LegionData {
         }
     }
 
-    private static modifySwagLegionSettings() {
+    private static modifySwagLegionSettings(profileID: string) {
         const logString = "Boss Legion";
 
         let bossLegionChance = 15;
@@ -184,7 +225,7 @@ export class LegionData {
         const bossDifficulty = "impossible";
         const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortCount = randomUtil.randInt(1, 4).toString();
-        const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
 
@@ -331,10 +372,10 @@ export class LegionData {
     }
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static modifySpawnChance(info: any, output: any) {
+    static modifySpawnChance(info: any, output: any, profileID: any) {
         let bossLegionChance = 15;
 
-        const legionSpawnPath = path.join(__dirname, "../../config/LegionChance.json");
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         const pmcData: IPmcData = info.profile;
         const victimRoles = pmcData.Stats.Eft.Victims?.map((victim) => victim.Role.toLowerCase());
@@ -387,5 +428,25 @@ export class LegionData {
         swagBossConfig.CustomBosses.legion.enabled = false;
 
         fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
+    }
+
+    static createLegionProgressFile(profileID: string, legionFileChance: number): void {
+        // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+        const progressFileLegion = LegionData.progressFile = {
+            legionChance: legionFileChance,
+        };
+
+        const progressLocFolder = `${LegionData.modLoc}/config/profiles/${profileID}`;
+        const progressLoc = `${progressLocFolder}/LegionChance.json`;
+        const logger = container.resolve<ILogger>("WinstonLogger");
+        if (!fs.existsSync(progressLocFolder)) {
+            fs.mkdirSync(progressLocFolder, { recursive: true });
+        }
+
+        try {
+            fs.writeFileSync(progressLoc, JSON.stringify(progressFileLegion, null, 4));
+        } catch (error) {
+            logger.error(`Error writing progress file: ${error}`);
+        }
     }
 }

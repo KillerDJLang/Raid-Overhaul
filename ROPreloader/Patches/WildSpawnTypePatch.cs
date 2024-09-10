@@ -31,8 +31,6 @@ namespace LegionPreLoader.Patches
             var bepDir = Directory.GetParent(patcherLoc);
             var modDllLoc = Path.Combine(bepDir.FullName, "plugins", "RaidOverhaul", "RaidOverhaul.dll");
             
-            Logger.CreateLogSource("Raid Overhaul PrePatch").LogWarning(modDllLoc);
-            
             return File.Exists(modDllLoc);
         }
     }

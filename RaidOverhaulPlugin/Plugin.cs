@@ -134,11 +134,11 @@ namespace RaidOverhaul
             new RigPatch().Enable();
             new AirdropBoxPatch().Enable();
             new LegionSmethodPatch().Enable();
-
+/*
             if (ConfigController.ServerConfig.RaidChanges.SpecialSlotChanges) {
-                //new SpecialSlotViewPatch().Enable();
+                new SpecialSlotViewPatch().Enable();
             }
-
+*/
             if (ConfigController.ServerConfig.WatchAnimations && watchAnimsDetected == false) {
                 new GamePlayerOwnerPatch().Enable();
                 new GameWorldDisposePatch().Enable();
@@ -215,7 +215,7 @@ namespace RaidOverhaul
                 if (GameObject.Find("ErrorScreen"))
                     PreloaderUI.Instance.CloseErrorScreen();
 
-                PreloaderUI.Instance.ShowErrorScreen("Raid Overhaul Error", "Raid Overhaul is not compatible with Raid Overhaul Standalone. Install one or the other or errors will occur.");
+                PreloaderUI.Instance.ShowErrorScreen("Raid Overhaul Error", "Raid Overhaul is not compatible with Raid Overhaul Standalone. Install only one of the mods or errors will occur.");
                 standaloneDetected = true;
             }
 
@@ -225,9 +225,11 @@ namespace RaidOverhaul
                 Log.LogDebug("Session set");
             }
         }
-
-        void OnDestroy() {
+/*
+        void OnDestroy() 
+        {
             new SpecialSlotViewPatch().Disable();
         }
+*/
     }
 }

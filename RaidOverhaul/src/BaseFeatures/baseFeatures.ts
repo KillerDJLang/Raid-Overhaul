@@ -659,7 +659,7 @@ export class Base {
             }
         }
 
-        for (const lSP of markedRoomStreets) {
+        for (const lSP of markedRoomLighthouse) {
             if (
                 lSP.template.Position.x > 319 &&
                 lSP.template.Position.x < 330 &&

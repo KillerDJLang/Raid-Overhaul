@@ -27,7 +27,7 @@ export class DynamicRouters {
                 [
                     {
                         url: "/RaidOverhaul/LogToServer/",
-                        action: async (url: string) => {
+                        action: async (url) => {
                             const urlParts = url.split("/");
                             const clientMessage = urlParts[urlParts.length - 1];
 

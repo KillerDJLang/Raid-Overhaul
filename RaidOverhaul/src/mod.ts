@@ -82,14 +82,6 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         //Register router hooks
         staticRouters.registerHooks();
         dynamicRouters.registerHooks();
-
-        //Patch Legion into SWAG patterns
-        if (modConfig.EnableCustomBoss) {
-            if (this.ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
-                LegionData.swagPatch();
-                this.logger.log("SWAG detected, modifying Legion patterns.", LogTextColor.MAGENTA);
-            }
-        }
     }
 
     public postDBLoad(container: DependencyContainer): void {
@@ -201,7 +193,6 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         if (modConfig.EnableCustomBoss) {
             itemGenerator.createClothingTop(legionClothes.Shirt);
             itemGenerator.createClothingBottom(legionClothes.Pants);
-            LegionData.LoadBossData(modConfig);
         } else {
             LegionData.RemoveLegionPatch();
         }

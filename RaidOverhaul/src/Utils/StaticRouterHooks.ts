@@ -38,7 +38,7 @@ export class StaticRouters {
             [
                 {
                     url: "/client/game/start",
-                    action: async (url: string, info: string, sessionID: string, output: string) => {
+                    action: async (url, info, sessionID, output) => {
                         const profileInfo = this.ref.profileHelper.getFullProfile(sessionID);
 
                         if (modConfig.BackupProfile) {
@@ -63,7 +63,7 @@ export class StaticRouters {
             [
                 {
                     url: "/RaidOverhaul/GetEventConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
+                    action: async (url, info, sessionId, output) => {
                         const EventWeightings = EventWeightingsConfig;
 
                         return JSON.stringify(EventWeightings);
@@ -78,7 +78,7 @@ export class StaticRouters {
             [
                 {
                     url: "/RaidOverhaul/GetServerConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
+                    action: async (url, info, sessionId, output) => {
                         const ServerConfig = modConfig;
 
                         return JSON.stringify(ServerConfig);
@@ -93,7 +93,7 @@ export class StaticRouters {
             [
                 {
                     url: "/RaidOverhaul/GetWeatherConfig",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
+                    action: async (url, info, sessionId, output) => {
                         const WeatherConfig = weatherConfig;
 
                         return JSON.stringify(WeatherConfig);
@@ -169,21 +169,35 @@ export class StaticRouters {
             }
         }
 
+        //Load or generate boss data on profile selection
+        this.ref.staticRouter.registerStaticRouter(
+            `${this.routerPrefix}-ProfileSelected`,
+            [
+                {
+                    url: "/client/game/profile/select",
+                    action: async (url, info, sessionId, output) => {
+                        if (modConfig.EnableCustomBoss) {
+                            LegionData.LoadBossData(modConfig, info.uid);
+                        }
+                        return output;
+                    },
+                },
+            ],
+            "spt",
+        );
+
         //Modify trader rep and legion chance post raid
         this.ref.staticRouter.registerStaticRouter(
-            `${this.routerPrefix}:RaidSaved`,
+            `${this.routerPrefix}-RaidSaved`,
             [
                 {
                     url: "/raid/profile/save",
-                    action: async (url: string, info: string, sessionId: string, output: string) => {
+                    action: async (url, info, sessionId, output) => {
                         TraderData.traderRepLogic(info, sessionId, this.ref.traderHelper);
                         if (modConfig.EnableCustomBoss) {
                             TraderData.legionRepLogic(info, sessionId, this.ref.traderHelper);
-                            LegionData.modifySpawnChance(info, output);
-                            LegionData.LoadBossData(modConfig);
-                            if (this.ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
-                                LegionData.swagPatch();
-                            }
+                            LegionData.modifySpawnChance(info, output, info.uid);
+                            LegionData.LoadBossData(modConfig, info.uid);
                         }
                         if (!modConfig.EnableCustomBoss) {
                             TraderData.noBossRepLogic(info, sessionId, this.ref.traderHelper);
