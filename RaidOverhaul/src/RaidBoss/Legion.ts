@@ -13,6 +13,8 @@ import type { JsonUtil } from "@spt/utils/JsonUtil";
 import type { RandomUtil } from "@spt/utils/RandomUtil";
 import type { VFS } from "@spt/utils/VFS";
 import type { configFile, legionProgression } from "../Utils/Enums";
+import type { References } from "../Utils/References";
+import { TraderData } from "../Trader/ReqShop";
 
 const botSettings = require("../Utils/ArrayFiles/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
@@ -25,13 +27,70 @@ export class LegionData {
     // biome-ignore lint/complexity/noUselessConstructor: <explanation>
     constructor() {}
 
+    private routerPrefix = "[Raid Overhaul] ";
     public static modLoc = path.join(__dirname, "..", "..");
     public static legionFileChance: number;
+    public static profileId: string;
     public static progressFile: {
         legionChance: number;
     };
 
-    static LoadBossData(modConfig: configFile, profileID: string): void {
+    public preSptLoad(modConfig: configFile, ref: References): void {
+        //Load or generate boss data on profile selection
+        ref.staticRouter.registerStaticRouter(
+            `${this.routerPrefix}-ProfileSelected`,
+            [
+                {
+                    url: "/client/game/profile/select",
+                    action: async (url, info, sessionId, output) => {
+                        LegionData.profileId = info.uid;
+
+                        if (modConfig.EnableCustomBoss) {
+                            const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
+
+                            if (!fs.existsSync(legionSpawnPath)) {
+                                const logString = "Boss Legion";
+                                
+                                ref.logger.warning(`[${logString}] No progress file exists for this profile, this is normal. Creating...`);
+                                LegionData.createLegionProgressFile(15);
+                                ref.logger.log(`[${logString}] Progression file for ${LegionData.profileId} created.`, LogTextColor.MAGENTA);
+                            }
+                        }
+                        return output;
+                    },
+                },
+            ],
+            "spt",
+        );
+
+        //Modify trader rep and legion chance post raid
+        ref.staticRouter.registerStaticRouter(
+            `${this.routerPrefix}-RaidSaved`,
+            [
+                {
+                    url: "/raid/profile/save",
+                    action: async (url, info, sessionId, output) => {
+                        const pmcData: IPmcData = info.profile;
+                        LegionData.profileId = pmcData._id;
+                        
+                        TraderData.traderRepLogic(info, sessionId, ref.traderHelper);
+                        if (modConfig.EnableCustomBoss) {
+                            TraderData.legionRepLogic(info, sessionId, ref.traderHelper);
+                            LegionData.modifySpawnChance(info, output);
+                            LegionData.LoadBossData(modConfig);
+                        }
+                        if (!modConfig.EnableCustomBoss) {
+                            TraderData.noBossRepLogic(info, sessionId, ref.traderHelper);
+                        }
+                        return output;
+                    },
+                },
+            ],
+            "spt",
+        );
+    }
+
+    static LoadBossData(modConfig: configFile): void {
         let bossLegionChance = 15;
 
         const logger = container.resolve<ILogger>("WinstonLogger");
@@ -49,7 +108,7 @@ export class LegionData {
         const bossDifficulty = "impossible";
         const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortType = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
-        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
 
         if (fs.existsSync(legionSpawnPath)) {
             try {
@@ -145,22 +204,22 @@ export class LegionData {
 
             //Patch Legion into SWAG patterns
             if (preSptModLoader.getImportedModsNames().includes("SWAG")) {
-                LegionData.swagPatch(profileID);
+                LegionData.swagPatch();
                 logger.log("SWAG detected, modifying Legion patterns.", LogTextColor.MAGENTA);
             }
         } else {
             logger.warning(`[${logString}] No progress file exists for this profile, this is normal. Creating...`);
-            LegionData.createLegionProgressFile(profileID, bossLegionChance);
-            logger.log(`[${logString}] Progression file for ${profileID} created.`, LogTextColor.MAGENTA);
+            LegionData.createLegionProgressFile(bossLegionChance);
+            logger.log(`[${logString}] Progression file for ${LegionData.profileId} created.`, LogTextColor.MAGENTA);
         }
     }
 
-    static swagPatch(profileID: string): void {
+    static swagPatch(): void {
         let bossLegionChance = 15;
 
         const logger = container.resolve<ILogger>("WinstonLogger");
         const logString = "Boss Legion";
-        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
 
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
@@ -188,7 +247,7 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                LegionData.modifySwagLegionSettings(profileID);
+                LegionData.modifySwagLegionSettings();
             } else {
                 swagBossConfig.CustomBosses.legion.customs = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.factory = bossLegionChance;
@@ -203,7 +262,7 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                LegionData.modifySwagLegionSettings(profileID);
+                LegionData.modifySwagLegionSettings();
             }
 
             fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
@@ -212,7 +271,7 @@ export class LegionData {
         }
     }
 
-    private static modifySwagLegionSettings(profileID: string) {
+    private static modifySwagLegionSettings() {
         const logString = "Boss Legion";
 
         let bossLegionChance = 15;
@@ -225,7 +284,7 @@ export class LegionData {
         const bossDifficulty = "impossible";
         const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const escortCount = randomUtil.randInt(1, 4).toString();
-        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
 
@@ -372,10 +431,10 @@ export class LegionData {
     }
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static modifySpawnChance(info: any, output: any, profileID: any) {
+    static modifySpawnChance(info: any, output: any) {
         let bossLegionChance = 15;
 
-        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${profileID}/LegionChance.json`;
+        const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         const pmcData: IPmcData = info.profile;
         const victimRoles = pmcData.Stats.Eft.Victims?.map((victim) => victim.Role.toLowerCase());
@@ -430,13 +489,13 @@ export class LegionData {
         fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
     }
 
-    static createLegionProgressFile(profileID: string, legionFileChance: number): void {
+    static createLegionProgressFile(legionFileChance: number): void {
         // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-        const progressFileLegion = LegionData.progressFile = {
+        const progressFileLegion = (LegionData.progressFile = {
             legionChance: legionFileChance,
-        };
+        });
 
-        const progressLocFolder = `${LegionData.modLoc}/config/profiles/${profileID}`;
+        const progressLocFolder = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}`;
         const progressLoc = `${progressLocFolder}/LegionChance.json`;
         const logger = container.resolve<ILogger>("WinstonLogger");
         if (!fs.existsSync(progressLocFolder)) {

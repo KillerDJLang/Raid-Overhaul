@@ -115,9 +115,9 @@
         },
         "LocalePush": {
             "en": {
-                "name": "Executioner AP Round",
-                "shortName": "ExecAP",
-                "description": "An Armor Piercing round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
+                "name": "Executioner AT Round",
+                "shortName": "ExecAT",
+                "description": "An Anti-tank round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
             }
         },
         "Handbook": {

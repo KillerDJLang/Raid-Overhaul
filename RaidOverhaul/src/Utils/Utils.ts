@@ -25,6 +25,7 @@ export class Utils {
         public ref: References,
         public logger: Logger,
     ) {}
+    public static modLoc = path.join(__dirname, "..", "..");
 
     //#region Base Utils
     public randomCount(base: number, random: number): number {
@@ -127,27 +128,27 @@ export class Utils {
         return this.shuffle(array).pop().toString() && this.shuffle(array).shift().toString();
     }
 
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    public logToServer(message: string, logger: any): void {
-        logger.log(`[Raid Overhaul] ${message}`, LogTextColor.CYAN);
+    public logToServer(message: string): void {
+        this.logger.log(`${message}`, LogTextColor.CYAN);
     }
 
-    public profileBackup(modName, sessionID: string, path, profile: ISptProfile, randomUtil): void {
-        const backupPath = path.join(__dirname, "../../ProfileBackup/");
+    public profileBackup(sessionID: string, profile: ISptProfile): void {
+        const backupPath = `${Utils.modLoc}/ProfileBackup/${sessionID}/`;
         const profileData = JSON.stringify(profile, null, 4);
-        const randomNum = randomUtil.randInt(1, 20).toString();
+        const randomNum = this.ref.randomUtil.randInt(1, 20).toString(); 
         const date = new Date();
         const day = date.toISOString().slice(0, 10);
-        const backupName = `${backupPath + sessionID}_RO_${day}_${randomNum}-backup.json`;
+        const backupFile = `${backupPath + sessionID}_RO_${day}_${randomNum}-backup.json`;
+        const maxBackups = 3;
+
+        if (!fs.existsSync(backupPath)) {
+            fs.mkdirSync(backupPath, { recursive: true });
+            this.logger.logWarning(`No backup path exist for this profile. \nProfile backup path at "${backupPath}" has been created`);
+        }
+
         const profileCount = this.ref.vfs
             .getFilesOfType(backupPath, "json")
             .sort((a, b) => fs.statSync(a).ctimeMs - fs.statSync(b).ctimeMs);
-        const maxBackups = 3;
-
-        if (!this.ref.vfs.exists(backupPath)) {
-            this.logger.log(`"${backupPath}" has been created`, LogTextColor.MAGENTA);
-            this.ref.vfs.createDir(backupPath);
-        }
 
         if (profileCount.length >= maxBackups) {
             const lastProfile = profileCount[0];
@@ -155,12 +156,12 @@ export class Utils {
             profileCount.splice(0, 1);
         }
 
-        fs.writeFile(backupName, profileData, { encoding: "utf8", flag: "w", mode: 0o666 }, (err) => {
-            if (err) this.logger.log(`Error Backing Up Profile: ${err}`);
-            else {
-                this.logger.log("Profile backup successful.", LogTextColor.MAGENTA);
-            }
-        });
+        try {
+            fs.writeFileSync(backupFile, profileData);
+            this.logger.log("Profile backup successful.", LogTextColor.MAGENTA);
+        } catch (error) {
+            this.logger.logError(`Error writing profile backup: ${error}`);
+        }
     }
 
     public getItemInHandbook(itemID: string): number {

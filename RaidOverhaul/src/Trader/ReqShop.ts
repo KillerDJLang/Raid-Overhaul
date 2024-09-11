@@ -934,50 +934,6 @@ export class TraderData {
             }
         }
 
-        if (this.ref.probHelper.rollChance(20, 100)) {
-            try {
-                if (debugLogging) {
-                    this.logger.log(
-                        `${customPresetArray["6632bb0f334f6b4b261ebfea"]._name} has been added to the Req Shop`,
-                        LogTextColor.GREEN,
-                    );
-                }
-
-                this.assortUtils.createComplexOffer(
-                    customPresetArray,
-                    "6632bb0f334f6b4b261ebfea",
-                    randomAssortCount,
-                    randomLoyaltyLevel,
-                    randomReqSlipCount,
-                    this.ref.tables,
-                );
-            } catch (error) {
-                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
-            }
-        }
-
-        if (this.ref.probHelper.rollChance(20, 100)) {
-            try {
-                if (debugLogging) {
-                    this.logger.log(
-                        `${customPresetArray["6632bab6994fd274f96e64fb"]._name} has been added to the Req Shop`,
-                        LogTextColor.GREEN,
-                    );
-                }
-
-                this.assortUtils.createComplexOffer(
-                    customPresetArray,
-                    "6632bab6994fd274f96e64fb",
-                    randomAssortCount,
-                    randomLoyaltyLevel,
-                    randomReqSlipCount,
-                    this.ref.tables,
-                );
-            } catch (error) {
-                this.logger.logError(`Error loading Custom Presets from Fluid Assort Trader Generator: ${error}`);
-            }
-        }
-
         if (this.ref.probHelper.rollChance(15, 100)) {
             try {
                 if (debugLogging) {

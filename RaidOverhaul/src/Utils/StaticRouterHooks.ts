@@ -1,3 +1,4 @@
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Base } from "../BaseFeatures/baseFeatures";
 import { LegionData } from "../RaidBoss/Legion";
 import { TraderData } from "../Trader/ReqShop";
@@ -42,13 +43,7 @@ export class StaticRouters {
                         const profileInfo = this.ref.profileHelper.getFullProfile(sessionID);
 
                         if (modConfig.BackupProfile) {
-                            this.utils.profileBackup(
-                                this.routerPrefix,
-                                sessionID,
-                                path,
-                                profileInfo,
-                                this.ref.randomUtil,
-                            );
+                            this.utils.profileBackup(sessionID, profileInfo);
                         }
                         return output;
                     },
@@ -168,45 +163,5 @@ export class StaticRouters {
                 );
             }
         }
-
-        //Load or generate boss data on profile selection
-        this.ref.staticRouter.registerStaticRouter(
-            `${this.routerPrefix}-ProfileSelected`,
-            [
-                {
-                    url: "/client/game/profile/select",
-                    action: async (url, info, sessionId, output) => {
-                        if (modConfig.EnableCustomBoss) {
-                            LegionData.LoadBossData(modConfig, info.uid);
-                        }
-                        return output;
-                    },
-                },
-            ],
-            "spt",
-        );
-
-        //Modify trader rep and legion chance post raid
-        this.ref.staticRouter.registerStaticRouter(
-            `${this.routerPrefix}-RaidSaved`,
-            [
-                {
-                    url: "/raid/profile/save",
-                    action: async (url, info, sessionId, output) => {
-                        TraderData.traderRepLogic(info, sessionId, this.ref.traderHelper);
-                        if (modConfig.EnableCustomBoss) {
-                            TraderData.legionRepLogic(info, sessionId, this.ref.traderHelper);
-                            LegionData.modifySpawnChance(info, output, info.uid);
-                            LegionData.LoadBossData(modConfig, info.uid);
-                        }
-                        if (!modConfig.EnableCustomBoss) {
-                            TraderData.noBossRepLogic(info, sessionId, this.ref.traderHelper);
-                        }
-                        return output;
-                    },
-                },
-            ],
-            "spt",
-        );
     }
 }

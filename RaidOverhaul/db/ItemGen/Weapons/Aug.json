@@ -48,56 +48,6 @@
                 "6196365d58ef8c428c287da1",
                 "64b8725c4b75259c590fa899"
             ],
-            "Slots": [
-                {
-                    "_id": "63171672192e68c5460cebc6",
-                    "_mergeSlotWithChildren": false,
-                    "_name": "mod_magazine",
-                    "_parent": "6628f2e31084cf4d62b2b40b",
-                    "_props": {
-                        "filters": [
-                            {
-                                "AnimationIndex": -1,
-                                "Filter": ["6628f31d2e4dbf64427b378d", "6628f33d585102d8bc5d75db"]
-                            }
-                        ]
-                    },
-                    "_proto": "55d30c394bdc2dae468b4577",
-                    "_required": false
-                },
-                {
-                    "_id": "62e7c6b6da5b3b57e805e2c9",
-                    "_mergeSlotWithChildren": false,
-                    "_name": "mod_charge",
-                    "_parent": "6628f2e31084cf4d62b2b40b",
-                    "_props": {
-                        "filters": [
-                            {
-                                "Filter": ["62e7c880f68e7a0676050c7c", "62ebbc53e3c1e1ec7c02c44f"],
-                                "Shift": 0
-                            }
-                        ]
-                    },
-                    "_proto": "55d30c4c4bdc2db4468b457e",
-                    "_required": true
-                },
-                {
-                    "_id": "62e7c6b6da5b3b57e805e2ca",
-                    "_mergeSlotWithChildren": false,
-                    "_name": "mod_reciever",
-                    "_parent": "6628f2e31084cf4d62b2b40b",
-                    "_props": {
-                        "filters": [
-                            {
-                                "Filter": ["62e7c72df68e7a0676050c77", "62ea7c793043d74a0306e19f"],
-                                "Shift": 0
-                            }
-                        ]
-                    },
-                    "_proto": "55d30c4c4bdc2db4468b457e",
-                    "_required": true
-                }
-            ],
             "ammoCaliber": "Caliber762x39",
             "defAmmo": "64b7af5a8532cf95ee0a0dbd",
             "defMagType": "6628f31d2e4dbf64427b378d"

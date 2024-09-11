@@ -10,6 +10,7 @@ import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
 import { Base } from "./BaseFeatures/baseFeatures";
 import { ItemGenerator } from "./CustomItems/ItemGenerator";
+import { SlotUtil } from "./CustomItems/SlotUtil";
 import { LegionData } from "./RaidBoss/Legion";
 import { TraderData } from "./Trader/ReqShop";
 import { pushTraderFeatures } from "./Trader/TraderPushes";
@@ -33,6 +34,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     private ref: References = new References();
     private logger: Logger = new Logger(this.ref);
     private utils: Utils = new Utils(this.ref, this.logger);
+    private legionData: LegionData = new LegionData();
 
     private static pluginDepCheck(): boolean {
         const pluginRO = "raidoverhaul.dll";
@@ -82,6 +84,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         //Register router hooks
         staticRouters.registerHooks();
         dynamicRouters.registerHooks();
+        this.legionData.preSptLoad(modConfig, this.ref);
     }
 
     public postDBLoad(container: DependencyContainer): void {
@@ -93,6 +96,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         const traderData = new TraderData(traderConfig, this.ref, this.utils, this.logger);
         const modFeatures = new Base(this.utils, this.ref, this.logger);
         const itemGenerator = new ItemGenerator(this.ref);
+        const slotUtil = new SlotUtil(this.ref);
         const traderFeatures = new pushTraderFeatures(this.utils, this.ref, traderData);
         const modPath = `${path.resolve(__dirname.toString()).split(path.sep).join("/")}/`;
         const modConfig = JSON5.parse(
@@ -134,7 +138,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             return;
         }
 
-        this.loadCustomItems(itemGenerator, modConfig);
+        this.loadCustomItems(itemGenerator, slotUtil, modConfig);
         this.loadTraderData(traderFeatures, modFeatures, modConfig, modPath);
         this.pushModFeatures(modFeatures, modConfig);
         this.pushBossData(itemGenerator, modConfig);
@@ -142,7 +146,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         this.logger.log(`has finished modifying your raids. ${randomMessage}.`, LogTextColor.CYAN);
     }
 
-    private loadCustomItems(itemGenerator: ItemGenerator, modConfig: configFile) {
+    private loadCustomItems(itemGenerator: ItemGenerator, slotUtil: SlotUtil, modConfig: configFile) {
         //Load all custom items
         itemGenerator.createCustomItems("../../db/ItemGen/Currency");
         itemGenerator.createCustomItems("../../db/ItemGen/ConstItems");
@@ -158,6 +162,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
             }
             itemGenerator.createCustomItems("../../db/ItemGen/Weapons");
             itemGenerator.createCustomItems("../../db/ItemGen/Gear");
+            slotUtil.buildSlots();
         }
         this.ref.tables.locations.laboratory.base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
     }
