@@ -45,7 +45,7 @@ export class StaticRouters {
                         if (modConfig.BackupProfile) {
                             this.utils.profileBackup(sessionID, profileInfo);
                         }
-                        return output;
+                        return Promise.resolve(output);
                     },
                 },
             ],
@@ -113,7 +113,7 @@ export class StaticRouters {
                             url: "/client/items",
                             action: async (url, info, sessionId, output) => {
                                 modFeatures.weatherChangesNoWinter(modConfig);
-                                return output;
+                                return Promise.resolve(output);
                             },
                         },
                     ],
@@ -134,7 +134,7 @@ export class StaticRouters {
                             url: "/client/items",
                             action: async (url, info, sessionId, output) => {
                                 modFeatures.weatherChangesAllSeasons(modConfig);
-                                return output;
+                                return Promise.resolve(output);
                             },
                         },
                     ],
@@ -155,7 +155,7 @@ export class StaticRouters {
                             url: "/client/items",
                             action: async (url, info, sessionId, output) => {
                                 modFeatures.seasonProgression(modConfig);
-                                return output;
+                                return Promise.resolve(output);
                             },
                         },
                     ],
