@@ -1,20 +1,12 @@
-import { container } from "tsyringe";
-
-import type { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import type { BossLocationSpawn } from "@spt/models/eft/common/ILocationBase";
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import type { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
-import type { ILogger } from "@spt/models/spt/utils/ILogger";
-import type { ConfigServer } from "@spt/servers/ConfigServer";
-import type { DatabaseService } from "@spt/services/DatabaseService";
-import type { JsonUtil } from "@spt/utils/JsonUtil";
-import type { RandomUtil } from "@spt/utils/RandomUtil";
-import type { VFS } from "@spt/utils/VFS";
-import type { configFile, legionProgression } from "../Utils/Enums";
-import type { References } from "../Utils/References";
 import { TraderData } from "../Trader/ReqShop";
+import type { configFile, legionProgression } from "../Utils/Enums";
+import type { Logger } from "../Utils/Logger";
+import type { References } from "../Utils/References";
 
 const botSettings = require("../Utils/ArrayFiles/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
@@ -34,8 +26,9 @@ export class LegionData {
     public static progressFile: {
         legionChance: number;
     };
+    public static setupRan = false;
 
-    public preSptLoad(modConfig: configFile, ref: References): void {
+    public preSptLoad(modConfig: configFile, ref: References, logger: Logger): void {
         //Load or generate boss data on profile selection
         ref.staticRouter.registerStaticRouter(
             `${this.routerPrefix}-ProfileSelected`,
@@ -49,14 +42,45 @@ export class LegionData {
                             const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
 
                             if (!fs.existsSync(legionSpawnPath)) {
-                                const logString = "Boss Legion";
-                                
-                                ref.logger.warning(`[${logString}] No progress file exists for this profile, this is normal. Creating...`);
-                                LegionData.createLegionProgressFile(15);
-                                ref.logger.log(`[${logString}] Progression file for ${LegionData.profileId} created.`, LogTextColor.MAGENTA);
+                                logger.logWarning(
+                                    "No progress file exists for this profile, this is normal. Creating...",
+                                );
+                                this.createLegionProgressFile(logger);
+                                logger.log(
+                                    `Progression file for ${LegionData.profileId} created.`,
+                                    LogTextColor.MAGENTA,
+                                );
+                            }
+
+                            if (!LegionData.setupRan) {
+                                const profileLevel = ref.profileHelper.getProfileByPmcId(LegionData.profileId).Info
+                                    .Level;
+
+                                if (profileLevel != null && profileLevel < 10) {
+                                    logger.log(
+                                    `Profile is under minimum spawn level for Legion, setting spawn chance to 0. \nHe'll be on the hunt after level 10`,
+                                        LogTextColor.MAGENTA,
+                                    );
+                                    LegionData.legionFileChance = 0;
+
+                                    const spawnChance = JSON.parse(
+                                        fs.readFileSync(legionSpawnPath, "utf8"),
+                                    ) as legionProgression;
+                                    spawnChance.legionChance = LegionData.legionFileChance;
+                                    fs.writeFileSync(
+                                        legionSpawnPath,
+                                        JSON.stringify(spawnChance, null, 2),
+                                        "utf-8",
+                                    );
+
+                                    this.LoadBossData(modConfig, logger, ref);
+                                } else {
+                                    this.LoadBossData(modConfig, logger, ref);
+                                }
+                                LegionData.setupRan = true;
                             }
                         }
-                        return output;
+                        return Promise.resolve(output);
                     },
                 },
             ],
@@ -72,17 +96,39 @@ export class LegionData {
                     action: async (url, info, sessionId, output) => {
                         const pmcData: IPmcData = info.profile;
                         LegionData.profileId = pmcData._id;
+                        const pmcProfile: IPmcData = ref.profileHelper.getProfileByPmcId(LegionData.profileId);
+
+                        if (!pmcProfile) {
+                            if (modConfig.Debug.ExtraLogging) {
+                                logger.logWarning("No profile detected. Not pushing Legion to maps");
+                            }
+                            this.removeBossSpawns(ref);
+
+                            return Promise.resolve(output);
+                        }
                         
-                        TraderData.traderRepLogic(info, sessionId, ref.traderHelper);
-                        if (modConfig.EnableCustomBoss) {
-                            TraderData.legionRepLogic(info, sessionId, ref.traderHelper);
-                            LegionData.modifySpawnChance(info, output);
-                            LegionData.LoadBossData(modConfig);
+                        const profileLevel = pmcProfile.Info.Level;
+                        if (profileLevel != null && profileLevel < 10) {
+                            if (modConfig.EnableCustomBoss) {
+                                logger.log(
+                                `Profile is under minimum spawn level for Legion, setting spawn chance to 0. \nHe'll be on the hunt after level 10`,
+                                    LogTextColor.MAGENTA,
+                                );
+                            }
+                            LegionData.legionFileChance = 0;
+                        } else {
+                            TraderData.traderRepLogic(info, sessionId, ref.traderHelper, logger);
+                            if (modConfig.EnableCustomBoss) {
+                                TraderData.legionRepLogic(info, sessionId, ref.traderHelper, logger);
+                                this.modifySpawnChance(info, output);
+                                this.removeBossSpawns(ref);
+                                this.LoadBossData(modConfig, logger, ref);
+                            }
+                            if (!modConfig.EnableCustomBoss) {
+                                TraderData.noBossRepLogic(info, sessionId, ref.traderHelper, logger);
+                            }
                         }
-                        if (!modConfig.EnableCustomBoss) {
-                            TraderData.noBossRepLogic(info, sessionId, ref.traderHelper);
-                        }
-                        return output;
+                        return Promise.resolve(output);
                     },
                 },
             ],
@@ -90,24 +136,17 @@ export class LegionData {
         );
     }
 
-    static LoadBossData(modConfig: configFile): void {
+    private LoadBossData(modConfig: configFile, logger: Logger, ref: References): void {
         let bossLegionChance = 15;
 
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "Boss Legion";
-        const tables = container.resolve<DatabaseService>("DatabaseService").getTables();
-        const randomUtil = container.resolve<RandomUtil>("RandomUtil");
-        const jsonUtil = container.resolve<JsonUtil>("JsonUtil");
-        const configServer = container.resolve<ConfigServer>("ConfigServer");
-        const botConfig = configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
-        const preSptModLoader = container.resolve<PreSptModLoader>("PreSptModLoader");
+        const botConfig = ref.configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const preset: any = botConfig.presetBatch;
-        const escortAmount = randomUtil.randInt(1, 4).toString();
+        const escortAmount = ref.randomUtil.randInt(1, 4).toString();
         //const diffType = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const bossDifficulty = "impossible";
-        const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
-        const escortType = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
+        const escortDifficulty = ref.randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
+        const escortType = ref.randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
         const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
 
         if (fs.existsSync(legionSpawnPath)) {
@@ -119,14 +158,11 @@ export class LegionData {
             }
 
             if (modConfig.Debug.ExtraLogging) {
-                logger.log(
-                    `[${logString}] Current spawn chance for Legion is [${bossLegionChance}]`,
-                    LogTextColor.BLUE,
-                );
-                logger.log(`[${logString}] Current Boss Difficulty is [${bossDifficulty}]`, LogTextColor.BLUE);
-                logger.log(`[${logString}] Current Escort Difficulty is [${escortDifficulty}]`, LogTextColor.BLUE);
-                logger.log(`[${logString}] Current Escort type is [${escortType}]`, LogTextColor.BLUE);
-                logger.log(`[${logString}] Current number of Escorts is [${escortAmount}]`, LogTextColor.BLUE);
+                logger.log(`Current spawn chance for Legion is [${bossLegionChance}]`, LogTextColor.BLUE);
+                logger.log(`Current Boss Difficulty is [${bossDifficulty}]`, LogTextColor.BLUE);
+                logger.log(`Current Escort Difficulty is [${escortDifficulty}]`, LogTextColor.BLUE);
+                logger.log(`Current Escort type is [${escortType}]`, LogTextColor.BLUE);
+                logger.log(`Current number of Escorts is [${escortAmount}]`, LogTextColor.BLUE);
             }
 
             let bossLegionSpawn: BossLocationSpawn = {
@@ -157,26 +193,26 @@ export class LegionData {
             if (modConfig.EnableCustomItems) {
                 try {
                     // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-                    tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion));
+                    ref.tables.bots.types["bosslegion"] = ref.jsonUtil.deserialize(ref.jsonUtil.serialize(bosslegion));
                 } catch (error) {
-                    logger.error(`[${logString}] Error loading default Legion files: ${error}`);
+                    logger.logError(`Error loading default Legion files: ${error}`);
                 }
             }
 
             if (!modConfig.EnableCustomItems) {
                 try {
                     // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-                    tables.bots.types["bosslegion"] = jsonUtil.deserialize(jsonUtil.serialize(bosslegion2));
+                    ref.tables.bots.types["bosslegion"] = ref.jsonUtil.deserialize(ref.jsonUtil.serialize(bosslegion2));
                 } catch (error) {
-                    logger.error(`[${logString}] Error loading default Legion files: ${error}`);
+                    logger.logError(`Error loading default Legion files: ${error}`);
                 }
             }
 
-            for (const location of Object.values(tables.locations)) {
+            for (const location of Object.values(ref.tables.locations)) {
                 if (location.base) {
                     const zonesString =
                         location.base.Id === "factory4_night"
-                            ? tables.locations.factory4_day.base.OpenZones
+                            ? ref.tables.locations.factory4_day.base.OpenZones
                             : location.base.OpenZones;
                     if (!zonesString) {
                         continue;
@@ -203,24 +239,43 @@ export class LegionData {
             }
 
             //Patch Legion into SWAG patterns
-            if (preSptModLoader.getImportedModsNames().includes("SWAG")) {
-                LegionData.swagPatch();
+            if (ref.preSptModLoader.getImportedModsNames().includes("SWAG")) {
+                this.swagPatch(logger, ref);
                 logger.log("SWAG detected, modifying Legion patterns.", LogTextColor.MAGENTA);
             }
         } else {
-            logger.warning(`[${logString}] No progress file exists for this profile, this is normal. Creating...`);
-            LegionData.createLegionProgressFile(bossLegionChance);
-            logger.log(`[${logString}] Progression file for ${LegionData.profileId} created.`, LogTextColor.MAGENTA);
+            logger.logWarning("No progress file exists for this profile, this is normal. Creating...");
+            this.createLegionProgressFile(logger);
+            logger.log(`Progression file for ${LegionData.profileId} created.`, LogTextColor.MAGENTA);
         }
     }
 
-    static swagPatch(): void {
+    private removeBossSpawns(ref: References): void {
+        const removedLocations = [];
+
+        for (const location of Object.values(ref.tables.locations)) {
+            if (location.base) {
+                const removedSpawns = location.base.BossLocationSpawn.filter(
+                    (spawn) => spawn.BossName === "bosslegion",
+                );
+                location.base.BossLocationSpawn = location.base.BossLocationSpawn.filter(
+                    (spawn) => spawn.BossName !== "bosslegion",
+                );
+
+                if (removedSpawns.length > 0) {
+                    removedLocations.push({
+                        map: location.base.Id,
+                        zones: removedSpawns.map((spawn) => spawn.BossZone),
+                    });
+                }
+            }
+        }
+    }
+
+    private swagPatch(logger: Logger, ref: References): void {
         let bossLegionChance = 15;
 
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "Boss Legion";
         const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
-
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
 
@@ -247,7 +302,7 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                LegionData.modifySwagLegionSettings();
+                this.modifySwagLegionSettings(logger, ref);
             } else {
                 swagBossConfig.CustomBosses.legion.customs = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.factory = bossLegionChance;
@@ -262,28 +317,23 @@ export class LegionData {
                 swagBossConfig.CustomBosses.legion.streets = bossLegionChance;
                 swagBossConfig.CustomBosses.legion.woods = bossLegionChance;
 
-                LegionData.modifySwagLegionSettings();
+                this.modifySwagLegionSettings(logger, ref);
             }
 
             fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
         } catch (error) {
-            logger.error(`[${logString}] Error adding Legion to SWAG: ${error}`);
+            logger.logError(`Error adding Legion to SWAG: ${error}`);
         }
     }
 
-    private static modifySwagLegionSettings() {
-        const logString = "Boss Legion";
-
+    private modifySwagLegionSettings(logger: Logger, ref: References) {
         let bossLegionChance = 15;
 
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const vfs = container.resolve<VFS>("VFS");
-        const randomUtil = container.resolve<RandomUtil>("RandomUtil");
-        const type = randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
+        const type = ref.randomUtil.drawRandomFromList(botSettings.followers, 1).toString();
         //const bossDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
         const bossDifficulty = "impossible";
-        const escortDifficulty = randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
-        const escortCount = randomUtil.randInt(1, 4).toString();
+        const escortDifficulty = ref.randomUtil.drawRandomFromList(botSettings.difficulties, 1).toString();
+        const escortCount = ref.randomUtil.randInt(1, 4).toString();
         const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
         const spawnChance = JSON.parse(fs.readFileSync(legionSpawnPath, "utf8")) as legionProgression;
         bossLegionChance = spawnChance?.legionChance ?? 15;
@@ -424,14 +474,14 @@ export class LegionData {
                 ],
             };
             const customSettingsFile = JSON.stringify(customSettings, null, 2);
-            vfs.writeFile("./user/mods/SWAG/config/custom/legion.json", customSettingsFile);
+            ref.vfs.writeFile("./user/mods/SWAG/config/custom/legion.json", customSettingsFile);
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Legion patterns in SWAG: ${error}`);
+            logger.logError(`Error modifying Legion patterns in SWAG: ${error}`);
         }
     }
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static modifySpawnChance(info: any, output: any) {
+    private modifySpawnChance(info: any, output: any) {
         let bossLegionChance = 15;
 
         const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
@@ -489,15 +539,14 @@ export class LegionData {
         fs.writeFileSync(swagBossConfigPath, JSON.stringify(swagBossConfig, null, 2), "utf-8");
     }
 
-    static createLegionProgressFile(legionFileChance: number): void {
+    private createLegionProgressFile(logger: Logger): void {
         // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
         const progressFileLegion = (LegionData.progressFile = {
-            legionChance: legionFileChance,
+            legionChance: LegionData.legionFileChance,
         });
 
         const progressLocFolder = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}`;
         const progressLoc = `${progressLocFolder}/LegionChance.json`;
-        const logger = container.resolve<ILogger>("WinstonLogger");
         if (!fs.existsSync(progressLocFolder)) {
             fs.mkdirSync(progressLocFolder, { recursive: true });
         }
@@ -505,7 +554,7 @@ export class LegionData {
         try {
             fs.writeFileSync(progressLoc, JSON.stringify(progressFileLegion, null, 4));
         } catch (error) {
-            logger.error(`Error writing progress file: ${error}`);
+            logger.logError(`Error writing progress file: ${error}`);
         }
     }
 }
