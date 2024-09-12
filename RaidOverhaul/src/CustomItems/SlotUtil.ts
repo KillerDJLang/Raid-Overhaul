@@ -42,23 +42,5 @@ export class SlotUtil {
             CustomMap.ExecPmag,
             CustomMap.ExecWyatt,
         ];
-/*
-        items[CustomMap.L85]._props.Slots[0]._props.filters[0].Filter = [CustomMap.L85PistolGrip];
-        items[CustomMap.L85]._props.Slots[2]._props.filters[0].Filter = [CustomMap.L85DDRail, CustomMap.L85StRail];
-        items[CustomMap.L85]._props.Slots[3]._props.filters[0].Filter = [CustomMap.L85Barrel];
-        items[CustomMap.L85]._props.Slots[4]._props.filters[0].Filter = [
-            CustomMap.L85OpticRail,
-            CustomMap.L85CarryHandle,
-        ];
-        items[CustomMap.L85Barrel]._props.Slots[0]._props.filters[0].Filter.push(CustomMap.L85FlashHider);
-        items[CustomMap.L85Barrel]._props.Slots[1]._props.filters[0].Filter = [CustomMap.L85FrontSight];
-
-        items[CustomMap.Famas488Barrel]._props.Slots[0]._props.filters[0].Filter.push(CustomMap.FamasFlashHider);
-        items[CustomMap.FamasRec]._props.Slots[0]._props.filters[0].Filter = [CustomMap.Famas488Barrel];
-        items[CustomMap.FamasRec]._props.Slots[1]._props.filters[0].Filter = [CustomMap.FamasOpticRail];
-        items[CustomMap.FamasRec]._props.Slots[2]._props.filters[0].Filter = [CustomMap.FamasSideRail];
-        items[CustomMap.Famas]._props.Slots[0]._props.filters[0].Filter = [CustomMap.Famas25Rd, CustomMap.Famas30Rd];
-        items[CustomMap.Famas]._props.Slots[2]._props.filters[0].Filter = [CustomMap.FamasRec];
-*/
     }
 }
