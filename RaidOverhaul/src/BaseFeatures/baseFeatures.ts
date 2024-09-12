@@ -17,7 +17,6 @@ import type { Utils } from "../Utils/Utils";
 
 const ammoList = require("../Utils/ArrayFiles/ammoStackList.json");
 const globalPresets = require("../../db/Presets/Globals.json");
-const modName = "Raid Overhaul";
 
 import * as fs from "node:fs";
 import * as path from "node:path";

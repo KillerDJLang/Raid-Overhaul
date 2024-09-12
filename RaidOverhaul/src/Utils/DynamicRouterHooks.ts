@@ -32,7 +32,7 @@ export class DynamicRouters {
                             const clientMessage = urlParts[urlParts.length - 1];
 
                             const regex = /%20/g;
-                            this.utils.logToServer(clientMessage.replace(regex, " "), this.logger);
+                            this.utils.logToServer(clientMessage.replace(regex, " "));
 
                             return JSON.stringify({ resp: "OK" });
                         },

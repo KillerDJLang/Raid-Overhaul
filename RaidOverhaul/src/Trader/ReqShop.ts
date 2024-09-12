@@ -1,10 +1,7 @@
-import { container } from "tsyringe";
-
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import type { ITraderConfig, UpdateTime } from "@spt/models/spt/config/ITraderConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import type { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
-import type { ILogger } from "@spt/models/spt/utils/ILogger";
 
 import { AllItemList } from "../CustomItems/GenEnums";
 import { Currency } from "../Utils/Enums";
@@ -1007,10 +1004,7 @@ export class TraderData {
     //
     //#region Reputation Change Logic
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static traderRepLogic(info: any, sessionId: string, traderHelper: any): void {
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "Rep Logic";
-
+    static traderRepLogic(info: any, sessionId: string, traderHelper: any, logger: Logger): void {
         try {
             if (info.exit === "Left") {
                 return;
@@ -1026,15 +1020,12 @@ export class TraderData {
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on Successful Raid Exfil: ${error}`);
+            logger.logError(`Error modifying Trader Rep on Successful Raid Exfil: ${error}`);
         }
     }
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static legionRepLogic(info: any, sessionId: string, traderHelper: any): void {
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "Raid Overhaul";
-
+    static legionRepLogic(info: any, sessionId: string, traderHelper: any, logger: Logger): void {
         try {
             const pmcData: IPmcData = info.profile;
             const victimRole = pmcData.Stats.Eft.Victims?.map((victim) => victim.Role.toLowerCase());
@@ -1095,15 +1086,12 @@ export class TraderData {
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion: ${error}`);
+            logger.logError(`Error modifying Trader Rep on killing Legion: ${error}`);
         }
     }
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    static noBossRepLogic(info: any, sessionId: string, traderHelper: any): void {
-        const logger = container.resolve<ILogger>("WinstonLogger");
-        const logString = "NoBossRepLogic";
-
+    static noBossRepLogic(info: any, sessionId: string, traderHelper: any, logger: Logger): void {
         try {
             const pmcData: IPmcData = info.profile;
             const victimRole = pmcData.Stats.Eft.Victims?.map((victim) => victim.Role.toLowerCase());
@@ -1160,7 +1148,7 @@ export class TraderData {
                 return;
             }
         } catch (error) {
-            logger.error(`[${logString}] Error modifying Trader Rep on killing Legion: ${error}`);
+            logger.logError(`Error modifying Trader Rep on killing Legion: ${error}`);
         }
     }
     //#endregion

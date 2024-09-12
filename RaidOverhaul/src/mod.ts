@@ -84,7 +84,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
         //Register router hooks
         staticRouters.registerHooks();
         dynamicRouters.registerHooks();
-        this.legionData.preSptLoad(modConfig, this.ref);
+        this.legionData.preSptLoad(modConfig, this.ref, this.logger);
     }
 
     public postDBLoad(container: DependencyContainer): void {

@@ -14,8 +14,8 @@ export class Logger {
         }
     }
 
-    public logError(text: string) {
-        this.ref.logger.error(this.logPrefix + text);
+    public logError(errorText: string) {
+        this.ref.logger.error(this.logPrefix + errorText);
     }
 
     public logWarning(text: string) {

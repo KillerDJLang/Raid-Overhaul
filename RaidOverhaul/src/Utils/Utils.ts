@@ -135,7 +135,7 @@ export class Utils {
     public profileBackup(sessionID: string, profile: ISptProfile): void {
         const backupPath = `${Utils.modLoc}/ProfileBackup/${sessionID}/`;
         const profileData = JSON.stringify(profile, null, 4);
-        const randomNum = this.ref.randomUtil.randInt(1, 20).toString(); 
+        const randomNum = this.ref.randomUtil.randInt(1, 20).toString();
         const date = new Date();
         const day = date.toISOString().slice(0, 10);
         const backupFile = `${backupPath + sessionID}_RO_${day}_${randomNum}-backup.json`;
@@ -143,7 +143,9 @@ export class Utils {
 
         if (!fs.existsSync(backupPath)) {
             fs.mkdirSync(backupPath, { recursive: true });
-            this.logger.logWarning(`No backup path exist for this profile. \nProfile backup path at "${backupPath}" has been created`);
+            this.logger.logWarning(
+                `No backup path exist for this profile. \nProfile backup path at "${backupPath}" has been created`,
+            );
         }
 
         const profileCount = this.ref.vfs
