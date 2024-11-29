@@ -15,7 +15,7 @@
                         "filters": [
                             {
                                 "Filter": ["54009119af1c881c07000029"],
-                                "ExcludedFilter": [""]
+                                "ExcludedFilter": ["5447e1d04bdc2dff2f8b4567"]
                             }
                         ],
                         "cellsH": 2,
@@ -35,7 +35,7 @@
                         "filters": [
                             {
                                 "Filter": ["54009119af1c881c07000029"],
-                                "ExcludedFilter": [""]
+                                "ExcludedFilter": ["5447e1d04bdc2dff2f8b4567"]
                             }
                         ],
                         "cellsH": 3,
@@ -55,7 +55,7 @@
                         "filters": [
                             {
                                 "Filter": ["54009119af1c881c07000029"],
-                                "ExcludedFilter": [""]
+                                "ExcludedFilter": ["5447e1d04bdc2dff2f8b4567"]
                             }
                         ],
                         "cellsH": 1,

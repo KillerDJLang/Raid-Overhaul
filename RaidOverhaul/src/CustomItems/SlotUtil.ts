@@ -2,45 +2,77 @@ import type { References } from "../Utils/References";
 import { CustomMap } from "./GenEnums";
 
 export class SlotUtil {
-    constructor(private ref: References) {}
+  constructor(private ref: References) {}
 
-    public buildSlots(): void {
-        const items = this.ref.tables.templates.items;
+  public buildSlots(): void {
+    const items = this.ref.tables.templates.items;
 
-        items[CustomMap.Aug762]._props.Slots[0]._props.filters[0].Filter = [CustomMap.Aug30Rd, CustomMap.Aug42Rd];
+    items[CustomMap.Aug762]._props.Slots[0]._props.filters[0].Filter = [
+      CustomMap.Aug30Rd,
+      CustomMap.Aug42Rd,
+    ];
 
-        items[CustomMap.Stm46]._props.Slots[1]._props.filters[0].Filter = [CustomMap.Stm33Rd, CustomMap.Stm50Rd];
-        items[CustomMap.Stm46]._props.Slots[2]._props.filters[0].Filter = [CustomMap.StmRec];
+    items[CustomMap.Stm46]._props.Slots[1]._props.filters[0].Filter = [
+      CustomMap.Stm33Rd,
+      CustomMap.Stm50Rd,
+    ];
+    items[CustomMap.Stm46]._props.Slots[2]._props.filters[0].Filter = [
+      CustomMap.StmRec,
+    ];
 
-        items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(CustomMap.Mag300);
-        items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(CustomMap.Mag545);
-        items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(CustomMap.Mag57);
-        items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(CustomMap.Mag762);
-        items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(CustomMap.Mag939);
-        items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(CustomMap.Rec300);
-        items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(CustomMap.Rec545);
-        items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(CustomMap.Rec57);
-        items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(CustomMap.Rec762);
-        items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(CustomMap.Rec939);
+    items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(
+      CustomMap.Mag300
+    );
+    items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(
+      CustomMap.Mag545
+    );
+    items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(
+      CustomMap.Mag57
+    );
+    items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(
+      CustomMap.Mag762
+    );
+    items[CustomMap.Mcm4]._props.Slots[1]._props.filters[0].Filter.push(
+      CustomMap.Mag939
+    );
+    items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(
+      CustomMap.Rec300
+    );
+    items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(
+      CustomMap.Rec545
+    );
+    items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(
+      CustomMap.Rec57
+    );
+    items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(
+      CustomMap.Rec762
+    );
+    items[CustomMap.Mcm4]._props.Slots[2]._props.filters[0].Filter.push(
+      CustomMap.Rec939
+    );
 
-        items[CustomMap.Judge]._props.Slots[3]._props.filters[0].Filter = [
-            CustomMap.Judge17Rd,
-            CustomMap.Judge33Rd,
-            CustomMap.Judge50Rd,
-        ];
-        items[CustomMap.Judge]._props.Slots[2]._props.filters[0].Filter = [CustomMap.JudgeSlide];
+    items[CustomMap.Judge]._props.Slots[3]._props.filters[0].Filter = [
+      CustomMap.Judge17Rd,
+      CustomMap.Judge33Rd,
+      CustomMap.Judge50Rd,
+    ];
+    items[CustomMap.Judge]._props.Slots[2]._props.filters[0].Filter = [
+      CustomMap.JudgeSlide,
+    ];
 
-        items[CustomMap.Jury]._props.Slots[1]._props.filters[0].Filter = [
-            CustomMap.Jury20Rd,
-            CustomMap.Jury25Rd,
-            CustomMap.Jury50Rd,
-        ];
-        items[CustomMap.Jury]._props.Slots[2]._props.filters[0].Filter = [CustomMap.JuryRec];
+    items[CustomMap.Jury]._props.Slots[1]._props.filters[0].Filter = [
+      CustomMap.Jury20Rd,
+      CustomMap.Jury25Rd,
+      CustomMap.Jury50Rd,
+    ];
+    items[CustomMap.Jury]._props.Slots[2]._props.filters[0].Filter = [
+      CustomMap.JuryRec,
+    ];
 
-        items[CustomMap.Exec]._props.Slots[0]._props.filters[0].Filter = [
-            CustomMap.ExecAics,
-            CustomMap.ExecPmag,
-            CustomMap.ExecWyatt,
-        ];
-    }
+    items[CustomMap.Exec]._props.Slots[0]._props.filters[0].Filter = [
+      CustomMap.ExecAics,
+      CustomMap.ExecPmag,
+      CustomMap.ExecWyatt,
+    ];
+  }
 }

@@ -1,10 +1,10 @@
 {
     "appearance": {
         "body": {
-            "ROtshirtBlack": 1
+            "672bd19baa482f7b9e7f563f": 1
         },
         "feet": {
-            "ROurbanresponder": 1
+            "672bd1b188d490219f21bced": 1
         },
         "hands": {
             "5d1f5aa286f7744bca3f0b9c": 1
@@ -475,11 +475,11 @@
                 "DANGER_EXPIRE_TIME_MAX": 1.2,
                 "DANGER_EXPIRE_TIME_MIN": 0.4,
                 "DANGER_POINT_CHOOSE_COEF": 1,
-                "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+                "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
                 "DEFAULT_ENEMY_BEAR": true,
                 "DEFAULT_ENEMY_USEC": true,
                 "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-                "DEFAULT_USEC_BEHAVIOUR": "Attack",
+                "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
                 "DIST_TO_ENEMY_SPOTTED_ON_HIT": 20,
                 "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
                 "DIST_TO_FOUND_SQRT": 400,
@@ -1028,11 +1028,11 @@
                 "DANGER_EXPIRE_TIME_MAX": 1.2,
                 "DANGER_EXPIRE_TIME_MIN": 0.4,
                 "DANGER_POINT_CHOOSE_COEF": 1,
-                "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+                "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
                 "DEFAULT_ENEMY_BEAR": true,
                 "DEFAULT_ENEMY_USEC": true,
                 "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-                "DEFAULT_USEC_BEHAVIOUR": "Attack",
+                "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
                 "DIST_TO_ENEMY_SPOTTED_ON_HIT": 20,
                 "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
                 "DIST_TO_FOUND_SQRT": 400,
@@ -1581,11 +1581,11 @@
                 "DANGER_EXPIRE_TIME_MAX": 1.2,
                 "DANGER_EXPIRE_TIME_MIN": 0.4,
                 "DANGER_POINT_CHOOSE_COEF": 1,
-                "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+                "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
                 "DEFAULT_ENEMY_BEAR": true,
                 "DEFAULT_ENEMY_USEC": true,
                 "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-                "DEFAULT_USEC_BEHAVIOUR": "Attack",
+                "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
                 "DIST_TO_ENEMY_SPOTTED_ON_HIT": 20,
                 "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
                 "DIST_TO_FOUND_SQRT": 400,
@@ -2134,11 +2134,11 @@
                 "DANGER_EXPIRE_TIME_MAX": 1.2,
                 "DANGER_EXPIRE_TIME_MIN": 0.4,
                 "DANGER_POINT_CHOOSE_COEF": 1,
-                "DEFAULT_BEAR_BEHAVIOUR": "Attack",
+                "DEFAULT_BEAR_BEHAVIOUR": "AlwaysEnemies",
                 "DEFAULT_ENEMY_BEAR": true,
                 "DEFAULT_ENEMY_USEC": true,
                 "DEFAULT_SAVAGE_BEHAVIOUR": "Warn",
-                "DEFAULT_USEC_BEHAVIOUR": "Attack",
+                "DEFAULT_USEC_BEHAVIOUR": "AlwaysEnemies",
                 "DIST_TO_ENEMY_SPOTTED_ON_HIT": 20,
                 "DIST_TO_ENEMY_YO_CAN_HEAL": 30,
                 "DIST_TO_FOUND_SQRT": 400,
@@ -2312,16 +2312,23 @@
         }
     },
     "experience": {
-        "aggressorBonus": 0.05,
         "level": {
-            "max": 1,
-            "min": 0
+          "min": 0,
+          "max": 1
         },
         "reward": {
-            "max": 2450,
-            "min": 2450
+          "normal": {
+            "min": 2450,
+            "max": 2450
+          }
         },
-        "standingForKill": -0.2
+        "standingForKill": {
+          "normal": -0.2
+        },
+        "aggressorBonus": {
+          "normal": 0.05
+        },
+        "useSimpleAnimator": false
     },
     "firstName": ["Legion"],
     "generation": {
@@ -2511,7 +2518,7 @@
                 "6621b28d9411498998d408c3": 3
             },
             "Earpiece": {
-                "628e4e576d783146b124c64d": 1
+                "66b5f6985891c84aab75ca76": 1
             },
             "Eyewear": {},
             "FaceCover": {},

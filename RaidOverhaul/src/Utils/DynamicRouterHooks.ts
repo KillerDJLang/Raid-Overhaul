@@ -7,39 +7,41 @@ import * as path from "node:path";
 import JSON5 from "json5";
 
 export class DynamicRouters {
-    private routerPrefix = "[Raid Overhaul] ";
+  private routerPrefix = "[Raid Overhaul] ";
 
-    constructor(
-        public ref: References,
-        public utils: Utils,
-        public logger: Logger,
-    ) {}
+  constructor(
+    public ref: References,
+    public utils: Utils,
+    public logger: Logger
+  ) {}
 
-    public registerHooks(): void {
-        const modConfig = JSON5.parse(
-            this.ref.vfs.readFile(path.resolve(__dirname, "../../config/config.json5")),
-        ) as configFile;
+  public registerHooks(): void {
+    const modConfig = JSON5.parse(
+      this.ref.vfs.readFile(
+        path.resolve(__dirname, "../../config/config.json5")
+      )
+    ) as configFile;
 
-        //Log from the client to the server if in debug build in the client and extra debug logging is enabled in the server
-        if (modConfig.Debug.ExtraLogging) {
-            this.ref.dynamicRouter.registerDynamicRouter(
-                `DynamicReportError-${this.routerPrefix}`,
-                [
-                    {
-                        url: "/RaidOverhaul/LogToServer/",
-                        action: async (url) => {
-                            const urlParts = url.split("/");
-                            const clientMessage = urlParts[urlParts.length - 1];
+    //Log from the client to the server if in debug build in the client and extra debug logging is enabled in the server
+    if (modConfig.Debug.ExtraLogging) {
+      this.ref.dynamicRouter.registerDynamicRouter(
+        `DynamicReportError-${this.routerPrefix}`,
+        [
+          {
+            url: "/RaidOverhaul/LogToServer/",
+            action: async (url) => {
+              const urlParts = url.split("/");
+              const clientMessage = urlParts[urlParts.length - 1];
 
-                            const regex = /%20/g;
-                            this.utils.logToServer(clientMessage.replace(regex, " "));
+              const regex = /%20/g;
+              this.utils.logToServer(clientMessage.replace(regex, " "));
 
-                            return JSON.stringify({ resp: "OK" });
-                        },
-                    },
-                ],
-                "LogToServer",
-            );
-        }
+              return JSON.stringify({ resp: "OK" });
+            },
+          },
+        ],
+        "LogToServer"
+      );
     }
+  }
 }

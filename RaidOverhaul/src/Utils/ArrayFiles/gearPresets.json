@@ -1,7 +1,8 @@
 {
-    "Helmet Untar Standard": {
+    "65711f2bc50461e8750d1f4f": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7d03ae5b5b00016327db5",
+        "_id": "65711f2bc50461e8750d1f4f",
         "_items": [
             {
                 "_id": "6576e388ab23f2038109a9c7",
@@ -30,9 +31,10 @@
         "_parent": "6576e388ab23f2038109a9c7",
         "_type": "Preset"
     },
-    "Helmet DevTac Ronin Standart": {
+    "65711f886d197c216005b32f": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b4329f05acfc47a86086aa1",
+        "_id": "65711f886d197c216005b32f",
         "_items": [
             {
                 "_id": "6576e590fad2d1a4c00ca468",
@@ -73,9 +75,10 @@
         "_parent": "6576e590fad2d1a4c00ca468",
         "_type": "Preset"
     },
-    "Helmet Ssh-68 Standard": {
+    "65711fc9c50461e8750d1f5b": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c06c6a80db834001b735491",
+        "_id": "65711fc9c50461e8750d1f5b",
         "_items": [
             {
                 "_id": "6576e378fad2d1a4c00ca449",
@@ -104,9 +107,10 @@
         "_parent": "6576e378fad2d1a4c00ca449",
         "_type": "Preset"
     },
-    "Helmet EXFIL Black Standard": {
+    "6571200b6fe59548840cb53a": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e00c1ad86f774747333222c",
+        "_id": "6571200b6fe59548840cb53a",
         "_items": [
             {
                 "_id": "6576e39946600d80c70ba7a5",
@@ -129,9 +133,10 @@
         "_parent": "6576e39946600d80c70ba7a5",
         "_type": "Preset"
     },
-    "Helmet EXFIL Coyote Standard": {
+    "657120376d197c216005b33e": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e01ef6886f77445f643baa4",
+        "_id": "657120376d197c216005b33e",
         "_items": [
             {
                 "_id": "6576e3af424f2c87d30c75b2",
@@ -154,9 +159,10 @@
         "_parent": "6576e3af424f2c87d30c75b2",
         "_type": "Preset"
     },
-    "Helmet Maska 1Sh Standard": {
+    "65712075f1074598bf0c02a7": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c091a4e0db834001d5addc8",
+        "_id": "65712075f1074598bf0c02a7",
         "_items": [
             {
                 "_id": "6576e80dfad2d1a4c00ca47a",
@@ -185,9 +191,10 @@
         "_parent": "6576e80dfad2d1a4c00ca47a",
         "_type": "Preset"
     },
-    "Helmet ULACH Black Standard": {
+    "657120b36fe59548840cb542": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b40e1525acfc4771e1c6611",
+        "_id": "657120b36fe59548840cb542",
         "_items": [
             {
                 "_id": "6576e40dfad2d1a4c00ca44e",
@@ -216,9 +223,10 @@
         "_parent": "6576e40dfad2d1a4c00ca44e",
         "_type": "Preset"
     },
-    "Helmet ULACH Desert Tan Standard": {
+    "657120dd6fe59548840cb54c": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b40e2bc5acfc40016388216",
+        "_id": "657120dd6fe59548840cb54c",
         "_items": [
             {
                 "_id": "6576e428ab23f2038109a9cb",
@@ -247,9 +255,10 @@
         "_parent": "6576e428ab23f2038109a9cb",
         "_type": "Preset"
     },
-    "Body armor 6B2 Flora Standard": {
+    "6571211af1074598bf0c02b4": {
         "_changeWeaponName": false,
         "_encyclopedia": "5df8a2ca86f7740bfe6df777",
+        "_id": "6571211af1074598bf0c02b4",
         "_items": [
             {
                 "_id": "6576ec0406a990316201e7fb",
@@ -272,9 +281,10 @@
         "_parent": "6576ec0406a990316201e7fb",
         "_type": "Preset"
     },
-    "Body armor Modul 3M Standard": {
+    "6571214fc50461e8750d1f6b": {
         "_changeWeaponName": false,
         "_encyclopedia": "59e7635f86f7742cbf2c1095",
+        "_id": "6571214fc50461e8750d1f6b",
         "_items": [
             {
                 "_id": "6576e9e246600d80c70ba7d5",
@@ -309,9 +319,10 @@
         "_parent": "6576e9e246600d80c70ba7d5",
         "_type": "Preset"
     },
-    "Body armor PACA Standard": {
+    "65712184f1074598bf0c02bc": {
         "_changeWeaponName": false,
         "_encyclopedia": "5648a7494bdc2d9d488b4583",
+        "_id": "65712184f1074598bf0c02bc",
         "_items": [
             {
                 "_id": "6576ea63ab23f2038109aa11",
@@ -346,9 +357,10 @@
         "_parent": "6576ea63ab23f2038109aa11",
         "_type": "Preset"
     },
-    "Body armor MF UNTAR Standard": {
+    "657121c5f1074598bf0c02c8": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ab8e4ed86f7742d8e50c7fa",
+        "_id": "657121c5f1074598bf0c02c8",
         "_items": [
             {
                 "_id": "6576eabcab23f2038109aa16",
@@ -383,9 +395,10 @@
         "_parent": "6576eabcab23f2038109aa16",
         "_type": "Preset"
     },
-    "Body armor Kora Kulon Black Standard": {
+    "657122026d197c216005b34a": {
         "_changeWeaponName": false,
         "_encyclopedia": "64be79c487d1510151095552",
+        "_id": "657122026d197c216005b34a",
         "_items": [
             {
                 "_id": "6576e9ccfad2d1a4c00ca488",
@@ -408,9 +421,10 @@
         "_parent": "6576e9ccfad2d1a4c00ca488",
         "_type": "Preset"
     },
-    "Body armor Kirasa N Standard": {
+    "657122506fe59548840cb559": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b44d22286f774172b0c9de8",
+        "_id": "657122506fe59548840cb559",
         "_items": [
             {
                 "_id": "6576e9f4424f2c87d30c75ef",
@@ -463,9 +477,10 @@
         "_parent": "6576e9f4424f2c87d30c75ef",
         "_type": "Preset"
     },
-    "Body armor 6B13 Assault Flora digital Standard": {
+    "657123216d197c216005b354": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e53c886f7747fa54205c7",
+        "_id": "657123216d197c216005b354",
         "_items": [
             {
                 "_id": "6576ec3eab23f2038109aa78",
@@ -524,9 +539,10 @@
         "_parent": "6576ec3eab23f2038109aa78",
         "_type": "Preset"
     },
-    "Body armor Interceptor OTV Standard": {
+    "657127126d197c216005b402": {
         "_changeWeaponName": false,
         "_encyclopedia": "64abd93857958b4249003418",
+        "_id": "657127126d197c216005b402",
         "_items": [
             {
                 "_id": "6576eae7424f2c87d30c7606",
@@ -573,9 +589,10 @@
         "_parent": "6576eae7424f2c87d30c7606",
         "_type": "Preset"
     },
-    "Body armor 6B23 2 Mountain Flora Standard": {
+    "65712763c50461e8750d1fae": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e57ba86f7747fa141986d",
+        "_id": "65712763c50461e8750d1fae",
         "_items": [
             {
                 "_id": "657b346db1b05ca017061dad",
@@ -640,9 +657,10 @@
         "_parent": "657b346db1b05ca017061dad",
         "_type": "Preset"
     },
-    "Body armor HighCom Trooper Standard": {
+    "657127b7f1074598bf0c02f2": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e655586f774045612eeb2",
+        "_id": "657127b7f1074598bf0c02f2",
         "_items": [
             {
                 "_id": "6576eb55424f2c87d30c7619",
@@ -677,9 +695,10 @@
         "_parent": "6576eb55424f2c87d30c7619",
         "_type": "Preset"
     },
-    "Vest Eagle Allied Industries MBSS Standard": {
+    "65719339acb85662e7024be2": {
         "_changeWeaponName": false,
         "_encyclopedia": "64a5366719bab53bd203bf33",
+        "_id": "65719339acb85662e7024be2",
         "_items": [
             {
                 "_id": "6576e4f846600d80c70ba7b5",
@@ -702,9 +721,10 @@
         "_parent": "6576e4f846600d80c70ba7b5",
         "_type": "Preset"
     },
-    "Vest WARTECH TV115 Standard": {
+    "65719408289dc422160e08c4": {
         "_changeWeaponName": false,
         "_encyclopedia": "64a536392d2c4e6e970f4121",
+        "_id": "65719408289dc422160e08c4",
         "_items": [
             {
                 "_id": "6576e488424f2c87d30c75b5",
@@ -739,9 +759,10 @@
         "_parent": "6576e488424f2c87d30c75b5",
         "_type": "Preset"
     },
-    "Vest 6B5 15 Zh 86 Uley Standard": {
+    "6571944dacb85662e7024bea": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e446786f7742013381639",
+        "_id": "6571944dacb85662e7024bea",
         "_items": [
             {
                 "_id": "6576e7b4ab23f2038109a9e8",
@@ -776,9 +797,10 @@
         "_parent": "6576e7b4ab23f2038109a9e8",
         "_type": "Preset"
     },
-    "Vest CQC Osprey MK4A Assault Standard": {
+    "657194c0289dc422160e08d1": {
         "_changeWeaponName": false,
         "_encyclopedia": "60a3c70cde5f453f634816a3",
+        "_id": "657194c0289dc422160e08d1",
         "_items": [
             {
                 "_id": "6576e5a2ab23f2038109a9de",
@@ -843,9 +865,10 @@
         "_parent": "6576e5a2ab23f2038109a9de",
         "_type": "Preset"
     },
-    "Vest ANA Tactical M2 Standard": {
+    "6571952aacb85662e7024c01": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ab8dced86f774646209ec87",
+        "_id": "6571952aacb85662e7024c01",
         "_items": [
             {
                 "_id": "6576e641fad2d1a4c00ca46e",
@@ -892,9 +915,10 @@
         "_parent": "6576e641fad2d1a4c00ca46e",
         "_type": "Preset"
     },
-    "Vest Ars Arma A18 Skanda Standard": {
+    "6571960bacb85662e7024c23": {
         "_changeWeaponName": false,
         "_encyclopedia": "5d5d87f786f77427997cfaef",
+        "_id": "6571960bacb85662e7024c23",
         "_items": [
             {
                 "_id": "6576e5ce424f2c87d30c75d1",
@@ -941,9 +965,10 @@
         "_parent": "6576e5ce424f2c87d30c75d1",
         "_type": "Preset"
     },
-    "Vest Crye Precision AVS Standard": {
+    "65719d367a553968340d88b8": {
         "_changeWeaponName": false,
         "_encyclopedia": "544a5caa4bdc2d1a388b4568",
+        "_id": "65719d367a553968340d88b8",
         "_items": [
             {
                 "_id": "6576e56446600d80c70ba7b8",
@@ -984,9 +1009,10 @@
         "_parent": "6576e56446600d80c70ba7b8",
         "_type": "Preset"
     },
-    "Body armor PACA Rivals Edition Standard": {
+    "65765896526e320fbe035788": {
         "_changeWeaponName": false,
         "_encyclopedia": "607f20859ee58b18e41ecd90",
+        "_id": "65765896526e320fbe035788",
         "_items": [
             {
                 "_id": "6576ea74fad2d1a4c00ca493",
@@ -1021,9 +1047,10 @@
         "_parent": "6576ea74fad2d1a4c00ca493",
         "_type": "Preset"
     },
-    "Body armor Zhuk 3 Standard": {
+    "65765a38526e320fbe035795": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e5edb86f77461f55ed1f7",
+        "_id": "65765a38526e320fbe035795",
         "_items": [
             {
                 "_id": "6576ea29fad2d1a4c00ca48b",
@@ -1076,9 +1103,10 @@
         "_parent": "6576ea29fad2d1a4c00ca48b",
         "_type": "Preset"
     },
-    "Body armor 6B23 1 Flora digital Standard": {
+    "65765cb6b7ea14f3b70da689": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e5bab86f77461f55ed1f3",
+        "_id": "65765cb6b7ea14f3b70da689",
         "_items": [
             {
                 "_id": "6576ebf5ab23f2038109aa6f",
@@ -1137,9 +1165,10 @@
         "_parent": "6576ebf5ab23f2038109aa6f",
         "_type": "Preset"
     },
-    "Body armor Kora Kulon Flora digital Standard": {
+    "65765d08b7ea14f3b70da69b": {
         "_changeWeaponName": false,
         "_encyclopedia": "64be79e2bf8412471d0d9bcc",
+        "_id": "65765d08b7ea14f3b70da69b",
         "_items": [
             {
                 "_id": "6576e9b6ab23f2038109aa04",
@@ -1162,9 +1191,10 @@
         "_parent": "6576e9b6ab23f2038109aa04",
         "_type": "Preset"
     },
-    "Vest 6B5 16 Zh 86 Uley Standard": {
+    "65765d5086f11bca4106d316": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e3eb886f7742015526062",
+        "_id": "65765d5086f11bca4106d316",
         "_items": [
             {
                 "_id": "6576e797fad2d1a4c00ca475",
@@ -1199,9 +1229,10 @@
         "_parent": "6576e797fad2d1a4c00ca475",
         "_type": "Preset"
     },
-    "Body armor DRD Standard": {
+    "65765d8586f11bca4106d323": {
         "_changeWeaponName": false,
         "_encyclopedia": "62a09d79de7ac81993580530",
+        "_id": "65765d8586f11bca4106d323",
         "_items": [
             {
                 "_id": "6576eb7646600d80c70ba7f1",
@@ -1236,9 +1267,10 @@
         "_parent": "6576eb7646600d80c70ba7f1",
         "_type": "Preset"
     },
-    "Body armor 6B13 Assault Flora Standard": {
+    "65765f39526e320fbe0357b1": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e51be86f774598e797894",
+        "_id": "65765f39526e320fbe0357b1",
         "_items": [
             {
                 "_id": "6576ec1bfad2d1a4c00ca4b2",
@@ -1297,9 +1329,10 @@
         "_parent": "6576ec1bfad2d1a4c00ca4b2",
         "_type": "Preset"
     },
-    "Body armor NFM THOR Concealable Reinforced Standard": {
+    "65765fbe234b9f6e050a4292": {
         "_changeWeaponName": false,
         "_encyclopedia": "609e8540d5c319764c2bc2e9",
+        "_id": "65765fbe234b9f6e050a4292",
         "_items": [
             {
                 "_id": "6576eaa3424f2c87d30c75ff",
@@ -1346,9 +1379,10 @@
         "_parent": "6576eaa3424f2c87d30c75ff",
         "_type": "Preset"
     },
-    "Vest 6B3TM 01 Standard": {
+    "6576600186f11bca4106d331": {
         "_changeWeaponName": false,
         "_encyclopedia": "5d5d646386f7742797261fd9",
+        "_id": "6576600186f11bca4106d331",
         "_items": [
             {
                 "_id": "6576e7cc46600d80c70ba7c7",
@@ -1383,9 +1417,10 @@
         "_parent": "6576e7cc46600d80c70ba7c7",
         "_type": "Preset"
     },
-    "Vest FirstSpear Strandhogg Standard": {
+    "6576604f86f11bca4106d33d": {
         "_changeWeaponName": false,
         "_encyclopedia": "61bcc89aef0f505f0c6cd0fc",
+        "_id": "6576604f86f11bca4106d33d",
         "_items": [
             {
                 "_id": "6576e4d8fad2d1a4c00ca457",
@@ -1438,9 +1473,10 @@
         "_parent": "6576e4d8fad2d1a4c00ca457",
         "_type": "Preset"
     },
-    "Vest ECLiPSE RBAV-AF Standard": {
+    "657660a1526e320fbe0357c1": {
         "_changeWeaponName": false,
         "_encyclopedia": "628dc750b910320f4c27a732",
+        "_id": "657660a1526e320fbe0357c1",
         "_items": [
             {
                 "_id": "6576e519424f2c87d30c75bd",
@@ -1493,9 +1529,10 @@
         "_parent": "6576e519424f2c87d30c75bd",
         "_type": "Preset"
     },
-    "Vest Eagle Industries MMAC Standard": {
+    "657660eb86f11bca4106d34f": {
         "_changeWeaponName": false,
         "_encyclopedia": "61bc85697113f767765c7fe7",
+        "_id": "657660eb86f11bca4106d34f",
         "_items": [
             {
                 "_id": "6576e4e8ab23f2038109a9d2",
@@ -1542,9 +1579,10 @@
         "_parent": "6576e4e8ab23f2038109a9d2",
         "_type": "Preset"
     },
-    "Vest ANA Tactical M1 Standard": {
+    "6576616086f11bca4106d35f": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e722886f7740458316a57",
+        "_id": "6576616086f11bca4106d35f",
         "_items": [
             {
                 "_id": "6576e776424f2c87d30c75d8",
@@ -1591,9 +1629,10 @@
         "_parent": "6576e776424f2c87d30c75d8",
         "_type": "Preset"
     },
-    "Vest Shellback Tactical Banshee Standard": {
+    "657661ad234b9f6e050a42a2": {
         "_changeWeaponName": false,
         "_encyclopedia": "639343fce101f4caa40a4ef3",
+        "_id": "657661ad234b9f6e050a42a2",
         "_items": [
             {
                 "_id": "6576e4b546600d80c70ba7ae",
@@ -1640,9 +1679,10 @@
         "_parent": "6576e4b546600d80c70ba7ae",
         "_type": "Preset"
     },
-    "Body armor Korund VM Standard": {
+    "65766278526e320fbe0357d4": {
         "_changeWeaponName": false,
         "_encyclopedia": "5f5f41476bdad616ad46d631",
+        "_id": "65766278526e320fbe0357d4",
         "_items": [
             {
                 "_id": "657b348439de0339ee0d3fcf",
@@ -1719,9 +1759,10 @@
         "_parent": "657b348439de0339ee0d3fcf",
         "_type": "Preset"
     },
-    "Vest Bagarii Standard": {
+    "657662c8234b9f6e050a42b2": {
         "_changeWeaponName": false,
         "_encyclopedia": "628d0618d1ba6e4fa07ce5a4",
+        "_id": "657662c8234b9f6e050a42b2",
         "_items": [
             {
                 "_id": "657b34a2f01824c5880be6f8",
@@ -1768,9 +1809,10 @@
         "_parent": "657b34a2f01824c5880be6f8",
         "_type": "Preset"
     },
-    "Body armor Gzhel K Standard": {
+    "657663b6526e320fbe0357ec": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ab8e79e86f7742d8b372e78",
+        "_id": "657663b6526e320fbe0357ec",
         "_items": [
             {
                 "_id": "6576ea54424f2c87d30c75f7",
@@ -1823,9 +1865,10 @@
         "_parent": "6576ea54424f2c87d30c75f7",
         "_type": "Preset"
     },
-    "Body armor Defender 2 Standard": {
+    "657663ff303700411c024278": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e9dacf986f774054d6b89f4",
+        "_id": "657663ff303700411c024278",
         "_items": [
             {
                 "_id": "6576e98b46600d80c70ba7cc",
@@ -1884,9 +1927,10 @@
         "_parent": "6576e98b46600d80c70ba7cc",
         "_type": "Preset"
     },
-    "Vest CQC Osprey MK4A Protection Standard": {
+    "657664ae303700411c02428c": {
         "_changeWeaponName": false,
         "_encyclopedia": "60a3c68c37ea821725773ef5",
+        "_id": "657664ae303700411c02428c",
         "_items": [
             {
                 "_id": "6576e57d424f2c87d30c75c5",
@@ -1963,9 +2007,10 @@
         "_parent": "6576e57d424f2c87d30c75c5",
         "_type": "Preset"
     },
-    "Body armor Hexatac HPC Standard": {
+    "657664ec526e320fbe0357fe": {
         "_changeWeaponName": false,
         "_encyclopedia": "63737f448b28897f2802b874",
+        "_id": "657664ec526e320fbe0357fe",
         "_items": [
             {
                 "_id": "6576eb68fad2d1a4c00ca49a",
@@ -1988,9 +2033,10 @@
         "_parent": "6576eb68fad2d1a4c00ca49a",
         "_type": "Preset"
     },
-    "Vest 5.11 Tactical TacTec Standard": {
+    "65766527303700411c0242a6": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b44cad286f77402a54ae7e5",
+        "_id": "65766527303700411c0242a6",
         "_items": [
             {
                 "_id": "6576e7e2424f2c87d30c75df",
@@ -2025,9 +2071,10 @@
         "_parent": "6576e7e2424f2c87d30c75df",
         "_type": "Preset"
     },
-    "Body armor IOTV Gen4 High Mobility Standard": {
+    "65766582234b9f6e050a42c1": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b44d0de86f774503d30cba8",
+        "_id": "65766582234b9f6e050a42c1",
         "_items": [
             {
                 "_id": "6576eb4346600d80c70ba7e7",
@@ -2092,9 +2139,10 @@
         "_parent": "6576eb4346600d80c70ba7e7",
         "_type": "Preset"
     },
-    "Body armor 6B13 M Killa Standard": {
+    "657665e2303700411c0242b2": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e541586f7747fa54205c9",
+        "_id": "657665e2303700411c0242b2",
         "_items": [
             {
                 "_id": "6576e928ab23f2038109a9ed",
@@ -2153,9 +2201,10 @@
         "_parent": "6576e928ab23f2038109a9ed",
         "_type": "Preset"
     },
-    "Vest Ars Arma CPC MOD1 Standard": {
+    "6576667d526e320fbe035806": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e4ac41886f77406a511c9a8",
+        "_id": "6576667d526e320fbe035806",
         "_items": [
             {
                 "_id": "6576e5b746600d80c70ba7be",
@@ -2214,9 +2263,10 @@
         "_parent": "6576e5b746600d80c70ba7be",
         "_type": "Preset"
     },
-    "Body armor LBT 6094A Slick Plate Carrier Black Standard": {
+    "657666ca303700411c0242c6": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e4abb5086f77406975c9342",
+        "_id": "657666ca303700411c0242c6",
         "_items": [
             {
                 "_id": "6576ec9946600d80c70ba80a",
@@ -2251,9 +2301,10 @@
         "_parent": "6576ec9946600d80c70ba80a",
         "_type": "Preset"
     },
-    "Body armor LBT 6094A Slick Plate Carrier Sand Standard": {
+    "6576670586f11bca4106d36f": {
         "_changeWeaponName": false,
         "_encyclopedia": "6038b4b292ec1c3103795a0b",
+        "_id": "6576670586f11bca4106d36f",
         "_items": [
             {
                 "_id": "6576ec7e06a990316201e802",
@@ -2288,9 +2339,10 @@
         "_parent": "6576ec7e06a990316201e802",
         "_type": "Preset"
     },
-    "Body armor LBT 6094A Slick Plate Carrier Olive Standard": {
+    "65766738234b9f6e050a42d8": {
         "_changeWeaponName": false,
         "_encyclopedia": "6038b4ca92ec1c3103795a0d",
+        "_id": "65766738234b9f6e050a42d8",
         "_items": [
             {
                 "_id": "6576ec8bfad2d1a4c00ca4bc",
@@ -2325,9 +2377,10 @@
         "_parent": "6576ec8bfad2d1a4c00ca4bc",
         "_type": "Preset"
     },
-    "Body armor 5.11 Tactical Hexgrid Plate Carrier Standard": {
+    "6576676d86f11bca4106d37b": {
         "_changeWeaponName": false,
         "_encyclopedia": "5fd4c474dd870108a754b241",
+        "_id": "6576676d86f11bca4106d37b",
         "_items": [
             {
                 "_id": "6576ec5406a990316201e7ff",
@@ -2350,9 +2403,10 @@
         "_parent": "6576ec5406a990316201e7ff",
         "_type": "Preset"
     },
-    "Vest Crye Precision AVS Tagilla Edition Standard": {
+    "657667b5234b9f6e050a42e4": {
         "_changeWeaponName": false,
         "_encyclopedia": "609e860ebd219504d8507525",
+        "_id": "657667b5234b9f6e050a42e4",
         "_items": [
             {
                 "_id": "6576e54cab23f2038109a9d9",
@@ -2387,9 +2441,10 @@
         "_parent": "6576e54cab23f2038109a9d9",
         "_type": "Preset"
     },
-    "Vest Tasmanian Tiger SK Standard": {
+    "657667f686f11bca4106d383": {
         "_changeWeaponName": false,
         "_encyclopedia": "628cd624459354321c4b7fa2",
+        "_id": "657667f686f11bca4106d383",
         "_items": [
             {
                 "_id": "6576e4a6ab23f2038109a9cf",
@@ -2412,9 +2467,10 @@
         "_parent": "6576e4a6ab23f2038109a9cf",
         "_type": "Preset"
     },
-    "Vest Precision PlateFrame Standard": {
+    "6576683d303700411c0242d2": {
         "_changeWeaponName": false,
         "_encyclopedia": "628b9784bcf6e2659e09b8a2",
+        "_id": "6576683d303700411c0242d2",
         "_items": [
             {
                 "_id": "65cf51c6a644dd466f01fde7",
@@ -2449,9 +2505,10 @@
         "_parent": "65cf51c6a644dd466f01fde7",
         "_type": "Preset"
     },
-    "Body armor IOTV Gen4 Assault Standard": {
+    "657668ad86f11bca4106d38b": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b44cf1486f77431723e3d05",
+        "_id": "657668ad86f11bca4106d38b",
         "_items": [
             {
                 "_id": "6576eb0d424f2c87d30c760d",
@@ -2528,9 +2585,10 @@
         "_parent": "6576eb0d424f2c87d30c760d",
         "_type": "Preset"
     },
-    "Body armor IOTV Gen4 Full Protection Standard": {
+    "65766910303700411c0242da": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b44cd8b86f774503d30cba2",
+        "_id": "65766910303700411c0242da",
         "_items": [
             {
                 "_id": "6576eb1cab23f2038109aa27",
@@ -2619,9 +2677,10 @@
         "_parent": "6576eb1cab23f2038109aa27",
         "_type": "Preset"
     },
-    "Body armor FORT Redut M Standard": {
+    "6576695d234b9f6e050a42f0": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ca2151486f774244a3b8d30",
+        "_id": "6576695d234b9f6e050a42f0",
         "_items": [
             {
                 "_id": "6576e976fad2d1a4c00ca47e",
@@ -2686,9 +2745,10 @@
         "_parent": "6576e976fad2d1a4c00ca47e",
         "_type": "Preset"
     },
-    "Body armor FORT Redut T5 Standard": {
+    "657669c186f11bca4106d3a5": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ca21c6986f77479963115a7",
+        "_id": "657669c186f11bca4106d3a5",
         "_items": [
             {
                 "_id": "6576e959ab23f2038109a9f6",
@@ -2777,9 +2837,10 @@
         "_parent": "6576e959ab23f2038109a9f6",
         "_type": "Preset"
     },
-    "Vest Crye Precision CPC Standard": {
+    "65766a20234b9f6e050a4306": {
         "_changeWeaponName": false,
         "_encyclopedia": "628b9c7d45122232a872358f",
+        "_id": "65766a20234b9f6e050a4306",
         "_items": [
             {
                 "_id": "6576e529fad2d1a4c00ca45f",
@@ -2838,9 +2899,10 @@
         "_parent": "6576e529fad2d1a4c00ca45f",
         "_type": "Preset"
     },
-    "Body armor BNTI Zhuk 6a Standard": {
+    "65766a7b86f11bca4106d3c3": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e625a86f7742d77340f62",
+        "_id": "65766a7b86f11bca4106d3c3",
         "_items": [
             {
                 "_id": "6576ea1dab23f2038109aa07",
@@ -2905,94 +2967,96 @@
         "_parent": "6576ea1dab23f2038109aa07",
         "_type": "Preset"
     },
-    "Body armor 6B46 6A Zabralo Sh Standard ": {
+    "65766adc234b9f6e050a431a": {
         "_changeWeaponName": false,
         "_encyclopedia": "545cdb794bdc2d3a198b456a",
+        "_id": "65766adc234b9f6e050a431a",
         "_items": [
             {
-                "_id": "6576eba346600d80c70ba7f8",
+                "_id": "66f2aabe398a04601e0d4e46",
                 "_tpl": "545cdb794bdc2d3a198b456a"
             },
             {
-                "_id": "6576eba346600d80c70ba7f9",
+                "_id": "66f2aabe398a04601e0d4e47",
                 "_tpl": "6575ce3716c2762fba0057fd",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Soft_armor_front"
             },
             {
-                "_id": "6576eba346600d80c70ba7fa",
+                "_id": "66f2aabe398a04601e0d4e48",
                 "_tpl": "6575ce45dc9932aed601c616",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Soft_armor_back"
             },
             {
-                "_id": "6576eba346600d80c70ba7fb",
+                "_id": "66f2aabe398a04601e0d4e49",
                 "_tpl": "6575ce5016c2762fba005802",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Soft_armor_left"
             },
             {
-                "_id": "6576eba346600d80c70ba7fc",
+                "_id": "66f2aabe398a04601e0d4e4a",
                 "_tpl": "6575ce5befc786cd9101a671",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "soft_armor_right"
             },
             {
-                "_id": "6576eba346600d80c70ba7fd",
+                "_id": "66f2aabe398a04601e0d4e4b",
                 "_tpl": "6575ce6f16c2762fba005806",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Collar"
             },
             {
-                "_id": "6576eba346600d80c70ba7fe",
+                "_id": "66f2aabe398a04601e0d4e4c",
                 "_tpl": "6575ce9db15fef3dd4051628",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Shoulder_l"
             },
             {
-                "_id": "6576eba346600d80c70ba7ff",
+                "_id": "66f2aabe398a04601e0d4e4d",
                 "_tpl": "6575cea8b15fef3dd405162c",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Shoulder_r"
             },
             {
-                "_id": "6576eba346600d80c70ba800",
+                "_id": "66f2aabe398a04601e0d4e4e",
                 "_tpl": "6575ce8bdc9932aed601c61e",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Groin"
             },
             {
-                "_id": "6576eba346600d80c70ba801",
+                "_id": "66f2aabe398a04601e0d4e4f",
                 "_tpl": "64afc71497cf3a403c01ff38",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Front_plate"
             },
             {
-                "_id": "6576eba346600d80c70ba802",
+                "_id": "66f2aabe398a04601e0d4e50",
                 "_tpl": "64afc71497cf3a403c01ff38",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Back_plate"
             },
             {
-                "_id": "6576eba346600d80c70ba803",
+                "_id": "66f2aabe398a04601e0d4e51",
                 "_tpl": "64afd81707e2cf40e903a316",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Left_side_plate"
             },
             {
-                "_id": "6576eba346600d80c70ba804",
+                "_id": "66f2aabe398a04601e0d4e52",
                 "_tpl": "64afd81707e2cf40e903a316",
-                "parentId": "6576eba346600d80c70ba7f8",
+                "parentId": "66f2aabe398a04601e0d4e46",
                 "slotId": "Right_side_plate"
             }
         ],
         "_name": "Body armor 6B46 6A Zabralo Sh Standard ",
-        "_parent": "6576eba346600d80c70ba7f8",
+        "_parent": "66f2aabe398a04601e0d4e46",
         "_type": "Preset"
     },
-    "Body armor NFM THOR Integrated Carrier Standard": {
+    "65766b46303700411c0242f8": {
         "_changeWeaponName": false,
         "_encyclopedia": "60a283193cb70855c43a381d",
+        "_id": "65766b46303700411c0242f8",
         "_items": [
             {
                 "_id": "6576ea8e46600d80c70ba7da",
@@ -3075,9 +3139,10 @@
         "_parent": "6576ea8e46600d80c70ba7da",
         "_type": "Preset"
     },
-    "Vest WARTECH TV110 Standard": {
+    "657b351d306ad0bf99008208": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e746986f7741453628fe5",
+        "_id": "657b351d306ad0bf99008208",
         "_items": [
             {
                 "_id": "657b351d306ad0bf9900820e",
@@ -3112,9 +3177,10 @@
         "_parent": "657b351d306ad0bf9900820e",
         "_type": "Preset"
     },
-    "Helmet Shlemofon TSh 4M L Standart": {
+    "657bc54eb588f345450a6d56": {
         "_changeWeaponName": false,
         "_encyclopedia": "5df8a58286f77412631087ed",
+        "_id": "657bc54eb588f345450a6d56",
         "_items": [
             {
                 "_id": "657bc54eb588f345450a6d5b",
@@ -3143,9 +3209,10 @@
         "_parent": "657bc54eb588f345450a6d5b",
         "_type": "Preset"
     },
-    "Helmet Tak Kek Fast MT Replika Standart": {
+    "657bc59526820ea7da04f2e8": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ea05cf85ad9772e6624305d",
+        "_id": "657bc59526820ea7da04f2e8",
         "_items": [
             {
                 "_id": "657bc59526820ea7da04f2ec",
@@ -3168,9 +3235,10 @@
         "_parent": "657bc59526820ea7da04f2ec",
         "_type": "Preset"
     },
-    "Helmet Kolpak 1S Standart": {
+    "657bc5cbaab96fccee08bea8": {
         "_changeWeaponName": false,
         "_encyclopedia": "59e7711e86f7746cae05fbe1",
+        "_id": "657bc5cbaab96fccee08bea8",
         "_items": [
             {
                 "_id": "657bc5cbaab96fccee08bead",
@@ -3199,9 +3267,10 @@
         "_parent": "657bc5cbaab96fccee08bead",
         "_type": "Preset"
     },
-    "Helmet PSh 97 Djeta Standart": {
+    "657bc600b588f345450a6d62": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0d2727d174af02a012cf58",
+        "_id": "657bc600b588f345450a6d62",
         "_items": [
             {
                 "_id": "6583fdfb76287649ed0a5d1c",
@@ -3236,9 +3305,10 @@
         "_parent": "6583fdfb76287649ed0a5d1c",
         "_type": "Preset"
     },
-    "Helmet Firefighter ShPM Standart": {
+    "657bc644bbd440df880b2de2": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c08f87c0db8340019124324",
+        "_id": "657bc644bbd440df880b2de2",
         "_items": [
             {
                 "_id": "6584051836c26459480dcc3e",
@@ -3273,9 +3343,10 @@
         "_parent": "6584051836c26459480dcc3e",
         "_type": "Preset"
     },
-    "Helmet Ratnik BSh 6b47 Default Standart": {
+    "657bc68d26820ea7da04f2f0": {
         "_changeWeaponName": false,
         "_encyclopedia": "5a7c4850e899ef00150be885",
+        "_id": "657bc68d26820ea7da04f2f0",
         "_items": [
             {
                 "_id": "657bc68d26820ea7da04f2f5",
@@ -3304,9 +3375,10 @@
         "_parent": "657bc68d26820ea7da04f2f5",
         "_type": "Preset"
     },
-    "Helmet Ratnik BSh 6b47 Flora digital Standart": {
+    "657bc6ceaab96fccee08beb2": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7cfc0e5b5b00015693143",
+        "_id": "657bc6ceaab96fccee08beb2",
         "_items": [
             {
                 "_id": "657bc6ceaab96fccee08beb7",
@@ -3335,9 +3407,10 @@
         "_parent": "657bc6ceaab96fccee08beb7",
         "_type": "Preset"
     },
-    "Helmet Fort Kiver M Standart": {
+    "657bc706b588f345450a6d6c": {
         "_changeWeaponName": false,
         "_encyclopedia": "5645bc214bdc2d363b8b4571",
+        "_id": "657bc706b588f345450a6d6c",
         "_items": [
             {
                 "_id": "657bc706b588f345450a6d71",
@@ -3366,9 +3439,10 @@
         "_parent": "657bc706b588f345450a6d71",
         "_type": "Preset"
     },
-    "Helmet SSSh 94 Sfera S Standart": {
+    "657bc742bbd440df880b2dec": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7d193e5b5b000171d063f",
+        "_id": "657bc742bbd440df880b2dec",
         "_items": [
             {
                 "_id": "657bc742bbd440df880b2df1",
@@ -3397,9 +3471,10 @@
         "_parent": "657bc742bbd440df880b2df1",
         "_type": "Preset"
     },
-    "Helmet LShZ Standart": {
+    "657bc772aab96fccee08bebc": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b432d215acfc4771e1c6624",
+        "_id": "657bc772aab96fccee08bebc",
         "_items": [
             {
                 "_id": "657bc772aab96fccee08bec0",
@@ -3422,9 +3497,10 @@
         "_parent": "657bc772aab96fccee08bec0",
         "_type": "Preset"
     },
-    "Helmet Galvion Caiman Standart": {
+    "657bc7a5bbd440df880b2df6": {
         "_changeWeaponName": false,
         "_encyclopedia": "5f60b34a41e30a4ab12a6947",
+        "_id": "657bc7a5bbd440df880b2df6",
         "_items": [
             {
                 "_id": "657bc7a5bbd440df880b2dfa",
@@ -3447,9 +3523,10 @@
         "_parent": "657bc7a5bbd440df880b2dfa",
         "_type": "Preset"
     },
-    "Helmet NFM HJELM Standart": {
+    "657bc7d6aab96fccee08bec4": {
         "_changeWeaponName": false,
         "_encyclopedia": "61bca7cda0eae612383adf57",
+        "_id": "657bc7d6aab96fccee08bec4",
         "_items": [
             {
                 "_id": "657bc7d6aab96fccee08bec8",
@@ -3472,9 +3549,10 @@
         "_parent": "657bc7d6aab96fccee08bec8",
         "_type": "Preset"
     },
-    "Helmet Maska 1 Sha Killa Standard": {
+    "657bc821aab96fccee08becc": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c0e874186f7745dc7616606",
+        "_id": "657bc821aab96fccee08becc",
         "_items": [
             {
                 "_id": "657bc821aab96fccee08bed2",
@@ -3509,9 +3587,10 @@
         "_parent": "657bc821aab96fccee08bed2",
         "_type": "Preset"
     },
-    "Helmet Rys T Standard": {
+    "657bc861b588f345450a6d76": {
         "_changeWeaponName": false,
         "_encyclopedia": "5f60c74e3b85f6263c145586",
+        "_id": "657bc861b588f345450a6d76",
         "_items": [
             {
                 "_id": "657bc861b588f345450a6d7b",
@@ -3540,9 +3619,10 @@
         "_parent": "657bc861b588f345450a6d7b",
         "_type": "Preset"
     },
-    "Helmet Altin Standart": {
+    "657bc88ebbd440df880b2dfe": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7e276e5b5b000171d0647",
+        "_id": "657bc88ebbd440df880b2dfe",
         "_items": [
             {
                 "_id": "657bc88ebbd440df880b2e03",
@@ -3571,9 +3651,10 @@
         "_parent": "657bc88ebbd440df880b2e03",
         "_type": "Preset"
     },
-    "Helmet LShZ 5 Vulkan 5 Standart": {
+    "657bc8c926820ea7da04f2fa": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ca20ee186f774799474abc2",
+        "_id": "657bc8c926820ea7da04f2fa",
         "_items": [
             {
                 "_id": "657bc8c926820ea7da04f2ff",
@@ -3602,9 +3683,939 @@
         "_parent": "657bc8c926820ea7da04f2ff",
         "_type": "Preset"
     },
-    "Helmet MSA ACH TC 2001 Standart": {
+    "657eb19b7ba4217c5e65b689": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "644674a13d52156624001fbc",
+        "_id": "657eb19b7ba4217c5e65b689",
+        "_items": [
+            {
+                "_id": "657eb19b7ba4217c5e65b68a",
+                "_tpl": "644674a13d52156624001fbc",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Foldable": {
+                        "Folded": false
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b68b",
+                "_tpl": "6450ec2e7da7133e5a09ca96",
+                "parentId": "657eb19b7ba4217c5e65b68a",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b68c",
+                "_tpl": "6450f21a3d52156624001fcf",
+                "parentId": "657eb19b7ba4217c5e65b68a",
+                "slotId": "mod_pistol_grip"
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b68d",
+                "_tpl": "6451167ad4928d46d30be3fd",
+                "parentId": "657eb19b7ba4217c5e65b68a",
+                "slotId": "mod_stock_000"
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b68e",
+                "_tpl": "645122f6d4928d46d30be3ff",
+                "parentId": "657eb19b7ba4217c5e65b68a",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b68f",
+                "_tpl": "64527a263d52156624001fd7",
+                "parentId": "657eb19b7ba4217c5e65b68e",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb19b7ba4217c5e65b690",
+                "_tpl": "644675573d52156624001fc9",
+                "parentId": "657eb19b7ba4217c5e65b68e",
+                "slotId": "mod_handguard"
+            }
+        ],
+        "_name": "9A91_default",
+        "_parent": "657eb19b7ba4217c5e65b68a",
+        "_type": "Preset"
+    },
+    "657eb1c4aebd1b6d254bf6d5": {
+        "_changeWeaponName": true,
+        "_id": "657eb1c4aebd1b6d254bf6d5",
+        "_items": [
+            {
+                "_id": "657eb2562ce80354b8259891",
+                "_tpl": "644674a13d52156624001fbc",
+                "upd": {
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb2562ce80354b8259892",
+                "_tpl": "6450ec2e7da7133e5a09ca96",
+                "parentId": "657eb2562ce80354b8259891",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb2562ce80354b8259893",
+                "_tpl": "6450f21a3d52156624001fcf",
+                "parentId": "657eb2562ce80354b8259891",
+                "slotId": "mod_pistol_grip"
+            },
+            {
+                "_id": "657eb2562ce80354b8259894",
+                "_tpl": "6451167ad4928d46d30be3fd",
+                "parentId": "657eb2562ce80354b8259891",
+                "slotId": "mod_stock_000"
+            },
+            {
+                "_id": "657eb2562ce80354b8259895",
+                "_tpl": "6544d4187c5457729210d277",
+                "parentId": "657eb2562ce80354b8259891",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb2562ce80354b8259896",
+                "_tpl": "645122f6d4928d46d30be3ff",
+                "parentId": "657eb2562ce80354b8259891",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb2562ce80354b8259897",
+                "_tpl": "64527a3a7da7133e5a09ca99",
+                "parentId": "657eb2562ce80354b8259896",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb2562ce80354b8259898",
+                "_tpl": "57a3459f245977764a01f703",
+                "parentId": "657eb2562ce80354b8259897",
+                "slotId": "mod_mount"
+            },
+            {
+                "_id": "657eb2562ce80354b8259899",
+                "_tpl": "646f6322f43d0c5d62063715",
+                "parentId": "657eb2562ce80354b8259898",
+                "slotId": "mod_tactical"
+            },
+            {
+                "_id": "657eb2562ce80354b825989a",
+                "_tpl": "646f62fee779812413011ab7",
+                "parentId": "657eb2562ce80354b8259899",
+                "slotId": "mod_tactical"
+            },
+            {
+                "_id": "657eb2562ce80354b825989b",
+                "_tpl": "644675573d52156624001fc9",
+                "parentId": "657eb2562ce80354b8259896",
+                "slotId": "mod_handguard"
+            }
+        ],
+        "_name": "9A91_tactical",
+        "_parent": "657eb2562ce80354b8259891",
+        "_type": "Preset"
+    },
+    "657eb1fa2ce80354b8259889": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "645e0c6b3b381ede770e1cc9",
+        "_id": "657eb1fa2ce80354b8259889",
+        "_items": [
+            {
+                "_id": "66abdf8c84b88318b4299f50",
+                "_tpl": "645e0c6b3b381ede770e1cc9",
+                "upd": {
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "66abdf8c84b88318b4299f51",
+                "_tpl": "6450ec2e7da7133e5a09ca96",
+                "parentId": "66abdf8c84b88318b4299f50",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "66abdf8c84b88318b4299f52",
+                "_tpl": "6452519e3d52156624001fd5",
+                "parentId": "66abdf8c84b88318b4299f50",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "66abdf8c84b88318b4299f53",
+                "_tpl": "645123013d52156624001fd1",
+                "parentId": "66abdf8c84b88318b4299f50",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "66abdf8c84b88318b4299f54",
+                "_tpl": "64527a3a7da7133e5a09ca99",
+                "parentId": "66abdf8c84b88318b4299f53",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "66abdf8c84b88318b4299f55",
+                "_tpl": "6448f2f6d4928d46d30be3f6",
+                "parentId": "66abdf8c84b88318b4299f53",
+                "slotId": "mod_handguard"
+            }
+        ],
+        "_name": "VSK94_default",
+        "_parent": "66abdf8c84b88318b4299f50",
+        "_type": "Preset"
+    },
+    "657eb23b7ba4217c5e65b692": {
+        "_changeWeaponName": true,
+        "_id": "657eb23b7ba4217c5e65b692",
+        "_items": [
+            {
+                "_id": "657eb261896bd1647e75b389",
+                "_tpl": "645e0c6b3b381ede770e1cc9",
+                "upd": {
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb261896bd1647e75b38a",
+                "_tpl": "6450ec2e7da7133e5a09ca96",
+                "parentId": "657eb261896bd1647e75b389",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb261896bd1647e75b38b",
+                "_tpl": "6452519e3d52156624001fd5",
+                "parentId": "657eb261896bd1647e75b389",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb261896bd1647e75b38c",
+                "_tpl": "618a5d5852ecee1505530b2a",
+                "parentId": "657eb261896bd1647e75b389",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb261896bd1647e75b38d",
+                "_tpl": "645123013d52156624001fd1",
+                "parentId": "657eb261896bd1647e75b389",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb261896bd1647e75b38e",
+                "_tpl": "64527a263d52156624001fd7",
+                "parentId": "657eb261896bd1647e75b38d",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb261896bd1647e75b38f",
+                "_tpl": "6448f2f6d4928d46d30be3f6",
+                "parentId": "657eb261896bd1647e75b38d",
+                "slotId": "mod_handguard"
+            }
+        ],
+        "_name": "VSK94_tactical",
+        "_parent": "657eb261896bd1647e75b389",
+        "_type": "Preset"
+    },
+    "657eb281b0bc0f28b178311e": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "6513ef33e06849f06c0957ca",
+        "_id": "657eb281b0bc0f28b178311e",
+        "_items": [
+            {
+                "_id": "657eb281b0bc0f28b178311f",
+                "_tpl": "6513ef33e06849f06c0957ca",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "fullauto"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783120",
+                "_tpl": "6513f0a194c72326990a3868",
+                "parentId": "657eb281b0bc0f28b178311f",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783121",
+                "_tpl": "6513f1798cb24472490ee331",
+                "parentId": "657eb281b0bc0f28b178311f",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783122",
+                "_tpl": "6513f13a8cb24472490ee32f",
+                "parentId": "657eb281b0bc0f28b1783121",
+                "slotId": "mod_pistolgrip"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783123",
+                "_tpl": "6513eff1e06849f06c0957d4",
+                "parentId": "657eb281b0bc0f28b178311f",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783124",
+                "_tpl": "6513f037e06849f06c0957d7",
+                "parentId": "657eb281b0bc0f28b1783123",
+                "slotId": "mod_bipod"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783125",
+                "_tpl": "6513f0f5e63f29908d0ffab8",
+                "parentId": "657eb281b0bc0f28b1783123",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783126",
+                "_tpl": "6513f05a94c72326990a3866",
+                "parentId": "657eb281b0bc0f28b178311f",
+                "slotId": "mod_handguard"
+            },
+            {
+                "_id": "657eb281b0bc0f28b1783127",
+                "_tpl": "6513f153e63f29908d0ffaba",
+                "parentId": "657eb281b0bc0f28b178311f",
+                "slotId": "mod_sight_rear"
+            }
+        ],
+        "_name": "rpd_default",
+        "_parent": "657eb281b0bc0f28b178311f",
+        "_type": "Preset"
+    },
+    "657eb2b246a703073a5b91e8": {
+        "_changeWeaponName": true,
+        "_id": "657eb2b246a703073a5b91e8",
+        "_items": [
+            {
+                "_id": "657eb2b246a703073a5b91e9",
+                "_tpl": "6513ef33e06849f06c0957ca",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "fullauto"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb2b246a703073a5b91ea",
+                "_tpl": "6513f0a194c72326990a3868",
+                "parentId": "657eb2b246a703073a5b91e9",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb2b246a703073a5b91eb",
+                "_tpl": "6513f1798cb24472490ee331",
+                "parentId": "657eb2b246a703073a5b91e9",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb2b246a703073a5b91ec",
+                "_tpl": "6513f13a8cb24472490ee32f",
+                "parentId": "657eb2b246a703073a5b91eb",
+                "slotId": "mod_pistolgrip"
+            },
+            {
+                "_id": "657eb2b246a703073a5b91ed",
+                "_tpl": "65266fd43341ed9aa903dd56",
+                "parentId": "657eb2b246a703073a5b91e9",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb2b246a703073a5b91ee",
+                "_tpl": "6513f05a94c72326990a3866",
+                "parentId": "657eb2b246a703073a5b91e9",
+                "slotId": "mod_handguard"
+            },
+            {
+                "_id": "657eb2b246a703073a5b91ef",
+                "_tpl": "6513f153e63f29908d0ffaba",
+                "parentId": "657eb2b246a703073a5b91e9",
+                "slotId": "mod_sight_rear"
+            }
+        ],
+        "_name": "rpd_short",
+        "_parent": "657eb2b246a703073a5b91e9",
+        "_type": "Preset"
+    },
+    "657eb30326f0eb0718056204": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "65268d8ecb944ff1e90ea385",
+        "_id": "657eb30326f0eb0718056204",
+        "_items": [
+            {
+                "_id": "657eb30326f0eb0718056205",
+                "_tpl": "65268d8ecb944ff1e90ea385",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "fullauto"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb30326f0eb0718056206",
+                "_tpl": "6513f0a194c72326990a3868",
+                "parentId": "657eb30326f0eb0718056205",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb30326f0eb0718056207",
+                "_tpl": "6513f1798cb24472490ee331",
+                "parentId": "657eb30326f0eb0718056205",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb30326f0eb0718056208",
+                "_tpl": "6513f13a8cb24472490ee32f",
+                "parentId": "657eb30326f0eb0718056207",
+                "slotId": "mod_pistolgrip"
+            },
+            {
+                "_id": "657eb30326f0eb0718056209",
+                "_tpl": "6513eff1e06849f06c0957d4",
+                "parentId": "657eb30326f0eb0718056205",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb30326f0eb071805620a",
+                "_tpl": "6513f037e06849f06c0957d7",
+                "parentId": "657eb30326f0eb0718056209",
+                "slotId": "mod_bipod"
+            },
+            {
+                "_id": "657eb30326f0eb071805620b",
+                "_tpl": "6513f0f5e63f29908d0ffab8",
+                "parentId": "657eb30326f0eb0718056209",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb30326f0eb071805620c",
+                "_tpl": "6513f05a94c72326990a3866",
+                "parentId": "657eb30326f0eb0718056205",
+                "slotId": "mod_handguard"
+            },
+            {
+                "_id": "657eb30326f0eb071805620d",
+                "_tpl": "6513f153e63f29908d0ffaba",
+                "parentId": "657eb30326f0eb0718056205",
+                "slotId": "mod_sight_rear"
+            }
+        ],
+        "_name": "rpdn_default",
+        "_parent": "657eb30326f0eb0718056205",
+        "_type": "Preset"
+    },
+    "657eb3773271d8578610fe28": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "65290f395ae2ae97b80fdf2d",
+        "_id": "657eb3773271d8578610fe28",
+        "_items": [
+            {
+                "_id": "657eb3773271d8578610fe29",
+                "_tpl": "65290f395ae2ae97b80fdf2d",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb3773271d8578610fe2a",
+                "_tpl": "652911675ae2ae97b80fdf3c",
+                "parentId": "657eb3773271d8578610fe29",
+                "slotId": "mod_pistol_grip"
+            },
+            {
+                "_id": "657eb3773271d8578610fe2b",
+                "_tpl": "65293c38fc460e50a509cb25",
+                "parentId": "657eb3773271d8578610fe29",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb3773271d8578610fe2c",
+                "_tpl": "6529119424cbe3c74a05e5bb",
+                "parentId": "657eb3773271d8578610fe29",
+                "slotId": "mod_reciever"
+            },
+            {
+                "_id": "657eb3773271d8578610fe2d",
+                "_tpl": "6567e751a715f85433025998",
+                "parentId": "657eb3773271d8578610fe2c",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb3773271d8578610fe2e",
+                "_tpl": "6567e7681265c8a131069b0f",
+                "parentId": "657eb3773271d8578610fe2d",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb3773271d8578610fe2f",
+                "_tpl": "652910565ae2ae97b80fdf35",
+                "parentId": "657eb3773271d8578610fe2c",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb3773271d8578610fe30",
+                "_tpl": "6529113b5ae2ae97b80fdf39",
+                "parentId": "657eb3773271d8578610fe2f",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb3773271d8578610fe31",
+                "_tpl": "652911e650dc782999054b9d",
+                "parentId": "657eb3773271d8578610fe30",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb3773271d8578610fe32",
+                "_tpl": "652910bc24cbe3c74a05e5b9",
+                "parentId": "657eb3773271d8578610fe2f",
+                "slotId": "mod_gas_block"
+            },
+            {
+                "_id": "657eb3773271d8578610fe33",
+                "_tpl": "652910ef50dc782999054b97",
+                "parentId": "657eb3773271d8578610fe2c",
+                "slotId": "mod_handguard"
+            },
+            {
+                "_id": "657eb3773271d8578610fe34",
+                "_tpl": "6529348224cbe3c74a05e5c4",
+                "parentId": "657eb3773271d8578610fe29",
+                "slotId": "mod_stock_000"
+            },
+            {
+                "_id": "657eb3773271d8578610fe35",
+                "_tpl": "6529366450dc782999054ba0",
+                "parentId": "657eb3773271d8578610fe34",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb3773271d8578610fe36",
+                "_tpl": "6529370c405a5f51dd023db8",
+                "parentId": "657eb3773271d8578610fe35",
+                "slotId": "mod_stock_000"
+            },
+            {
+                "_id": "657eb3773271d8578610fe37",
+                "_tpl": "6529109524cbe3c74a05e5b7",
+                "parentId": "657eb3773271d8578610fe29",
+                "slotId": "mod_charge"
+            }
+        ],
+        "_name": "sig_mcx_spear_default",
+        "_parent": "657eb3773271d8578610fe29",
+        "_type": "Preset"
+    },
+    "657eb391aebd1b6d254bf6e2": {
+        "_changeWeaponName": true,
+        "_id": "657eb391aebd1b6d254bf6e2",
+        "_items": [
+            {
+                "_id": "657eb391aebd1b6d254bf6e3",
+                "_tpl": "65290f395ae2ae97b80fdf2d",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e4",
+                "_tpl": "652911675ae2ae97b80fdf3c",
+                "parentId": "657eb391aebd1b6d254bf6e3",
+                "slotId": "mod_pistol_grip"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e5",
+                "_tpl": "65293c7a17e14363030ad308",
+                "parentId": "657eb391aebd1b6d254bf6e3",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e6",
+                "_tpl": "6529119424cbe3c74a05e5bb",
+                "parentId": "657eb391aebd1b6d254bf6e3",
+                "slotId": "mod_reciever"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e7",
+                "_tpl": "652910565ae2ae97b80fdf35",
+                "parentId": "657eb391aebd1b6d254bf6e6",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e8",
+                "_tpl": "6529113b5ae2ae97b80fdf39",
+                "parentId": "657eb391aebd1b6d254bf6e7",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6e9",
+                "_tpl": "652910bc24cbe3c74a05e5b9",
+                "parentId": "657eb391aebd1b6d254bf6e7",
+                "slotId": "mod_gas_block"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6ea",
+                "_tpl": "652910ef50dc782999054b97",
+                "parentId": "657eb391aebd1b6d254bf6e6",
+                "slotId": "mod_handguard"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6eb",
+                "_tpl": "5b7be47f5acfc400170e2dd2",
+                "parentId": "657eb391aebd1b6d254bf6ea",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6ec",
+                "_tpl": "5b7be47f5acfc400170e2dd2",
+                "parentId": "657eb391aebd1b6d254bf6ea",
+                "slotId": "mod_mount_001"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6ed",
+                "_tpl": "5c18b90d2e2216152142466b",
+                "parentId": "657eb391aebd1b6d254bf6ea",
+                "slotId": "mod_sight_front"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6ee",
+                "_tpl": "651a8e529829226ceb67c319",
+                "parentId": "657eb391aebd1b6d254bf6ea",
+                "slotId": "mod_foregrip"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6ef",
+                "_tpl": "5c18b9192e2216398b5a8104",
+                "parentId": "657eb391aebd1b6d254bf6e6",
+                "slotId": "mod_sight_rear"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6f0",
+                "_tpl": "5c5db6f82e2216003a0fe914",
+                "parentId": "657eb391aebd1b6d254bf6e3",
+                "slotId": "mod_stock_000"
+            },
+            {
+                "_id": "657eb391aebd1b6d254bf6f1",
+                "_tpl": "6529109524cbe3c74a05e5b7",
+                "parentId": "657eb391aebd1b6d254bf6e3",
+                "slotId": "mod_charge"
+            }
+        ],
+        "_name": "sig_mcx_spear_cqb",
+        "_parent": "657eb391aebd1b6d254bf6e3",
+        "_type": "Preset"
+    },
+    "657eb3ef7ba4217c5e65b6a5": {
+        "_changeWeaponName": true,
+        "_id": "657eb3ef7ba4217c5e65b6a5",
+        "_items": [
+            {
+                "_id": "657eb3ef7ba4217c5e65b6a6",
+                "_tpl": "574d967124597745970e7c94",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6a7",
+                "_tpl": "653ecef836fae5a82f02b869",
+                "parentId": "657eb3ef7ba4217c5e65b6a6",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6a8",
+                "_tpl": "634f02331f9f536910079b51",
+                "parentId": "657eb3ef7ba4217c5e65b6a6",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6a9",
+                "_tpl": "634f04d82e5def262d0b30c6",
+                "parentId": "657eb3ef7ba4217c5e65b6a8",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6aa",
+                "_tpl": "634f02d7517ccc8a960fc744",
+                "parentId": "657eb3ef7ba4217c5e65b6a9",
+                "slotId": "mod_gas_block"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6ab",
+                "_tpl": "653ecc425a1690d9d90491e4",
+                "parentId": "657eb3ef7ba4217c5e65b6aa",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6ac",
+                "_tpl": "574db213245977459a2f3f5d",
+                "parentId": "657eb3ef7ba4217c5e65b6a9",
+                "slotId": "mod_sight_rear"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6ad",
+                "_tpl": "593d1fa786f7746da62d61ac",
+                "parentId": "657eb3ef7ba4217c5e65b6a8",
+                "slotId": "mod_mount_001"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6ae",
+                "_tpl": "5c5952732e2216398b5abda2",
+                "parentId": "657eb3ef7ba4217c5e65b6ad",
+                "slotId": "mod_tactical_000"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6af",
+                "_tpl": "5cf67cadd7f00c065a5abab7",
+                "parentId": "657eb3ef7ba4217c5e65b6a8",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6b0",
+                "_tpl": "59fb257e86f7742981561852",
+                "parentId": "657eb3ef7ba4217c5e65b6af",
+                "slotId": "mod_muzzle"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6b1",
+                "_tpl": "587df583245977373c4f1129",
+                "parentId": "657eb3ef7ba4217c5e65b6a6",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6b2",
+                "_tpl": "6415c694da439c6a97048b56",
+                "parentId": "657eb3ef7ba4217c5e65b6a6",
+                "slotId": "mod_reciever"
+            },
+            {
+                "_id": "657eb3ef7ba4217c5e65b6b3",
+                "_tpl": "609a63b6e2ff132951242d09",
+                "parentId": "657eb3ef7ba4217c5e65b6b2",
+                "slotId": "mod_scope"
+            }
+        ],
+        "_name": "sks_tactical",
+        "_parent": "657eb3ef7ba4217c5e65b6a6",
+        "_type": "Preset"
+    },
+    "657eb42546a703073a5b91f1": {
+        "_changeWeaponName": true,
+        "_id": "657eb42546a703073a5b91f1",
+        "_items": [
+            {
+                "_id": "657eb42546a703073a5b91f2",
+                "_tpl": "587e02ff24597743df3deaeb",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb42546a703073a5b91f3",
+                "_tpl": "587e0531245977466077a0f7",
+                "parentId": "657eb42546a703073a5b91f2",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f4",
+                "_tpl": "634eff66517ccc8a960fc735",
+                "parentId": "657eb42546a703073a5b91f2",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f5",
+                "_tpl": "634f05a21f9f536910079b56",
+                "parentId": "657eb42546a703073a5b91f4",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f6",
+                "_tpl": "634f036a517ccc8a960fc746",
+                "parentId": "657eb42546a703073a5b91f5",
+                "slotId": "mod_gas_block"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f7",
+                "_tpl": "634f03d40384a3ba4f06f874",
+                "parentId": "657eb42546a703073a5b91f6",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f8",
+                "_tpl": "574db213245977459a2f3f5d",
+                "parentId": "657eb42546a703073a5b91f5",
+                "slotId": "mod_sight_rear"
+            },
+            {
+                "_id": "657eb42546a703073a5b91f9",
+                "_tpl": "587df3a12459772c28142567",
+                "parentId": "657eb42546a703073a5b91f2",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb42546a703073a5b91fa",
+                "_tpl": "587e08ee245977446b4410cf",
+                "parentId": "657eb42546a703073a5b91f2",
+                "slotId": "mod_mount"
+            },
+            {
+                "_id": "657eb42546a703073a5b91fb",
+                "_tpl": "5c82343a2e221644f31c0611",
+                "parentId": "657eb42546a703073a5b91fa",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb42546a703073a5b91fc",
+                "_tpl": "634f06262e5def262d0b30ca",
+                "parentId": "657eb42546a703073a5b91f2",
+                "slotId": "mod_reciever"
+            }
+        ],
+        "_name": "op_sks_sniper",
+        "_parent": "657eb42546a703073a5b91f2",
+        "_type": "Preset"
+    },
+    "657eb44126f0eb0718056218": {
+        "_changeWeaponName": true,
+        "_id": "657eb44126f0eb0718056218",
+        "_items": [
+            {
+                "_id": "657eb44126f0eb0718056219",
+                "_tpl": "587e02ff24597743df3deaeb",
+                "upd": {
+                    "FireMode": {
+                        "FireMode": "single"
+                    },
+                    "Repairable": {
+                        "Durability": 100,
+                        "MaxDurability": 100
+                    }
+                }
+            },
+            {
+                "_id": "657eb44126f0eb071805621a",
+                "_tpl": "653ecef836fae5a82f02b869",
+                "parentId": "657eb44126f0eb0718056219",
+                "slotId": "mod_stock"
+            },
+            {
+                "_id": "657eb44126f0eb071805621b",
+                "_tpl": "634eff66517ccc8a960fc735",
+                "parentId": "657eb44126f0eb0718056219",
+                "slotId": "mod_barrel"
+            },
+            {
+                "_id": "657eb44126f0eb071805621c",
+                "_tpl": "634f05a21f9f536910079b56",
+                "parentId": "657eb44126f0eb071805621b",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb44126f0eb071805621d",
+                "_tpl": "634f036a517ccc8a960fc746",
+                "parentId": "657eb44126f0eb071805621c",
+                "slotId": "mod_gas_block"
+            },
+            {
+                "_id": "657eb44126f0eb071805621e",
+                "_tpl": "653ecc425a1690d9d90491e4",
+                "parentId": "657eb44126f0eb071805621d",
+                "slotId": "mod_mount_000"
+            },
+            {
+                "_id": "657eb44126f0eb071805621f",
+                "_tpl": "574db213245977459a2f3f5d",
+                "parentId": "657eb44126f0eb071805621c",
+                "slotId": "mod_sight_rear"
+            },
+            {
+                "_id": "657eb44126f0eb0718056220",
+                "_tpl": "587df583245977373c4f1129",
+                "parentId": "657eb44126f0eb0718056219",
+                "slotId": "mod_magazine"
+            },
+            {
+                "_id": "657eb44126f0eb0718056221",
+                "_tpl": "6415d33eda439c6a97048b5b",
+                "parentId": "657eb44126f0eb0718056219",
+                "slotId": "mod_mount"
+            },
+            {
+                "_id": "657eb44126f0eb0718056222",
+                "_tpl": "591c4efa86f7741030027726",
+                "parentId": "657eb44126f0eb0718056221",
+                "slotId": "mod_scope"
+            },
+            {
+                "_id": "657eb44126f0eb0718056223",
+                "_tpl": "591c4e1186f77410354b316e",
+                "parentId": "657eb44126f0eb0718056222",
+                "slotId": "mod_tactical"
+            },
+            {
+                "_id": "657eb44126f0eb0718056224",
+                "_tpl": "634f06262e5def262d0b30ca",
+                "parentId": "657eb44126f0eb0718056219",
+                "slotId": "mod_reciever"
+            }
+        ],
+        "_name": "op_sks_tactical",
+        "_parent": "657eb44126f0eb0718056219",
+        "_type": "Preset"
+    },
+    "657fa705e9433140ad0baf95": {
         "_changeWeaponName": false,
         "_encyclopedia": "5d5e7d28a4b936645d161203",
+        "_id": "657fa705e9433140ad0baf95",
         "_items": [
             {
                 "_id": "657fa705e9433140ad0baf99",
@@ -3627,9 +4638,10 @@
         "_parent": "657fa705e9433140ad0baf99",
         "_type": "Preset"
     },
-    "Helmet MSA ACH TC 2002 Standart": {
+    "657fa735e65c0122b70ffda5": {
         "_changeWeaponName": false,
         "_encyclopedia": "5d5e9c74a4b9364855191c40",
+        "_id": "657fa735e65c0122b70ffda5",
         "_items": [
             {
                 "_id": "657fa735e65c0122b70ffda9",
@@ -3652,9 +4664,10 @@
         "_parent": "657fa735e65c0122b70ffda9",
         "_type": "Preset"
     },
-    "Helmet Ops Core Fast MT Black Standart": {
+    "657fa7c0e65c0122b70ffdb0": {
         "_changeWeaponName": false,
         "_encyclopedia": "5a154d5cfcdbcb001a3b00da",
+        "_id": "657fa7c0e65c0122b70ffdb0",
         "_items": [
             {
                 "_id": "657fa7c0e65c0122b70ffdb4",
@@ -3677,9 +4690,10 @@
         "_parent": "657fa7c0e65c0122b70ffdb4",
         "_type": "Preset"
     },
-    "Helmet Ops Core Fast MT Sand Standart": {
+    "657fa7f1e9433140ad0baf9d": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ac8d6885acfc400180ae7b0",
+        "_id": "657fa7f1e9433140ad0baf9d",
         "_items": [
             {
                 "_id": "657fa7f1e9433140ad0bafa1",
@@ -3702,9 +4716,10 @@
         "_parent": "657fa7f1e9433140ad0bafa1",
         "_type": "Preset"
     },
-    "Helmet ZSh 1 2M Standart": {
+    "657fa836c6679fefb3051e28": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7e454e5b5b0214e506fa2",
+        "_id": "657fa836c6679fefb3051e28",
         "_items": [
             {
                 "_id": "657fa836c6679fefb3051e2d",
@@ -3733,9 +4748,10 @@
         "_parent": "657fa836c6679fefb3051e2d",
         "_type": "Preset"
     },
-    "Helmet ZSh 1 2M Black Standart": {
+    "657fa87fc6679fefb3051e32": {
         "_changeWeaponName": false,
         "_encyclopedia": "5aa7e4a4e5b5b000137b76f2",
+        "_id": "657fa87fc6679fefb3051e32",
         "_items": [
             {
                 "_id": "657fa87fc6679fefb3051e37",
@@ -3764,9 +4780,10 @@
         "_parent": "657fa87fc6679fefb3051e37",
         "_type": "Preset"
     },
-    "Helmet HighCom Striker ACHHC IIIA Black Standart": {
+    "657fa8c5e9433140ad0bafa5": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b40e3f35acfc40016388218",
+        "_id": "657fa8c5e9433140ad0bafa5",
         "_items": [
             {
                 "_id": "657fa8c5e9433140ad0bafa9",
@@ -3789,9 +4806,10 @@
         "_parent": "657fa8c5e9433140ad0bafa9",
         "_type": "Preset"
     },
-    "Helmet HighCom Striker ACHHC IIIA Olive Standart": {
+    "657fa8e787e11c61f70bfad5": {
         "_changeWeaponName": false,
         "_encyclopedia": "5b40e4035acfc47a87740943",
+        "_id": "657fa8e787e11c61f70bfad5",
         "_items": [
             {
                 "_id": "657fa8e787e11c61f70bfad9",
@@ -3814,9 +4832,10 @@
         "_parent": "657fa8e787e11c61f70bfad9",
         "_type": "Preset"
     },
-    "Helmet Crye Precision AirFrame Standart": {
+    "657fa92de65c0122b70ffdb9": {
         "_changeWeaponName": false,
         "_encyclopedia": "5c17a7ed2e2216152142459c",
+        "_id": "657fa92de65c0122b70ffdb9",
         "_items": [
             {
                 "_id": "657fa92de65c0122b70ffdbd",
@@ -3839,9 +4858,10 @@
         "_parent": "657fa92de65c0122b70ffdbd",
         "_type": "Preset"
     },
-    "Helmet Diamond Age Bastion Standart": {
+    "657fa95ae9433140ad0bafad": {
         "_changeWeaponName": false,
         "_encyclopedia": "5ea17ca01412a1425304d1c0",
+        "_id": "657fa95ae9433140ad0bafad",
         "_items": [
             {
                 "_id": "657fa95ae9433140ad0bafb1",
@@ -3864,9 +4884,10 @@
         "_parent": "657fa95ae9433140ad0bafb1",
         "_type": "Preset"
     },
-    "Helmet BNTI LShZ 2DTM Standart": {
+    "657fa996e9433140ad0bafb5": {
         "_changeWeaponName": false,
         "_encyclopedia": "5d6d3716a4b9361bc8618872",
+        "_id": "657fa996e9433140ad0bafb5",
         "_items": [
             {
                 "_id": "657fa996e9433140ad0bafba",
@@ -3895,9 +4916,10 @@
         "_parent": "657fa996e9433140ad0bafba",
         "_type": "Preset"
     },
-    "Helmet MSA Gallet TC 800 Standart": {
+    "657fa9cf87e11c61f70bfadd": {
         "_changeWeaponName": false,
         "_encyclopedia": "5e4bfc1586f774264f7582d3",
+        "_id": "657fa9cf87e11c61f70bfadd",
         "_items": [
             {
                 "_id": "657fa9cf87e11c61f70bfae1",
@@ -3920,9 +4942,10 @@
         "_parent": "657fa9cf87e11c61f70bfae1",
         "_type": "Preset"
     },
-    "Helmet Class Tor 2 Standart": {
+    "657faa0687e11c61f70bfae5": {
         "_changeWeaponName": false,
         "_encyclopedia": "65719f0775149d62ce0a670b",
+        "_id": "657faa0687e11c61f70bfae5",
         "_items": [
             {
                 "_id": "657faa0687e11c61f70bfaea",
@@ -3951,9 +4974,10 @@
         "_parent": "657faa0687e11c61f70bfaea",
         "_type": "Preset"
     },
-    "Helmet Adept Neosteel Standart": {
+    "657faa32e65c0122b70ffdc1": {
         "_changeWeaponName": false,
         "_encyclopedia": "65709d2d21b9f815e208ff95",
+        "_id": "657faa32e65c0122b70ffdc1",
         "_items": [
             {
                 "_id": "657faa32e65c0122b70ffdc5",
@@ -3976,34 +5000,232 @@
         "_parent": "657faa32e65c0122b70ffdc5",
         "_type": "Preset"
     },
-    "pvs 14 skull lock nightvision": {
-        "_changeWeaponName": true,
+    "66b9c41f0b603c26902afd8d": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66b5f65ca7f72d197e70bcd6",
+        "_id": "66b9c41f0b603c26902afd8d",
         "_items": [
             {
-                "_id": "5a3b898486f77467720a2f25",
-                "_tpl": "5a16bb52fcdbcb001a3b00dc"
+                "_id": "66b9c450af44ca0014063e03",
+                "_tpl": "66b5f65ca7f72d197e70bcd6"
             },
             {
-                "_id": "5a3b898486f77467720a2f26",
-                "_tpl": "5a16b8a9fcdbcb00165aa6ca",
-                "parentId": "5a3b898486f77467720a2f25",
-                "slotId": "mod_nvg"
+                "_id": "66b9c450af44ca0014063e04",
+                "_tpl": "66b61cfae98be930d701c029",
+                "parentId": "66b9c450af44ca0014063e03",
+                "slotId": "Helmet_top"
             },
             {
-                "_id": "5a3b898486f77467720a2f27",
-                "_tpl": "5a16b93dfcdbcbcae6687261",
-                "parentId": "5a3b898486f77467720a2f26",
-                "slotId": "mod_nvg"
-            },
-            {
-                "_id": "5a3b898486f77467720a2f28",
-                "_tpl": "57235b6f24597759bf5a30f1",
-                "parentId": "5a3b898486f77467720a2f27",
-                "slotId": "mod_nvg"
+                "_id": "66b9c450af44ca0014063e05",
+                "_tpl": "66b61ce0c5d72b027748867e",
+                "parentId": "66b9c450af44ca0014063e03",
+                "slotId": "Helmet_back"
             }
         ],
-        "_name": "pvs 14 skull lock nightvision",
-        "_parent": "5a3b898486f77467720a2f25",
+        "_name": "Helmet Ballistic Armor Co Bastion Black Standart",
+        "_parent": "66b9c450af44ca0014063e03",
+        "_type": "Preset"
+    },
+    "66b9c53ea7f72d197e70bf83": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66b5f661af44ca0014063c05",
+        "_id": "66b9c53ea7f72d197e70bf83",
+        "_items": [
+            {
+                "_id": "66b9c53ea7f72d197e70bf87",
+                "_tpl": "66b5f661af44ca0014063c05"
+            },
+            {
+                "_id": "66b9c53ea7f72d197e70bf88",
+                "_tpl": "66b61cfae98be930d701c029",
+                "parentId": "66b9c53ea7f72d197e70bf87",
+                "slotId": "Helmet_top"
+            },
+            {
+                "_id": "66b9c53ea7f72d197e70bf89",
+                "_tpl": "66b61ce0c5d72b027748867e",
+                "parentId": "66b9c53ea7f72d197e70bf87",
+                "slotId": "Helmet_back"
+            }
+        ],
+        "_name": "Helmet Ballistic Armor Co Bastion Olive Standart",
+        "_parent": "66b9c53ea7f72d197e70bf87",
+        "_type": "Preset"
+    },
+    "66b9c562fd38bf060b4b85a7": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66b5f666cad6f002ab7214c2",
+        "_id": "66b9c562fd38bf060b4b85a7",
+        "_items": [
+            {
+                "_id": "66b9c562fd38bf060b4b85ab",
+                "_tpl": "66b5f666cad6f002ab7214c2"
+            },
+            {
+                "_id": "66b9c562fd38bf060b4b85ac",
+                "_tpl": "66b61cfae98be930d701c029",
+                "parentId": "66b9c562fd38bf060b4b85ab",
+                "slotId": "Helmet_top"
+            },
+            {
+                "_id": "66b9c562fd38bf060b4b85ad",
+                "_tpl": "66b61ce0c5d72b027748867e",
+                "parentId": "66b9c562fd38bf060b4b85ab",
+                "slotId": "Helmet_back"
+            }
+        ],
+        "_name": "Helmet Ballistic Armor Co Bastion Multicam Standart",
+        "_parent": "66b9c562fd38bf060b4b85ab",
+        "_type": "Preset"
+    },
+    "66b9c5db19a3ab39b7175e2b": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66b6296d7994640992013b17",
+        "_id": "66b9c5db19a3ab39b7175e2b",
+        "_items": [
+            {
+                "_id": "66b9c5db19a3ab39b7175e34",
+                "_tpl": "66b6296d7994640992013b17"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e35",
+                "_tpl": "66b884f4c5d72b02774886eb",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Soft_armor_front"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e36",
+                "_tpl": "66b884eaacff495a29492849",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Soft_armor_back"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e37",
+                "_tpl": "66b8851678bbc0200425fa03",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Soft_armor_left"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e38",
+                "_tpl": "66b88521a7f72d197e70be3b",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "soft_armor_right"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e39",
+                "_tpl": "66b884fd7994640992013b37",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Groin"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e3a",
+                "_tpl": "656fa0fb498d1b7e3e071d9c",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Front_plate"
+            },
+            {
+                "_id": "66b9c5db19a3ab39b7175e3b",
+                "_tpl": "656fa0fb498d1b7e3e071d9c",
+                "parentId": "66b9c5db19a3ab39b7175e34",
+                "slotId": "Back_plate"
+            }
+        ],
+        "_name": "Vest Stich Profi Plate Carrier Ver 2 Black Standart",
+        "_parent": "66b9c5db19a3ab39b7175e34",
+        "_type": "Preset"
+    },
+    "66b9c65b96edb969cd4f5d7f": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66b6295178bbc0200425f995",
+        "_id": "66b9c65b96edb969cd4f5d7f",
+        "_items": [
+            {
+                "_id": "66b9c65b96edb969cd4f5d87",
+                "_tpl": "66b6295178bbc0200425f995"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d88",
+                "_tpl": "66b8b217c5d72b02774887b4",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "Soft_armor_front"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d89",
+                "_tpl": "66b8b20c5891c84aab75cb96",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "Soft_armor_back"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d8a",
+                "_tpl": "66b8b223a7f72d197e70bed3",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "Soft_armor_left"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d8b",
+                "_tpl": "66b8b22b78bbc0200425fb20",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "soft_armor_right"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d8c",
+                "_tpl": "656fafe3498d1b7e3e071da4",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "Front_plate"
+            },
+            {
+                "_id": "66b9c65b96edb969cd4f5d8d",
+                "_tpl": "656fafe3498d1b7e3e071da4",
+                "parentId": "66b9c65b96edb969cd4f5d87",
+                "slotId": "Back_plate"
+            }
+        ],
+        "_name": "Vest Stich Profi Stich Defence Mod 2 Multicam Standart",
+        "_parent": "66b9c65b96edb969cd4f5d87",
+        "_type": "Preset"
+    },
+    "66c49c0f2e6e23eb7b03f22d": {
+        "_changeWeaponName": false,
+        "_encyclopedia": "66bdc28a0b603c26902b2011",
+        "_id": "66c49c0f2e6e23eb7b03f22d",
+        "_items": [
+            {
+                "_id": "66c49c0f2e6e23eb7b03f234",
+                "_tpl": "66bdc28a0b603c26902b2011"
+            },
+            {
+                "_id": "66c49c0f2e6e23eb7b03f235",
+                "_tpl": "66bdc2ea8cbd597c9c2f9360",
+                "parentId": "66c49c0f2e6e23eb7b03f234",
+                "slotId": "Helmet_top"
+            },
+            {
+                "_id": "66c49c0f2e6e23eb7b03f236",
+                "_tpl": "66bdc2e25f17154509115d1e",
+                "parentId": "66c49c0f2e6e23eb7b03f234",
+                "slotId": "Helmet_back"
+            },
+            {
+                "_id": "66c49c0f2e6e23eb7b03f237",
+                "_tpl": "66bdc2d051aa8c345646d03f",
+                "parentId": "66c49c0f2e6e23eb7b03f234",
+                "slotId": "helmet_eyes"
+            },
+            {
+                "_id": "66c49c0f2e6e23eb7b03f238",
+                "_tpl": "66bdc2d9408f1e66eb4fd957",
+                "parentId": "66c49c0f2e6e23eb7b03f234",
+                "slotId": "helmet_jaw"
+            },
+            {
+                "_id": "66c49c0f2e6e23eb7b03f239",
+                "_tpl": "66bdc2c90b603c26902b2018",
+                "parentId": "66c49c0f2e6e23eb7b03f234",
+                "slotId": "Helmet_ears"
+            }
+        ],
+        "_name": "Helmet DevTac Ronin Old",
+        "_parent": "66c49c0f2e6e23eb7b03f234",
         "_type": "Preset"
     }
 }

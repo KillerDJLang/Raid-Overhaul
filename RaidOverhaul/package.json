@@ -1,14 +1,14 @@
 {
     "name": "Raid Overhaul",
-    "version": "2.5.1",
+    "version": "2.6.0",
     "main": "src/mod.js",
     "isBundleMod": true,
     "license": "CC BY-NC-ND 4.0",
     "author": "DJ",
-    "sptVersion": "~3.9",
+    "sptVersion": "~3.10",
     "loadBefore": [],
     "loadAfter": ["SPT-Realism"],
-    "incompatibilities": ["zROStandaloneBackend"],
+    "incompatibilities": ["ROStandaloneBackend"],
     "contributors": ["Dirtbikercj"],
     "scripts": {
         "setup": "npm i",
@@ -17,7 +17,7 @@
         "format": "npx @biomejs/biome check --write ./"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.9.0",
+        "@biomejs/biome": "1.8.3",
         "@types/node": "20.11",
         "@typescript-eslint/eslint-plugin": "7.2",
         "@typescript-eslint/parser": "7.2",

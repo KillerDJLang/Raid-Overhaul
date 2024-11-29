@@ -53,10 +53,6 @@
         {
             "key": "Containers/OnyxContainer.bundle",
             "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
-        },
-        {
-            "key": "Containers/ThetaContainer.bundle",
-            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
         }
     ]
 }
