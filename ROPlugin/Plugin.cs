@@ -85,9 +85,9 @@ namespace RaidOverhaul
 
             // Get and Initialize the Server Configs
             ConfigController.EventConfig = Utils.Get<EventsConfig>("/RaidOverhaul/GetEventConfig");
-            Weighting.InitWeightings();
-
             ConfigController.ServerConfig = Utils.Get<ServerConfigs>("/RaidOverhaul/GetServerConfig");
+            ConfigController.DebugConfig = Utils.Get<DebugConfigs>("/RaidOverhaul/GetDebugConfig");
+            Weighting.InitWeightings();
 
             Utils.GetWeatherFields();
 
@@ -104,11 +104,7 @@ namespace RaidOverhaul
 
             //Load Legion
             //Thanks and all credit to Groovey for the boss loading fix for 390 <3
-            FieldInfo excludedDifficultiesField = typeof(GClass583).GetField("ExcludedDifficulties", BindingFlags.Static | BindingFlags.Public);
-            if (excludedDifficultiesField == null) {
-                throw new InvalidOperationException("ExcludedDifficulties field not found.");
-            }
-
+            FieldInfo excludedDifficultiesField = typeof(GClass583).GetField("ExcludedDifficulties", BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("ExcludedDifficulties field not found.");
             var excludedDifficulties = (Dictionary<WildSpawnType, List<BotDifficulty>>)excludedDifficultiesField.GetValue(null);
 
             var excludedDifficultiesForLegion = new List<BotDifficulty> {
@@ -126,14 +122,14 @@ namespace RaidOverhaul
             Utils.LoadLegionSettings();
 
             if (ConfigController.ServerConfig.TimeChanges) {
-/*
+                /*
                 new WatchPatch().Enable();
                 new WeatherControllerPatch().Enable();
                 new TimeUIPanelPatch().Enable();
                 new OnGameStartedPatch().Enable();
                 new TimeUIUpdatePatch().Enable();
                 new LocationConditionsPanelPatch().Enable();
-*/
+                */
             }
 
             if (DJConfig.Deafness.Value && realismDetected == false) {
@@ -205,25 +201,25 @@ namespace RaidOverhaul
             _AAS = _AAS ?? typeof(Inventory).GetField("ArmorSlots");
             _AAS?.SetValue(_AAS, Utils._armbandAAS);
 
-#if DEBUG
-            ConsoleCommands.RegisterCC();
-#endif
+            if (ConfigController.DebugConfig.DebugMode) {
+                ConsoleCommands.RegisterCC();
+            }
         }
 
         void Update()
         {
             if (Chainloader.PluginInfos.ContainsKey(Utils.RealismKey) && PreloaderUI.Instantiated && realismDetected == false) {
                 realismDetected = true;
-#if DEBUG
-                Utils.LogToServerConsole("Realism Detected, disabling ROs deafness mechanics.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("Realism Detected, disabling ROs deafness mechanics.");
+                }
             }
 
             if (Chainloader.PluginInfos.ContainsKey(Utils.WatchAnimsKey) && PreloaderUI.Instantiated && watchAnimsDetected == false) {
                 watchAnimsDetected = true;
-#if DEBUG
-                Utils.LogToServerConsole("Watch Animations Standalone Detected, disabling ROs watch animations.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("Watch Animations Standalone Detected, disabling ROs watch animations.");
+                }
             }
 
             if (Chainloader.PluginInfos.ContainsKey(Utils.ROStandaloneKey) && PreloaderUI.Instantiated && standaloneDetected == false) {

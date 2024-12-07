@@ -26,8 +26,8 @@ namespace RaidOverhaul.Helpers
         public static int MinCurr = DateTime.Now.Minute;
         public static int SecCurr = DateTime.Now.Second;
         public static int YearCurr = DateTime.Now.Second;
-        public static int DayCurr = DateTime.Now.Second;
         public static int MonthCurr = DateTime.Now.Second;
+        public static int DayCurr = DateTime.Now.Second;
 
         public static readonly List<string> Traders = new List<string> {
             "54cb50c76803fa8b248b4571",     //Prapor
@@ -94,15 +94,15 @@ namespace RaidOverhaul.Helpers
                 {
                     string legionSettingsJson = File.ReadAllText(Plugin.legionJsonPath);
                     Plugin.legionText = new TextAsset(legionSettingsJson);
-                    Debug.Log("Legion settings loaded successfully");
+                    Plugin.Log.LogInfo("Legion settings loaded successfully");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"Error loading Legion settings from {Plugin.legionJsonPath}: {ex.Message}");
+                    Plugin.Log.LogError($"Error loading Legion settings from {Plugin.legionJsonPath}: {ex.Message}");
                 }
             }
             else {
-                Debug.LogError($"Legion settings file not found at {Plugin.legionJsonPath}");
+                Plugin.Log.LogError($"Legion settings file not found at {Plugin.legionJsonPath}");
             }
         }
 
@@ -128,6 +128,7 @@ namespace RaidOverhaul.Helpers
         {
             return new DateTime(YearCurr, MonthCurr, DayCurr, HourCurr, MinCurr, SecCurr);
         }
+
         public static DateTime GetInverseGameTime()
         {
             return new DateTime(YearCurr, MonthCurr, DayCurr, HourCurr + 12, MinCurr, SecCurr);
@@ -144,13 +145,13 @@ namespace RaidOverhaul.Helpers
                 bg.transform.Find("Checkmark").gameObject.GetComponent<Image>().color = Color.white;
                 phaseToEnable.text = enabledText;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                Debug.LogError($"Error setting UI time: {ex.Message}");
+                Plugin.Log.LogError($"Error setting UI time: {ex.Message}");
             }
         }
 
-        public static void SetRaidTime(float daylightCycleRate)
+        public static void SetRaidTime()
         {
             if (!Singleton<GameWorld>.Instantiated) {
                 throw new Exception("SetRaidTime was called before the game world was set.");
@@ -161,7 +162,7 @@ namespace RaidOverhaul.Helpers
             dateTime = GetCurrentGameTime();
 
             var gameDateTimeInst = Singleton<GameWorld>.Instance.GameDateTime;
-            gameDateTimeInst.Reset(DateTime.Now, dateTime, daylightCycleRate);
+            gameDateTimeInst.Reset(DateTime.Now, dateTime, 5f);
         }
     }
 }

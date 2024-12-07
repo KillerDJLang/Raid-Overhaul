@@ -19,7 +19,7 @@
         "TimeLimit": 999,                           //The raid time limit calculated in minutes
         "HolsterAnything": true,                    //If true, you will be able to put any weapon in your holster slot
         "LowerExamineTime": true,                   //Lowers the time required to examine items
-        "SpecialSlotChanges": true,                 //Enables the special slot filter changes allowing anything into them
+        "SpecialSlotChanges": false,                //Enables the special slot filter changes allowing anything into them
         "ChangeAirdropValues": {                    //Enable airdrop changes. Each maps value is a percent chance to get a random airdrop on that map
             "Enabled": false,
             "Customs": 35,
@@ -95,8 +95,5 @@
         "NoWinter": false,                          //Same as above minus winter in case you find the spring/summer to winter shift too jarring
         "SeasonalProgression": true,                //Progresses through all the implemented seasons as you complete raids
         "WinterWonderland": false,                  //All snow all the time baby!!!
-    },
-    "Debug": {
-        "ExtraLogging": false,                      //Don't enable this unless you really like having your server console flooded with info that you don't need or care about
     }
 }

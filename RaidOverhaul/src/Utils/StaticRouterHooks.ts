@@ -1,5 +1,5 @@
 import { AssortedBullshit } from "../BaseFeatures/baseFeatures";
-import type { configFile, seasonalProgression } from "./Enums";
+import type { configFile, seasonalProgression, debugFile } from "./Enums";
 import type { Logger } from "./Logger";
 import type { References } from "./References";
 import type { Utils } from "./Utils";
@@ -20,18 +20,20 @@ export class StaticRouters {
   ) {}
 
   public registerHooks(): void {
-    const weatherConfigPath = path.resolve(
-      __dirname,
-      "../../config/SeasonsProgressionFile.json"
-    );
     const modConfig = JSON5.parse(
       this.ref.vfs.readFile(
         path.resolve(__dirname, "../../config/config.json5")
       )
     ) as configFile;
-    const weatherConfig = this.ref.jsonUtil.deserialize(
-      fs.readFileSync(weatherConfigPath, "utf-8"),
-      "config.json"
+    const debugConfig = JSON5.parse(
+      this.ref.vfs.readFile(
+        path.resolve(__dirname, "./ArrayFiles/debugOptions.json5")
+      )
+    ) as debugFile;
+    const weatherConfig = JSON5.parse(
+      this.ref.vfs.readFile(
+        path.resolve(__dirname, "./ArrayFiles/SeasonsProgressionFile.json5")
+      )
     ) as seasonalProgression;
     const modFeatures = new AssortedBullshit(this.utils, this.ref, this.logger);
 
@@ -101,6 +103,21 @@ export class StaticRouters {
       "spt"
     );
 
+    this.ref.staticRouter.registerStaticRouter(
+      "GetDebugConfig",
+      [
+        {
+          url: "/RaidOverhaul/GetDebugConfig",
+          action: async (url, info, sessionId, output) => {
+            const DebugConfig = debugConfig;
+
+            return JSON.stringify(DebugConfig);
+          },
+        },
+      ],
+      "spt"
+    );
+
     // Randomize weather pre-raid
     if (modConfig.Seasons.EnableWeatherOptions) {
       if (
@@ -110,7 +127,7 @@ export class StaticRouters {
         !modConfig.Seasons.WinterWonderland
       ) {
         this.ref.staticRouter.registerStaticRouter(
-          `[${this.routerPrefix}]-/client/items`,
+          `[${this.routerPrefix}]-/Seasons`,
           [
             {
               url: "/client/items",
@@ -131,7 +148,7 @@ export class StaticRouters {
         !modConfig.Seasons.WinterWonderland
       ) {
         this.ref.staticRouter.registerStaticRouter(
-          `[${this.routerPrefix}]-/client/items`,
+          `[${this.routerPrefix}]-/Seasons`,
           [
             {
               url: "/client/items",
@@ -152,12 +169,12 @@ export class StaticRouters {
         !modConfig.Seasons.WinterWonderland
       ) {
         this.ref.staticRouter.registerStaticRouter(
-          `[${this.routerPrefix}]-/client/items`,
+          `[${this.routerPrefix}]-/Seasons`,
           [
             {
-              url: "/client/items",
+              url: "/client/match/local/start",
               action: async (url, info, sessionId, output) => {
-                modFeatures.seasonProgression(modConfig);
+                modFeatures.seasonProgression(debugConfig);
                 return Promise.resolve(output);
               },
             },

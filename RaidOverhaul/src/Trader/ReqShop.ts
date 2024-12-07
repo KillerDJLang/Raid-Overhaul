@@ -7,7 +7,7 @@ import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import type { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 
 import { AllItemList } from "../CustomItems/GenEnums";
-import { Currency } from "../Utils/Enums";
+import { Currency, debugFile } from "../Utils/Enums";
 import type { Logger } from "../Utils/Logger";
 import type { References } from "../Utils/References";
 import type { Utils } from "../Utils/Utils";
@@ -1114,29 +1114,32 @@ export class TraderData {
   //
   //
   //#region Reputation Change Logic
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   static traderRepLogic(
     info: any,
     sessionId: string,
     traderHelper: any,
-    logger: Logger
+    logger: Logger,
+    debugConfig: debugFile
   ): void {
     try {
-      if (info.exit === "Left") {
+      if (info.results.result === "Left") {
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
-      } else if (info.exit === "killed") {
+      } else if (info.results.result === "Killed") {
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
-      } else if (info.exit === "runner") {
+      } else if (info.results.result === "Runner") {
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
-      } else if (info.exit === "survived") {
+      } else if (info.results.result === "Survived") {
         traderHelper.addStandingToTrader(
           sessionId,
           "66f0eaa93f6cc015bc1f3acb",
           0.03
         );
+        if (debugConfig.debugMode) {
+          logger.log(
+            "Raid survived. Increasing Req Shop Rep by 0.03",
+            LogTextColor.CYAN
+          );
+        }
         return;
       }
     } catch (error) {
@@ -1146,7 +1149,6 @@ export class TraderData {
     }
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   static legionRepLogic(
     info: any,
     sessionId: string,
@@ -1166,7 +1168,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossboar")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1174,7 +1175,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossbully")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1182,7 +1182,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossgluhar")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1190,7 +1189,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskilla")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1198,7 +1196,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossknight")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1206,7 +1203,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskojaniy")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1214,7 +1210,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskolontay")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1222,7 +1217,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosssanitar")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1230,7 +1224,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosstagilla")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1238,7 +1231,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosszryachiy")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1246,7 +1238,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("followerbigpipe")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1254,7 +1245,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("followerbirdeye")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1262,7 +1252,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else {
         return;
       }
@@ -1271,7 +1260,6 @@ export class TraderData {
     }
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   static noBossRepLogic(
     info: any,
     sessionId: string,
@@ -1291,7 +1279,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossbully")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1299,7 +1286,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossgluhar")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1307,7 +1293,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskilla")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1315,7 +1300,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bossknight")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1323,7 +1307,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskojaniy")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1331,7 +1314,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosskolontay")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1339,7 +1321,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosssanitar")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1347,7 +1328,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosstagilla")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1355,7 +1335,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("bosszryachiy")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1363,7 +1342,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("followerbigpipe")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1371,7 +1349,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else if (victimRole?.includes("followerbirdeye")) {
         traderHelper.addStandingToTrader(
           sessionId,
@@ -1379,7 +1356,6 @@ export class TraderData {
           0.15
         );
         return;
-        // biome-ignore lint/style/noUselessElse: <explanation>
       } else {
         return;
       }

@@ -80,17 +80,17 @@ namespace RaidOverhaul.Controllers
         {
             if (Plugin.ROPlayer.Location != "laboratory" && Plugin.ROPlayer.Location != "rezervbase" && Plugin.ROPlayer.Location != "bigmap" && Plugin.ROPlayer.Location != "interchange")
             {
-#if DEBUG
-                Plugin.Log.LogInfo("No switches available on this map, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("No switches available on this map, returning.");
+                }
                 return;
             }
 
             if (_switchs == null || _switchs.Length <= 0)
             {
-#if DEBUG
-                Plugin.Log.LogInfo("No switches left to open, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("No switches left to open, returning.");
+                }
                 return;
             }
 
@@ -103,12 +103,9 @@ namespace RaidOverhaul.Controllers
             {
                 typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(_switch, null);
 
-#if DEBUG
-            if (ConfigController.ServerConfig.Debug.EnableExtraDebugLogging)
-            {
-                Utils.LogToServerConsole("A random switch has been thrown.");
-            }
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("A random switch has been thrown.");
+                }
 
                 RemoveAt(ref _switchs, selection);
             }
@@ -123,9 +120,9 @@ namespace RaidOverhaul.Controllers
         {
             if (_door == null || _door.Length <= 0)
             {
-#if DEBUG
-                Plugin.Log.LogInfo("No locked doors available, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("No locked doors available, returning.");
+                }
                 return;
             }
 
@@ -136,9 +133,9 @@ namespace RaidOverhaul.Controllers
 
             if (door.gameObject.layer != LayerMaskClass.InteractiveLayer)
             {
-#if DEBUG
-                Plugin.Log.LogInfo("Chosen door isn't on the interactive layer, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("Chosen door isn't on the interactive layer, returning.");
+                }
                 return;
             }
 
@@ -147,12 +144,9 @@ namespace RaidOverhaul.Controllers
                 typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
                 typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
 
-#if DEBUG
-            if (ConfigController.ServerConfig.Debug.EnableExtraDebugLogging)
-            {
-                Utils.LogToServerConsole("A random door has been unlocked.");
-            }
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("A random door has been unlocked.");
+                }
 
                 RemoveAt(ref _door, selection);
             }
@@ -167,17 +161,17 @@ namespace RaidOverhaul.Controllers
         {
             if (Plugin.ROPlayer.Location != "laboratory" && Plugin.ROPlayer.Location != "interchange")
             {
-#if DEBUG
-                Plugin.Log.LogInfo("No keycard doors available on this map, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("No keycard doors available on this map, returning.");
+                }
                 return;
             }
 
             if (_kdoor == null || _kdoor.Length <= 0)
             {
-#if DEBUG
-                Plugin.Log.LogInfo("No keycard doors left to open, returning.");
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Plugin.Log.LogInfo("No keycard doors left to open, returning.");
+                }
                 return;
             }
 
@@ -191,12 +185,9 @@ namespace RaidOverhaul.Controllers
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.Public).Invoke(kdoor, null);
                 typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(kdoor, null);
 
-#if DEBUG
-            if (ConfigController.ServerConfig.Debug.EnableExtraDebugLogging)
-            {
-                Utils.LogToServerConsole("A random keycard door has been unlocked.");
-            }
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("A random keycard door has been unlocked.");
+                }
 
                 RemoveAt(ref _kdoor, selection);
             }
@@ -255,13 +246,10 @@ namespace RaidOverhaul.Controllers
                     }
                 });
 
-#if DEBUG
-            if (ConfigController.ServerConfig.Debug.EnableExtraDebugLogging)
-            {
-                NotificationManagerClass.DisplayMessageNotification($"[{_doorChangedCount}] total Doors have had their states changed. [{_doorNotChangedCount}] haven't been modified.", ENotificationDurationType.Long, ENotificationIconType.Default);
-                Utils.LogToServerConsole($"[{_doorChangedCount}] total Doors have had their states changed. [{_doorNotChangedCount}] haven't been modified.");
-            }
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    NotificationManagerClass.DisplayMessageNotification($"[{_doorChangedCount}] total Doors have had their states changed. [{_doorNotChangedCount}] haven't been modified.", ENotificationDurationType.Long, ENotificationIconType.Default);
+                    Utils.LogToServerConsole($"[{_doorChangedCount}] total Doors have had their states changed. [{_doorNotChangedCount}] haven't been modified.");
+                }
             }
         }
 
@@ -279,13 +267,10 @@ namespace RaidOverhaul.Controllers
                     }
                 });
 
-#if DEBUG
-            if (ConfigController.ServerConfig.Debug.EnableExtraDebugLogging)
-            {
-                NotificationManagerClass.DisplayMessageNotification($"[{_lampCount}] total Lamps have been modified.", ENotificationDurationType.Long, ENotificationIconType.Default);
-                Utils.LogToServerConsole($"[{_lampCount}] total Lamps have been modified.");
-            }
-#endif
+                if (ConfigController.DebugConfig.DebugMode) {
+                    NotificationManagerClass.DisplayMessageNotification($"[{_lampCount}] total Lamps have been modified.", ENotificationDurationType.Long, ENotificationIconType.Default);
+                    Utils.LogToServerConsole($"[{_lampCount}] total Lamps have been modified.");
+                }
             }
         }
 

@@ -190,9 +190,6 @@ export interface configFile {
     SeasonalProgression: boolean;
     WinterWonderland: boolean;
   };
-  Debug: {
-    ExtraLogging: boolean;
-  };
 }
 
 export interface seasonalProgression {
@@ -208,5 +205,9 @@ export interface itemEntry {
 }
 
 export interface debugFile {
+  seasonalEventChance: number;
+  hordeEventChance: number;
+  hordeActive: boolean;
   baseLegionChance: number;
+  debugMode: boolean;
 }

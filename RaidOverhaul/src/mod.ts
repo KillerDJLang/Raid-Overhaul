@@ -15,7 +15,7 @@ import { LegionData } from "./RaidBoss/Legion";
 import { TraderData } from "./Trader/ReqShop";
 import { pushTraderFeatures } from "./Trader/TraderPushes";
 import { DynamicRouters } from "./Utils/DynamicRouterHooks";
-import type { configFile } from "./Utils/Enums";
+import type { configFile, debugFile } from "./Utils/Enums";
 import { Logger } from "./Utils/Logger";
 import { References } from "./Utils/References";
 import { StaticRouters } from "./Utils/StaticRouterHooks";
@@ -99,7 +99,7 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     dynamicRouters.registerHooks();
 
     //Finish loading features
-    this.legionData.preSptLoad(modConfig, this.ref, this.logger);
+    this.legionData.preSptLoad(this.ref, this.logger);
   }
 
   public postDBLoad(container: DependencyContainer): void {
@@ -130,6 +130,11 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     const modConfig = JSON5.parse(
       this.ref.vfs.readFile(path.resolve(__dirname, "../config/config.json5"))
     ) as configFile;
+    const debugConfig = JSON5.parse(
+      this.ref.vfs.readFile(
+        path.resolve(__dirname, "./Utils/ArrayFiles/debugOptions.json5")
+      )
+    ) as debugFile;
 
     //Random message on server on startup
     const messageArray = [
@@ -170,7 +175,13 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     }
 
     this.loadCustomItems(itemGenerator, slotUtil, modConfig);
-    this.loadTraderData(traderFeatures, modFeatures, modConfig, modPath);
+    this.loadTraderData(
+      traderFeatures,
+      modFeatures,
+      modConfig,
+      debugConfig,
+      modPath
+    );
     this.pushModFeatures(modFeatures, modConfig);
     this.pushBossData(itemGenerator, modConfig);
 
@@ -219,16 +230,17 @@ class RaidOverhaul implements IPreSptLoadMod, IPostDBLoadMod {
     traderFeatures: pushTraderFeatures,
     modFeatures: AssortedBullshit,
     modConfig: configFile,
-    modPath
+    debugConfig: debugFile,
+    modPath: any
   ) {
     // Load Trader Data
     if (modConfig.EnableCustomBoss) {
-      traderFeatures.pushExports(modPath, modConfig);
-      traderFeatures.buildReqAssort(modConfig);
+      traderFeatures.pushExports(modPath, debugConfig);
+      traderFeatures.buildReqAssort(modConfig, debugConfig);
       modFeatures.traderTweaks(modConfig);
     } else if (!modConfig.EnableCustomBoss) {
-      traderFeatures.pushExports2(modPath, modConfig);
-      traderFeatures.buildReqAssort(modConfig);
+      traderFeatures.pushExports2(modPath, debugConfig);
+      traderFeatures.buildReqAssort(modConfig, debugConfig);
       modFeatures.traderTweaks(modConfig);
     }
   }

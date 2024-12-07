@@ -1,7 +1,7 @@
 import * as path from "node:path";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 import JSON5 from "json5";
-import type { configFile } from "../Utils/Enums";
+import type { debugFile } from "../Utils/Enums";
 import type { References } from "./References";
 
 export class Logger {
@@ -26,13 +26,13 @@ export class Logger {
   }
 
   public logDebug(text: string) {
-    const modConfig = JSON5.parse(
+    const debugConfig = JSON5.parse(
       this.ref.vfs.readFile(
-        path.resolve(__dirname, "../../config/config.json5")
+        path.resolve(__dirname, "./ArrayFiles/debugOptions.json5")
       )
-    ) as configFile;
+    ) as debugFile;
 
-    if (modConfig.Debug.ExtraLogging) {
+    if (debugConfig.debugMode) {
       this.ref.logger.log(this.logPrefix + text, LogTextColor.WHITE);
     }
   }

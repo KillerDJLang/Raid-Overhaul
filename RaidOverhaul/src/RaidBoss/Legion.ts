@@ -29,17 +29,16 @@ export class LegionData {
   };
   public static setupRan = false;
 
-  public preSptLoad(
-    modConfig: configFile,
-    ref: References,
-    logger: Logger
-  ): void {
+  public preSptLoad(ref: References, logger: Logger): void {
     //Load or generate boss data on profile selection
-    const debugOptions = JSON5.parse(
+    const debugConfig = JSON5.parse(
       ref.vfs.readFile(
         path.resolve(__dirname, "../Utils/ArrayFiles/debugOptions.json5")
       )
     ) as debugFile;
+    const modConfig = JSON5.parse(
+      ref.vfs.readFile(path.resolve(__dirname, "../../config/config.json5"))
+    ) as configFile;
 
     ref.staticRouter.registerStaticRouter(
       `${this.routerPrefix}-ProfileSelected`,
@@ -56,7 +55,7 @@ export class LegionData {
                 logger.logWarning(
                   "No progress file exists for this profile, this is normal. Creating..."
                 );
-                this.createLegionProgressFile(logger, debugOptions);
+                this.createLegionProgressFile(logger, debugConfig);
                 logger.log(
                   `Progression file for ${LegionData.profileId} created.`,
                   LogTextColor.MAGENTA
@@ -85,9 +84,9 @@ export class LegionData {
                     "utf-8"
                   );
 
-                  this.LoadBossData(modConfig, logger, ref);
+                  this.LoadBossData(modConfig, debugConfig, logger, ref);
                 } else {
-                  this.LoadBossData(modConfig, logger, ref);
+                  this.LoadBossData(modConfig, debugConfig, logger, ref);
                 }
                 LegionData.setupRan = true;
               }
@@ -106,7 +105,7 @@ export class LegionData {
         {
           url: "/client/match/local/end",
           action: async (url, info, sessionId, output) => {
-            if (modConfig.Debug.ExtraLogging) {
+            if (debugConfig.debugMode) {
               this.createEndpointDataFile(logger, info);
             }
             const pmcProfile: IPmcData = ref.profileHelper.getProfileByPmcId(
@@ -114,7 +113,7 @@ export class LegionData {
             );
 
             if (!pmcProfile) {
-              if (modConfig.Debug.ExtraLogging) {
+              if (debugConfig.debugMode) {
                 logger.logWarning(
                   "No profile detected. Not pushing Legion to maps"
                 );
@@ -138,7 +137,8 @@ export class LegionData {
                 info,
                 sessionId,
                 ref.traderHelper,
-                logger
+                logger,
+                debugConfig
               );
               if (modConfig.EnableCustomBoss) {
                 TraderData.legionRepLogic(
@@ -147,9 +147,9 @@ export class LegionData {
                   ref.traderHelper,
                   logger
                 );
-                this.modifySpawnChance(info, output, logger);
+                this.modifySpawnChance(info, output, logger, debugConfig);
                 this.removeBossSpawns(ref);
-                this.LoadBossData(modConfig, logger, ref);
+                this.LoadBossData(modConfig, debugConfig, logger, ref);
               }
               if (!modConfig.EnableCustomBoss) {
                 TraderData.noBossRepLogic(
@@ -170,6 +170,7 @@ export class LegionData {
 
   private LoadBossData(
     modConfig: configFile,
+    debugConfig: debugFile,
     logger: Logger,
     ref: References
   ): void {
@@ -186,11 +187,6 @@ export class LegionData {
       .drawRandomFromList(botSettings.followers, 1)
       .toString();
     const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
-    const debugOptions = JSON5.parse(
-      ref.vfs.readFile(
-        path.resolve(__dirname, "../Utils/ArrayFiles/debugOptions.json5")
-      )
-    ) as debugFile;
 
     if (fs.existsSync(legionSpawnPath)) {
       try {
@@ -204,7 +200,7 @@ export class LegionData {
         );
       }
 
-      if (modConfig.Debug.ExtraLogging) {
+      if (debugConfig.debugMode) {
         logger.log(
           `Current spawn chance for Legion is [${bossLegionChance}]`,
           LogTextColor.BLUE
@@ -313,7 +309,7 @@ export class LegionData {
       logger.logWarning(
         "No progress file exists for this profile, this is normal. Creating..."
       );
-      this.createLegionProgressFile(logger, debugOptions);
+      this.createLegionProgressFile(logger, debugConfig);
       logger.log(
         `Progression file for ${LegionData.profileId} created.`,
         LogTextColor.MAGENTA
@@ -571,7 +567,12 @@ export class LegionData {
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  private modifySpawnChance(info: any, output: any, logger: Logger) {
+  private modifySpawnChance(
+    info: any,
+    output: any,
+    logger: Logger,
+    debugConfig: debugFile
+  ) {
     let bossLegionChance = 15;
 
     const legionSpawnPath = `${LegionData.modLoc}/config/profiles/${LegionData.profileId}/LegionChance.json`;
@@ -590,20 +591,44 @@ export class LegionData {
       logger.log("Legion eliminated", LogTextColor.MAGENTA);
     }
 
-    if (info.results === "Survived") {
+    if (info.results.result === "Survived") {
       bossLegionChance += 1.5;
+      if (debugConfig.debugMode) {
+        logger.log(
+          "Survived raid. Increasing Legion chance by 1.5",
+          LogTextColor.CYAN
+        );
+      }
     }
 
-    if (info.results === "Runner") {
+    if (info.results.result === "Runner") {
       bossLegionChance += 3;
+      if (debugConfig.debugMode) {
+        logger.log(
+          "Left raid early. Increasing Legion chance by 3",
+          LogTextColor.CYAN
+        );
+      }
     }
 
-    if (info.results === "Left") {
+    if (info.results.result === "Left") {
       bossLegionChance += 0.5;
+      if (debugConfig.debugMode) {
+        logger.log(
+          "Left raid. Increasing Legion chance by 0.5",
+          LogTextColor.CYAN
+        );
+      }
     }
 
-    if (info.results === "Killed") {
+    if (info.results.result === "Killed") {
       bossLegionChance += 1;
+      if (debugConfig.debugMode) {
+        logger.log(
+          "Died in raid. Increasing Legion chance by 1",
+          LogTextColor.CYAN
+        );
+      }
     }
 
     if (bossLegionChance > 100) {
@@ -654,9 +679,9 @@ export class LegionData {
 
   private createLegionProgressFile(
     logger: Logger,
-    debugOptions: debugFile
+    debugConfig: debugFile
   ): void {
-    let legionProgressActual = debugOptions.baseLegionChance;
+    let legionProgressActual = debugConfig.baseLegionChance;
     const progressFileLegion = (LegionData.progressFile = {
       legionChance: legionProgressActual,
     });

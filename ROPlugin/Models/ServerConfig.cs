@@ -33,7 +33,6 @@ namespace RaidOverhaul.Models
         public MoneyStackMultiplierServer MoneyStackMulti;
         public LootChangesServer LootChanges;
         public SeasonsServer Seasons;
-        public DebugServer Debug;
     }
     #endregion
 
@@ -348,14 +347,6 @@ namespace RaidOverhaul.Models
 
         [JsonProperty("WinterWonderland")]
         public bool EnableWinterOnly;
-    }
-    #endregion
-
-    #region Debug Logging Server Config
-    public struct DebugServer
-    {
-        [JsonProperty("ExtraLogging")]
-        public bool EnableExtraDebugLogging;
     }
     #endregion
 }

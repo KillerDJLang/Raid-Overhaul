@@ -67,7 +67,7 @@ namespace RaidOverhaul.Patches
         [PatchPostfix]
         static void Postfix()
         {
-            Utils.SetRaidTime(5f);
+            Utils.SetRaidTime();
         }
     }
 
@@ -83,7 +83,7 @@ namespace RaidOverhaul.Patches
         {
             return false;
         }
-    }
+    } 
 
     internal class TimeUIPanelPatch : ModulePatch
     {
@@ -132,15 +132,13 @@ namespace RaidOverhaul.Patches
             try {
                 timePanel = __instance.transform.Find("TimePanel").gameObject.transform.Find("Time").gameObject.GetComponent<TextMeshProUGUI>();
             }
-            catch (Exception) { return; }
+            catch (Exception ex)
+            {
+                Plugin.Log.LogError($"Error getting LocationConditionsPanel Time transform: {ex.Message}");
+                return;
+            }
 
             if (raidSettings.SelectedLocation.Id == "factory4_day" || raidSettings.SelectedLocation.Id == "factory4_night") {
-                if (Utils.IsDayTime(Utils.GetCurrentGameTime())) {
-                    SetTimePanelText(timePanel, "15:28:00");
-                }
-                else {
-                    SetTimePanelText(timePanel, "03:28:00");
-                }
                 return;
             }
 
@@ -151,7 +149,12 @@ namespace RaidOverhaul.Patches
         {
             try {
                 timePanel.text = text;
-            } catch(Exception) { }
+            }
+            catch(Exception ex)
+            {
+                Plugin.Log.LogError($"Error setting time panel text: {ex.Message}");
+                return;
+            }
         }
     }
 }

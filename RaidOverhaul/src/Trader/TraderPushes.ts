@@ -1,6 +1,6 @@
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
-import type { configFile } from "../Utils/Enums";
+import type { configFile, debugFile } from "../Utils/Enums";
 import type { References } from "../Utils/References";
 import type { Utils } from "../Utils/Utils";
 import type { TraderData } from "./ReqShop";
@@ -16,7 +16,7 @@ export class pushTraderFeatures {
   ) {}
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public pushExports(modPath: any, modConfig: configFile): void {
+  public pushExports(modPath: any, debugConfig: debugFile): void {
     const modName = "RaidOverhaul";
 
     //Add Req Shop to the game
@@ -38,12 +38,12 @@ export class pushTraderFeatures {
       this.ref.imageRouter,
       modPath,
       modName,
-      modConfig.Debug.ExtraLogging
+      debugConfig.debugMode
     );
   }
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public pushExports2(modPath: any, modConfig: configFile): void {
+  public pushExports2(modPath: any, debugConfig: debugFile): void {
     const modName = "RaidOverhaul";
 
     //Add Req Shop to the game
@@ -65,22 +65,22 @@ export class pushTraderFeatures {
       this.ref.imageRouter,
       modPath,
       modName,
-      modConfig.Debug.ExtraLogging
+      debugConfig.debugMode
     );
   }
 
-  public buildReqAssort(modConfig: configFile): void {
+  public buildReqAssort(modConfig: configFile, debugConfig: debugFile): void {
     const logString = "AssortMaker";
 
     //Push each type of item to the assort
-    this.traderData.createPlateFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createGearFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createMedsFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createWeaponFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createSpecFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createModsFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createAmmoFluidAssort(modConfig.Debug.ExtraLogging);
-    this.traderData.createItemsFluidAssort(modConfig.Debug.ExtraLogging);
+    this.traderData.createPlateFluidAssort(debugConfig.debugMode);
+    this.traderData.createGearFluidAssort(debugConfig.debugMode);
+    this.traderData.createMedsFluidAssort(debugConfig.debugMode);
+    this.traderData.createWeaponFluidAssort(debugConfig.debugMode);
+    this.traderData.createSpecFluidAssort(debugConfig.debugMode);
+    this.traderData.createModsFluidAssort(debugConfig.debugMode);
+    this.traderData.createAmmoFluidAssort(debugConfig.debugMode);
+    this.traderData.createItemsFluidAssort(debugConfig.debugMode);
     this.traderData.addContainers();
     this.traderData.addReqSlips();
     this.traderData.addReqForms();
@@ -88,8 +88,8 @@ export class pushTraderFeatures {
     this.traderData.addNewKeys();
 
     if (modConfig.EnableCustomItems) {
-      this.traderData.addStaticItems(modConfig.Debug.ExtraLogging);
-      this.traderData.addCustomPresets(modConfig.Debug.ExtraLogging);
+      this.traderData.addStaticItems(debugConfig.debugMode);
+      this.traderData.addCustomPresets(debugConfig.debugMode);
       this.traderData.addAmmo();
     }
 
@@ -100,7 +100,7 @@ export class pushTraderFeatures {
       wepPresetCount < this.ref.randomUtil.getInt(18, 37);
       wepPresetCount++
     ) {
-      this.traderData.addWeaponPresets(modConfig.Debug.ExtraLogging);
+      this.traderData.addWeaponPresets(debugConfig.debugMode);
     }
     // biome-ignore lint/style/noVar: <explanation>
     // biome-ignore lint/correctness/noInnerDeclarations: <explanation>
@@ -109,10 +109,10 @@ export class pushTraderFeatures {
       gearPresetCount < this.ref.randomUtil.getInt(15, 33);
       gearPresetCount++
     ) {
-      this.traderData.addGearPresets(modConfig.Debug.ExtraLogging);
+      this.traderData.addGearPresets(debugConfig.debugMode);
     }
 
-    if (modConfig.Debug.ExtraLogging) {
+    if (debugConfig.debugMode) {
       this.ref.logger.log(
         `[${logString}] ${wepPresetCount} total weapon presets have been added`,
         LogTextColor.GREEN

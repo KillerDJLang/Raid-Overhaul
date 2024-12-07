@@ -9,7 +9,11 @@ import type { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
 
 import { AllBots } from "../Utils/Enums";
-import type { configFile } from "../Utils/Enums";
+import type {
+  configFile,
+  debugFile,
+  seasonalProgression,
+} from "../Utils/Enums";
 import type { Logger } from "../Utils/Logger";
 import type { References } from "../Utils/References";
 import type { Utils } from "../Utils/Utils";
@@ -19,6 +23,7 @@ const globalPresets = require("../../db/Presets/Globals.json");
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import JSON5 from "json5";
 
 export class AssortedBullshit {
   constructor(
@@ -947,13 +952,20 @@ export class AssortedBullshit {
     }
   }
 
-  public seasonProgression(modConfig: configFile) {
+  public seasonProgression(debugConfig: debugFile) {
     const weatherConfig: IWeatherConfig =
       this.ref.configServer.getConfig<IWeatherConfig>(ConfigTypes.WEATHER);
-    const seasonsProgression = require("../../config/SeasonsProgressionFile.json");
+    const seasonsProgression = JSON5.parse(
+      this.ref.vfs.readFile(
+        path.resolve(
+          __dirname,
+          "../Utils/ArrayFiles/SeasonsProgressionFile.json5"
+        )
+      )
+    ) as seasonalProgression;
     const seasonsProgressionFile = path.join(
       __dirname,
-      "../../config/SeasonsProgressionFile.json"
+      "../Utils/ArrayFiles/SeasonsProgressionFile.json5"
     );
     let RaidsRun: number = seasonsProgression.seasonsProgression;
 
@@ -963,11 +975,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SPRING;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Spring is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -975,11 +983,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SPRING;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Spring is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -987,11 +991,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SPRING;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Spring is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -999,33 +999,21 @@ export class AssortedBullshit {
       case 4:
         RaidsRun++;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Storm is active.", LogTextColor.MAGENTA);
         }
         break;
       case 5:
         RaidsRun++;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Storm is active.", LogTextColor.MAGENTA);
         }
         break;
       case 6:
         RaidsRun++;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Storm is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1034,11 +1022,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SUMMER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Summer is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1046,11 +1030,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SUMMER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Summer is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1058,11 +1038,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.SUMMER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Summer is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1071,11 +1047,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.AUTUMN;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1083,11 +1055,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.AUTUMN;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1096,11 +1064,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.AUTUMN_LATE;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1108,11 +1072,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.AUTUMN_LATE;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Autumn is active.", LogTextColor.MAGENTA);
         }
         break;
@@ -1121,11 +1081,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.WINTER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
         }
         break;
@@ -1133,11 +1089,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.WINTER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
         }
         break;
@@ -1145,11 +1097,7 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.WINTER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
         }
         break;
@@ -1157,39 +1105,33 @@ export class AssortedBullshit {
         RaidsRun++;
         weatherConfig.overrideSeason = Season.WINTER;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
+        if (debugConfig.debugMode) {
           this.logger.log("Winter is coming.", LogTextColor.MAGENTA);
         }
         break;
-      //Spring
-      case 19:
-        RaidsRun++;
-        weatherConfig.overrideSeason = Season.SPRING_EARLY;
-        seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
-          this.logger.log("Winter has passed.", LogTextColor.MAGENTA);
-        }
-        break;
+      //Default catch
       default:
         weatherConfig.overrideSeason = Season.SPRING_EARLY;
         RaidsRun = 1;
         seasonsProgression.seasonsProgression = RaidsRun;
-        fs.writeFileSync(
-          seasonsProgressionFile,
-          JSON.stringify(seasonsProgression, null, 4)
-        );
-        if (modConfig.Debug.ExtraLogging) {
-          this.logger.log("Winter has passed.", LogTextColor.MAGENTA);
+        if (debugConfig.debugMode) {
+          this.logger.log("Defaulting to spring.", LogTextColor.MAGENTA);
         }
         break;
+    }
+    try {
+      fs.writeFileSync(
+        seasonsProgressionFile,
+        JSON5.stringify(seasonsProgression, null, 4)
+      );
+      if (debugConfig.debugMode) {
+        this.logger.log(
+          `Seasonal progress updated to ${seasonsProgression.seasonsProgression}`,
+          LogTextColor.CYAN
+        );
+      }
+    } catch (error) {
+      this.logger.logError(`Error writing season progression file: ${error}`);
     }
   }
   //#endregion

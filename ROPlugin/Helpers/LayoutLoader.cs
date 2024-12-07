@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using EFT.UI.DragAndDrop;
+using RaidOverhaul.Controllers;
 
 namespace RaidOverhaul.Helpers
 {
@@ -76,9 +77,9 @@ namespace RaidOverhaul.Helpers
                     if (!dictionary.ContainsKey(key))
                     {
                         dictionary.Add(key, value);
-#if DEBUG
-                        Console.WriteLine("Successfully added new rig layout to resources dictionary!");
-#endif
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Console.WriteLine("Successfully added new rig layout to resources dictionary!");
+                        }
                     }
                 }
             }
