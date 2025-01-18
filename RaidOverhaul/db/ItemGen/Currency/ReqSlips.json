@@ -8,15 +8,13 @@
             },
             "Height": 1,
             "Width": 2,
-            "StackMaxSize": 999,
+            "StackMaxSize": 99,
             "BackgroundColor": "green"
         },
         "LocalePush": {
-            "en": {
-                "name": "Requisition Slips",
-                "shortName": "ReqSlips",
-                "description": "A requisition slip used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A larger denomination for trading apparently."
-            }
+            "name": "Requisition Slips",
+            "shortName": "ReqSlips",
+            "description": "A requisition slip used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A larger denomination for trading apparently."
         },
         "Handbook": {
             "HandbookParent": "5b47574386f77428ca22b341",

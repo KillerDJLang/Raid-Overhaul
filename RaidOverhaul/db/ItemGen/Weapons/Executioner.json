@@ -24,11 +24,9 @@
             "ammoCaliber": "Caliber762x51"
         },
         "LocalePush": {
-            "en": {
-                "name": "The Executioner",
-                "shortName": "Executioner",
-                "description": "The Executioner. This is the final stop for many scavs and PMCs. It truly does live up to its name."
-            }
+            "name": "The Executioner",
+            "shortName": "Executioner",
+            "description": "The Executioner. This is the final stop for many scavs and PMCs. It truly does live up to its name."
         },
         "HandbookParent": "BoltActionRifles",
         "HandbookPrice": 91999,
@@ -67,11 +65,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Executioner Wyatt Magazine",
-                "shortName": "Executioner Mag",
-                "description": "A custom Wyatt outdoor magazine for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
-            }
+            "name": "Executioner Wyatt Magazine",
+            "shortName": "Executioner Mag",
+            "description": "A custom Wyatt outdoor magazine for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 14999
@@ -97,11 +93,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Executioner AICS Magazine",
-                "shortName": "Executioner AICS",
-                "description": "A custom AICS magazine for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
-            }
+            "name": "Executioner AICS Magazine",
+            "shortName": "Executioner AICS",
+            "description": "A custom AICS magazine for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 14999
@@ -127,11 +121,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Executioner PMAG",
-                "shortName": "Executioner PMAG",
-                "description": "A custom PMAG for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
-            }
+            "name": "Executioner PMAG",
+            "shortName": "Executioner PMAG",
+            "description": "A custom PMAG for the Executioner sniper rifle. With the stopping power loaded inside, you probably only need one of these."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 14999

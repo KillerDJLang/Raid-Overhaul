@@ -9,11 +9,9 @@
             "Caliber": "Caliber1143x23ACP"
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge Flechette Round",
-                "shortName": "JFR",
-                "description": "A tightly packed Flechette round for the Judge Handgun. How they managed to fit all of that into a small 9x19 casing is beyond me."
-            }
+            "name": "Judge Flechette Round",
+            "shortName": "JFR",
+            "description": "A tightly packed Flechette round for the Judge Handgun. How they managed to fit all of that into a small 9x19 casing is beyond me."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -30,11 +28,9 @@
             "Caliber": "Caliber1143x23ACP"
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge AP Slug Round",
-                "shortName": "JSR",
-                "description": "A tightly packed Armor Piercing Slug round for the Judge Handgun. How they managed to fit all of that into a small .45 casing is beyond me."
-            }
+            "name": "Judge AP Slug Round",
+            "shortName": "JSR",
+            "description": "A tightly packed Armor Piercing Slug round for the Judge Handgun. How they managed to fit all of that into a small .45 casing is beyond me."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -51,11 +47,9 @@
             "Caliber": "Caliber1143x23ACP"
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge Buckshot Round",
-                "shortName": "JBR",
-                "description": "A tightly packed Buckshot round for the Judge Handgun. How they managed to fit all of that into a small .45 casing is beyond me."
-            }
+            "name": "Judge Buckshot Round",
+            "shortName": "JBR",
+            "description": "A tightly packed Buckshot round for the Judge Handgun. How they managed to fit all of that into a small .45 casing is beyond me."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -72,11 +66,9 @@
             "Caliber": "Caliber68x51"
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury TacX Round",
-                "shortName": "JuryX",
-                "description": "A modified TacX round for the Jury Marksman Rifle. This is the last thing many scavs and PMCs around Tarkov ever saw."
-            }
+            "name": "Jury TacX Round",
+            "shortName": "JuryX",
+            "description": "A modified TacX round for the Jury Marksman Rifle. This is the last thing many scavs and PMCs around Tarkov ever saw."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -93,11 +85,9 @@
             "Caliber": "Caliber68x51"
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury AP Round",
-                "shortName": "JuryAP",
-                "description": "An Armor Piercing round for the Jury Marksman Rifle. This is the last thing many scavs and PMCs around Tarkov ever saw."
-            }
+            "name": "Jury AP Round",
+            "shortName": "JuryAP",
+            "description": "An Armor Piercing round for the Jury Marksman Rifle. This is the last thing many scavs and PMCs around Tarkov ever saw."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -114,11 +104,9 @@
             "Caliber": "Caliber762x51"
         },
         "LocalePush": {
-            "en": {
-                "name": "Executioner AT Round",
-                "shortName": "ExecAT",
-                "description": "An Anti-tank round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
-            }
+            "name": "Executioner AT Round",
+            "shortName": "ExecAT",
+            "description": "An Anti-tank round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
         },
         "Handbook": {
             "HandbookParent": "Ammo",
@@ -135,11 +123,9 @@
             "Caliber": "Caliber762x51"
         },
         "LocalePush": {
-            "en": {
-                "name": "Executioner AP Round",
-                "shortName": "ExecAP",
-                "description": "An Armor Piercing round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
-            }
+            "name": "Executioner AP Round",
+            "shortName": "ExecAP",
+            "description": "An Armor Piercing round for the Executioner Sniper Rifle. If you hear the sound this round makes, it's already too late."
         },
         "Handbook": {
             "HandbookParent": "Ammo",

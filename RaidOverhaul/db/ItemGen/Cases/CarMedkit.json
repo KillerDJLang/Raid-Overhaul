@@ -90,11 +90,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Medical Supplies Carrying Case (Car MK)",
-                "shortName": "MSCC Car",
-                "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was stored in their vehicles as a stopgap measure for when supplies elsewhere were depleted."
-            }
+            "name": "Medical Supplies Carrying Case (Car MK)",
+            "shortName": "MSCC Car",
+            "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was stored in their vehicles as a stopgap measure for when supplies elsewhere were depleted."
         },
         "HandbookParent": "StorageContainers",
         "HandbookPrice": 139999,

@@ -1,6 +1,6 @@
 {
     "6628f8813e3fe94f5f035010": {
-        "ItemToClone": "ASSAULT_RIFLE_SPEAR",
+        "ItemToClone": "ASSAULTRIFLE_SPEAR_68",
         "OverrideProperties": {
             "Chambers": [
                 {
@@ -24,11 +24,9 @@
             "defMagType": "6628f887f6ec08df7b7dc336"
         },
         "LocalePush": {
-            "en": {
-                "name": "The Jury",
-                "shortName": "Jury",
-                "description": "The Overseer of judgement. Or at least that's what it appears to be, considering the amount of scavs and PMC's brought down by it."
-            }
+            "name": "The Jury",
+            "shortName": "Jury",
+            "description": "The Overseer of judgement. Or at least that's what it appears to be, considering the amount of scavs and PMC's brought down by it."
         },
         "HandbookParent": "MarksmanRifles",
         "HandbookPrice": 60999,
@@ -47,7 +45,7 @@
         "PushToFleaBlacklist": true
     },
     "6628f887f6ec08df7b7dc336": {
-        "ItemToClone": "MAGAZINE_SPEAR",
+        "ItemToClone": "MAGAZINE_762X51_L7AWM_20RND",
         "OverrideProperties": {
             "Cartridges": [
                 {
@@ -67,17 +65,15 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury Magazine",
-                "shortName": "Jury Mag",
-                "description": "A 20 round extended magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
-            }
+            "name": "Jury Magazine",
+            "shortName": "Jury Mag",
+            "description": "A 20 round extended magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 6999
     },
     "6628f88aaa160dcd09a782e7": {
-        "ItemToClone": "MAGAZINE_SPEAR_EXT",
+        "ItemToClone": "MAGAZINE_762X51_L7AWM_25RND",
         "OverrideProperties": {
             "Cartridges": [
                 {
@@ -97,11 +93,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury Extended Magazine",
-                "shortName": "Jury ExtMag",
-                "description": "A 25 round extended magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
-            }
+            "name": "Jury Extended Magazine",
+            "shortName": "Jury ExtMag",
+            "description": "A 25 round extended magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 14999
@@ -127,26 +121,22 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury Drum Magazine",
-                "shortName": "Jury Drum",
-                "description": "A 50 round drum magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
-            }
+            "name": "Jury Drum Magazine",
+            "shortName": "Jury Drum",
+            "description": "A 50 round drum magazine for the Jury marksman rifle. Nobody knows who produced these or where they come from."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 29999
     },
     "6628f885b95f6ae9d977162f": {
-        "ItemToClone": "RECEIVER_SPEAR",
+        "ItemToClone": "RECEIVER_SPEAR_68",
         "OverrideProperties": {
             "ConflictingItems": ["6529243824cbe3c74a05e5c1", "6529302b8c26af6326029fb7"]
         },
         "LocalePush": {
-            "en": {
-                "name": "Jury Custom upper receiver",
-                "shortName": "Jury Rec",
-                "description": "An upper receiver for the Jury marksman rifle. Although its origin is a mystery, it is very effective at what it does, killing enemies."
-            }
+            "name": "Jury Custom upper receiver",
+            "shortName": "Jury Rec",
+            "description": "An upper receiver for the Jury marksman rifle. Although its origin is a mystery, it is very effective at what it does, killing enemies."
         },
         "HandbookParent": "ReceiversAndSlides",
         "HandbookPrice": 39999

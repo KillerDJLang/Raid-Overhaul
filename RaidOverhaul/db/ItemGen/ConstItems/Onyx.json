@@ -70,11 +70,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Secure Container Onyx",
-                "shortName": "Onyx",
-                "description": "The best of the best. The rarest case found in the land of Tarkov, used by only the most skilled and seasoned PMC's."
-            }
+            "name": "Secure Container Onyx",
+            "shortName": "Onyx",
+            "description": "The best of the best. The rarest case found in the land of Tarkov, used by only the most skilled and seasoned PMC's."
         },
         "Handbook": {
             "HandbookParent": "StorageContainers",

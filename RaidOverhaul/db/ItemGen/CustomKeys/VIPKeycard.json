@@ -6,11 +6,9 @@
             "BackgroundColor": "violet"
         },
         "LocalePush": {
-            "en": {
-                "name": "VIP Keycard",
-                "shortName": "VIP",
-                "description": "A modified keycard said to give access to all of the terragroup areas scattered throughout Tarkov. You will want to keep this on you at all times if you're lucky enough to find one, but guard it closely."
-            }
+            "name": "VIP Keycard",
+            "shortName": "VIP",
+            "description": "A modified keycard said to give access to all of the terragroup areas scattered throughout Tarkov. You will want to keep this on you at all times if you're lucky enough to find one, but guard it closely."
         },
         "Handbook": {
             "HandbookParent": "ElectronicKeys",

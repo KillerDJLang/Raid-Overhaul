@@ -78,7 +78,7 @@ namespace RaidOverhaul.Controllers
 
         void Update()
         {
-            if (ConfigController.ServerConfig.TimeChanges)
+            if (ConfigController.DebugConfig.TimeChanges)
             {
                 RaidTime.inverted = MonoBehaviourSingleton<MenuUI>.Instance == null || MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen == null
                 ? RaidTime.inverted
@@ -136,12 +136,6 @@ namespace RaidOverhaul.Controllers
                     ChangeExfilUI();
                 }
             }
-/*
-            if (Ready())
-            {
-                FlareLogicEC();
-            }
-*/
         }
 
         private IEnumerator StartEvents()
@@ -714,9 +708,9 @@ namespace RaidOverhaul.Controllers
 
         public async void DoMaxLLEvent()
         {
-            if (FlagHandler.CheckFlagPath("TraderRep"))
+            if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
             {
-                FlagHandler.ReadFlagFile("TraderRep");
+                JsonHandler.ReadFlagFile("TraderRep", "Flags");
 
                 if (!ConfigController.flags.traderRepFlag)
                 {
@@ -738,7 +732,7 @@ namespace RaidOverhaul.Controllers
                     }
 
                     ConfigController.flags.traderRepFlag = true;
-                    FlagHandler.SaveToJson(ConfigController.flags, "TraderRep");
+                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
 
                     NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders have maxed out standing. Better get to them in the next ten minutes!", ENotificationDurationType.Default, ENotificationIconType.Mail);
 
@@ -756,7 +750,7 @@ namespace RaidOverhaul.Controllers
                     }
 
                     ConfigController.flags.traderRepFlag = false;
-                    FlagHandler.SaveToJson(ConfigController.flags, "TraderRep");
+                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
 
                     NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders standing has been set back to normal. This is a fickle business after all.", ENotificationDurationType.Default, ENotificationIconType.Mail);
 
@@ -779,19 +773,35 @@ namespace RaidOverhaul.Controllers
 
         public void CorrectRep()
         {
-            var Traders = Utils.Traders;
-
-            foreach (var Trader in Traders)
+            if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
             {
+                JsonHandler.ReadFlagFile("TraderRep", "Flags");
+
+                if (ConfigController.flags.traderRepFlag)
                 {
-                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                    var Traders = Utils.Traders;
+
+                    foreach (var Trader in Traders)
+                    {
+                        {
+                            Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                        }
+                    }
+
+                    Weighting.repCorrectWeight = 0;
+                    Weighting.InitWeightings();
+                    ConfigController.flags.traderRepFlag = false;
+                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+                    Weighting.DoRandomEvent(Weighting.weightedEvents);
                 }
             }
-
-            Weighting.repCorrectWeight = 0;
-            ConfigController.flags.traderRepFlag = false;
-            FlagHandler.SaveToJson(ConfigController.flags, "TraderRep");
-            Weighting.DoRandomEvent(Weighting.weightedEvents);
+            
+            else
+            {
+                Weighting.repCorrectWeight = 0;
+                Weighting.InitWeightings();
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
         }
 
         public async void DoLockDownEvent()
@@ -861,51 +871,7 @@ namespace RaidOverhaul.Controllers
             }
         }
         #endregion
-/*
-        public void ExfilAirdropBOOMBOOM()
-        {
-            if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && ROPlayer.Location != "sandbox")
-            {
-                AirdropBoxPatch.isExtractCrate = true;
-                ROGameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
-            }
-        }
-
-
-        public async void FlareLogicEC()
-        {
-            var whiteFlareInHands = ROPlayer.HandsController.Item.TemplateId == _whiteFlare;
-
-            if (!whiteFlareInHands) { return; }
-
-            if (whiteFlareInHands && Ready())
-            {
-                if (Input.GetKeyDown(KeyCode.Mouse0) && _mouseInputCount < 1)
-                {
-                    _mouseInputCount++;
-                    ExfilAirdropBOOMBOOM();
-                    _eventisRunning = true;
-                    _gearExfil = true;
-                    NotificationManagerClass.DisplayMessageNotification("Gear Exfil is underway. Get your shit out of there", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
-
-                    if (ConfigController.DebugConfig.DebugMode) {
-                        Utils.LogToServerConsole("Gear Exfil is active");
-                    }  
-                }
-            }
-
-            await Task.Delay(600000);
-
-            _gearExfil = false;
-            _eventisRunning = false;
-            _mouseInputCount = 0;
-            NotificationManagerClass.DisplayMessageNotification("Gear Exfil event is now ending. Hope you got your valuables out", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
-
-            if (ConfigController.DebugConfig.DebugMode) {
-                Utils.LogToServerConsole("Gear Exfil is over");
-            }
-        }
-*/
+        
         //
         //
         //

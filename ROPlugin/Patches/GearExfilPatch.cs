@@ -18,46 +18,37 @@ using RaidOverhaul.Controllers;
 
 namespace RaidOverhaul.Patches
 {
-    public class AirdropBoxPatch : ModulePatch
+    public class ExfilCratePatch : ModulePatch
     {
         internal static bool isExtractCrate = false;
         private static JsonConverter[] _defaultJsonConverters;
 
-        protected override MethodBase GetTargetMethod() { return typeof(AirdropsManager).GetMethod("BuildLootContainer", BindingFlags.Instance | BindingFlags.NonPublic); }
-
-        [PatchPrefix]
-        static bool Prefix(ref ItemFactoryUtil ___factory, ref AirdropParametersModel ___airdropParameters, AirdropBox ___airdropBox)
+        protected override MethodBase GetTargetMethod()
         {
-            if (!isExtractCrate) return true;
-            BuildCrate(___airdropBox);
-            ___airdropParameters.AirdropAvailable = true;
-            return false;
+            return AccessTools.Method(typeof(GameWorld), nameof(GameWorld.OnGameStarted));
         }
 
         [PatchPostfix]
-        static void Postfix(ref AirdropBox ___airdropBox, ref AirdropParametersModel ___airdropParameters)
+        public static void PatchPostfix(GameWorld __instance)
         {
-            if (!isExtractCrate) return;
-            AwaitThenGetBox(___airdropParameters, ___airdropBox.container);
+            var gameWorld = __instance;
+            var location = gameWorld.MainPlayer.Location;
+            
+            LootableContainer container = gameWorld.GetComponentInChildren<LootableContainer>().gameObject.GetComponentInChildren<LootableContainer>();
         }
 
-        static void BuildCrate(AirdropBox airdrop)
+        static void BuildCrate(LootableContainer exfilCrate)
         {
-            var itemCrate = Singleton<ItemFactoryClass>.Instance.CreateItem("exfilcratecontainer", "6223349b3136504a544d1608", null);
-            LootItem.CreateLootContainer(airdrop.container, itemCrate, "Heavy crate", Singleton<GameWorld>.Instance);
+            var itemCrate = Singleton<ItemFactoryClass>.Instance.CreateItem("exfilcratecontainer", "6756f0f27ea253ab411935da", null);
+            LootItem.CreateLootContainer(exfilCrate, itemCrate, "Heavy crate", Singleton<GameWorld>.Instance);
         }
 
-        static async void AwaitThenGetBox(AirdropParametersModel param, LootableContainer box)
+        static async void AwaitThenGetBox(LootableContainer exfilCrate)
         {
             if (!isExtractCrate) return;
             isExtractCrate = false;
 
-            while (Vector3.Distance(box.transform.position, param.RandomAirdropPoint) > 3f)
-            {
-                await Task.Yield();
-            }
-
-            while (Vector3.Distance(box.transform.position, ((IPlayer)Singleton<GameWorld>.Instance.MainPlayer).Position) > 15f)
+            while (Vector3.Distance(exfilCrate.transform.position, ((IPlayer)Singleton<GameWorld>.Instance.MainPlayer).Position) > 15f)
             {
                 await Task.Yield();
             }
@@ -70,16 +61,16 @@ namespace RaidOverhaul.Patches
 
             NotificationManagerClass.DisplayMessageNotification("The extract crate is locked, and any gear within it is now secured and will be returned to your stash at the end of the raid.", ENotificationDurationType.Long, ENotificationIconType.Default);
 
-            typeof(LootableContainer).GetMethod("Lock", BindingFlags.Instance | BindingFlags.Public).Invoke(box, null);
+            typeof(LootableContainer).GetMethod("Lock", BindingFlags.Instance | BindingFlags.Public).Invoke(exfilCrate, null);
 
-            sendExfilBox(box);
+            sendExfilBox(exfilCrate);
 
             EventExfilPatch.awaitDrop = false;
         }
 
-        static void sendExfilBox(LootableContainer airdropBox)
+        static void sendExfilBox(LootableContainer exfilCrate)
         {
-            var exfilCrateItems = Singleton<ItemFactoryClass>.Instance.TreeToFlatItems(airdropBox.ItemOwner.MainStorage[0].Items);
+            var exfilCrateItems = Singleton<ItemFactoryClass>.Instance.TreeToFlatItems(exfilCrate.ItemOwner.MainStorage[0].Items);
 
             RequestHandler.PutJson("/singleplayer/traderServices/itemDelivery", new
             {

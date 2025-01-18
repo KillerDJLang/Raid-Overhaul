@@ -1,6 +1,6 @@
 {
     "6621b274485df00e750df4f2": {
-        "ItemToClone": "VEST_A18",
+        "ItemToClone": "VEST_A18_SKANDA",
         "OverrideProperties": {
             "Prefab": {
                 "path": "Rigs/osprey_def_armless_rig.bundle",
@@ -211,11 +211,9 @@
             "RigLayoutName": "robigrig"
         },
         "LocalePush": {
-            "en": {
-                "name": "CQC Osprey MK4A plate carrier (Protection-Light, MTP)",
-                "shortName": "Osprey MK4A rig (PL)",
-                "description": "The Osprey plate carrier is actively used by the British army and specialists. The Protection preset is provided with heavy armor plates and the optimal number of pouches for ammunition, grenades and special equipment."
-            }
+            "name": "CQC Osprey MK4A plate carrier (Protection-Light, MTP)",
+            "shortName": "Osprey MK4A rig (PL)",
+            "description": "The Osprey plate carrier is actively used by the British army and specialists. The Protection preset is provided with heavy armor plates and the optimal number of pouches for ammunition, grenades and special equipment."
         },
         "HandbookParent": "TacticalRigs",
         "HandbookPrice": 189999,

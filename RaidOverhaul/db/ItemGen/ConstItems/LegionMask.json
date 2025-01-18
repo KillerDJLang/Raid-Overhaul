@@ -14,11 +14,9 @@
             "armorClass": 6
         },
         "LocalePush": {
-            "en": {
-                "name": "Death Knight mask (Modified)",
-                "shortName": "Death Knight (M)",
-                "description": "A unique mask of the commander of the Goons squad, former USEC operators who decided not to flee Tarkov, but to create their own order. Compatible with headwear."
-            }
+            "name": "Death Knight mask (Modified)",
+            "shortName": "Death Knight (M)",
+            "description": "A unique mask of the commander of the Goons squad, former USEC operators who decided not to flee Tarkov, but to create their own order. Compatible with headwear."
         },
         "Handbook": {
             "HandbookParent": "Facecovers",

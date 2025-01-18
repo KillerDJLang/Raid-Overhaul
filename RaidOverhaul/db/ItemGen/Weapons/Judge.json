@@ -29,11 +29,9 @@
             "weapFireType": ["single", "fullauto"]
         },
         "LocalePush": {
-            "en": {
-                "name": "The Judge",
-                "shortName": "Judge",
-                "description": "The Judge is a handgun capable of loading 12 gauge shotgun shells. Many scavs quiver in fear when they hear the name."
-            }
+            "name": "The Judge",
+            "shortName": "Judge",
+            "description": "The Judge is a handgun capable of loading 12 gauge shotgun shells. Many scavs quiver in fear when they hear the name."
         },
         "HandbookParent": "Pistols",
         "HandbookPrice": 55999,
@@ -67,11 +65,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge custom Lone Wolf Slide",
-                "shortName": "Judge Lone Wolf",
-                "description": "A custom Lone Wolf receiver modified to fit on the Judge handgun. The sound of the slide brings nightmares to many."
-            }
+            "name": "Judge custom Lone Wolf Slide",
+            "shortName": "Judge Lone Wolf",
+            "description": "A custom Lone Wolf receiver modified to fit on the Judge handgun. The sound of the slide brings nightmares to many."
         },
         "HandbookParent": "ReceiversAndSlides",
         "HandbookPrice": 41999
@@ -101,11 +97,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge 17 Round Magazine",
-                "shortName": "Judge 17 Mag",
-                "description": "A 17-round magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
-            }
+            "name": "Judge 17 Round Magazine",
+            "shortName": "Judge 17 Mag",
+            "description": "A 17-round magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 11999
@@ -135,11 +129,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge 33 Round Magazine",
-                "shortName": "Judge 33 Mag",
-                "description": "A 33-round magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
-            }
+            "name": "Judge 33 Round Magazine",
+            "shortName": "Judge 33 Mag",
+            "description": "A 33-round magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 15499
@@ -169,11 +161,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Judge Drum Magazine",
-                "shortName": "Judge Drum",
-                "description": "A 50-round Drum magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
-            }
+            "name": "Judge Drum Magazine",
+            "shortName": "Judge Drum",
+            "description": "A 50-round Drum magazine made for the Judge handgun, the sound of which causes scavs to quiver in fear."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 25999

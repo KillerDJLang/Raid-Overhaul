@@ -14,12 +14,6 @@ namespace RaidOverhaul.Models
         [JsonProperty("EnableCustomItems")]
         public bool EnableCustomItems;
 
-        [JsonProperty("EnableTimeChanges")]
-        public bool TimeChanges;
-
-        [JsonProperty("EnableWatchAnimations")]
-        public bool WatchAnimations;
-
         [JsonProperty("BackupProfile")]
         public bool BackupProfile;
 
@@ -126,6 +120,12 @@ namespace RaidOverhaul.Models
 
         [JsonProperty("SpecialSlotChanges")]
         public bool SpecialSlotChanges;
+
+        [JsonProperty("ChangeBackpackSizes")]
+        public bool ChangeBackpackSizes;
+
+        [JsonProperty("ModifyEnemyBotHealth")]
+        public bool ModifyEnemyBotHealth;
 
         public ChangeAirdropValuesRaid ChangeAirdropValues;
     }

@@ -1,12 +1,17 @@
-using EFT;
-using TMPro;
 using System;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Collections.Generic;
+using TMPro;
 using HarmonyLib;
 using EFT.UI.Map;
 using EFT.UI.Matchmaker;
-using UnityEngine.UI;
+using EFT.UI.BattleTimer;
 using SPT.Reflection.Patching;
+
+using EFT;
+using EFT.UI;
+using JsonType;
 using RaidOverhaul.Helpers;
 
 namespace RaidOverhaul.Patches
@@ -51,41 +56,73 @@ namespace RaidOverhaul.Patches
             __result = RaidTime.GetDateTime();
         }
     }
-
-    //
-    //
-    //
-
-    internal class OnGameStartedPatch : ModulePatch 
+/*
+    public class UIPanelPatch : ModulePatch
     {
-
-        protected override MethodBase GetTargetMethod()
-        {
-            return AccessTools.Method(typeof(GameWorld), nameof(GameWorld.OnGameStarted));
-        }
+        protected override MethodBase GetTargetMethod() => typeof(LocationConditionsPanel).GetMethod("method_0", BindingFlags.Instance | BindingFlags.Public);
 
         [PatchPostfix]
-        static void Postfix()
+        static void Postfix(ref TextMeshProUGUI ____currentPhaseTime, ref TextMeshProUGUI ____nextPhaseTime)
         {
-            Utils.SetRaidTime();
+            try
+            {
+                ____nextPhaseTime.text = RaidTime.GetInverseTime().ToString("HH:mm:ss");
+                ____currentPhaseTime.text = RaidTime.GetCurrTime().ToString("HH:mm:ss");
+            }
+            catch (Exception ex) 
+            {
+                Plugin.Log.LogError(ex);
+            }
         }
     }
 
-    internal class TimeUIUpdatePatch : ModulePatch
+    public class TimerUIPatch : ModulePatch
+    {
+        protected override MethodBase GetTargetMethod() => typeof(TimerPanel).GetMethod("SetTimerText", BindingFlags.Instance | BindingFlags.Public);
+
+        [PatchPrefix]
+        static void Prefix(ref TimeSpan timeSpan) => timeSpan = new TimeSpan(RaidTime.GetDateTime().Ticks);
+    }
+
+    public class ExitTimerUIPatch : ModulePatch
+    {
+        protected override MethodBase GetTargetMethod() => typeof(MainTimerPanel).GetMethod("UpdateTimer", BindingFlags.Instance | BindingFlags.Public);
+
+        [PatchTranspiler]
+        static IEnumerable<CodeInstruction> Transpile(IEnumerable<CodeInstruction> instructions)
+        {
+            int shift = 0;
+
+            instructions.ExecuteForEach((inst) =>
+            {
+                if (shift == 2)
+                    inst.opcode = OpCodes.Ret;
+                if (shift >= 3)
+                    inst.opcode = OpCodes.Nop;
+                shift++;
+            });
+
+            return instructions;
+        }
+    }
+*/
+
+    public class TimePanelPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.Method(typeof(LocationConditionsPanel), nameof(LocationConditionsPanel.Update));
+            return AccessTools.Method(typeof(MatchMakerSelectionLocationScreen), "method_6");
         }
 
-        [PatchPrefix]
-        static bool Prefix()
+        [PatchPostfix]
+        public static void Postfix(MatchMakerSelectionLocationScreen __instance, LocationConditionsPanel ____conditions)
         {
-            return false;
-        }
-    } 
+            ____conditions.Close();
 
-    internal class TimeUIPanelPatch : ModulePatch
+        }
+    }
+
+    public class RaidSettingsPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -93,68 +130,59 @@ namespace RaidOverhaul.Patches
         }
 
         [PatchPostfix]
-        static void Postfix(
-            RaidSettings raidSettings,
-            bool takeFromCurrent,
-            ref TextMeshProUGUI ____currentPhaseTime,
-            ref TextMeshProUGUI ____nextPhaseTime,
-            ref Toggle ____pmTimeToggle,
-            ref Toggle ____amTimeToggle
-        )
+        public static void Postfix(LocationConditionsPanel __instance, ref RaidSettings raidSettings)
         {
-            DateTime dateTime = Utils.GetCurrentGameTime();
-            DateTime inverseDateTime = Utils.GetInverseGameTime();
-
-            if (raidSettings.SelectedLocation.Id == "factory4_day" || raidSettings.SelectedLocation.Id == "factory4_night") {
-                Utils.EnableTimeUI(____currentPhaseTime, ____amTimeToggle, "15:28:00", false);
-                Utils.EnableTimeUI(____nextPhaseTime, ____pmTimeToggle, "03:28:00", false);
-                return;
+            if (Utils.IsFactory(raidSettings.LocationId))
+            {
+                if (Utils.IsDay(__instance.DateTime_2))
+                {
+                    raidSettings.SelectedDateTime = EDateTime.CURR;
+                }
+                else
+                {
+                    raidSettings.SelectedDateTime = EDateTime.PAST;
+                }
             }
-
-            Utils.EnableTimeUI(____nextPhaseTime, ____pmTimeToggle, inverseDateTime.ToString("HH:mm:ss"));
-            Utils.EnableTimeUI(____currentPhaseTime, ____amTimeToggle, dateTime.ToString("HH:mm:ss"));
+            else
+            {
+                raidSettings.SelectedDateTime = EDateTime.CURR;
+            }
         }
     }
 
-    internal class LocationConditionsPanelPatch : ModulePatch
+    public class LocationInfoPanelPatch : ModulePatch
     {
-
         protected override MethodBase GetTargetMethod()
         {
-            return AccessTools.FirstMethod(typeof(LocationConditionsPanel), x => x.Name == nameof(LocationConditionsPanel.Set) && x.GetParameters()[0].Name == "session");
+            return AccessTools.Method(typeof(LocationInfoPanel), nameof(LocationInfoPanel.Set));
         }
 
         [PatchPostfix]
-        static void Postfix(RaidSettings raidSettings, bool takeFromCurrent, MatchMakerAcceptScreen __instance)
+        public static void Postfix(LocationInfoPanel __instance, ref TextMeshProUGUI ____playTime, LocationSettingsClass.Location location)
         {
-            TextMeshProUGUI timePanel;
+            DateTime dateTime;
+            if(location == null) { return; }
 
-            try {
-                timePanel = __instance.transform.Find("TimePanel").gameObject.transform.Find("Time").gameObject.GetComponent<TextMeshProUGUI>();
-            }
-            catch (Exception ex)
+            if(Utils.IsFactory(location.Id))
             {
-                Plugin.Log.LogError($"Error getting LocationConditionsPanel Time transform: {ex.Message}");
-                return;
+                DateTime backendTime = Utils.GetDateTime();
+                if (Utils.IsDay(backendTime)) 
+                {
+                    dateTime = LocationConditionsPanel.DateTime_0;
+                }
+                else 
+                {
+                    dateTime = LocationConditionsPanel.DateTime_1;
+                }
             }
-
-            if (raidSettings.SelectedLocation.Id == "factory4_day" || raidSettings.SelectedLocation.Id == "factory4_night") {
-                return;
-            }
-
-            SetTimePanelText(timePanel, Utils.GetCurrentGameTime().ToString("HH:mm:ss"));
-        }
-
-        static void SetTimePanelText(TextMeshProUGUI timePanel, string text)
-        {
-            try {
-                timePanel.text = text;
-            }
-            catch(Exception ex)
+            else
             {
-                Plugin.Log.LogError($"Error setting time panel text: {ex.Message}");
-                return;
+                dateTime = Utils.GetDateTime();
             }
+
+            ____playTime.text = dateTime.ToString("HH:mm:ss");
+
+
         }
     }
 }

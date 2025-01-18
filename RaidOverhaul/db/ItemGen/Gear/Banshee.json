@@ -135,11 +135,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Shellback Tactical Banshee plate carrier (Modified)",
-                "shortName": "Banshee (M)",
-                "description": "The Banshee Rifle Plate Carrier was designed to meet and exceed the needs of law enforcement, military, and tactical operators. This ultra lightweight, low profile, high-quality plate carrier has great load carrying capacity. \nIdeal for law enforcement patrol officers for use in high threat active shooter situations, multi-assault counter terrorism action capabilities (MACTAC) and counter terrorism direct actions."
-            }
+            "name": "Shellback Tactical Banshee plate carrier (Modified)",
+            "shortName": "Banshee (M)",
+            "description": "The Banshee Rifle Plate Carrier was designed to meet and exceed the needs of law enforcement, military, and tactical operators. This ultra lightweight, low profile, high-quality plate carrier has great load carrying capacity. \nIdeal for law enforcement patrol officers for use in high threat active shooter situations, multi-assault counter terrorism action capabilities (MACTAC) and counter terrorism direct actions."
         },
         "HandbookParent": "BodyArmor",
         "HandbookPrice": 209999,

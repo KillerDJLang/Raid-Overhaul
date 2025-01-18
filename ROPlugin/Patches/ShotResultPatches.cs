@@ -70,9 +70,9 @@ namespace RaidOverhaul.Patches
                     PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
                     PlayerInfo.player.ActiveHealthController.DoContusion(4, 50);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + e);
+                    Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + ex);
                 }
             }
             try
@@ -80,9 +80,9 @@ namespace RaidOverhaul.Patches
                 PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
                 PlayerInfo.player.ActiveHealthController.DoContusion(0, 100);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + e);
+                Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + ex);
             }
         }
     }
@@ -131,9 +131,9 @@ namespace RaidOverhaul.Patches
                     PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
                     PlayerInfo.player.ActiveHealthController.DoContusion(4, hsDmg * 1.5f);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + e);
+                    Plugin.Log.LogError("Attempting to access ActiveHealthController resulted in an exception" + ex);
                 }
             }
         }

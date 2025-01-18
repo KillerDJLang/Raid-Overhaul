@@ -114,11 +114,9 @@
             "RigLayoutName": "rodeadarmband"
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Deadskul Carrying Pouch",
-                "shortName": "Dead",
-                "description": "A modified Deadskul Armband with pouches sown into it. Now you can be sure to never go into the field without extra provisions. The Requisition Officers really knew what they were doing with this one. Only for real collectors."
-            }
+            "name": "Custom Deadskul Carrying Pouch",
+            "shortName": "Dead",
+            "description": "A modified Deadskul Armband with pouches sown into it. Now you can be sure to never go into the field without extra provisions. The Requisition Officers really knew what they were doing with this one. Only for real collectors."
         },
         "Handbook": {
             "HandbookParent": "GearComponents",

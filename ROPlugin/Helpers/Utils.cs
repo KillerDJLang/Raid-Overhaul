@@ -2,9 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
-using TMPro;
 using HarmonyLib;
-using Comfort.Common;
 using BepInEx.Logging;
 using Newtonsoft.Json;
 using SPT.Common.Http;
@@ -12,7 +10,6 @@ using EFT;
 using EFT.Weather;
 using EFT.InventoryLogic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace RaidOverhaul.Helpers
 {
@@ -22,12 +19,6 @@ namespace RaidOverhaul.Helpers
         public static FieldInfo LighteningThunderField;
         public static FieldInfo RainField;
         public static FieldInfo TemperatureField;
-        public static int HourCurr = DateTime.Now.Hour;
-        public static int MinCurr = DateTime.Now.Minute;
-        public static int SecCurr = DateTime.Now.Second;
-        public static int YearCurr = DateTime.Now.Second;
-        public static int MonthCurr = DateTime.Now.Second;
-        public static int DayCurr = DateTime.Now.Second;
 
         public static readonly List<string> Traders = new List<string> {
             "54cb50c76803fa8b248b4571",     //Prapor
@@ -54,7 +45,6 @@ namespace RaidOverhaul.Helpers
         public static readonly string vipKeycard = "66a2fc9886fbd5d38c5ca2a6";
         public static readonly string whiteFlare = "62178be9d0050232da3485d9";
         public static readonly string RealismKey = "RealismMod";
-        public static readonly string WatchAnimsKey = "com.samswat.watchanims";
         public static readonly string ROStandaloneKey = "DJ.ROStandalone";
 
         public static T Get<T>(string url) {
@@ -69,7 +59,8 @@ namespace RaidOverhaul.Helpers
         
         public static void LogToServerConsole(string message) {
             Plugin.Log.Log( LogLevel.Info, message);
-            RequestHandler.GetJson("/RaidOverhaul/LogToServer/" + message);
+            string info = JsonConvert.SerializeObject(message);
+            RequestHandler.PostJson("/RaidOverhaul/LogToServer", info);
         }
 
         public static EquipmentSlot[] _armbandFAS = {
@@ -114,55 +105,41 @@ namespace RaidOverhaul.Helpers
             TemperatureField = AccessTools.Field(typeof(WeatherDebug), "Temperature");
         }
 
-        public static bool IsDayTime(DateTime dateTime)
+                public static bool IsDay(DateTime time)
         {
-            if (dateTime.Hour > 5 && dateTime.Hour < 21) {
+            if (time.Hour > 5 && time.Hour < 21)
+            {
                 return true;
             }
-            else {
+            else
+            {
+                return false;
+            }
+
+            
+        }
+
+        //
+        //
+        //
+
+        public static bool IsFactory(string location)
+        {
+            if (location == "factory4_day" || location == "factory4_night")
+            {
+                return true;
+            } 
+            else
+            {
                 return false;
             }
         }
 
-        public static DateTime GetCurrentGameTime()
+        public static DateTime GetDateTime()
         {
-            return new DateTime(YearCurr, MonthCurr, DayCurr, HourCurr, MinCurr, SecCurr);
-        }
-
-        public static DateTime GetInverseGameTime()
-        {
-            return new DateTime(YearCurr, MonthCurr, DayCurr, HourCurr + 12, MinCurr, SecCurr);
-        }
-        
-        public static void EnableTimeUI(TextMeshProUGUI phaseToEnable, Toggle timeToggle, string enabledText, bool chooseThisTime = true)
-        {
-            try {
-                timeToggle.enabled = true;
-                if (chooseThisTime) timeToggle.isOn = true;
-                phaseToEnable.transform.gameObject.SetActive(true);
-                var bg = timeToggle.transform.Find("Background").gameObject;
-                bg.GetComponent<Image>().color = Color.white;
-                bg.transform.Find("Checkmark").gameObject.GetComponent<Image>().color = Color.white;
-                phaseToEnable.text = enabledText;
-            }
-            catch (Exception ex)
-            {
-                Plugin.Log.LogError($"Error setting UI time: {ex.Message}");
-            }
-        }
-
-        public static void SetRaidTime()
-        {
-            if (!Singleton<GameWorld>.Instantiated) {
-                throw new Exception("SetRaidTime was called before the game world was set.");
-            }
-
-            DateTime dateTime;
-
-            dateTime = GetCurrentGameTime();
-
-            var gameDateTimeInst = Singleton<GameWorld>.Instance.GameDateTime;
-            gameDateTimeInst.Reset(DateTime.Now, dateTime, 5f);
+            TarkovApplication.Exist(out TarkovApplication tarkovApplication);
+            DateTime dateTime = tarkovApplication.Session.GetCurrentLocationTime;
+            return dateTime;
         }
     }
 }

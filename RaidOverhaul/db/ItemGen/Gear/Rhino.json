@@ -1,6 +1,6 @@
 {
     "6621b1f22310f5ff09476360": {
-        "ItemToClone": "VEST_A18",
+        "ItemToClone": "VEST_A18_SKANDA",
         "OverrideProperties": {
             "Prefab": {
                 "path": "Rigs/rhino_rig.bundle",
@@ -173,11 +173,9 @@
             "RigLayoutName": "rorhinobonk"
         },
         "LocalePush": {
-            "en": {
-                "name": "CQC Rhino plate carrier (MTP)",
-                "shortName": "Rhino Rig",
-                "description": "Rhino is based on the Osprey body armour system but without neck, shoulder and groin protection. Rhino has proved to be a very popular system as it has a simple but effective design."
-            }
+            "name": "CQC Rhino plate carrier (MTP)",
+            "shortName": "Rhino Rig",
+            "description": "Rhino is based on the Osprey body armour system but without neck, shoulder and groin protection. Rhino has proved to be a very popular system as it has a simple but effective design."
         },
         "HandbookParent": "TacticalRigs",
         "HandbookPrice": 239999,

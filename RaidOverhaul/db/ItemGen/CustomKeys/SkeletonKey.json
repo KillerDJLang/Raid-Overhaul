@@ -6,11 +6,9 @@
             "BackgroundColor": "violet"
         },
         "LocalePush": {
-            "en": {
-                "name": "Skeleton Key",
-                "shortName": "Skeleton",
-                "description": "A simple looking key with a lot of potential. I don't know who made this, but don't let it out of your grasp."
-            }
+            "name": "Skeleton Key",
+            "shortName": "Skeleton",
+            "description": "A simple looking key with a lot of potential. I don't know who made this, but don't let it out of your grasp."
         },
         "Handbook": {
             "HandbookParent": "MechanicalKeys",

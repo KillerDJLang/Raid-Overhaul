@@ -8,15 +8,13 @@
             },
             "Height": 1,
             "Width": 1,
-            "StackMaxSize": 999,
+            "StackMaxSize": 50000,
             "BackgroundColor": "green"
         },
         "LocalePush": {
-            "en": {
-                "name": "Requisition Forms",
-                "shortName": "ReqForms",
-                "description": "A requisition form used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A smaller denomination for trading apparently."
-            }
+            "name": "Requisition Forms",
+            "shortName": "ReqForms",
+            "description": "A requisition form used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A smaller denomination for trading apparently."
         },
         "Handbook": {
             "HandbookParent": "5b47574386f77428ca22b341",

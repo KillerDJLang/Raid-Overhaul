@@ -1,6 +1,6 @@
 {
     "6628f2e31084cf4d62b2b40b": {
-        "ItemToClone": "ASSAULTRIFLE_AUG_A3",
+        "ItemToClone": "ASSAULTRIFLE_AUG_A3_556X45",
         "OverrideProperties": {
             "Chambers": [
                 {
@@ -53,11 +53,9 @@
             "defMagType": "6628f31d2e4dbf64427b378d"
         },
         "LocalePush": {
-            "en": {
-                "name": "Modified AUG A3 7.62x39 assault rifle",
-                "shortName": "AUG 762",
-                "description": "Steyr AUG A3 is a 5.56x45 bullpup assault rifle, developed by the Austrian company Steyr-Daimler-Puch. AUG is known for good ergonomics, decent accuracy, low recoil and sufficient reliability. The rifle also stands out for its futuristic design. The A3 version features a bolt-catch button. This rifle has been modified to be compatible with 7.62x39mm caliber ammunition while retaining it's standout characteristics."
-            }
+            "name": "Modified AUG A3 7.62x39 assault rifle",
+            "shortName": "AUG 762",
+            "description": "Steyr AUG A3 is a 5.56x45 bullpup assault rifle, developed by the Austrian company Steyr-Daimler-Puch. AUG is known for good ergonomics, decent accuracy, low recoil and sufficient reliability. The rifle also stands out for its futuristic design. The A3 version features a bolt-catch button. This rifle has been modified to be compatible with 7.62x39mm caliber ammunition while retaining it's standout characteristics."
         },
         "HandbookParent": "MarksmanRifles",
         "HandbookPrice": 61999,
@@ -106,11 +104,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Steyr AUG 7.62x39 30-round magazine",
-                "shortName": "AUG",
-                "description": "A 30-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
-            }
+            "name": "Steyr AUG 7.62x39 30-round magazine",
+            "shortName": "AUG",
+            "description": "A 30-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 11999,
@@ -156,11 +152,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Steyr AUG 7.62x39 42-round magazine",
-                "shortName": "AUG",
-                "description": "A 42-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
-            }
+            "name": "Steyr AUG 7.62x39 42-round magazine",
+            "shortName": "AUG",
+            "description": "A 42-round polymer Steyr AUG magazine, for 7.62x39 ammunition."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 19999,

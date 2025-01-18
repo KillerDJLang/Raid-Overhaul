@@ -46,11 +46,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Waist Pouch",
-                "shortName": "CWP",
-                "description": "A modified Waist Pouch with more storage sown into it. It is a durable and convenient waist pouch for a variety of things you would want to keep close."
-            }
+            "name": "Custom Waist Pouch",
+            "shortName": "CWP",
+            "description": "A modified Waist Pouch with more storage sown into it. It is a durable and convenient waist pouch for a variety of things you would want to keep close."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",
@@ -106,11 +104,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Secure Container Alpha",
-                "shortName": "CSCA",
-                "description": "A modified Alpha Container with more storage compartments added. A small secure container used by PMCs formerly deployed in Tarkov."
-            }
+            "name": "Custom Secure Container Alpha",
+            "shortName": "CSCA",
+            "description": "A modified Alpha Container with more storage compartments added. A small secure container used by PMCs formerly deployed in Tarkov."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",
@@ -166,11 +162,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Secure Container Beta",
-                "shortName": "CSCB",
-                "description": "A modified Beta Container with more storage compartments added. A medium-sized secure container used by PMCs formerly deployed in Tarkov."
-            }
+            "name": "Custom Secure Container Beta",
+            "shortName": "CSCB",
+            "description": "A modified Beta Container with more storage compartments added. A medium-sized secure container used by PMCs formerly deployed in Tarkov."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",
@@ -246,11 +240,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Secure Container Gamma",
-                "shortName": "CSCG",
-                "description": "A modified Gamma Container with more storage compartments added. A unique secure container used only by veteran PMCs formerly deployed in Tarkov."
-            }
+            "name": "Custom Secure Container Gamma",
+            "shortName": "CSCG",
+            "description": "A modified Gamma Container with more storage compartments added. A unique secure container used only by veteran PMCs formerly deployed in Tarkov."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",
@@ -326,11 +318,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Secure Container Epsilon",
-                "shortName": "CSCE",
-                "description": "A modified Epsilon Container with more storage compartments added. One of TerraGroup's latest inventions in secure container technology - the Epsilon secured container."
-            }
+            "name": "Custom Secure Container Epsilon",
+            "shortName": "CSCE",
+            "description": "A modified Epsilon Container with more storage compartments added. One of TerraGroup's latest inventions in secure container technology - the Epsilon secured container."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",
@@ -410,11 +400,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Secure Container Kappa",
-                "shortName": "CSCK",
-                "description": "A modified Kappa Container with more storage compartments added. A secret TerraGroup invention - the Kappa secured container."
-            }
+            "name": "Custom Secure Container Kappa",
+            "shortName": "CSCK",
+            "description": "A modified Kappa Container with more storage compartments added. A secret TerraGroup invention - the Kappa secured container."
         },
         "Handbook": {
             "HandbookParent": "SecureContainers",

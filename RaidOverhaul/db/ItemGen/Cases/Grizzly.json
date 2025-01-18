@@ -90,11 +90,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Medical Supplies Carrying Case (Grizzly)",
-                "shortName": "MSCC Grizz",
-                "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was carried by the medic to ensure a quick response to any serious injuries incurred on a hunt."
-            }
+            "name": "Medical Supplies Carrying Case (Grizzly)",
+            "shortName": "MSCC Grizz",
+            "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was carried by the medic to ensure a quick response to any serious injuries incurred on a hunt."
         },
         "HandbookParent": "StorageContainers",
         "HandbookPrice": 549999,

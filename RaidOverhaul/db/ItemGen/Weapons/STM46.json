@@ -42,11 +42,9 @@
             "weapFireType": ["single", "fullauto"]
         },
         "LocalePush": {
-            "en": {
-                "name": "Soyuz-TM STM-46 Gen.2 4.6x30 carbine",
-                "shortName": "STM 4.6x30",
-                "description": "A PCC carbine with excellent performance already 'out of the box', manufactured by Soyuz-TM Arms. Designed with the participation of world bronze medalist in Semi-Auto Rifle Vadim Mikhailov. Accuracy, speed, comfort of recoil. Compatible with custom 4.6x30mm magazines."
-            }
+            "name": "Soyuz-TM STM-46 Gen.2 4.6x30 carbine",
+            "shortName": "STM 4.6x30",
+            "description": "A PCC carbine with excellent performance already 'out of the box', manufactured by Soyuz-TM Arms. Designed with the participation of world bronze medalist in Semi-Auto Rifle Vadim Mikhailov. Accuracy, speed, comfort of recoil. Compatible with custom 4.6x30mm magazines."
         },
         "HandbookParent": "SMGs",
         "HandbookPrice": 47999,
@@ -90,11 +88,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Glock 4.6x30 'Big Stick' 33-round magazine",
-                "shortName": "STM-46M",
-                "description": "A factory-produced 33-round 4.6x30 magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine."
-            }
+            "name": "Glock 4.6x30 'Big Stick' 33-round magazine",
+            "shortName": "STM-46M",
+            "description": "A factory-produced 33-round 4.6x30 magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 8999,
@@ -136,11 +132,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Custom Glock 4.6x30 SGM Tactical 50-round drum magazine",
-                "shortName": "STM-46D",
-                "description": "A high-capacity 50-round magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine. Made in Korea and imported by SGM Tactical. Can hold even more than 50 rounds, but the manufacturer does not recommend loading more."
-            }
+            "name": "Custom Glock 4.6x30 SGM Tactical 50-round drum magazine",
+            "shortName": "STM-46D",
+            "description": "A high-capacity 50-round magazine for the custom Soyuz-TM STM-46 Gen.2 4.6x30mm carbine. Made in Korea and imported by SGM Tactical. Can hold even more than 50 rounds, but the manufacturer does not recommend loading more."
         },
         "HandbookParent": "Magazines",
         "HandbookPrice": 18499,
@@ -171,11 +165,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "STM-46 4.6x30 upper receiver",
-                "shortName": "6628f3786c4f8a10a65adee4 Rec",
-                "description": "An upper receiver for the STM-46 Gen.2 4.6x30 carbine. Equipped with a mount for attaching additional tactical devices."
-            }
+            "name": "STM-46 4.6x30 upper receiver",
+            "shortName": "6628f3786c4f8a10a65adee4 Rec",
+            "description": "An upper receiver for the STM-46 Gen.2 4.6x30 carbine. Equipped with a mount for attaching additional tactical devices."
         },
         "HandbookParent": "ReceiversAndSlides",
         "HandbookPrice": 31999,

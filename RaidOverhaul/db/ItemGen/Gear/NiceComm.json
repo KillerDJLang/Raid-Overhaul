@@ -50,11 +50,9 @@
             ]
         },
         "LocalePush": {
-            "en": {
-                "name": "Mystery Ranch NICE COMM 3 BVS frame system (tan)",
-                "shortName": "COMM 3",
-                "description": "The NICE Frame special system for carrying oversized or heavy loads with an installed COMM 3 backpack for carrying radio systems.\nThe COMM 3 main bay is designed for PRC117F or G, PRC119F, 152, or ASIP radios. The Hitchhiker and Daypack lid allows you to carry separate gear if needed. The modular NICE COMM 3 system is ready to adapt to changing tasks.\nAn extremely rare thing, for which a real hunt is conducted in Tarkov."
-            }
+            "name": "Mystery Ranch NICE COMM 3 BVS frame system (tan)",
+            "shortName": "COMM 3",
+            "description": "The NICE Frame special system for carrying oversized or heavy loads with an installed COMM 3 backpack for carrying radio systems.\nThe COMM 3 main bay is designed for PRC117F or G, PRC119F, 152, or ASIP radios. The Hitchhiker and Daypack lid allows you to carry separate gear if needed. The modular NICE COMM 3 system is ready to adapt to changing tasks.\nAn extremely rare thing, for which a real hunt is conducted in Tarkov."
         },
         "HandbookParent": "Backpacks",
         "HandbookPrice": 43999,
