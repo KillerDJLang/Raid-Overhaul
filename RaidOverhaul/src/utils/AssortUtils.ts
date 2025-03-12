@@ -194,7 +194,7 @@ export class AssortUtils {
      * @param StockCount - Stock count for the added item in the traders shop.
      * @param LoyaltyLevelToPush - Loyalty level you want your item to be available at.
      */
-    public buildBaseAssort(ItemID: string, StockCount: number, LoyaltyLevelToPush: number): void {
+    public buildBaseAssort(ItemID: string, StockCount: number, LoyaltyLevelToPush: number, TraderToUse?: string): void {
         const itemPrice = this.utils.getFleaPrice(ItemID);
 
         const slipCost = Math.round(itemPrice / 53999);
@@ -208,11 +208,26 @@ export class AssortUtils {
                     LoyaltyLevelToPush,
                     this.utils.genRandomCount(1, 10),
                     Currency.ReqSlips,
+                    TraderToUse ?? baseJson._id,
                 );
             } else if (itemPrice <= 53999) {
-                this.createSingleItemOffer(ItemID, StockCount, LoyaltyLevelToPush, formCost, Currency.ReqForms);
+                this.createSingleItemOffer(
+                    ItemID,
+                    StockCount,
+                    LoyaltyLevelToPush,
+                    formCost,
+                    Currency.ReqCoins,
+                    TraderToUse ?? baseJson._id,
+                );
             } else if (itemPrice >= 54000) {
-                this.createSingleItemOffer(ItemID, StockCount, LoyaltyLevelToPush, slipCost, Currency.ReqSlips);
+                this.createSingleItemOffer(
+                    ItemID,
+                    StockCount,
+                    LoyaltyLevelToPush,
+                    slipCost,
+                    Currency.ReqSlips,
+                    TraderToUse ?? baseJson._id,
+                );
             }
         } catch (error) {
             this.logger.log(`Error loading ${ItemID} => ${error}, skipping item.`, LogTextColor.RED);
@@ -234,6 +249,7 @@ export class AssortUtils {
         StockCount: number,
         LoyaltyLevelToPush: number,
         presetName: any,
+        TraderToUse?: string,
     ): void {
         const presetPrice = this.getPriceForPresetItems(PresetItems);
         const slipCost = Math.round(presetPrice / 53999);
@@ -247,11 +263,26 @@ export class AssortUtils {
                     LoyaltyLevelToPush,
                     this.utils.genRandomCount(1, 10),
                     Currency.ReqSlips,
+                    TraderToUse ?? baseJson._id,
                 );
             } else if (presetPrice <= 53999) {
-                this.createPresetOffer(PresetItems, StockCount, LoyaltyLevelToPush, formCost, Currency.ReqForms);
+                this.createPresetOffer(
+                    PresetItems,
+                    StockCount,
+                    LoyaltyLevelToPush,
+                    formCost,
+                    Currency.ReqCoins,
+                    TraderToUse ?? baseJson._id,
+                );
             } else if (presetPrice >= 54000) {
-                this.createPresetOffer(PresetItems, StockCount, LoyaltyLevelToPush, slipCost, Currency.ReqSlips);
+                this.createPresetOffer(
+                    PresetItems,
+                    StockCount,
+                    LoyaltyLevelToPush,
+                    slipCost,
+                    Currency.ReqSlips,
+                    TraderToUse ?? baseJson._id,
+                );
             }
         } catch (error) {
             this.logger.log(`Error loading ${presetName} => ${error}, skipping preset.`, LogTextColor.RED);
@@ -264,6 +295,7 @@ export class AssortUtils {
         LoyaltyLevelToPush: number,
         ReqCost: number,
         CurrencyToUse: any,
+        TraderToUse?: string,
     ): void {
         const tables = this.databaseService.getTables();
 
@@ -290,9 +322,9 @@ export class AssortUtils {
         ];
         const loyaltyLevel = LoyaltyLevelToPush;
 
-        tables.traders[baseJson._id].assort.items.push(...complexOffer);
-        tables.traders[baseJson._id].assort.barter_scheme[complexOffer[0]._id] = barterScheme;
-        tables.traders[baseJson._id].assort.loyal_level_items[complexOffer[0]._id] = loyaltyLevel;
+        tables.traders[TraderToUse ?? baseJson._id].assort.items.push(...complexOffer);
+        tables.traders[TraderToUse ?? baseJson._id].assort.barter_scheme[complexOffer[0]._id] = barterScheme;
+        tables.traders[TraderToUse ?? baseJson._id].assort.loyal_level_items[complexOffer[0]._id] = loyaltyLevel;
 
         this.itemsToSell = [];
     }
@@ -303,6 +335,7 @@ export class AssortUtils {
         LoyaltyLevelToPush: number,
         ReqCost: number,
         CurrencyToUse: any,
+        TraderToUse?: string,
     ): void {
         const tables = this.databaseService.getTables();
         const singleOffer: IItem = {
@@ -325,9 +358,9 @@ export class AssortUtils {
         ];
         const loyaltyLevel = LoyaltyLevelToPush;
 
-        tables.traders[baseJson._id].assort.items.push(singleOffer);
-        tables.traders[baseJson._id].assort.barter_scheme[singleOffer._id] = barterScheme;
-        tables.traders[baseJson._id].assort.loyal_level_items[singleOffer._id] = loyaltyLevel;
+        tables.traders[TraderToUse ?? baseJson._id].assort.items.push(singleOffer);
+        tables.traders[TraderToUse ?? baseJson._id].assort.barter_scheme[singleOffer._id] = barterScheme;
+        tables.traders[TraderToUse ?? baseJson._id].assort.loyal_level_items[singleOffer._id] = loyaltyLevel;
     }
     //#endregion
 }

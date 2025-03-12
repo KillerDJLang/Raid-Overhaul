@@ -6,7 +6,7 @@ import type { VFS } from "@spt/utils/VFS";
 //Custom Classes
 import type { debugFile } from "../models/Interfaces";
 //Modules
-import * as path from "node:path";
+import path from "node:path";
 import JSON5 from "json5";
 
 @injectable()

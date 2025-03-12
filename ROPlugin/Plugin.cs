@@ -13,23 +13,26 @@ using HarmonyLib;
 using UnityEngine;
 using SPT.Reflection.Utils;
 
+using RaidOverhaul.Fika;
 using RaidOverhaul.Models;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Patches;
-using RaidOverhaul.Controllers;
+using RaidOverhaul.Configs;
 using RaidOverhaul.Checkers;
 using LegionPrePatch.Helpers;
+using RaidOverhaul.Controllers;
 
 namespace RaidOverhaul
 {
+    [BepInDependency("com.fika.core", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(ClientInfo.ROGUID, ClientInfo.ROPluginName, ClientInfo.PluginVersion)]
-    //[BepInDependency("Jehree.InteractableExfilsAPI")]
     public class Plugin : BaseUnityPlugin
     {
         public static string modPath = Path.Combine(Environment.CurrentDirectory, "user", "mods", "RaidOverhaul");
         public static string pluginPath = Path.Combine(Environment.CurrentDirectory, "BepInEx", "plugins", "RaidOverhaul");
         public static string resourcePath = Path.Combine(pluginPath, "Resources");
         public static string legionJsonPath = Path.Combine(resourcePath, "normalLegionSettings.json");
+        public static List<string> SoftDependancies = ["com.fika.core"];
         public static TextAsset legionText;
 
         internal static GameObject Hook;
@@ -53,9 +56,10 @@ namespace RaidOverhaul
         public FieldInfo _FAS { get; set; }
         public FieldInfo _AAS { get; set; }
 
-        private bool realismDetected = false;
-        private bool standaloneDetected = false;
-        public static List<GameObject> ExfilList = new List<GameObject>();
+        public static bool realismDetected { get; private set; }
+        public static bool standaloneDetected { get; private set; }
+        public static bool fikaDetected { get; private set; }
+        public static bool dedicatedClientDetected { get; private set; }
 
         void Awake()
         {
@@ -67,6 +71,17 @@ namespace RaidOverhaul
             {
                 throw new Exception("Missing Dependencies");
             }
+
+            if (Chainloader.PluginInfos.ContainsKey("com.fika.core"))
+            {
+                fikaDetected = true;
+            }
+
+            if (Chainloader.PluginInfos.ContainsKey("com.fika.dedicated"))
+            {
+                dedicatedClientDetected = true;
+            }
+
             // Bind the configs
             DJConfig.BindConfig(Config);
 
@@ -86,18 +101,6 @@ namespace RaidOverhaul
             Weighting.InitWeightings();
 
             Utils.GetWeatherFields();
-
-            //Check flags and adjust accordingly
-            if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
-            {
-                JsonHandler.ReadFlagFile("TraderRep", "Flags");
-
-                if (ConfigController.flags.traderRepFlag)
-                {
-                    Weighting.repCorrectWeight = 100;
-                    Weighting.InitWeightings();
-                }
-            }
 
             //Load Legion
             FieldInfo excludedDifficultiesField = typeof(GClass583).GetField("ExcludedDifficulties", BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("ExcludedDifficulties field not found.");
@@ -119,15 +122,10 @@ namespace RaidOverhaul
 
             if (ConfigController.DebugConfig.TimeChanges) {
                 new WatchPatch().Enable();
-                new WeatherControllerPatch().Enable();
-                /*
-                new UIPanelPatch().Enable();
-                new TimerUIPatch().Enable();
-                new ExitTimerUIPatch().Enable();
-                */
                 new TimePanelPatch().Enable();
                 new RaidSettingsPatch().Enable();
                 new LocationInfoPanelPatch().Enable();
+                new WeatherControllerPatch().Enable();
             }
 
             if (DJConfig.Deafness.Value && realismDetected == false) {
@@ -145,7 +143,6 @@ namespace RaidOverhaul
             new RandomizeDefaultStatePatch().Enable();
             new EventExfilPatch().Enable();
             new RigPatch().Enable();
-            //new AirdropBoxPatch().Enable();
             new LegionSmethodPatch().Enable();
 
             _FAS = _FAS ?? typeof(Inventory).GetField("FastAccessSlots");
@@ -164,7 +161,7 @@ namespace RaidOverhaul
             if (Chainloader.PluginInfos.ContainsKey(Utils.RealismKey) && PreloaderUI.Instantiated && realismDetected == false) {
                 realismDetected = true;
                 if (ConfigController.DebugConfig.DebugMode) {
-                    Utils.LogToServerConsole("Realism Detected, disabling ROs deafness mechanics.");
+                    Utils.LogToServerConsole("Realism Detected, disabling ROs deafness and concussion mechanics.");
                 }
             }
 
@@ -182,16 +179,10 @@ namespace RaidOverhaul
                 Log.LogDebug("Session set");
             }
         }
-/*
-        private void Start()
+
+        private void OnEnable()
         {
-            //Examples examplesClass = new Examples();
-            //Singleton<InteractableExfilsService>.Instance.OnActionsAppliedEvent += examplesClass.SimpleExample;
-            //Singleton<InteractableExfilsService>.Instance.OnActionsAppliedEvent += examplesClass.GoneWhenDisabledExample;
-            //Singleton<InteractableExfilsService>.Instance.OnActionsAppliedEvent += examplesClass.DynamicDisabledExample;
-            //Singleton<InteractableExfilsService>.Instance.OnActionsAppliedEvent += examplesClass.SoftDynamicDisabledExample;
-            //Singleton<InteractableExfilsService>.Instance.OnActionsAppliedEvent += examplesClass.ScavGate3OnlyExample;
+            FikaInterface.InitOnPluginEnabled();
         }
-*/
     }
 }

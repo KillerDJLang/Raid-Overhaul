@@ -1,6 +1,6 @@
 {
     "name": "Raid Overhaul",
-    "version": "2.6.2",
+    "version": "2.6.5",
     "main": "src/mod.js",
     "isBundleMod": true,
     "license": "CC BY-NC-ND 4.0",

@@ -70,7 +70,8 @@ namespace RaidOverhaul.Helpers
             var _berserkWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.Berserk) ? ConfigController.EventConfig.RaidEvents.BerserkEventWeights : 0;
             var _weightWeightingLOL = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.Weight) ? ConfigController.EventConfig.RaidEvents.WeightEventWeights : 0;
             var _maxLLWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.ShoppingSpree) ? ConfigController.EventConfig.RaidEvents.MaxLLEventWeights : 0;
-            //var _exfilWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.ExfilLockdown) ? ConfigController.EventConfig.RaidEvents.ExfilEventWeights : 0;
+            var _exfilWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.ExfilLockdown) ? ConfigController.EventConfig.RaidEvents.ExfilEventWeights : 0;
+            var _artyWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.Artillery) ? ConfigController.EventConfig.RaidEvents.ArtilleryEventWeights : 0;
             var _repCorrectWeighting = repCorrectWeight;
 
             weightedEvents = new List<(Action, int)>
@@ -88,7 +89,8 @@ namespace RaidOverhaul.Helpers
                 (Plugin.ECScript.DoBerserkEvent,    _berserkWeighting),
                 (Plugin.ECScript.DoWeightEvent,     _weightWeightingLOL),
                 (Plugin.ECScript.DoMaxLLEvent,      _maxLLWeighting),
-                //(Plugin.ECScript.DoLockDownEvent,   _exfilWeighting),
+                (Plugin.ECScript.DoLockDownEvent,   _exfilWeighting),
+                (Plugin.ECScript.DoArtyEvent,       _artyWeighting),
                 (Plugin.ECScript.CorrectRep,        _repCorrectWeighting)
             };
         }

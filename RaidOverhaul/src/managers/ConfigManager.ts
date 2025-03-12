@@ -4,7 +4,7 @@ import type { VFS } from "@spt/utils/VFS";
 //Custom Classes
 import type { configFile, debugFile, seasonalProgression } from "../models/Interfaces";
 //Modules
-import * as path from "node:path";
+import path from "node:path";
 import JSON5 from "json5";
 
 @injectable()
@@ -42,11 +42,9 @@ export class ConfigManager {
      *
      * @returns The parsed seasonalProgression file for use.
      */
-    public seasonProgressionFile(profileId: string): seasonalProgression {
+    public seasonProgressionFile(): seasonalProgression {
         const seasonalProgressionFile = JSON5.parse(
-            this.vfs.readFile(
-                path.resolve(__dirname, `../utils/data/profiles/${profileId}/SeasonsProgressionFile.json5`),
-            ),
+            this.vfs.readFile(path.resolve(__dirname, `../utils/data/seasonsProgressionFile.json5`)),
         ) as seasonalProgression;
 
         return seasonalProgressionFile;

@@ -11,8 +11,8 @@ import type { Utils } from "../utils/Utils";
 //Json Imports
 const EventWeightingsConfig = require("../../config/EventWeightings.json");
 //Modules
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 
 @injectable()
 export class StaticRouters {
@@ -28,6 +28,10 @@ export class StaticRouters {
     ) {}
 
     public registerHooks(): void {
+        const pluginPath = fs.readdirSync("./BepInEx/plugins").map((plugin) => plugin.toLowerCase());
+        const fika = "fika.core.dll";
+        const dediClient = "fika.dedicated.dll";
+
         //Backup profile
         this.staticRouter.registerStaticRouter(
             `${this.routerPrefix}-/client/game/start`,
@@ -37,7 +41,11 @@ export class StaticRouters {
                     action: async (url, info, sessionID, output) => {
                         const profileInfo = this.profileHelper.getFullProfile(sessionID);
 
-                        if (this.configManager.modConfig().BackupProfile) {
+                        if (
+                            this.configManager.modConfig().BackupProfile &&
+                            !this.utils.checkDependancies(pluginPath, fika) &&
+                            !this.utils.checkDependancies(pluginPath, dediClient)
+                        ) {
                             this.utils.profileBackup(sessionID, profileInfo);
                         }
                         return Promise.resolve(output);
@@ -84,8 +92,7 @@ export class StaticRouters {
                 {
                     url: "/RaidOverhaul/GetWeatherConfig",
                     action: async (url, info, sessionId, output) => {
-                        const profileId = info.uid;
-                        const WeatherConfig = this.configManager.seasonProgressionFile(profileId);
+                        const WeatherConfig = this.configManager.seasonProgressionFile();
 
                         return JSON.stringify(WeatherConfig);
                     },
@@ -166,7 +173,7 @@ export class StaticRouters {
                             url: "/client/match/local/start",
                             action: async (url, info, sessionId, output) => {
                                 const profileId = info.uid;
-                                this.weatherController.seasonProgression(profileId);
+                                this.weatherController.seasonProgression();
                                 return Promise.resolve(output);
                             },
                         },
@@ -182,17 +189,12 @@ export class StaticRouters {
                         action: async (url, info, sessionId, output) => {
                             const profileId = info.uid;
                             const modLoc = path.join(__dirname, "..", "..");
-                            const seasonsProgressionLoc = `${modLoc}/src/utils/data/profiles/${profileId}/SeasonsProgressionFile.json5`;
+                            const seasonsProgressionLoc = `${modLoc}/src/utils/data/seasonsProgressionFile.json5`;
 
                             if (!fs.existsSync(seasonsProgressionLoc)) {
-                                this.logger.logWarning(
-                                    "No season progress file exists for this profile, this is normal. Creating...",
-                                );
-                                this.weatherController.createSeasonsProgressFile(profileId);
-                                this.logger.log(
-                                    `Season progression file for ${profileId} created.`,
-                                    LogTextColor.MAGENTA,
-                                );
+                                this.logger.logWarning("No season progress file exists for this profile. Creating...");
+                                this.weatherController.createSeasonsProgressFile();
+                                this.logger.log(`Season progression file created.`, LogTextColor.MAGENTA);
                             }
 
                             return Promise.resolve(output);

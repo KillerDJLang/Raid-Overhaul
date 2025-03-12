@@ -8,6 +8,7 @@ $bepinexFlagsFolder = "$bepinexResourcesFolder\Flags"
 $serverModFolder = "..\RaidOverhaul"
 $watchAnimsFolder = "..\RaidOverhaulClientBundles\bundles"
 $prePatchFolder = "..\ROPrepatch\bin\Release\net471"
+$packetsFolder = "..\ROPackets\bin\Release\net471"
 $pluginFolder = "..\ROPlugin\bin\Release\net471"
 $basePluginFolder = "..\ROPlugin"
 
@@ -18,6 +19,7 @@ foreach ($folder in $foldersToCreate) {
     if (-not (Test-Path "$folder")) { New-Item -Path "$folder" -ItemType Directory }
 }
 
+Copy-Item "$packetsFolder\RaidOverhaulPackets.dll" -Destination "$bepinexPluginFolder" -Force
 Copy-Item "$prePatchFolder\LegionPrePatch.dll" -Destination "$bepinexPatchFolder" -Force
 Copy-Item "$pluginFolder\RaidOverhaul.dll" -Destination "$bepinexPluginFolder" -Force
 Copy-Item "$basePluginFolder\normalLegionSettings.json" -Destination "$bepinexResourcesFolder" -Force

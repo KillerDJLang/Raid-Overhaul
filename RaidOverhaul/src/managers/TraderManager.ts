@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 //Custom Classes
 import type { ReqsController } from "../controllers/ReqsController";
+import type { PkController } from "../controllers/PkController";
 import type { TraderUtils } from "../utils/TraderUtils";
 import type { ConfigManager } from "./ConfigManager";
 import type { Utils } from "../utils/Utils";
@@ -14,6 +15,7 @@ export class TraderManager {
         @inject("Utils") protected utils: Utils,
         @inject("TraderUtils") protected traderUtils: TraderUtils,
         @inject("ConfigManager") protected configManager: ConfigManager,
+        @inject("PkController") protected pkController: PkController,
         @inject("ReqsController") protected reqsController: ReqsController,
     ) {}
 
@@ -59,16 +61,33 @@ export class TraderManager {
         this.reqsController.createAmmoFluidAssort();
         this.reqsController.addContainers();
         this.reqsController.addReqSlips();
-        this.reqsController.addReqForms();
+        this.reqsController.addReqCoins();
+        this.reqsController.addSpecialReqs();
         this.reqsController.addWeaponPresets();
         this.reqsController.addGearPresets();
-        //this.reqsController.addFlares();
         this.reqsController.addNewKeys();
+        this.reqsController.addFlares();
         //Push custom items to the assort if they're enabled
         if (this.configManager.modConfig().EnableCustomItems) {
             this.reqsController.addCustomPresets();
             this.reqsController.addStaticItems();
             this.reqsController.addAmmo();
+        }
+    }
+
+    public buildPkAssort(): void {
+        //Push each type of item to the assort
+        this.pkController.addContainers();
+        this.pkController.addReqSlips();
+        this.pkController.addReqCoins();
+        this.pkController.addSpecialReqs();
+        this.pkController.addNewKeys();
+        this.pkController.addFlares();
+        //Push custom items to the assort if they're enabled
+        if (this.configManager.modConfig().EnableCustomItems) {
+            this.pkController.addCustomPresets();
+            this.pkController.addStaticItems();
+            this.pkController.addAmmo();
         }
     }
 }

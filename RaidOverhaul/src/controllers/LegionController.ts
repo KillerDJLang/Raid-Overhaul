@@ -14,6 +14,7 @@ import type { JsonUtil } from "@spt/utils/JsonUtil";
 import type { legionProgression, SwagLegionConfig, SwagCustomBossConfig } from "../models/Interfaces";
 import type { ConfigManager } from "../managers/ConfigManager";
 import type { ReqsController } from "./ReqsController";
+import type { PkController } from "./PkController";
 import type { ROLogger } from "../utils/Logger";
 import type { Utils } from "../utils/Utils";
 //Json Imports
@@ -21,8 +22,8 @@ const botSettings = require("../Utils/data/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
 const bosslegion2 = require("../../db/RaidBoss/bosslegionNoCustomItems.json");
 //Modules
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 
 @injectable()
 export class LegionController {
@@ -30,6 +31,7 @@ export class LegionController {
         @inject("Utils") protected utils: Utils,
         @inject("ROLogger") protected logger: ROLogger,
         @inject("ConfigManager") protected configManager: ConfigManager,
+        @inject("PkController") protected pkController: PkController,
         @inject("ReqsController") protected traderController: ReqsController,
         @inject("StaticRouterModService") protected staticRouter: StaticRouterModService,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
@@ -434,34 +436,67 @@ export class LegionController {
                         }
 
                         const profileLevel = this.utils.checkProfileLevel(LegionController.profileId);
-                        if (profileLevel != null && profileLevel < 10) {
-                            this.traderController.traderRepLogic(info, sessionId);
-                            if (this.configManager.modConfig().EnableCustomBoss) {
-                                this.traderController.legionRepLogic(info, sessionId);
-                                this.logger.log(
-                                    `Profile is under minimum spawn level for Legion, setting spawn chance to 0. \nHe'll be on the hunt after hitting level 10`,
-                                    LogTextColor.MAGENTA,
-                                );
-                            } else {
-                                this.traderController.noBossRepLogic(info, sessionId);
-                            }
-                            LegionController.legionFileChance = 0;
+                        if (this.configManager.modConfig().EnableRequisitionOffice) {
+                            if (profileLevel != null && profileLevel < 10) {
+                                this.traderController.traderRepLogic(info, sessionId);
+                                if (this.configManager.modConfig().EnableCustomBoss) {
+                                    this.traderController.legionRepLogic(info, sessionId);
 
-                            const legionSpawnPath = `${LegionController.modLoc}/config/profiles/${LegionController.profileId}/LegionChance.json`;
-                            const spawnChance = JSON.parse(
-                                fs.readFileSync(legionSpawnPath, "utf8"),
-                            ) as legionProgression;
-                            spawnChance.legionChance = LegionController.legionFileChance;
-                            fs.writeFileSync(legionSpawnPath, JSON.stringify(spawnChance, null, 2), "utf-8");
-                        } else {
-                            this.traderController.traderRepLogic(info, sessionId);
-                            if (this.configManager.modConfig().EnableCustomBoss) {
-                                this.traderController.legionRepLogic(info, sessionId);
-                                this.modifySpawnChance(info, output);
-                                this.pushLocationData();
+                                    LegionController.legionFileChance = 0;
+
+                                    const legionSpawnPath = `${LegionController.modLoc}/config/profiles/${LegionController.profileId}/LegionChance.json`;
+                                    const spawnChance = JSON.parse(
+                                        fs.readFileSync(legionSpawnPath, "utf8"),
+                                    ) as legionProgression;
+                                    spawnChance.legionChance = LegionController.legionFileChance;
+                                    fs.writeFileSync(legionSpawnPath, JSON.stringify(spawnChance, null, 2), "utf-8");
+
+                                    this.logger.log(
+                                        `Profile is under minimum spawn level for Legion, setting spawn chance to 0. \nHe'll be on the hunt after hitting level 10`,
+                                        LogTextColor.MAGENTA,
+                                    );
+                                } else {
+                                    this.traderController.noBossRepLogic(info, sessionId);
+                                }
+                            } else {
+                                this.traderController.traderRepLogic(info, sessionId);
+                                if (this.configManager.modConfig().EnableCustomBoss) {
+                                    this.traderController.legionRepLogic(info, sessionId);
+                                    this.modifySpawnChance(info, output);
+                                    this.pushLocationData();
+                                } else {
+                                    this.traderController.noBossRepLogic(info, sessionId);
+                                }
                             }
-                            if (!this.configManager.modConfig().EnableCustomBoss) {
-                                this.traderController.noBossRepLogic(info, sessionId);
+                        } else {
+                            if (profileLevel != null && profileLevel < 10) {
+                                if (this.configManager.modConfig().EnableCustomBoss) {
+                                    this.pkController.legionRepLogicReqDisabled(info, sessionId);
+
+                                    LegionController.legionFileChance = 0;
+
+                                    const legionSpawnPath = `${LegionController.modLoc}/config/profiles/${LegionController.profileId}/LegionChance.json`;
+                                    const spawnChance = JSON.parse(
+                                        fs.readFileSync(legionSpawnPath, "utf8"),
+                                    ) as legionProgression;
+                                    spawnChance.legionChance = LegionController.legionFileChance;
+                                    fs.writeFileSync(legionSpawnPath, JSON.stringify(spawnChance, null, 2), "utf-8");
+
+                                    this.logger.log(
+                                        `Profile is under minimum spawn level for Legion, setting spawn chance to 0. \nHe'll be on the hunt after hitting level 10`,
+                                        LogTextColor.MAGENTA,
+                                    );
+                                } else {
+                                    this.pkController.noBossRepLogicReqDisabled(info, sessionId);
+                                }
+                            } else {
+                                if (this.configManager.modConfig().EnableCustomBoss) {
+                                    this.pkController.legionRepLogicReqDisabled(info, sessionId);
+                                    this.modifySpawnChance(info, output);
+                                    this.pushLocationData();
+                                } else {
+                                    this.pkController.noBossRepLogicReqDisabled(info, sessionId);
+                                }
                             }
                         }
                         return Promise.resolve(output);

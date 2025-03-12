@@ -3,7 +3,7 @@
         "ItemToClone": "SECURE_KAPPA",
         "OverrideProperties": {
             "Prefab": {
-                "path": "Containers/OnyxContainer.bundle",
+                "path": "Containers/onyx_container.bundle",
                 "rcid": ""
             },
             "Grids": [
@@ -75,7 +75,7 @@
             "description": "The best of the best. The rarest case found in the land of Tarkov, used by only the most skilled and seasoned PMC's."
         },
         "Handbook": {
-            "HandbookParent": "StorageContainers",
+            "HandbookParent": "SecureContainers",
             "HandbookPrice": 11999999
         },
         "PushToFleaBlacklist": true,

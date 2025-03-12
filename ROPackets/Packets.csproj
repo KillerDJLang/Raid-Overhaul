@@ -1,22 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <AssemblyName>RaidOverhaul</AssemblyName>
-    <Description>A large overhaul for raids including events and dead body clean up.</Description>
+    <AssemblyName>RaidOverhaulPackets</AssemblyName>
+    <Description>Fika Packets for Raid Overhaul</Description>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-	<Configurations>Debug;Release</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ROPrepatch\LegionPrePatch.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ROPackets\Packets.csproj" />
-  </ItemGroup>
-
-	<ItemGroup>
+  
+    <ItemGroup>
 		<Reference Include="0Harmony">
 		  <HintPath>..\..\..\BepInEx\core\0Harmony.dll</HintPath>
 		</Reference>
@@ -86,18 +79,15 @@
 		<Reference Include="UnityEngine.InputLegacyModule">
 		  <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
 		</Reference>
-		<Reference Include="UnityEngine.PhysicsModule">
-		  <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
-		</Reference>
 		<Reference Include="UnityEngine.TextRenderingModule">
 		  <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UI">
 		  <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
 		</Reference>
-		<Reference Include="Fika.Core">
-		  <HintPath>..\..\..\BepInEx\plugins\Fika.Core.dll</HintPath>
-		</Reference>
-	</ItemGroup>
+        <Reference Include="Fika.Core">
+          <HintPath>..\..\..\BepInEx\plugins\Fika.Core.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
 </Project>

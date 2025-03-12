@@ -1,29 +1,29 @@
 {
-    "668b3c71042c73c6f9b00704": {
-        "ItemToClone": "INFO_BLUE_FOLDERS",
+    "66292e79a4d9da25e683ab55": {
+        "ItemToClone": "INFO_DIARY",
         "OverrideProperties": {
             "Prefab": {
-                "path": "Items/requisition_slip.bundle",
+                "path": "Items/requisition_coin.bundle",
                 "rcid": ""
             },
             "Height": 1,
-            "Width": 2,
-            "StackMaxSize": 99,
+            "Width": 1,
+            "StackMaxSize": 50000,
             "BackgroundColor": "green",
-            "StackMaxRandom": 25,
-            "StackMinRandom": 1,
-            "eqMax": 100,
-            "eqMin": 45,
+            "StackMaxRandom": 500,
+            "StackMinRandom": 10,
+            "eqMax": 555,
+            "eqMin": 275,
             "rate": 1
         },
         "LocalePush": {
-            "name": "Requisition Slips",
-            "shortName": "ReqSlips",
-            "description": "A requisition slip used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A larger denomination for trading apparently."
+            "name": "Requisition Coin",
+            "shortName": "ReqCoins",
+            "description": "A coin used to trade with the Requisitions Office bearing the form of an eastern dragon. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A smaller denomination for trading apparently. They look fancy but are next to worthless as a currency in Tarkov. Who knows why the Requisition Office values them as much as they do."
         },
         "Handbook": {
             "HandbookParent": "5b47574386f77428ca22b341",
-            "HandbookPrice": 53999
+            "HandbookPrice": 175
         },
         "CloneToFilters": true,
         "LootPush": {

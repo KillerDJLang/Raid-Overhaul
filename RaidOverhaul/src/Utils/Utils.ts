@@ -18,8 +18,8 @@ import type { ROLogger } from "./Logger";
 //Modules
 //import weaponPresets from "../utils/data/weaponPresets.json";
 //import gearPresets from "../utils/data/gearPresets.json";
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 
 @injectable()
 export class Utils {
@@ -366,6 +366,7 @@ export class Utils {
 
     /**
      * Modifies container size.
+     * Only works for items with a single grid. Not multiple, such as rigs and the multi-gridded backpack
      *
      * @param container - Id of the case you want to modify the size of.
      * @param horizontal - Horizontal filter size you want to change to.

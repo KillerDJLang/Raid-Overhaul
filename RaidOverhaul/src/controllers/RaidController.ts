@@ -218,8 +218,8 @@ export class RaidController {
             traders["54cb57776803fa99248b456e"].base.insurance.max_return_hour =
                 this.configManager.modConfig().Insurance.TherapistMaxReturn;
         }
-        this.configManager.modConfig().Trader.LL1Items;
-        if (this.configManager.modConfig().Trader.LL1Items) {
+
+        if (this.configManager.modConfig().Trader.LL1Items && this.configManager.modConfig().EnableRequisitionOffice) {
             for (const item in tables.traders["66f0eaa93f6cc015bc1f3acb"].assort.loyal_level_items) {
                 tables.traders["66f0eaa93f6cc015bc1f3acb"].assort.loyal_level_items[item] = 1;
             }

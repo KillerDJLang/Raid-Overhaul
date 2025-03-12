@@ -7,6 +7,7 @@ import type { ConfigServer } from "@spt/servers/ConfigServer";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Traders } from "@spt/models/enums/Traders";
 //Custom Classes
+import type { LegionControllerGlobal } from "./controllers/LegionControllerGlobal";
 import type { ROWeatherController } from "./controllers/WeatherController";
 import type { ROHealthController } from "./controllers/HealthController";
 import type { ClothingGenerator } from "./generators/ClothingGenerator";
@@ -26,7 +27,7 @@ import type { Utils } from "./utils/Utils";
 const legionClothes = require("../db/ItemGen/Clothes/LegionClothing.json");
 import * as baseJson from "../db/base.json";
 //Modules
-import * as fs from "node:fs";
+import fs from "node:fs";
 
 @injectable()
 export class RaidOverhaul {
@@ -46,6 +47,7 @@ export class RaidOverhaul {
         @inject("ClothingGenerator") protected clothingGenerator: ClothingGenerator,
         @inject("ROHealthController") protected roHealthController: ROHealthController,
         @inject("ROWeatherController") protected weatherController: ROWeatherController,
+        @inject("LegionControllerGlobal") protected legionControllerGlobal: LegionControllerGlobal,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("DatabaseService") protected databaseService: DatabaseService,
     ) {}
@@ -58,16 +60,16 @@ export class RaidOverhaul {
         if (this.configManager.modConfig().RemoveFromSwag) {
             return;
         }
-
         if (this.configManager.debugConfig().debugMode) {
             this.logger.debugModeWarning();
         }
+        if (this.configManager.modConfig().EnableRequisitionOffice) {
+            this.traderUtils.registerProfileImage();
+            this.traderUtils.setupTraderUpdateTime("66f0eaa93f6cc015bc1f3acb");
 
-        this.traderUtils.registerProfileImage();
-        this.traderUtils.setupTraderUpdateTime("66f0eaa93f6cc015bc1f3acb");
-
-        Traders["66f0eaa93f6cc015bc1f3acb"] = "66f0eaa93f6cc015bc1f3acb";
-        ragfair.traders[baseJson._id] = true;
+            Traders["66f0eaa93f6cc015bc1f3acb"] = "66f0eaa93f6cc015bc1f3acb";
+            ragfair.traders[baseJson._id] = true;
+        }
 
         //Register router hooks
         this.staticRouters.registerHooks();
@@ -80,15 +82,20 @@ export class RaidOverhaul {
         if (this.utils.checkForMod(moarKey)) {
             this.logger.log("MOAR detected, modifying Legion patterns.", LogTextColor.MAGENTA);
         }
-        this.legionController.legionPreSptPatch();
+        if (!this.fikaInstalled() && !this.configManager.modConfig().UseLegionGlobalSpawnChance) {
+            this.legionController.legionPreSptPatch();
+        } else {
+            const globalSpawnChance = this.configManager.modConfig().GlobalSpawnChance;
+
+            this.legionControllerGlobal.legionPreSptPatch();
+            this.logger.log(
+                `Using global legion configuration due to Fika detection or enabling global spawn chance in the config. \nSpawn chance set to ${globalSpawnChance}`,
+                LogTextColor.CYAN,
+            );
+        }
     }
 
     public async postDBLoadAsync(): Promise<void> {
-        const pluginRO = "raidoverhaul.dll";
-        const prePatchRO = "legionprepatch.dll";
-        const pluginPath = fs.readdirSync("./BepInEx/plugins/RaidOverhaul").map((plugin) => plugin.toLowerCase());
-        const patcherPath = fs.readdirSync("./BepInEx/patchers").map((patcher) => patcher.toLowerCase());
-
         //Random message on server on startup
         const messageArray = [
             "The hamsters can take a break now",
@@ -110,33 +117,43 @@ export class RaidOverhaul {
         }
 
         //Check for proper install
-        if (!this.utils.checkDependancies(pluginPath, pluginRO)) {
-            this.logger.logError(
-                "Error, client portion of Raid Overhaul is missing from BepInEx/plugins folder.\nPlease install correctly.",
-            );
-            return;
-        }
+        if (!this.fikaInstalled()) {
+            const pluginRO = "raidoverhaul.dll";
+            const prePatchRO = "legionprepatch.dll";
+            const pluginPath = fs.readdirSync("./BepInEx/plugins/RaidOverhaul").map((plugin) => plugin.toLowerCase());
+            const patcherPath = fs.readdirSync("./BepInEx/patchers").map((patcher) => patcher.toLowerCase());
 
-        if (!this.utils.checkDependancies(patcherPath, prePatchRO)) {
-            this.logger.logError(
-                "Error, Legion Boss PrePatch is missing from BepInEx/patchers folder.\nPlease install correctly.",
-            );
-            return;
+            if (!this.utils.checkDependancies(pluginPath, pluginRO)) {
+                this.logger.logError(
+                    "Error, client portion of Raid Overhaul is missing from BepInEx/plugins folder.\nPlease install correctly.",
+                );
+                return;
+            }
+            if (!this.utils.checkDependancies(patcherPath, prePatchRO)) {
+                this.logger.logError(
+                    "Error, Legion Boss PrePatch is missing from BepInEx/patchers folder.\nPlease install correctly.",
+                );
+                return;
+            }
         }
 
         this.loadCustomItems();
-        this.pushModFeatures();
-        this.loadTraderData();
+        if (this.configManager.modConfig().EnableRequisitionOffice) {
+            this.loadTraderData();
+        }
+        if (!this.configManager.modConfig().EnableRequisitionOffice) {
+            this.traderManager.buildPkAssort();
+        }
         if (this.configManager.modConfig().EnableCustomBoss) {
             this.pushBossData();
         }
-
         if (this.configManager.debugConfig().debugMode && this.configManager.debugConfig().dumpData) {
             this.utils.generateFluidAssortData();
             this.utils.generateAmmoTypeData();
             this.utils.generatePresetData();
             //this.utils.writePresetKeys();
         }
+        this.pushModFeatures();
 
         this.logger.log(`has finished modifying your raids. ${randomMessage}.`, LogTextColor.CYAN);
     }
@@ -150,6 +167,7 @@ export class RaidOverhaul {
         this.itemGenerator.createCustomItems("../../db/ItemGen/Currency");
         this.itemGenerator.createCustomItems("../../db/ItemGen/ConstItems");
         this.itemGenerator.createCustomItems("../../db/ItemGen/CustomKeys");
+        this.itemGenerator.createCustomItems("../../db/ItemGen/Cases");
         if (this.configManager.modConfig().EnableCustomItems) {
             if (this.utils.checkForMod(realismKey)) {
                 this.itemGenerator.createCustomItems("../../db/ItemGen/Ammo Realism");
@@ -159,11 +177,12 @@ export class RaidOverhaul {
             }
             this.itemGenerator.createCustomItems("../../db/ItemGen/Weapons");
             this.itemGenerator.createCustomItems("../../db/ItemGen/Gear");
-            this.itemGenerator.createCustomItems("../../db/ItemGen/Cases");
             this.slotGenerator.buildSlots();
+            /*
             if (!this.utils.checkForMod(apbsKey) && !this.utils.checkForMod(alpKey)) {
                 this.itemController.pushCustomWeaponsToBots();
             }
+*/
         }
         tables.locations.laboratory.base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
     }
@@ -173,11 +192,9 @@ export class RaidOverhaul {
         if (this.configManager.modConfig().EnableCustomBoss) {
             this.traderManager.pushExports();
             this.traderManager.buildReqAssort();
-            this.raidController.traderTweaks();
         } else if (!this.configManager.modConfig().EnableCustomBoss) {
             this.traderManager.pushExports2();
             this.traderManager.buildReqAssort();
-            this.raidController.traderTweaks();
         }
         return;
     }
@@ -189,6 +206,7 @@ export class RaidOverhaul {
         this.raidController.lootChanges();
         this.itemController.stackChanges();
         this.raidController.weightChanges();
+        this.raidController.traderTweaks();
         if (this.configManager.modConfig().Raid.ModifyEnemyBotHealth) {
             this.roHealthController.modifyEnemyHealth();
         }
@@ -205,5 +223,17 @@ export class RaidOverhaul {
         this.legionController.addBossToDb();
         this.clothingGenerator.createClothingTop(legionClothes.Shirt);
         this.clothingGenerator.createClothingBottom(legionClothes.Pants);
+    }
+
+    private fikaInstalled(): boolean {
+        const pluginPath = fs.readdirSync("./BepInEx/plugins").map((plugin) => plugin.toLowerCase());
+        const fika = "fika.core.dll";
+        const dediClient = "fika.dedicated.dll";
+
+        if (!this.utils.checkDependancies(pluginPath, fika) && !this.utils.checkDependancies(pluginPath, dediClient)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

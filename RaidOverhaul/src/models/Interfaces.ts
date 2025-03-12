@@ -45,6 +45,9 @@ export interface AssortTemplate {
 
 export interface configFile {
     EnableCustomBoss: boolean;
+    EnableRequisitionOffice: boolean;
+    UseLegionGlobalSpawnChance: boolean;
+    GlobalSpawnChance: number;
     RemoveFromSwag: boolean;
     EnableCustomItems: boolean;
     BackupProfile: boolean;

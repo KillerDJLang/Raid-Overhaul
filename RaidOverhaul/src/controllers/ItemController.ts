@@ -26,13 +26,10 @@ export class ItemController {
 
     public itemChanges(): void {
         const tables = this.databaseService.getTables();
-        const handbookBase = tables.templates.handbook;
-        const fleaPrices = tables.templates.prices;
         const presets = tables.globals;
         const items = tables.templates.items;
         const pockets = tables.templates.items["627a4e6b255f7527fb05a0f6"];
         const uhPockets = tables.templates.items["65e080be269cbd5c5005e529"];
-        const whiteFlare = "62178be9d0050232da3485d9";
         const conInvKey = "harmer-configurableinventories";
         const svmKey = "[SVM] Server Value Modifier";
         let recipes = tables.hideout.production.recipes;
@@ -46,10 +43,6 @@ export class ItemController {
                     base._props.UnlootableFromSide = [];
                 }
             }
-        }
-
-        for (const id in items) {
-            const base = items[id];
 
             if (this.configManager.modConfig().Raid.LootableArmbands) {
                 if (base._parent === BaseClasses.ARMBAND) {
@@ -57,10 +50,6 @@ export class ItemController {
                     base._props.UnlootableFromSide = [];
                 }
             }
-        }
-
-        for (const id in items) {
-            const base = items[id];
 
             if (base._props.BlocksEarpiece) {
                 base._props.BlocksEarpiece = false;
@@ -69,10 +58,6 @@ export class ItemController {
             if (base._props.BlocksFaceCover) {
                 base._props.BlocksFaceCover = false;
             }
-        }
-
-        for (const id in items) {
-            const base = items[id];
 
             if (base._id === "5ea058e01dbce517f324b3e2") {
                 base._props.armorClass = "4";
@@ -328,14 +313,7 @@ export class ItemController {
                 items[id]._props.ExamineTime = 0.1;
             }
         }
-        /*
-        for (const flare in handbookBase.Items) {
-          if (handbookBase.Items[flare].Id === whiteFlare) {
-            handbookBase.Items[flare].Price = 89999;
-          }
-        }
-        fleaPrices[whiteFlare] = 97388 + this.randomUtil.getInt(500, 53000);
-    */
+
         for (const botId in tables.bots.types) {
             const botType = AllBots[botId];
 

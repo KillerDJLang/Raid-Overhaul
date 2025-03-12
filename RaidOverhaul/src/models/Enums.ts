@@ -39,7 +39,8 @@ export enum Currency {
     Euros = "569668774bdc2da2298b4568",
     GPCoins = "5d235b4d86f7742e017bc88a",
     ReqSlips = "668b3c71042c73c6f9b00704",
-    ReqForms = "66292e79a4d9da25e683ab55",
+    ReqCoins = "66292e79a4d9da25e683ab55",
+    SpecialReqs = "67c95a09708ee99e7a575da5",
 }
 
 export enum AllBots {

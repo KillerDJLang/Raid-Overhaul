@@ -1,21 +1,29 @@
 using EFT;
 using EFT.UI;
-using JsonType;
-using UnityEngine;
-using UnityEngine.UI;
-using HarmonyLib;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Generic;
 using EFT.Interactive;
 using EFT.HealthSystem;
 using EFT.UI.Matchmaker;
 using EFT.UI.BattleTimer;
 using EFT.InventoryLogic;
 using EFT.Communications;
+using EFT.MovingPlatforms;
+using SPT.Common.Http;
+using JsonType;
+using UnityEngine;
+using UnityEngine.UI;
+using HarmonyLib;
+using Comfort.Common;
+using CommonAssets.Scripts.Game;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Patches;
+using RaidOverhaul.Fika;
+
 
 using static RaidOverhaul.Plugin;
 
@@ -25,7 +33,8 @@ namespace RaidOverhaul.Controllers
     {
         private bool _exfilUIChanged = false;
 
-        public static bool _eventisRunning = false;
+        private static bool _pmcExfilEventRunning = false;
+        public static bool _eventIsRunning = false;
         public static bool _exfilLockdown;
         public static bool _gearExfil;
         private bool _airdropDisabled = false;
@@ -35,6 +44,7 @@ namespace RaidOverhaul.Controllers
         private bool _berserkEventHasRun = false;
         private bool _malfEventHasRun = false;
         private bool _weightEventHasRun = false;
+        private bool _artyEventHasRun = false;
 
         private int _skillEventCount = 0;
         private int _repairEventCount = 0;
@@ -44,7 +54,8 @@ namespace RaidOverhaul.Controllers
         private int _exfilEventCount = 0;
 
         public static int timeStart;
-        public static int _mouseInputCount = 0;
+        public static int _mouseInputCountT = 0;
+        public static int _mouseInputCountE = 0;
 
         private Switch[] _pswitchs = null;
         private KeycardDoor[] _keydoor = null;
@@ -74,8 +85,6 @@ namespace RaidOverhaul.Controllers
         private Dictionary<string, OriginalWeaponStatsMalf> _originalWSMalf = new Dictionary<string, OriginalWeaponStatsMalf>();
         private IEnumerable<Item> _allWeapons => Session.Profile.Inventory.AllRealPlayerItems;
 
-        private const string _whiteFlare = "62178be9d0050232da3485d9";
-
         void Update()
         {
             if (ConfigController.DebugConfig.TimeChanges)
@@ -95,6 +104,7 @@ namespace RaidOverhaul.Controllers
                 if (_berserkEventHasRun != false)   { _berserkEventHasRun = false; }
                 if (_malfEventHasRun != false)      { _malfEventHasRun = false; }
                 if (_weightEventHasRun != false)    { _weightEventHasRun = false; }
+                if (_artyEventHasRun != false)      { _artyEventHasRun = false; }
 
                 if (_skillEventCount != 0)          { _skillEventCount = 0; }
                 if (_repairEventCount != 0)         { _repairEventCount = 0; }
@@ -122,11 +132,11 @@ namespace RaidOverhaul.Controllers
             }
 
 
-            if (!_eventisRunning)
+            if (!_eventIsRunning && FikaInterface.IAmHost())
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
 
-                _eventisRunning = true;
+                _eventIsRunning = true;
             }
 
             if (EventExfilPatch.IsLockdown)
@@ -136,13 +146,20 @@ namespace RaidOverhaul.Controllers
                     ChangeExfilUI();
                 }
             }
+
+            if (Ready())
+            {
+                CheckForFlag();
+                FlareLogicTrain();
+                FlareLogicExfil();
+            }
         }
 
         private IEnumerator StartEvents()
         {
             yield return new WaitForSeconds(Random.Range(ConfigController.EventConfig.RandomEventRangeMinimumServer, ConfigController.EventConfig.RandomEventRangeMaximumServer) * 60f);
 
-            if (ROGameWorld != null && ROGameWorld.AllAlivePlayersList != null && ROGameWorld.AllAlivePlayersList.Count > 0 && !(ROPlayer is HideoutPlayer))
+            if (Ready())
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -154,7 +171,7 @@ namespace RaidOverhaul.Controllers
                 _lamp = null;
             }
 
-            _eventisRunning = false;
+            _eventIsRunning = false;
             yield break;
         }
 
@@ -196,6 +213,8 @@ namespace RaidOverhaul.Controllers
         {
             if (_healthEventCount >= 2) { return; }
 
+            FikaInterface.SendRandomEventPacket(Utils.Heal);
+
             NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.ActiveHealthController.RestoreFullHealth();
                 _healthEventCount++;
@@ -208,6 +227,8 @@ namespace RaidOverhaul.Controllers
         public void DoDamageEvent()
         {
             if (_damageEventCount >= 1) { return; }
+
+            FikaInterface.SendRandomEventPacket(Utils.Damage);
 
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.", ENotificationDurationType.Long, ENotificationIconType.Alert);
             ROPlayer.ActiveHealthController.DoContusion(4f, 50f);
@@ -225,6 +246,8 @@ namespace RaidOverhaul.Controllers
         {
             if (_repairEventCount >= 2) { return; }
 
+            FikaInterface.SendRandomEventPacket(Utils.Repair);
+
             NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.Profile.Inventory.GetPlayerItems().ExecuteForEach((item) =>
             {
@@ -239,10 +262,13 @@ namespace RaidOverhaul.Controllers
 
         public void DoAirdropEvent()
         {
-/*
+
             if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && ROPlayer.Location != "sandbox" && !_airdropEventHasRun)
             {
-                ROGameWorld.gameObject.AddComponent<AirdropsManager>().isFlareDrop = true;
+                if (Utils.FindTemplates(Utils.redFlare).FirstOrDefault() is not AmmoTemplate ammoTemplate) { return; };
+                
+                ROPlayer.HandleFlareSuccessEvent(ROPlayer.Transform.position, ammoTemplate);
+
                 NotificationManagerClass.DisplayMessageNotification("Aidrop Event: Incoming Airdrop!", ENotificationDurationType.Long, ENotificationIconType.Quest);
 
                 _airdropEventHasRun = true;
@@ -254,15 +280,17 @@ namespace RaidOverhaul.Controllers
 
             else
             {
-*/
+
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
-            //}
+            }
         }
 
         public async void DoFunny()
         {
             if (!_jokeEventHasRun)
             {
+                FikaInterface.SendRandomEventPacket(Utils.Jokes);
+
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
 
                 await Task.Delay(10000);
@@ -288,6 +316,8 @@ namespace RaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
+                FikaInterface.SendRandomEventPacket(Utils.Blackout);
+
                 foreach (Switch pSwitch in _pswitchs)
                 {
                     typeof(Switch).GetMethod("Close", BindingFlags.Instance | BindingFlags.Public).Invoke(pSwitch, null);
@@ -339,6 +369,8 @@ namespace RaidOverhaul.Controllers
         {
             if (_skillEventCount >= 3) { return; }
 
+                FikaInterface.SendRandomEventPacket(Utils.Skill);
+
                 System.Random random = new System.Random();
 
                 int chance = random.Next(0, 100 + 1);
@@ -376,6 +408,8 @@ namespace RaidOverhaul.Controllers
         {
             if (!_metabolismDisabled)
             {
+                FikaInterface.SendRandomEventPacket(Utils.Metabolism);
+
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
 
@@ -425,6 +459,8 @@ namespace RaidOverhaul.Controllers
 
             if (!_malfEventHasRun)
             {
+                FikaInterface.SendRandomEventPacket(Utils.Malf);
+
                 _malfEventHasRun = true;
 
                 var tempItems = _allWeapons;
@@ -490,36 +526,74 @@ namespace RaidOverhaul.Controllers
 
         public void DoLLEvent()
         {
+            FikaInterface.SendRandomEventPacket(Utils.LoyaltyLevel);
+
             System.Random random = new System.Random();
 
-            var Trader = Utils.Traders.RandomElement();
-            int chance = random.Next(0, 100 + 1);
-
-            if (chance is >= 0 && chance is <= 49)
+            if (ConfigController.ServerConfig.EnableReqShop)
             {
-                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 0.1);
-                NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
+                var Trader = Utils.Traders.RandomElement();
+                int chance = random.Next(0, 100 + 1);
 
-                if (ConfigController.DebugConfig.DebugMode) {
-                    Utils.LogToServerConsole("Trader Rep Gain Event has run");
-                }
-            }
-
-            else if (chance is >= 50 && chance is <= 100)
-            {
-                if (Session.Profile.TradersInfo[Trader].Standing >= 0.05)
+                if (chance is >= 0 && chance is <= 49)
                 {
-                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 0.05);
-                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
+                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 0.1);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
 
                     if (ConfigController.DebugConfig.DebugMode) {
-                        Utils.LogToServerConsole("Trader Rep Loss Event has run");
+                        Utils.LogToServerConsole("Trader Rep Gain Event has run");
                     }
                 }
 
-                else
+                else if (chance is >= 50 && chance is <= 100)
                 {
-                    Weighting.DoRandomEvent(Weighting.weightedEvents);
+                    if (Session.Profile.TradersInfo[Trader].Standing >= 0.05)
+                    {
+                        Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 0.05);
+                        NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
+
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Trader Rep Loss Event has run");
+                        }
+                    }
+
+                    else
+                    {
+                        Weighting.DoRandomEvent(Weighting.weightedEvents);
+                    }
+                }
+            }
+            else
+            {
+                var Trader = Utils.TradersNoReq.RandomElement();
+                int chance = random.Next(0, 100 + 1);
+
+                if (chance is >= 0 && chance is <= 49)
+                {
+                    Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 0.1);
+                    NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has gained a little more respect for you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
+
+                    if (ConfigController.DebugConfig.DebugMode) {
+                        Utils.LogToServerConsole("Trader Rep Gain Event has run");
+                    }
+                }
+
+                else if (chance is >= 50 && chance is <= 100)
+                {
+                    if (Session.Profile.TradersInfo[Trader].Standing >= 0.05)
+                    {
+                        Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 0.05);
+                        NotificationManagerClass.DisplayMessageNotification("Trader Event: A random Trader has lost a little faith in you.", ENotificationDurationType.Default, ENotificationIconType.Achievement);
+
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Trader Rep Loss Event has run");
+                        }
+                    }
+
+                    else
+                    {
+                        Weighting.DoRandomEvent(Weighting.weightedEvents);
+                    }
                 }
             }
         }
@@ -530,6 +604,8 @@ namespace RaidOverhaul.Controllers
 
             if (!_berserkEventHasRun)
             {
+                FikaInterface.SendRandomEventPacket(Utils.Berserk);
+
                 _berserkEventHasRun = true;
 
                 var tempItems = _allWeapons;
@@ -623,6 +699,8 @@ namespace RaidOverhaul.Controllers
 
             if (!_weightEventHasRun)
             {
+                FikaInterface.SendRandomEventPacket(Utils.Weight);
+
                 _weightEventHasRun = true;
 
                 if (chance is >= 0 && chance is <= 49)
@@ -712,6 +790,8 @@ namespace RaidOverhaul.Controllers
             {
                 JsonHandler.ReadFlagFile("TraderRep", "Flags");
 
+                FikaInterface.SendRandomEventPacket(Utils.MaxLoyaltyLevel);
+
                 if (!ConfigController.flags.traderRepFlag)
                 {
                     if (_maxLLEventCount >= 1) 
@@ -720,42 +800,85 @@ namespace RaidOverhaul.Controllers
                         return; 
                     }
 
-                    var Traders = Utils.Traders;
-
-                    _maxLLEventCount++;
-
-                    foreach (var Trader in Traders)
+                    if (ConfigController.ServerConfig.EnableReqShop)
                     {
+                        var Traders = Utils.Traders;
+
+                        _maxLLEventCount++;
+
+                        foreach (var Trader in Traders)
                         {
-                            Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 1);
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 1);
+                            }
+                        }
+
+                        ConfigController.flags.traderRepFlag = true;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+
+                        NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders have maxed out standing. Better get to them in the next ten minutes!", ENotificationDurationType.Default, ENotificationIconType.Mail);
+
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Shopping Spree Event has started");
+                        }
+
+                        await Task.Delay(600000);
+
+                        foreach (var Trader in Traders)
+                        {
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                            }
+                        }
+
+                        ConfigController.flags.traderRepFlag = false;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+
+                        NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders standing has been set back to normal. This is a fickle business after all.", ENotificationDurationType.Default, ENotificationIconType.Mail);
+
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Shopping Spree Event has run");
                         }
                     }
-
-                    ConfigController.flags.traderRepFlag = true;
-                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
-
-                    NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders have maxed out standing. Better get to them in the next ten minutes!", ENotificationDurationType.Default, ENotificationIconType.Mail);
-
-                    if (ConfigController.DebugConfig.DebugMode) {
-                        Utils.LogToServerConsole("Shopping Spree Event has started");
-                    }
-
-                    await Task.Delay(600000);
-
-                    foreach (var Trader in Traders)
+                    else
                     {
+                        var Traders = Utils.TradersNoReq;
+
+                        _maxLLEventCount++;
+
+                        foreach (var Trader in Traders)
                         {
-                            Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing + 1);
+                            }
                         }
-                    }
 
-                    ConfigController.flags.traderRepFlag = false;
-                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+                        ConfigController.flags.traderRepFlag = true;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
 
-                    NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders standing has been set back to normal. This is a fickle business after all.", ENotificationDurationType.Default, ENotificationIconType.Mail);
+                        NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders have maxed out standing. Better get to them in the next ten minutes!", ENotificationDurationType.Default, ENotificationIconType.Mail);
 
-                    if (ConfigController.DebugConfig.DebugMode) {
-                        Utils.LogToServerConsole("Shopping Spree Event has run");
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Shopping Spree Event has started");
+                        }
+
+                        await Task.Delay(600000);
+
+                        foreach (var Trader in Traders)
+                        {
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                            }
+                        }
+
+                        ConfigController.flags.traderRepFlag = false;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+
+                        NotificationManagerClass.DisplayMessageNotification("Shopping Spree Event: All Traders standing has been set back to normal. This is a fickle business after all.", ENotificationDurationType.Default, ENotificationIconType.Mail);
+
+                        if (ConfigController.DebugConfig.DebugMode) {
+                            Utils.LogToServerConsole("Shopping Spree Event has run");
+                        }
                     }
                 }
 
@@ -773,26 +896,48 @@ namespace RaidOverhaul.Controllers
 
         public void CorrectRep()
         {
+            FikaInterface.SendRandomEventPacket(Utils.CorrectRep);
+
             if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
             {
                 JsonHandler.ReadFlagFile("TraderRep", "Flags");
 
                 if (ConfigController.flags.traderRepFlag)
                 {
-                    var Traders = Utils.Traders;
-
-                    foreach (var Trader in Traders)
+                    if (ConfigController.ServerConfig.EnableReqShop)
                     {
-                        {
-                            Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
-                        }
-                    }
+                        var Traders = Utils.Traders;
 
-                    Weighting.repCorrectWeight = 0;
-                    Weighting.InitWeightings();
-                    ConfigController.flags.traderRepFlag = false;
-                    JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
-                    Weighting.DoRandomEvent(Weighting.weightedEvents);
+                        foreach (var Trader in Traders)
+                        {
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                            }
+                        }
+
+                        Weighting.repCorrectWeight = 0;
+                        Weighting.InitWeightings();
+                        ConfigController.flags.traderRepFlag = false;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+                        Weighting.DoRandomEvent(Weighting.weightedEvents);
+                    }
+                    else
+                    {
+                        var Traders = Utils.TradersNoReq;
+
+                        foreach (var Trader in Traders)
+                        {
+                            {
+                                Session.Profile.TradersInfo[Trader].SetStanding(Session.Profile.TradersInfo[Trader].Standing - 1);
+                            }
+                        }
+
+                        Weighting.repCorrectWeight = 0;
+                        Weighting.InitWeightings();
+                        ConfigController.flags.traderRepFlag = false;
+                        JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
+                        Weighting.DoRandomEvent(Weighting.weightedEvents);
+                    }
                 }
             }
             
@@ -810,6 +955,8 @@ namespace RaidOverhaul.Controllers
             var exfils = FindObjectsOfType<ExfiltrationPoint>();
 
             if (_exfilEventCount >= 1) { return; }
+
+            FikaInterface.SendRandomEventPacket(Utils.Lockdown);
 
             if (raidTimeLeft < 900 || ROPlayer.Location == "laboratory")
             {
@@ -867,6 +1014,177 @@ namespace RaidOverhaul.Controllers
 
                 if (ConfigController.DebugConfig.DebugMode) {
                     Utils.LogToServerConsole("Lockdown Event has run");
+                }
+            }
+        }
+
+        public async void DoArtyEvent()
+        {
+            FikaInterface.SendRandomEventPacket(Utils.Artillery);
+
+            if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && !_artyEventHasRun)
+            {
+                NotificationManagerClass.DisplayMessageNotification("Artillery Event: Get to cover. Shelling will commence in 30 seconds", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("Artillery Event has started");
+                }
+
+                await Task.Delay(30000);
+
+                NotificationManagerClass.DisplayMessageNotification("Artillery Event: Shelling has started", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+                
+                ROGameWorld.ServerShellingController?.StartShellingPosition(ROPlayer.Transform.position);
+            }
+
+            else
+            {
+                Weighting.DoRandomEvent(Weighting.weightedEvents);
+            }
+
+        }
+
+        public void FlareLogicTrain()
+        {
+            var trainFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.trainFlare;
+
+            if (!trainFlareInHands) { return; }
+
+            if (trainFlareInHands && Ready())
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0) && _mouseInputCountT < 1)
+                {
+                    _mouseInputCountT++;
+                    RunTrain();
+                }
+            }
+        }
+
+        public async void RunTrain()
+        {
+            FikaInterface.SendRandomEventPacket(Utils.Train);
+            
+            await Task.Delay(3000);
+            Locomotive trainExfil = FindObjectOfType<Locomotive>();
+            if (trainExfil == null) { return; }
+
+            trainExfil?.Init(System.DateTime.UtcNow);
+            
+            NotificationManagerClass.DisplayMessageNotification("Train is arriving. Get out if you're ready!", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+
+            if (ConfigController.DebugConfig.DebugMode) {
+                Utils.LogToServerConsole("Train is arriving");
+            }
+
+            await Task.Delay(420000);
+            
+            NotificationManagerClass.DisplayMessageNotification("Train is leaving the station.", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+            
+            if (ConfigController.DebugConfig.DebugMode) {
+                Utils.LogToServerConsole("Train is leaving");
+            }
+
+            _mouseInputCountT = 0;
+        }
+
+        public void FlareLogicExfil()
+        {
+            var specialFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.specialExfilFlare;
+
+            if (!specialFlareInHands) { return; }
+
+            if (specialFlareInHands && Ready())
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0) && _mouseInputCountE < 1)
+                {
+                    _mouseInputCountE++;
+                    DoPmcExfilEvent();
+                }
+            }
+        }
+
+        public async void DoPmcExfilEvent()
+        {
+            if (!_pmcExfilEventRunning)
+            {
+                FikaInterface.SendRandomEventPacket(Utils.PmcExfil);
+
+                _pmcExfilEventRunning = true;
+
+                await Task.Delay(3000);
+                NotificationManagerClass.DisplayMessageNotification("Extract is on it's way! Hold out for two minutes for help to arrive", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+                await Task.Delay(120000);
+                NotificationManagerClass.DisplayMessageNotification("10", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("9", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("8", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("7", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("6", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("5", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("4", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("3", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("2", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("1", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+                await Task.Delay(1000);
+                NotificationManagerClass.DisplayMessageNotification("Help has arrived", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
+
+                EndByExitTrigerScenario.GInterface122 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface122;
+                exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
+
+                _pmcExfilEventRunning = false;
+                _mouseInputCountE = 0;
+            }
+        }
+
+        public void ExfilNow()
+        {
+            if (Ready())
+            {
+                EndByExitTrigerScenario.GInterface122 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface122;
+                exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
+            }
+        }
+/*
+        public async void DoGearExfilEvent()
+        {
+            var itemCrate = Singleton<ItemFactoryClass>.Instance.CreateItem("67cdb86dff473fb7786cdc9c", Utils.exfilCrate, null);
+            Utils.SpawnItem(itemCrate, ROPlayer);
+
+            NotificationManagerClass.DisplayMessageNotification("The extract crate is open, stash your loot while you can!", ENotificationDurationType.Long, ENotificationIconType.Default);
+
+            await Task.Delay(150000);
+
+            NotificationManagerClass.DisplayMessageNotification("The extract crate is locked, and any gear within it is now secured and will be returned to your stash at the end of the raid.", ENotificationDurationType.Long, ENotificationIconType.Default);
+
+            typeof(LootableContainer).GetMethod("Lock", BindingFlags.Instance | BindingFlags.Public).Invoke(itemCrate, null);
+            Utils.SendExfilBox(itemCrate);
+        }
+*/
+        public void CleanForNewEvent()
+        {
+            _pswitchs = null;
+            _keydoor = null;
+            _lamp = null;
+        }
+
+        public void CheckForFlag()
+        {
+            //Check flags and adjust accordingly
+            if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
+            {
+                JsonHandler.ReadFlagFile("TraderRep", "Flags");
+
+                if (ConfigController.flags.traderRepFlag)
+                {
+                    CorrectRep();
                 }
             }
         }

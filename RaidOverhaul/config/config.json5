@@ -1,5 +1,8 @@
 {
     "EnableCustomBoss": true,                       //Enables the Legion custom boss. If disabled req shop will be unlocked by default and quests will be modified
+    "EnableRequisitionOffice": true,                //Enables the custom Requistions Office trader. If disabled the custom items will default to Peacekeeper
+    "UseLegionGlobalSpawnChance": false,            //Disables the profile specific progression for legion spawn chance. Will use GlobalSpawnChance instead so it's in line with how base game boss spawn chances work. GLOBAL SPAWN CHANCE WILL NOT INCREMENT ON IT'S OWN!
+    "GlobalSpawnChance": 15,                        //The spawn chance for legion if you set UseLegionGlobalSpawnChance to true.
     "RemoveFromSwag": false,                        //Disables Legion in SWAG prior to uninstalling Raid Overhaul. TURN THIS TO TRUE AND RUN THE SERVER ONCE BEFORE UNINSTALLING!!!
     "EnableCustomItems": true,                      //Enables the custom weapons and attachments. Doesn't affect the gear and Req Slips as those are heavily tied into the boss and shop
     "BackupProfile": true,                          //Creates a backup of your most recent profile on startup, to a max of 3 profiles. After 3 it will delete and replace the oldest backup

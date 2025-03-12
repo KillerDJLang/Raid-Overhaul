@@ -15,8 +15,8 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { AllItemList, HandbookIDs, SlotsIDs } from "../models/Enums";
 import type { Utils } from "../utils/Utils";
 //Modules
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 
 @injectable()
 export class ItemGenerator {

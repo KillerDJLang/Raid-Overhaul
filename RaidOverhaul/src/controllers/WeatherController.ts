@@ -12,8 +12,8 @@ import type { seasonalProgression } from "../models/Interfaces";
 import type { ConfigManager } from "../managers/ConfigManager";
 import type { ROLogger } from "../utils/Logger";
 //Modules
-import * as path from "node:path";
-import * as fs from "node:fs";
+import path from "node:path";
+import fs from "node:fs";
 import JSON5 from "json5";
 
 @injectable()
@@ -190,9 +190,9 @@ export class ROWeatherController {
         }
     }
 
-    public seasonProgression(profileId: string) {
+    public seasonProgression() {
         const weatherConfig: IWeatherConfig = this.configServer.getConfig<IWeatherConfig>(ConfigTypes.WEATHER);
-        const seasonsProgressionLoc = `${ROWeatherController.modLoc}/src/utils/data/profiles/${profileId}/SeasonsProgressionFile.json5`;
+        const seasonsProgressionLoc = `${ROWeatherController.modLoc}/src/utils/data/seasonsProgressionFile.json5`;
         const seasonsProgressionFile = JSON5.parse(
             fs.readFileSync(seasonsProgressionLoc, "utf8"),
         ) as seasonalProgression;
@@ -362,14 +362,14 @@ export class ROWeatherController {
         }
     }
 
-    public createSeasonsProgressFile(profileId: string): void {
+    public createSeasonsProgressFile(): void {
         const seasonsProgressActual = 1;
         const progressFileseasons = (ROWeatherController.progressFile = {
             seasonsProgression: seasonsProgressActual,
         });
 
-        const progressLocFolder = `${ROWeatherController.modLoc}/src/utils/data/profiles/${profileId}`;
-        const progressLoc = `${progressLocFolder}/SeasonsProgressionFile.json5`;
+        const progressLocFolder = `${ROWeatherController.modLoc}/src/utils/data`;
+        const progressLoc = `${progressLocFolder}/seasonsProgressionFile.json5`;
         if (!fs.existsSync(progressLocFolder)) {
             fs.mkdirSync(progressLocFolder, { recursive: true });
         }

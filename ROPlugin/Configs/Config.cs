@@ -22,8 +22,10 @@ namespace RaidOverhaul.Helpers
             Weight = 1024,
             NoJokesHere = 2048,
             ShoppingSpree = 4096,
+            ExfilLockdown = 8192,
+            Artillery = 16384,
 
-        All = Damage | Blackout | ArmorRepair | Heal | Airdrop | Skill | Metabolism | Malfunction | Trader | Berserk | Weight | NoJokesHere | ShoppingSpree,
+        All = Damage | Blackout | ArmorRepair | Heal | Airdrop | Skill | Metabolism | Malfunction | Trader | Berserk | Weight | NoJokesHere | ShoppingSpree | ExfilLockdown | Artillery,
         }
 
         [Flags]

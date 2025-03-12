@@ -8,6 +8,15 @@ namespace RaidOverhaul.Models
         [JsonProperty("EnableCustomBoss")]
         public bool EnableLegion;
 
+        [JsonProperty("EnableRequisitionOffice")]
+        public bool EnableReqShop;
+        
+        [JsonProperty("UseLegionGlobalSpawnChance")]
+        public bool UseGlobalChance;
+        
+        [JsonProperty("GlobalSpawnChance")]
+        public int GlobalSpawnChance;
+
         [JsonProperty("RemoveFromSwag")]
         public bool RemoveFromSwag;
 
@@ -27,65 +36,6 @@ namespace RaidOverhaul.Models
         public MoneyStackMultiplierServer MoneyStackMulti;
         public LootChangesServer LootChanges;
         public SeasonsServer Seasons;
-    }
-    #endregion
-
-    #region Event Weightings
-    public struct DoorWeightings
-    {
-        [JsonProperty("SwitchToggle")]
-        public int SwitchWeights;
-
-        [JsonProperty("DoorUnlock")]
-        public int LockedDoorWeights;
-
-        [JsonProperty("KeycardUnlock")]
-        public int KeycardWeights;
-    }
-
-    public struct RaidEventWeightings
-    {
-        [JsonProperty("DamageEvent")]
-        public int DamageEventWeights;
-
-        [JsonProperty("AirdropEvent")]
-        public int AirdropEventWeights;
-
-        [JsonProperty("BlackoutEvent")]
-        public int BlackoutEventWeights;
-
-        [JsonProperty("JokeEvent")]
-        public int JokeEventWeights;
-
-        [JsonProperty("HealEvent")]
-        public int HealEventWeights;
-
-        [JsonProperty("ArmorEvent")]
-        public int ArmorEventWeights;
-
-        [JsonProperty("SkillEvent")]
-        public int SkillEventWeights;
-
-        [JsonProperty("MetabolismEvent")]
-        public int MetabolismEventWeights;
-
-        [JsonProperty("MalfunctionEvent")]
-        public int MalfEventWeights;
-
-        [JsonProperty("TraderEvent")]
-        public int TraderEventWeights;
-
-        [JsonProperty("BerserkEvent")]
-        public int BerserkEventWeights;
-
-        [JsonProperty("WeightEvent")]
-        public int WeightEventWeights;
-
-        [JsonProperty("MaxLLEvent")]
-        public int MaxLLEventWeights;
-
-        [JsonProperty("ExfilEvent")]
-        public int ExfilEventWeights;
     }
     #endregion
 

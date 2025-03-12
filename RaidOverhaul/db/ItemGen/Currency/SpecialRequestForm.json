@@ -1,29 +1,24 @@
 {
-    "668b3c71042c73c6f9b00704": {
+    "67c95a09708ee99e7a575da5": {
         "ItemToClone": "INFO_BLUE_FOLDERS",
         "OverrideProperties": {
             "Prefab": {
-                "path": "Items/requisition_slip.bundle",
+                "path": "Items/special_request_form.bundle",
                 "rcid": ""
             },
             "Height": 1,
             "Width": 2,
-            "StackMaxSize": 99,
-            "BackgroundColor": "green",
-            "StackMaxRandom": 25,
-            "StackMinRandom": 1,
-            "eqMax": 100,
-            "eqMin": 45,
-            "rate": 1
+            "StackMaxSize": 10,
+            "BackgroundColor": "green"
         },
         "LocalePush": {
-            "name": "Requisition Slips",
-            "shortName": "ReqSlips",
-            "description": "A requisition slip used to trade with the Requisitions Office. You'll want to keep a stack of these handy in case you run into trouble and need some quick provisions. A larger denomination for trading apparently."
+            "name": "Special Request Form",
+            "shortName": "SpecForm",
+            "description": "A special form used to trade for premium items with the Requisitions Office. No idea who made these, or what they contain, but they must be important for how much they seem to be worth."
         },
         "Handbook": {
             "HandbookParent": "5b47574386f77428ca22b341",
-            "HandbookPrice": 53999
+            "HandbookPrice": 2999999
         },
         "CloneToFilters": true,
         "LootPush": {
@@ -43,6 +38,7 @@
                 "CONTAINER_WZ",
                 "CONTAINER_MONEY"
             ]
-        }
+        },
+        "PushToFleaBlacklist": true
     }
 }

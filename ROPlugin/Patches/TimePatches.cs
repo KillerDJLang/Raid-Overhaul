@@ -1,12 +1,9 @@
 using System;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Collections.Generic;
 using TMPro;
 using HarmonyLib;
 using EFT.UI.Map;
 using EFT.UI.Matchmaker;
-using EFT.UI.BattleTimer;
 using SPT.Reflection.Patching;
 
 using EFT;
@@ -56,56 +53,6 @@ namespace RaidOverhaul.Patches
             __result = RaidTime.GetDateTime();
         }
     }
-/*
-    public class UIPanelPatch : ModulePatch
-    {
-        protected override MethodBase GetTargetMethod() => typeof(LocationConditionsPanel).GetMethod("method_0", BindingFlags.Instance | BindingFlags.Public);
-
-        [PatchPostfix]
-        static void Postfix(ref TextMeshProUGUI ____currentPhaseTime, ref TextMeshProUGUI ____nextPhaseTime)
-        {
-            try
-            {
-                ____nextPhaseTime.text = RaidTime.GetInverseTime().ToString("HH:mm:ss");
-                ____currentPhaseTime.text = RaidTime.GetCurrTime().ToString("HH:mm:ss");
-            }
-            catch (Exception ex) 
-            {
-                Plugin.Log.LogError(ex);
-            }
-        }
-    }
-
-    public class TimerUIPatch : ModulePatch
-    {
-        protected override MethodBase GetTargetMethod() => typeof(TimerPanel).GetMethod("SetTimerText", BindingFlags.Instance | BindingFlags.Public);
-
-        [PatchPrefix]
-        static void Prefix(ref TimeSpan timeSpan) => timeSpan = new TimeSpan(RaidTime.GetDateTime().Ticks);
-    }
-
-    public class ExitTimerUIPatch : ModulePatch
-    {
-        protected override MethodBase GetTargetMethod() => typeof(MainTimerPanel).GetMethod("UpdateTimer", BindingFlags.Instance | BindingFlags.Public);
-
-        [PatchTranspiler]
-        static IEnumerable<CodeInstruction> Transpile(IEnumerable<CodeInstruction> instructions)
-        {
-            int shift = 0;
-
-            instructions.ExecuteForEach((inst) =>
-            {
-                if (shift == 2)
-                    inst.opcode = OpCodes.Ret;
-                if (shift >= 3)
-                    inst.opcode = OpCodes.Nop;
-                shift++;
-            });
-
-            return instructions;
-        }
-    }
-*/
 
     public class TimePanelPatch : ModulePatch
     {
