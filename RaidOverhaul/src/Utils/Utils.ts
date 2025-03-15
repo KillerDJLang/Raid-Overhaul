@@ -5,20 +5,20 @@ import type { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import type { DatabaseService } from "@spt/services/DatabaseService";
 import type { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
+import type { FileSystemSync } from "@spt/utils/FileSystemSync";
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import type { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import type { ImageRouter } from "@spt/routers/ImageRouter";
 import type { RandomUtil } from "@spt/utils/RandomUtil";
 import type { HashUtil } from "@spt/utils/HashUtil";
-import type { VFS } from "@spt/utils/VFS";
 //Custom Classes
 import type { ConfigManager } from "../managers/ConfigManager";
 import type { ROLogger } from "./Logger";
 //Modules
 //import weaponPresets from "../utils/data/weaponPresets.json";
 //import gearPresets from "../utils/data/gearPresets.json";
-import path from "node:path";
+import path, { resolve } from "node:path";
 import fs from "node:fs";
 
 @injectable()
@@ -26,7 +26,7 @@ export class Utils {
     constructor(
         @inject("ROLogger") protected logger: ROLogger,
         @inject("ConfigManager") protected configManager: ConfigManager,
-        @inject("VFS") protected vfs: VFS,
+        @inject("FileSystemSync") protected sptFs: FileSystemSync,
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("ImageRouter") protected imageRouter: ImageRouter,
@@ -204,24 +204,28 @@ export class Utils {
 
         if (!fs.existsSync(backupPath)) {
             fs.mkdirSync(backupPath, { recursive: true });
-            this.logger.logWarning(
-                `No backup path exist for this profile. \nProfile backup path at "${backupPath}" has been created`,
-            );
+            if (this.configManager.debugConfig().debugMode) {
+                this.logger.logWarning(
+                    `No backup path exist for this profile. \nProfile backup path at "${backupPath}" has been created`,
+                );
+            }
         }
 
-        const profileCount = this.vfs
-            .getFilesOfType(backupPath, "json")
-            .sort((a, b) => fs.statSync(a).ctimeMs - fs.statSync(b).ctimeMs);
+        const profileCount = this.getFilesOfType(backupPath, "json").sort(
+            (a, b) => fs.statSync(a).ctimeMs - fs.statSync(b).ctimeMs,
+        );
 
         if (profileCount.length >= maxBackups) {
             const lastProfile = profileCount[0];
-            this.vfs.removeFile(lastProfile);
+            this.sptFs.remove(lastProfile);
             profileCount.splice(0, 1);
         }
 
         try {
             fs.writeFileSync(backupFile, profileData);
-            this.logger.log("Profile backup successful.", LogTextColor.MAGENTA);
+            if (this.configManager.debugConfig().debugMode) {
+                this.logger.log("Profile backup successful.", LogTextColor.MAGENTA);
+            }
         } catch (error) {
             this.logger.logError(`Error writing profile backup: ${error}`);
         }
@@ -268,7 +272,9 @@ export class Utils {
             const hbItem = tables.templates.handbook.Items.find((i) => i.Id === itemID);
             return Math.round(hbItem.Price);
         } catch (error) {
-            this.logger.logWarning(`\nError getting Handbook ID for ${itemID}`);
+            if (this.configManager.debugConfig().debugMode) {
+                this.logger.logWarning(`\nError getting Handbook ID for ${itemID}`);
+            }
         }
     }
 
@@ -378,6 +384,27 @@ export class Utils {
 
         items[container]._props.Grids[0]._props.cellsH = horizontal;
         items[container]._props.Grids[0]._props.cellsV = vertical;
+    }
+
+    public getFilesOfType(directory: string, fileType: string, files: string[] = []): string[] {
+        // no dir so exit early
+        if (!fs.existsSync(directory)) {
+            return files;
+        }
+
+        const dirents = fs.readdirSync(directory, { encoding: "utf-8", withFileTypes: true });
+        for (const dirent of dirents) {
+            const res = resolve(directory, dirent.name);
+            if (dirent.isDirectory()) {
+                this.getFilesOfType(res, fileType, files);
+            } else {
+                if (res.endsWith(fileType)) {
+                    files.push(res);
+                }
+            }
+        }
+
+        return files;
     }
     //#endregion
     //

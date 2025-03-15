@@ -5,7 +5,6 @@
     "66f0eb2c12fb0ed12fbcfd46 name": "Lets Work Out a Deal",
     "66f0eb2c12fb0ed12fbcfd46 description": "I'll keep this short. Me and some....'acquaintances' have a problem. These thugs, call themselves 'Legion', have been picking off my guys when they go out scavenging. If you can fix this little problem, I'll introduce you to my connection. I'm sure they have something to make it worth your while.",
     "66f0eb2c12fb0ed12fbcfd46 successMessagetext": "Huh, you're back quicker than expected. I take it you took care of things? Good. Here's a little extra for being so quick about it. You'll need these.",
-
     "66f0eb896991c5ce3a1b02cc": "Hand over the required items for modification",
     "66f0eb896991c5ce3a1b02cc name": "The Crown Jewel",
     "66f0eb896991c5ce3a1b02cc description": "Welcome back, looks like you got something special from Fence eh? If you want, I can turn that into a real piece of art.",
@@ -14,7 +13,6 @@
     "672bf33450137fa74d9c34ad": "Hand over 3 TerraGroup Labs access keycards",
     "672bf33642661fcc2726eb6a": "Hand over 10 Physical Bitcoins",
     "672bf3378ab0f5ab0359e7b5": "Hand over Armband (DEADSKUL)",
-
     "66f0ebd77d8d561a54c699d8": "Hand over the required items for modification",
     "66f0ebd77d8d561a54c699d8 name": "Threadbare: Waist Pouch",
     "66f0ebd77d8d561a54c699d8 description": "Whoa whoa whoa...what is that pouch you have? Go get me some materials and I'll fix it up for you. Can't have you working for me while hauling that garbage around.",
@@ -23,7 +21,6 @@
     "672bf37840eb6735bee11649": "Hand over a Spark plug",
     "672bf3792c468c680385df6d": "Hand over Waist pouch",
     "672bf37ab1c13fad1a7e0bda": "Hand over a Requisition Slip",
-
     "66f0ec06429200aee5f594eb": "Hand over the required items for modification",
     "66f0ec06429200aee5f594eb name": "Threadbare: Alpha",
     "66f0ec06429200aee5f594eb description": "Hey, looks like you got rid of that pouch and picked yourself a real container. It's bottom of the barrel but I can work with it, just need some more materials.",
@@ -33,7 +30,6 @@
     "672bf37d6809be1d9ea169a5": "Hand over 2 Phase control relays",
     "672bf37d934dde0efef4b85d": "Hand over Secure container Alpha",
     "672bf37e98d244304103ba40": "Hand over 3 Requisition Slips",
-
     "66f0ec2f16dec610c8e9e422": "Hand over the required items for modification",
     "66f0ec2f16dec610c8e9e422 name": "Threadbare: Beta",
     "66f0ec2f16dec610c8e9e422 description": "Okay, can you stop bringing me bottom tier shit to work on? I'll do it but I'm a craftsman at heart. Just bring me something nicer next time.",
@@ -44,7 +40,6 @@
     "672bf382bfc51c8a9e4c4528": "Hand over a Golden 1GPhone smartphones",
     "672bf3826520369604333288": "Hand over Secure container Beta",
     "672bf383965b25149b74e87d": "Hand over 5 Requisition Slips",
-
     "66f0ec550d7c99f5297f8170": "Hand over the required items for modification",
     "66f0ec550d7c99f5297f8170 name": "Threadbare: Gamma",
     "66f0ec550d7c99f5297f8170 description": "Well well well, took my words to heart didn't you? This isn't the best thing I've ever seen but it's worlds from what you had me work on before. This is something I can put my back into.",
@@ -55,7 +50,6 @@
     "672bf3870b124342c38c3eb6": "Hand over a TerraGroup Labs access keycard",
     "672bf38885a8f2c864419d5a": "Hand over Secure Container Gamma",
     "672bf389390edae0ee500682": "Hand over 7 Requisition Slips",
-
     "66f0ec7e3a00512ef4300b5e": "Hand over the required items for modification",
     "66f0ec7e3a00512ef4300b5e name": "Threadbare: Epsilon",
     "66f0ec7e3a00512ef4300b5e description": "Hmm? What's this? Some sort of prototype? I'll get started right away! I'll have to work on some plans for it first though...go get me some materials while I'm at it. It shouldn't take long but I've gotta be careful here. Doubt I'll see one of these again.",
@@ -66,7 +60,6 @@
     "672bf38df65c13334dd91eaf": "Hand over 2 TerraGroup Labs access keycards",
     "672bf38eb3f9951733471609": "Hand over Secure container Epsilon",
     "672bf38ffb6d4855e79757b6": "Hand over 10 Requisition Slips",
-
     "66f0ecad7d6d9736b17c2167": "Hand over the required items for modification",
     "66f0ecad7d6d9736b17c2167 name": "Threadbare: Kappa",
     "66f0ecad7d6d9736b17c2167 description": "Now this is what I'm talking about! One of a kind and pretty damn flawless to boot. But I think I can improve it, maybe up the capacity a bit? I'll think something up. Just get me what's written on the list here and I'll throw this together!",
@@ -80,7 +73,6 @@
     "672bf394ec5704d6c34c0ba1": "Hand over 10 Physical Bitcoins",
     "672bf396101a95dcde20ae03": "Hand over Secure container Kappa",
     "672bf397f564c404b2f88c48": "Hand over 15 Requisition Slips",
-
     "668b3595530bc55de0c4a68b": "Items received and returned to base.",
     "668b358f13f1b75994df30cc": "Holy shit, you had a good haul there. We got everything back in one piece for you.",
     "668b358a57492dbb1668a243": "Come on, you won't even leave a tip for us? Beer? Pizza? Nothing? Stingy prick.",

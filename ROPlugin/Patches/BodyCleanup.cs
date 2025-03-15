@@ -3,7 +3,7 @@ using UnityEngine;
 using Comfort.Common;
 using System.Threading.Tasks;
 using System.Collections;
-using RaidOverhaul.Helpers;
+using RaidOverhaul.Configs;
 
 namespace RaidOverhaul.Patches
 {

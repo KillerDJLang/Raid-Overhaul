@@ -65,6 +65,7 @@ export class TraderManager {
         this.reqsController.addSpecialReqs();
         this.reqsController.addWeaponPresets();
         this.reqsController.addGearPresets();
+        this.reqsController.addBaseKeys();
         this.reqsController.addNewKeys();
         this.reqsController.addFlares();
         //Push custom items to the assort if they're enabled

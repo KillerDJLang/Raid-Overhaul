@@ -13,7 +13,7 @@ using HarmonyLib;
 using UnityEngine;
 using SPT.Reflection.Utils;
 
-using RaidOverhaul.Fika;
+//using RaidOverhaul.Fika;
 using RaidOverhaul.Models;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Patches;
@@ -103,7 +103,7 @@ namespace RaidOverhaul
             Utils.GetWeatherFields();
 
             //Load Legion
-            FieldInfo excludedDifficultiesField = typeof(GClass583).GetField("ExcludedDifficulties", BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("ExcludedDifficulties field not found.");
+            FieldInfo excludedDifficultiesField = typeof(GClass598).GetField("ExcludedDifficulties", BindingFlags.Static | BindingFlags.Public) ?? throw new InvalidOperationException("ExcludedDifficulties field not found.");
             var excludedDifficulties = (Dictionary<WildSpawnType, List<BotDifficulty>>)excludedDifficultiesField.GetValue(null);
 
             var excludedDifficultiesForLegion = new List<BotDifficulty> {
@@ -116,7 +116,7 @@ namespace RaidOverhaul
                 excludedDifficulties.Add((WildSpawnType)199, excludedDifficultiesForLegion);
                 Console.WriteLine("Successfully added Legion to the excluded difficulties list");
             }
-            Traverse.Create(typeof(GClass759)).Field<Dictionary<WildSpawnType, GClass758>>("dictionary_0").Value.Add((WildSpawnType)LegionEnums.BossLegionValue, new GClass758(true, false, false, "ScavRole/Boss", ETagStatus.Solo));
+            Traverse.Create(typeof(BotSettingsRepoClass)).Field<Dictionary<WildSpawnType, GClass769>>("dictionary_0").Value.Add((WildSpawnType)LegionEnums.BossLegionValue, new GClass769(true, false, false, "ScavRole/Boss", ETagStatus.Solo));
 
             Utils.LoadLegionSettings();
 
@@ -142,7 +142,7 @@ namespace RaidOverhaul
             new EnableEntryPointPatch().Enable();
             new RandomizeDefaultStatePatch().Enable();
             new EventExfilPatch().Enable();
-            new RigPatch().Enable();
+            new BundleLoaderPatch().Enable();
             new LegionSmethodPatch().Enable();
 
             _FAS = _FAS ?? typeof(Inventory).GetField("FastAccessSlots");
@@ -165,7 +165,7 @@ namespace RaidOverhaul
                 }
             }
 
-            if (Chainloader.PluginInfos.ContainsKey(Utils.ROStandaloneKey) && PreloaderUI.Instantiated && standaloneDetected == false) {
+            if (Chainloader.PluginInfos.ContainsKey(Utils.ROStandaloneKey) && PreloaderUI.Instantiated) {
                 if (GameObject.Find("ErrorScreen"))
                     PreloaderUI.Instance.CloseErrorScreen();
 
@@ -179,10 +179,11 @@ namespace RaidOverhaul
                 Log.LogDebug("Session set");
             }
         }
-
+/*
         private void OnEnable()
         {
             FikaInterface.InitOnPluginEnabled();
         }
+*/
     }
 }

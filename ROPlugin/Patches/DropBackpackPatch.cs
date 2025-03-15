@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 using SPT.Reflection.Patching;
-using RaidOverhaul.Helpers;
+using RaidOverhaul.Configs;
 
 namespace RaidOverhaul.Patches
 {

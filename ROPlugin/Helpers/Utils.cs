@@ -60,12 +60,12 @@ namespace RaidOverhaul.Helpers
 
         public static readonly string ReqID = "66f0eaa93f6cc015bc1f3acb";
         public static readonly string BtrID = "656f0f98d80a697f855d34b1";
-        public static readonly string skeletonKey = "66a2fc926af26cc365283f23";
-        public static readonly string vipKeycard = "66a2fc9886fbd5d38c5ca2a6";
-        public static readonly string exfilCrate = "67c957ce411e6263333a1c38";
-        public static readonly string specialExfilFlare = "67cda57f8f59300db5c0ec5b";
-        public static readonly string trainFlare = "67cde31eea2d15e888fa7dee";
-        public static readonly string redFlare = "624c09cfbc2e27219346d955";
+        public static readonly string SkeletonKey = "66a2fc926af26cc365283f23";
+        public static readonly string VipKeycard = "66a2fc9886fbd5d38c5ca2a6";
+        public static readonly string ExfilCrate = "67c957ce411e6263333a1c38";
+        public static readonly string SpecialExfilFlare = "67cda57f8f59300db5c0ec5b";
+        public static readonly string TrainFlare = "67cde31eea2d15e888fa7dee";
+        public static readonly string RedFlare = "624c09cfbc2e27219346d955";
         public static readonly string RealismKey = "RealismMod";
         public static readonly string ROStandaloneKey = "DJ.ROStandalone";
         public static readonly string Heal = "Heal";
@@ -89,6 +89,7 @@ namespace RaidOverhaul.Helpers
         public static readonly string Artillery = "Artillery";
 	    private static readonly Dictionary<string, ItemTemplate> templates = [];
         private static readonly JsonConverter[] _defaultJsonConverters;
+        public static AssetBundle Bundle;
 
         public static T Get<T>(string url) {
             var req = RequestHandler.GetJson(url);
@@ -210,7 +211,7 @@ namespace RaidOverhaul.Helpers
         {
             List<ResourceKey> keys = GetBundleResourceKeys(itemToSpawn);
 
-            Task loadTask = Singleton<PoolManager>.Instance.LoadBundlesAndCreatePools(PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Online, [.. keys], JobPriority.Immediate);
+            Task loadTask = Singleton<PoolManagerClass>.Instance.LoadBundlesAndCreatePools(PoolManagerClass.PoolsCategory.Raid, PoolManagerClass.AssemblyType.Online, [.. keys], JobPriorityClass.Immediate);
             while (!loadTask.IsCompleted)
             {
                 yield return new WaitForEndOfFrame();
@@ -219,7 +220,7 @@ namespace RaidOverhaul.Helpers
                 var itemFactory = Singleton<ItemFactoryClass>.Instance;
                 var item = itemFactory.CreateItem(MongoID.Generate(), itemToSpawn.Id, null);
 
-                var lootItemGameObject = Singleton<PoolManager>.Instance.CreateLootPrefab(item, ECameraType.Default);
+                var lootItemGameObject = Singleton<PoolManagerClass>.Instance.CreateLootPrefab(item, ECameraType.Default);
 
                 lootItemGameObject.SetActive(value: true);
                 var lootItem = Singleton<GameWorld>.Instance.CreateLootWithRigidbody(lootItemGameObject, item, item.ShortName, randomRotation: false, null, out BoxCollider boxCollider, true);

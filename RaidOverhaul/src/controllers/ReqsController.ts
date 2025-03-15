@@ -264,6 +264,31 @@ export class ReqsController {
     //
     //
     //
+    //#region Keys
+
+    public addBaseKeys(): void {
+        let count = 0;
+
+        for (const item of items.keys) {
+            if (this.probHelper.rollChance(3, 100)) {
+                this.assortUtils.buildBaseAssort(
+                    item,
+                    this.utils.genRandomCount(0, 3),
+                    this.utils.genRandomCount(1, 4),
+                );
+                count++;
+            }
+        }
+
+        if (this.configManager.debugConfig().debugMode) {
+            this.logger.log(`${count} total keys have been added`, LogTextColor.GREEN);
+        }
+    }
+
+    //#endregion
+    //
+    //
+    //
     //#region Req Slips
 
     public addReqSlips(): void {
@@ -324,11 +349,11 @@ export class ReqsController {
     //#region Custom Keys
 
     public addNewKeys(): void {
-        if (this.probHelper.rollChance(5, 100)) {
+        if (this.probHelper.rollChance(10, 100)) {
             this.assortUtils.createSingleItemOffer("66a2fc926af26cc365283f23", 1, 1, 10, Currency.SpecialReqs);
         }
 
-        if (this.probHelper.rollChance(5, 100)) {
+        if (this.probHelper.rollChance(10, 100)) {
             this.assortUtils.createSingleItemOffer("66a2fc9886fbd5d38c5ca2a6", 1, 1, 10, Currency.SpecialReqs);
         }
     }
@@ -366,9 +391,10 @@ export class ReqsController {
         this.assortUtils.createSingleItemOffer("67c957ce411e6263333a1c38", 1, 4, 1, Currency.SpecialReqs);
         this.assortUtils.createSingleItemOffer("666361eff60f4ea5a464eb70", 1, 4, 3, Currency.SpecialReqs);
         this.assortUtils.createSingleItemOffer("664a55d84a90fc2c8a6305c9", 1, 1, 1, Currency.SpecialReqs);
-        this.assortUtils.createSingleItemOffer("6722254fd847a7aafccfbb54", 1, 1, 5, Currency.ReqSlips);
-        this.assortUtils.createSingleItemOffer("67222453e6aee984bcfcf9d1", 1, 2, 10, Currency.ReqSlips);
+        this.assortUtils.createSingleItemOffer("67222453e6aee984bcfcf9d1", 1, 2, 5, Currency.ReqSlips);
+        this.assortUtils.createSingleItemOffer("6722254fd847a7aafccfbb54", 1, 1, 10, Currency.ReqSlips);
         this.assortUtils.createSingleItemOffer("6722252e82ca09a7e62c4d84", 1, 3, 20, Currency.ReqSlips);
+        this.assortUtils.createSingleItemOffer("67d4373526a3cfb1ff5338bb", 1, 2, 15, Currency.ReqSlips);
     }
 
     //#endregion

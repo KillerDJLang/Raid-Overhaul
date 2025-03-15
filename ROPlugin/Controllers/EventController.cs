@@ -21,8 +21,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RaidOverhaul.Helpers;
+using RaidOverhaul.Configs;
 using RaidOverhaul.Patches;
-using RaidOverhaul.Fika;
+//using RaidOverhaul.Fika;
 
 
 using static RaidOverhaul.Plugin;
@@ -132,7 +133,7 @@ namespace RaidOverhaul.Controllers
             }
 
 
-            if (!_eventIsRunning && FikaInterface.IAmHost())
+            if (!_eventIsRunning) //  && FikaInterface.IAmHost() removed from if for testing on 311
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
 
@@ -213,7 +214,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_healthEventCount >= 2) { return; }
 
-            FikaInterface.SendRandomEventPacket(Utils.Heal);
+            //FikaInterface.SendRandomEventPacket(Utils.Heal);
 
             NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.ActiveHealthController.RestoreFullHealth();
@@ -228,7 +229,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_damageEventCount >= 1) { return; }
 
-            FikaInterface.SendRandomEventPacket(Utils.Damage);
+            //FikaInterface.SendRandomEventPacket(Utils.Damage);
 
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.", ENotificationDurationType.Long, ENotificationIconType.Alert);
             ROPlayer.ActiveHealthController.DoContusion(4f, 50f);
@@ -246,7 +247,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_repairEventCount >= 2) { return; }
 
-            FikaInterface.SendRandomEventPacket(Utils.Repair);
+            //FikaInterface.SendRandomEventPacket(Utils.Repair);
 
             NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.Profile.Inventory.GetPlayerItems().ExecuteForEach((item) =>
@@ -265,7 +266,7 @@ namespace RaidOverhaul.Controllers
 
             if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && ROPlayer.Location != "sandbox" && !_airdropEventHasRun)
             {
-                if (Utils.FindTemplates(Utils.redFlare).FirstOrDefault() is not AmmoTemplate ammoTemplate) { return; };
+                if (Utils.FindTemplates(Utils.RedFlare).FirstOrDefault() is not AmmoTemplate ammoTemplate) { return; };
                 
                 ROPlayer.HandleFlareSuccessEvent(ROPlayer.Transform.position, ammoTemplate);
 
@@ -289,7 +290,7 @@ namespace RaidOverhaul.Controllers
         {
             if (!_jokeEventHasRun)
             {
-                FikaInterface.SendRandomEventPacket(Utils.Jokes);
+                //FikaInterface.SendRandomEventPacket(Utils.Jokes);
 
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
 
@@ -316,7 +317,7 @@ namespace RaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
-                FikaInterface.SendRandomEventPacket(Utils.Blackout);
+                //FikaInterface.SendRandomEventPacket(Utils.Blackout);
 
                 foreach (Switch pSwitch in _pswitchs)
                 {
@@ -369,7 +370,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_skillEventCount >= 3) { return; }
 
-                FikaInterface.SendRandomEventPacket(Utils.Skill);
+                //FikaInterface.SendRandomEventPacket(Utils.Skill);
 
                 System.Random random = new System.Random();
 
@@ -408,7 +409,7 @@ namespace RaidOverhaul.Controllers
         {
             if (!_metabolismDisabled)
             {
-                FikaInterface.SendRandomEventPacket(Utils.Metabolism);
+                //FikaInterface.SendRandomEventPacket(Utils.Metabolism);
 
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
@@ -459,7 +460,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_malfEventHasRun)
             {
-                FikaInterface.SendRandomEventPacket(Utils.Malf);
+                //FikaInterface.SendRandomEventPacket(Utils.Malf);
 
                 _malfEventHasRun = true;
 
@@ -526,7 +527,7 @@ namespace RaidOverhaul.Controllers
 
         public void DoLLEvent()
         {
-            FikaInterface.SendRandomEventPacket(Utils.LoyaltyLevel);
+            //FikaInterface.SendRandomEventPacket(Utils.LoyaltyLevel);
 
             System.Random random = new System.Random();
 
@@ -604,7 +605,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_berserkEventHasRun)
             {
-                FikaInterface.SendRandomEventPacket(Utils.Berserk);
+                //FikaInterface.SendRandomEventPacket(Utils.Berserk);
 
                 _berserkEventHasRun = true;
 
@@ -699,7 +700,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_weightEventHasRun)
             {
-                FikaInterface.SendRandomEventPacket(Utils.Weight);
+                //FikaInterface.SendRandomEventPacket(Utils.Weight);
 
                 _weightEventHasRun = true;
 
@@ -790,7 +791,7 @@ namespace RaidOverhaul.Controllers
             {
                 JsonHandler.ReadFlagFile("TraderRep", "Flags");
 
-                FikaInterface.SendRandomEventPacket(Utils.MaxLoyaltyLevel);
+                //FikaInterface.SendRandomEventPacket(Utils.MaxLoyaltyLevel);
 
                 if (!ConfigController.flags.traderRepFlag)
                 {
@@ -896,7 +897,7 @@ namespace RaidOverhaul.Controllers
 
         public void CorrectRep()
         {
-            FikaInterface.SendRandomEventPacket(Utils.CorrectRep);
+            //FikaInterface.SendRandomEventPacket(Utils.CorrectRep);
 
             if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
             {
@@ -956,7 +957,7 @@ namespace RaidOverhaul.Controllers
 
             if (_exfilEventCount >= 1) { return; }
 
-            FikaInterface.SendRandomEventPacket(Utils.Lockdown);
+            //FikaInterface.SendRandomEventPacket(Utils.Lockdown);
 
             if (raidTimeLeft < 900 || ROPlayer.Location == "laboratory")
             {
@@ -1020,7 +1021,7 @@ namespace RaidOverhaul.Controllers
 
         public async void DoArtyEvent()
         {
-            FikaInterface.SendRandomEventPacket(Utils.Artillery);
+            //FikaInterface.SendRandomEventPacket(Utils.Artillery);
 
             if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && !_artyEventHasRun)
             {
@@ -1046,7 +1047,7 @@ namespace RaidOverhaul.Controllers
 
         public void FlareLogicTrain()
         {
-            var trainFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.trainFlare;
+            var trainFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.TrainFlare;
 
             if (!trainFlareInHands) { return; }
 
@@ -1062,7 +1063,7 @@ namespace RaidOverhaul.Controllers
 
         public async void RunTrain()
         {
-            FikaInterface.SendRandomEventPacket(Utils.Train);
+            //FikaInterface.SendRandomEventPacket(Utils.Train);
             
             await Task.Delay(3000);
             Locomotive trainExfil = FindObjectOfType<Locomotive>();
@@ -1089,7 +1090,7 @@ namespace RaidOverhaul.Controllers
 
         public void FlareLogicExfil()
         {
-            var specialFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.specialExfilFlare;
+            var specialFlareInHands = ROPlayer.HandsController.Item.TemplateId == Utils.SpecialExfilFlare;
 
             if (!specialFlareInHands) { return; }
 
@@ -1107,12 +1108,15 @@ namespace RaidOverhaul.Controllers
         {
             if (!_pmcExfilEventRunning)
             {
-                FikaInterface.SendRandomEventPacket(Utils.PmcExfil);
+                //FikaInterface.SendRandomEventPacket(Utils.PmcExfil);
 
                 _pmcExfilEventRunning = true;
 
                 await Task.Delay(3000);
                 NotificationManagerClass.DisplayMessageNotification("Extract is on it's way! Hold out for two minutes for help to arrive", ENotificationDurationType.Long, ENotificationIconType.EntryPoint);
+                if (ConfigController.DebugConfig.DebugMode) {
+                    Utils.LogToServerConsole("Extract event has started");
+                }
                 await Task.Delay(120000);
                 NotificationManagerClass.DisplayMessageNotification("10", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
                 await Task.Delay(1000);
@@ -1136,7 +1140,7 @@ namespace RaidOverhaul.Controllers
                 await Task.Delay(1000);
                 NotificationManagerClass.DisplayMessageNotification("Help has arrived", ENotificationDurationType.Default, ENotificationIconType.EntryPoint);
 
-                EndByExitTrigerScenario.GInterface122 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface122;
+                EndByExitTrigerScenario.GInterface129 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface129;
                 exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
 
                 _pmcExfilEventRunning = false;
@@ -1146,11 +1150,8 @@ namespace RaidOverhaul.Controllers
 
         public void ExfilNow()
         {
-            if (Ready())
-            {
-                EndByExitTrigerScenario.GInterface122 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface122;
-                exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
-            }
+            EndByExitTrigerScenario.GInterface129 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface129;
+            exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
         }
 /*
         public async void DoGearExfilEvent()

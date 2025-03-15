@@ -1,3 +1,4 @@
+/*
 using LiteNetLib.Utils;
 
 namespace RaidOverhaul.Packets
@@ -92,3 +93,4 @@ namespace RaidOverhaul.Packets
         }
     }
 }
+*/

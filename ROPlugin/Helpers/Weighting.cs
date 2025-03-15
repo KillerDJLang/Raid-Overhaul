@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using RaidOverhaul.Controllers;
+using RaidOverhaul.Configs;
 
 namespace RaidOverhaul.Helpers
 {

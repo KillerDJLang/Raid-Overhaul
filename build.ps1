@@ -6,7 +6,7 @@ $bepinexPluginFolder = "$bepinexFolder\plugins\RaidOverhaul"
 $bepinexResourcesFolder = "$bepinexPluginFolder\Resources"
 $bepinexFlagsFolder = "$bepinexResourcesFolder\Flags"
 $serverModFolder = "..\RaidOverhaul"
-$watchAnimsFolder = "..\RaidOverhaulClientBundles\bundles"
+$customBundlesFolder = "..\RaidOverhaulClientBundles\bundles"
 $prePatchFolder = "..\ROPrepatch\bin\Release\net471"
 $packetsFolder = "..\ROPackets\bin\Release\net471"
 $pluginFolder = "..\ROPlugin\bin\Release\net471"
@@ -24,7 +24,7 @@ Copy-Item "$prePatchFolder\LegionPrePatch.dll" -Destination "$bepinexPatchFolder
 Copy-Item "$pluginFolder\RaidOverhaul.dll" -Destination "$bepinexPluginFolder" -Force
 Copy-Item "$basePluginFolder\normalLegionSettings.json" -Destination "$bepinexResourcesFolder" -Force
 Copy-Item "$basePluginFolder\TraderRep.json" -Destination "$bepinexFlagsFolder" -Force
-Copy-Item "$watchAnimsFolder" -Destination "$bepinexPluginFolder" -Recurse -Force
+Copy-Item "$customBundlesFolder" -Destination "$bepinexPluginFolder" -Recurse -Force
 Copy-Item "$serverModFolder\bundles" -Destination "$userModsFolder\bundles" -Recurse -Force
 Copy-Item "$serverModFolder\config" -Destination "$userModsFolder" -Recurse -Force
 Copy-Item "$serverModFolder\db" -Destination "$userModsFolder" -Recurse -Force

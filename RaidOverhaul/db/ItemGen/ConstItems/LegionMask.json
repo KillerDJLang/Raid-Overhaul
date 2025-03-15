@@ -3,7 +3,7 @@
         "ItemToClone": "FACECOVER_DEATH_KNIGHT",
         "OverrideProperties": {
             "Prefab": {
-                "path": "FaceCover/knight_mask_no_wires.bundle",
+                "path": "assets/content/items/equipment/facecover_boss_blackknight/item_equipment_facecover_boss_blackknight.bundle",
                 "rcid": ""
             },
             "BlocksEarpiece": false,

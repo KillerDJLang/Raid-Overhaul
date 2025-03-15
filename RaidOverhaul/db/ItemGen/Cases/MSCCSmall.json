@@ -3,14 +3,14 @@
         "ItemToClone": "CONTAINER_SICC",
         "OverrideProperties": {
             "Prefab": {
-                "path": "assets/content/weapons/usable_items/item_meds_afak/item_meds_afak_loot.bundle",
+                "path": "Containers/small_medcase.bundle",
                 "rcid": ""
             },
             "Height": 1,
             "Width": 1,
             "Grids": [
                 {
-                    "_id": "6722246e81672dea7504bdb4",
+                    "_id": "6722255644a3b21b6e7d09a9",
                     "_name": "1",
                     "_parent": "67222453e6aee984bcfcf9d1",
                     "_props": {
@@ -36,12 +36,12 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "6722246c8422810cb020e16b",
+                    "_id": "672225587afc6f11af7e5ea3",
                     "_name": "2",
                     "_parent": "67222453e6aee984bcfcf9d1",
                     "_props": {
                         "cellsH": 1,
-                        "cellsV": 2,
+                        "cellsV": 1,
                         "filters": [
                             {
                                 "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
@@ -62,7 +62,7 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "6722246be7c6c6e433dccc15",
+                    "_id": "6722266138e1e8099c9f741c",
                     "_name": "3",
                     "_parent": "67222453e6aee984bcfcf9d1",
                     "_props": {
@@ -90,12 +90,12 @@
             ]
         },
         "LocalePush": {
-            "name": "Medical Supplies Carrying Case (AFAK)",
-            "shortName": "MSCC AFAK",
+            "name": "Medical Supplies Carrying Case (Small)",
+            "shortName": "MSCC (S)",
             "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was carried on the person of each member once they step foot outside."
         },
         "HandbookParent": "StorageContainers",
-        "HandbookPrice": 279999,
+        "HandbookPrice": 139999,
         "CloneToFilters": true,
         "CasePush": {
             "CaseFiltersToAdd": [

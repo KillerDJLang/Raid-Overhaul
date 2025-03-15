@@ -25,14 +25,14 @@
         "ModifyEnemyBotHealth": false,              //Modifies the bot health of enemy bots to be closer to the player. Makes bosses and special enemies less tanky. Fits better with the extended raid times since you'll be in raid much longer and dying should be skill dependant not bot health dependant at that point.
         "ChangeAirdropValues": {                    //Enable airdrop changes. Each maps value is a percent chance to get a random airdrop on that map
             "Enabled": false,
-            "Customs": 35,
-            "Woods": 35,
-            "Lighthouse": 35,
-            "Interchange": 35,
-            "Shoreline": 35,
-            "Reserve": 35,
-            "Streets": 35,
-            "GroundZero": 35
+            "Customs": 25,
+            "Woods": 25,
+            "Lighthouse": 25,
+            "Interchange": 25,
+            "Shoreline": 25,
+            "Reserve": 25,
+            "Streets": 25,
+            "GroundZero": 25
         }
     },
     "PocketChanges": {

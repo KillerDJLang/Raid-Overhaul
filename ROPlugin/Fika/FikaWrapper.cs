@@ -1,4 +1,5 @@
-﻿using Comfort.Common;
+﻿/*
+using Comfort.Common;
 using EFT;
 using EFT.Interactive;
 using EFT.Communications;
@@ -35,6 +36,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<RandomEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<RandomEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         public static void SendDoorStateChangePacket(string doorId)
@@ -47,6 +55,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<DoorEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<DoorEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         public static void SendSwitchStateChangePacket(string switchId)
@@ -59,6 +74,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<SwitchEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<SwitchEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         public static void SendKeycardDoorStateChangePacket(string keycardDoorId)
@@ -71,6 +93,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<KeycardDoorEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<KeycardDoorEventSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         public static void SendRaidStartDoorStateChangePacket(string doorId)
@@ -83,6 +112,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<RaidStartDoorStateSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<RaidStartDoorStateSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         public static void SendRaidStartLampStateChangePacket(string lampId)
@@ -95,6 +131,13 @@ namespace RaidOverhaul.Fika
             {
                 Singleton<FikaServer>.Instance.SendDataToAll<RaidStartLampStateSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
             }
+            /*
+            if (Singleton<FikaClient>.Instantiated)
+            {
+                Singleton<FikaClient>.Instance.SendData<RaidStartLampStateSyncPacket>(ref packet, DeliveryMethod.ReliableOrdered);
+            }
+            */
+/*
         }
 
         private static void ReceiveRandomEventPacket(RandomEventSyncPacket packet, NetPeer peer)
@@ -253,3 +296,4 @@ namespace RaidOverhaul.Fika
         }
     }
 }
+*/

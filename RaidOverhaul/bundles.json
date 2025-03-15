@@ -1,52 +1,6 @@
 {
     "manifest": [
         {
-            "key": "FaceCover/knight_mask_no_wires.bundle",
-            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "shaders", "cubemaps"]
-        },
-        {
-            "key": "ArmoredVests/banshee_armor.bundle",
-            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "shaders", "cubemaps"]
-        },
-        {
-            "key": "Rigs/rhino_rig_mesh.bundle",
-            "dependencyKeys": []
-        },
-        {
-            "key": "Rigs/rhino_rig.bundle",
-            "dependencyKeys": [
-                "Rigs/rhino_rig_mesh.bundle",
-                "assets/commonassets/physics/physicsmaterials.bundle",
-                "shaders",
-                "cubemaps"
-            ]
-        },
-        {
-            "key": "Rigs/osprey_def_armless_rig_mesh.bundle",
-            "dependencyKeys": []
-        },
-        {
-            "key": "Rigs/osprey_def_armless_rig.bundle",
-            "dependencyKeys": [
-                "Rigs/osprey_def_armless_rig_mesh.bundle",
-                "assets/commonassets/physics/physicsmaterials.bundle",
-                "shaders",
-                "cubemaps"
-            ]
-        },
-        {
-            "key": "Clothing/top_tshirt_black.bundle",
-            "dependencyKeys": ["cubemaps", "shaders"]
-        },
-        {
-            "key": "Clothing/bottom_urbanresponder_ucp.bundle",
-            "dependencyKeys": ["cubemaps", "shaders"]
-        },
-        {
-            "key": "Backpacks/nice_comm_3_bvs.bundle",
-            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "shaders", "cubemaps"]
-        },
-        {
             "key": "Items/requisition_coin.bundle",
             "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "shaders", "cubemaps"]
         },
@@ -64,6 +18,22 @@
         },
         {
             "key": "Containers/special_storage_crate.bundle",
+            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
+        },
+        {
+            "key": "Containers/large_medcase.bundle",
+            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
+        },
+        {
+            "key": "Containers/medium_medcase.bundle",
+            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
+        },
+        {
+            "key": "Containers/small_medcase.bundle",
+            "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
+        },
+        {
+            "key": "Containers/ammo_pouch.bundle",
             "dependencyKeys": ["assets/commonassets/physics/physicsmaterials.bundle", "cubemaps", "shaders"]
         }
     ]

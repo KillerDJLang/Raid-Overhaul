@@ -2,7 +2,10 @@ import { inject, injectable } from "tsyringe";
 //Spt Classes
 import type { CustomItemService } from "@spt/services/mod/CustomItemService";
 import type { DatabaseService } from "@spt/services/DatabaseService";
+import type { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
+import type { ConfigServer } from "@spt/servers/ConfigServer";
+import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 //Custom Classes
 import type { ConfigManager } from "../managers/ConfigManager";
@@ -20,6 +23,7 @@ export class ItemController {
         @inject("Utils") protected utils: Utils,
         @inject("ROLogger") protected logger: ROLogger,
         @inject("ConfigManager") protected configManager: ConfigManager,
+        @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("CustomItemService") protected customItem: CustomItemService,
         @inject("DatabaseService") protected databaseService: DatabaseService,
     ) {}
@@ -30,6 +34,7 @@ export class ItemController {
         const items = tables.templates.items;
         const pockets = tables.templates.items["627a4e6b255f7527fb05a0f6"];
         const uhPockets = tables.templates.items["65e080be269cbd5c5005e529"];
+        const botConfig = this.configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
         const conInvKey = "harmer-configurableinventories";
         const svmKey = "[SVM] Server Value Modifier";
         let recipes = tables.hideout.production.recipes;
@@ -430,6 +435,50 @@ export class ItemController {
             this.utils.modifyContainerSize("66b5f247af44ca0014063c02", 5, 5);
             this.utils.modifyContainerSize("66b5f22b78bbc0200425f904", 6, 6);
         }
+        /*
+        botConfig.currencyStackSize.default = {
+            "5449016a4bdc2d6f028b456f": {
+                "25000": 2,
+                "20000": 4,
+                "15000": 8,
+                "10000": 14,
+                "5000": 70
+            },
+            "5696686a4bdc2da3298b456a": {
+                "50": 10,
+                "100": 5,
+                "250": 1
+            },
+            "569668774bdc2da2298b4568": {
+                "50": 10,
+                "100": 5,
+                "250": 1
+            },
+            "5d235b4d86f7742e017bc88a": {
+                "1": 8,
+                "2": 4,
+                "5": 4,
+                "10": 1
+            },
+            "66292e79a4d9da25e683ab55": {
+                "1": 1,
+                "500": 8,
+                "1000": 4,
+                "2000": 4,
+                "3000": 3,
+                "4000": 2,
+                "5000": 1
+            },
+            "668b3c71042c73c6f9b00704": {
+                "1": 8,
+                "5": 6,
+                "10": 3,
+                "15": 3,
+                "20": 2,
+                "25": 1
+            }
+        }
+*/
     }
 
     public stackChanges(): void {

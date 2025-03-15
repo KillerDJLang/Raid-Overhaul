@@ -3,7 +3,7 @@
         "ItemToClone": "ARMOR_HEXGRID",
         "OverrideProperties": {
             "Prefab": {
-                "path": "ArmoredVests/banshee_armor.bundle",
+                "path": "assets/content/items/equipment/rig_shellback_tactical_banshee/item_equipment_rig_shellback_tactical_banshee.bundle",
                 "rcid": ""
             },
             "Height": 3,

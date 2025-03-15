@@ -120,7 +120,7 @@ export class PkController {
     //#region Custom Keys
 
     public addNewKeys(): void {
-        if (this.probHelper.rollChance(5, 100)) {
+        if (this.probHelper.rollChance(10, 100)) {
             this.assortUtils.createSingleItemOffer(
                 "66a2fc926af26cc365283f23",
                 1,
@@ -131,7 +131,7 @@ export class PkController {
             );
         }
 
-        if (this.probHelper.rollChance(5, 100)) {
+        if (this.probHelper.rollChance(10, 100)) {
             this.assortUtils.createSingleItemOffer(
                 "66a2fc9886fbd5d38c5ca2a6",
                 1,
@@ -200,17 +200,17 @@ export class PkController {
             Traders.PEACEKEEPER,
         );
         this.assortUtils.createSingleItemOffer(
-            "6722254fd847a7aafccfbb54",
+            "67222453e6aee984bcfcf9d1",
             1,
-            1,
+            2,
             5,
             Currency.ReqSlips,
             Traders.PEACEKEEPER,
         );
         this.assortUtils.createSingleItemOffer(
-            "67222453e6aee984bcfcf9d1",
+            "6722254fd847a7aafccfbb54",
             1,
-            2,
+            1,
             10,
             Currency.ReqSlips,
             Traders.PEACEKEEPER,
@@ -220,6 +220,14 @@ export class PkController {
             1,
             3,
             20,
+            Currency.ReqSlips,
+            Traders.PEACEKEEPER,
+        );
+        this.assortUtils.createSingleItemOffer(
+            "67d4373526a3cfb1ff5338bb",
+            1,
+            2,
+            15,
             Currency.ReqSlips,
             Traders.PEACEKEEPER,
         );

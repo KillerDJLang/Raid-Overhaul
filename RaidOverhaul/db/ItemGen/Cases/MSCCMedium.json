@@ -1,18 +1,18 @@
 {
-    "6722252e82ca09a7e62c4d84": {
+    "6722254fd847a7aafccfbb54": {
         "ItemToClone": "CONTAINER_SICC",
         "OverrideProperties": {
             "Prefab": {
-                "path": "assets/content/weapons/usable_items/item_meds_grizly/item_grizzly_loot.bundle",
+                "path": "Containers/medium_medcase.bundle",
                 "rcid": ""
             },
-            "Height": 2,
+            "Height": 1,
             "Width": 2,
             "Grids": [
                 {
-                    "_id": "6722253c6d0bd31f095130a0",
+                    "_id": "6722246e81672dea7504bdb4",
                     "_name": "1",
-                    "_parent": "6722252e82ca09a7e62c4d84",
+                    "_parent": "6722254fd847a7aafccfbb54",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 2,
@@ -36,9 +36,9 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "6722253edc760d23efd864ab",
+                    "_id": "6722246c8422810cb020e16b",
                     "_name": "2",
-                    "_parent": "6722252e82ca09a7e62c4d84",
+                    "_parent": "6722254fd847a7aafccfbb54",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 2,
@@ -62,12 +62,12 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "67222541a44d250eec840987",
+                    "_id": "6722246be7c6c6e433dccc15",
                     "_name": "3",
-                    "_parent": "6722252e82ca09a7e62c4d84",
+                    "_parent": "6722254fd847a7aafccfbb54",
                     "_props": {
-                        "cellsH": 2,
-                        "cellsV": 2,
+                        "cellsH": 1,
+                        "cellsV": 1,
                         "filters": [
                             {
                                 "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
@@ -90,12 +90,12 @@
             ]
         },
         "LocalePush": {
-            "name": "Medical Supplies Carrying Case (Grizzly)",
-            "shortName": "MSCCGrizz",
-            "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was carried by the medic to ensure a quick response to any serious injuries incurred on a hunt."
+            "name": "Medical Supplies Carrying Case (Medium)",
+            "shortName": "MSCC (M)",
+            "description": "A carrying case used by the wolves of the Requisitions Office to haul their supplies into the field. This case was stored in their vehicles as a stopgap measure for when supplies elsewhere were depleted."
         },
         "HandbookParent": "StorageContainers",
-        "HandbookPrice": 549999,
+        "HandbookPrice": 279999,
         "CloneToFilters": true,
         "CasePush": {
             "CaseFiltersToAdd": [

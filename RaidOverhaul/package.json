@@ -1,13 +1,13 @@
 {
     "name": "Raid Overhaul",
-    "version": "2.6.5",
+    "version": "2.7.0",
     "main": "src/mod.js",
     "isBundleMod": true,
     "license": "CC BY-NC-ND 4.0",
     "author": "DJ",
-    "sptVersion": "~3.10",
+    "sptVersion": "~3.11",
     "loadBefore": [],
-    "loadAfter": ["SPT-Realism"],
+    "loadAfter": [],
     "incompatibilities": ["ROStandaloneBackend"],
     "contributors": ["Dirtbikercj"],
     "scripts": {

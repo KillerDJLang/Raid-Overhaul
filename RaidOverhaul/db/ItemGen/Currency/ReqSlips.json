@@ -11,10 +11,7 @@
             "StackMaxSize": 99,
             "BackgroundColor": "green",
             "StackMaxRandom": 25,
-            "StackMinRandom": 1,
-            "eqMax": 100,
-            "eqMin": 45,
-            "rate": 1
+            "StackMinRandom": 1
         },
         "LocalePush": {
             "name": "Requisition Slips",

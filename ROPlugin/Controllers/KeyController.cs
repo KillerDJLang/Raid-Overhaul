@@ -26,7 +26,7 @@ namespace RaidOverhaul.Controllers
                 {
                     if (!door.KeyId.IsNullOrWhiteSpace() || !door.KeyId.IsNullOrEmpty())
                     {
-                        door.KeyId = Utils.skeletonKey;
+                        door.KeyId = Utils.SkeletonKey;
                     }
                 }
             }
@@ -42,20 +42,20 @@ namespace RaidOverhaul.Controllers
                 {
                     if (!kDoor.KeyId.IsNullOrWhiteSpace() || !kDoor.KeyId.IsNullOrEmpty())
                     {
-                        kDoor.KeyId = Utils.vipKeycard;
+                        kDoor.KeyId = Utils.VipKeycard;
                     }
                 }
             }
         }
 
-        private static bool HasKeycard()
-        {
-            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.vipKeycard);
-        }
-
         private static bool HasSkeletonKey()
         {
-            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.skeletonKey);
+            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.SkeletonKey);
+        }
+
+        private static bool HasKeycard()
+        {
+            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.VipKeycard);
         }
     }
 }

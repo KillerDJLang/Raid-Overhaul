@@ -10,11 +10,8 @@
             "Width": 1,
             "StackMaxSize": 50000,
             "BackgroundColor": "green",
-            "StackMaxRandom": 500,
-            "StackMinRandom": 10,
-            "eqMax": 555,
-            "eqMin": 275,
-            "rate": 1
+            "StackMaxRandom": 5000,
+            "StackMinRandom": 1
         },
         "LocalePush": {
             "name": "Requisition Coin",

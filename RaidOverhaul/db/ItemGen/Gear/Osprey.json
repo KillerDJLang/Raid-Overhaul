@@ -1,38 +1,16 @@
 {
-    "6621b1f22310f5ff09476360": {
+    "6621b274485df00e750df4f2": {
         "ItemToClone": "VEST_A18_SKANDA",
         "OverrideProperties": {
             "Prefab": {
-                "path": "Rigs/rhino_rig.bundle",
+                "path": "assets/content/items/equipment/rig_custom_osprey_defence/item_equipment_rig_custom_osprey_defence.bundle",
                 "rcid": ""
             },
-            "Height": 3,
-            "Width": 4,
             "Grids": [
                 {
-                    "_id": "62732cb3d803f8b5806da7c8",
+                    "_id": "668b47f2b6872d7d930d529b",
                     "_name": "GridView (1)",
-                    "_parent": "6621b1f22310f5ff09476360",
-                    "_props": {
-                        "cellsH": 1,
-                        "cellsV": 3,
-                        "filters": [
-                            {
-                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
-                                "Filter": ["54009119af1c881c07000029"]
-                            }
-                        ],
-                        "isSortingTable": false,
-                        "maxCount": 0,
-                        "maxWeight": 0,
-                        "minCount": 0
-                    },
-                    "_proto": "55d329c24bdc2d892f8b4567"
-                },
-                {
-                    "_id": "ae2c3e0246c5c92c689ffa03",
-                    "_name": "GridView (2)",
-                    "_parent": "6621b1f22310f5ff09476360",
+                    "_parent": "6621b274485df00e750df4f2",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 1,
@@ -50,11 +28,31 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "a9db2d442c1e9dda0075db85",
+                    "_id": "668b47ee5e3d9f0a3aaea4ce",
+                    "_name": "GridView (2)",
+                    "_parent": "6621b274485df00e750df4f2",
+                    "_props": {
+                        "cellsH": 1,
+                        "cellsV": 1,
+                        "filters": [
+                            {
+                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
+                                "Filter": ["54009119af1c881c07000029"]
+                            }
+                        ],
+                        "isSortingTable": false,
+                        "maxCount": 0,
+                        "maxWeight": 0,
+                        "minCount": 0
+                    },
+                    "_proto": "55d329c24bdc2d892f8b4567"
+                },
+                {
+                    "_id": "668b47ea089ea1eb54ce56de",
                     "_name": "GridView (3)",
-                    "_parent": "6621b1f22310f5ff09476360",
+                    "_parent": "6621b274485df00e750df4f2",
                     "_props": {
-                        "cellsH": 1,
+                        "cellsH": 2,
                         "cellsV": 2,
                         "filters": [
                             {
@@ -70,9 +68,29 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "72c5f5441bc18abdf47b44b9",
+                    "_id": "668b47e6886152fb114ec8a6",
                     "_name": "GridView (4)",
-                    "_parent": "6621b1f22310f5ff09476360",
+                    "_parent": "6621b274485df00e750df4f2",
+                    "_props": {
+                        "cellsH": 2,
+                        "cellsV": 2,
+                        "filters": [
+                            {
+                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
+                                "Filter": ["54009119af1c881c07000029"]
+                            }
+                        ],
+                        "isSortingTable": false,
+                        "maxCount": 0,
+                        "maxWeight": 0,
+                        "minCount": 0
+                    },
+                    "_proto": "55d329c24bdc2d892f8b4567"
+                },
+                {
+                    "_id": "668b47df2f98c0807ccbf160",
+                    "_name": "GridView (5)",
+                    "_parent": "6621b274485df00e750df4f2",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 2,
@@ -90,9 +108,69 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "f3449f1f170ac4dd2f8021dd",
-                    "_name": "GridView (5)",
-                    "_parent": "6621b1f22310f5ff09476360",
+                    "_id": "668b47dae7257ba816fb702c",
+                    "_name": "GridView (6)",
+                    "_parent": "6621b274485df00e750df4f2",
+                    "_props": {
+                        "cellsH": 1,
+                        "cellsV": 2,
+                        "filters": [
+                            {
+                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
+                                "Filter": ["54009119af1c881c07000029"]
+                            }
+                        ],
+                        "isSortingTable": false,
+                        "maxCount": 0,
+                        "maxWeight": 0,
+                        "minCount": 0
+                    },
+                    "_proto": "55d329c24bdc2d892f8b4567"
+                },
+                {
+                    "_id": "668b47d66246b3eb4af35f1f",
+                    "_name": "GridView (7)",
+                    "_parent": "6621b274485df00e750df4f2",
+                    "_props": {
+                        "cellsH": 1,
+                        "cellsV": 1,
+                        "filters": [
+                            {
+                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
+                                "Filter": ["54009119af1c881c07000029"]
+                            }
+                        ],
+                        "isSortingTable": false,
+                        "maxCount": 0,
+                        "maxWeight": 0,
+                        "minCount": 0
+                    },
+                    "_proto": "55d329c24bdc2d892f8b4567"
+                },
+                {
+                    "_id": "668b47cf187bcddeb0d58c3b",
+                    "_name": "GridView (8)",
+                    "_parent": "6621b274485df00e750df4f2",
+                    "_props": {
+                        "cellsH": 1,
+                        "cellsV": 1,
+                        "filters": [
+                            {
+                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
+                                "Filter": ["54009119af1c881c07000029"]
+                            }
+                        ],
+                        "isSortingTable": false,
+                        "maxCount": 0,
+                        "maxWeight": 0,
+                        "minCount": 0
+                    },
+                    "_proto": "55d329c24bdc2d892f8b4567"
+                },
+                {
+                    "_id": "668b47cb2caa440f835b1831",
+                    "_name": "GridView (9)",
+                    "_parent": "6621b274485df00e750df4f2",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 4,
@@ -110,29 +188,9 @@
                     "_proto": "55d329c24bdc2d892f8b4567"
                 },
                 {
-                    "_id": "e27a0b8d0c6cf74aba601540",
-                    "_name": "GridView (6)",
-                    "_parent": "6621b1f22310f5ff09476360",
-                    "_props": {
-                        "cellsH": 1,
-                        "cellsV": 3,
-                        "filters": [
-                            {
-                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
-                                "Filter": ["54009119af1c881c07000029"]
-                            }
-                        ],
-                        "isSortingTable": false,
-                        "maxCount": 0,
-                        "maxWeight": 0,
-                        "minCount": 0
-                    },
-                    "_proto": "55d329c24bdc2d892f8b4567"
-                },
-                {
-                    "_id": "6510c506a3613dc59fd589a2",
-                    "_name": "GridView (7)",
-                    "_parent": "6621b1f22310f5ff09476360",
+                    "_id": "668b47c67ab51bac2aadb398",
+                    "_name": "GridView (10)",
+                    "_parent": "6621b274485df00e750df4f2",
                     "_props": {
                         "cellsH": 1,
                         "cellsV": 1,
@@ -148,37 +206,17 @@
                         "minCount": 0
                     },
                     "_proto": "55d329c24bdc2d892f8b4567"
-                },
-                {
-                    "_id": "b8a21d49246b601fc69d3173",
-                    "_name": "GridView (8)",
-                    "_parent": "6621b1f22310f5ff09476360",
-                    "_props": {
-                        "cellsH": 2,
-                        "cellsV": 2,
-                        "filters": [
-                            {
-                                "ExcludedFilter": ["5448bf274bdc2dfc2f8b456a"],
-                                "Filter": ["54009119af1c881c07000029"]
-                            }
-                        ],
-                        "isSortingTable": false,
-                        "maxCount": 0,
-                        "maxWeight": 0,
-                        "minCount": 0
-                    },
-                    "_proto": "55d329c24bdc2d892f8b4567"
                 }
             ],
-            "RigLayoutName": "rorhinobonk"
+            "RigLayoutName": "robigrig"
         },
         "LocalePush": {
-            "name": "CQC Rhino plate carrier (MTP)",
-            "shortName": "Rhino Rig",
-            "description": "Rhino is based on the Osprey body armour system but without neck, shoulder and groin protection. Rhino has proved to be a very popular system as it has a simple but effective design."
+            "name": "CQC Osprey MK4A plate carrier (Protection, MTP, Modified)",
+            "shortName": "Osprey MK4A rig (M)",
+            "description": "The Osprey plate carrier is actively used by the British army and specialists. The Protection preset is provided with heavy armor plates and the optimal number of pouches for ammunition, grenades and special equipment. This version has been modified by the Requisitions Office to include extra storage space."
         },
         "HandbookParent": "TacticalRigs",
-        "HandbookPrice": 239999,
+        "HandbookPrice": 189999,
         "CloneToFilters": true
     }
 }

@@ -1,5 +1,8 @@
 ﻿using EFT.UI;
+using EFT.InventoryLogic;
 using System;
+using System.Linq;
+using RaidOverhaul.Helpers;
 
 namespace RaidOverhaul.Configs
 {
@@ -26,7 +29,33 @@ namespace RaidOverhaul.Configs
             ConsoleScreen.Processor.RegisterCommand("RunTrain",             new Action(Plugin.ECScript.RunTrain));
             ConsoleScreen.Processor.RegisterCommand("DoPmcExfil",           new Action(Plugin.ECScript.DoPmcExfilEvent));
             ConsoleScreen.Processor.RegisterCommand("ExfilNow",             new Action(Plugin.ECScript.ExfilNow));
+            ConsoleScreen.Processor.RegisterCommand("GetWeaponIds",         new Action(GetAllWeaponIDs));
+            ConsoleScreen.Processor.RegisterCommand("GetAllIds",            new Action(GetAllItemIDs));
             //ConsoleScreen.Processor.RegisterCommand("DoGearExfil",       new Action(Plugin.ECScript.DoGearExfilEvent));
+        }
+        
+        private static void GetAllWeaponIDs()
+        {
+            var weapons = Plugin.Session.Profile.Inventory?.AllRealPlayerItems;
+            weapons = weapons.Where(x => x is Weapon);
+
+            foreach (var weapon in weapons)
+            {
+                Plugin.Log.LogInfo($"Template ID: {weapon.TemplateId}, locale name: {weapon.LocalizedName()}");
+                Utils.LogToServerConsole($"Template ID: {weapon.TemplateId}, locale name: {weapon.LocalizedName()}");
+            }
+        }
+        
+        private static void GetAllItemIDs()
+        {
+            var items = Plugin.Session.Profile.Inventory?.AllRealPlayerItems;
+            items = items.Where(x => x is Item);
+
+            foreach (var item in items)
+            {
+                Plugin.Log.LogInfo($"Template ID: {item.TemplateId}, locale name: {item.LocalizedName()}");
+                Utils.LogToServerConsole($"Template ID: {item.TemplateId}, locale name: {item.LocalizedName()}");
+            }
         }
     }
 }

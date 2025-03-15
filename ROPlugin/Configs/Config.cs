@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using BepInEx.Configuration;
 
-namespace RaidOverhaul.Helpers
+namespace RaidOverhaul.Configs
 {
     public static class DJConfig
     {
