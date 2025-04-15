@@ -13,7 +13,7 @@ import type { PkController } from "./PkController";
 import type { ROLogger } from "../utils/Logger";
 import type { Utils } from "../utils/Utils";
 //Json Imports
-const botSettings = require("../Utils/data/botInfo.json");
+const botSettings = require("../utils/data/botInfo.json");
 //Modules
 import path from "node:path";
 import fs from "node:fs";
