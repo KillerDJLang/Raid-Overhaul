@@ -18,7 +18,7 @@ import type { PkController } from "./PkController";
 import type { ROLogger } from "../utils/Logger";
 import type { Utils } from "../utils/Utils";
 //Json Imports
-const botSettings = require("../Utils/data/botInfo.json");
+const botSettings = require("../utils/data/botInfo.json");
 const bosslegion = require("../../db/RaidBoss/bosslegion.json");
 const bosslegion2 = require("../../db/RaidBoss/bosslegionNoCustomItems.json");
 //Modules

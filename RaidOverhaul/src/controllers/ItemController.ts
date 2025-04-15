@@ -15,7 +15,7 @@ import type { Utils } from "../utils/Utils";
 //Json Imports
 const containerCrafts = require("../utils/data/containerCrafts.json");
 const globalPresets = require("../../db/Presets/Globals.json");
-const ammoList = require("../Utils/data/ammoStackList.json");
+const ammoList = require("../utils/data/ammoStackList.json");
 
 @injectable()
 export class ItemController {
