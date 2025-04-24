@@ -48,8 +48,8 @@
     "chances": {
         "equipment": {
             "ArmBand": 0,
-            "ArmorVest": 75,
-            "Backpack": 75,
+            "ArmorVest": 100,
+            "Backpack": 85,
             "Earpiece": 89,
             "Eyewear": 0,
             "FaceCover": 0,
@@ -58,7 +58,7 @@
             "Holster": 75,
             "Pockets": 100,
             "Scabbard": 50,
-            "SecondPrimaryWeapon": 75,
+            "SecondPrimaryWeapon": 0,
             "SecuredContainer": 100,
             "TacticalVest": 100
         },
