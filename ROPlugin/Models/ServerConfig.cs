@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace RaidOverhaul.Models
 {
     #region Server Config Layout Base
-    public struct ServerConfigs
+    internal struct ServerConfigs
     {
         [JsonProperty("EnableCustomBoss")]
         public bool EnableLegion;

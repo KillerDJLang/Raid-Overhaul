@@ -12,9 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ROPrepatch\LegionPrePatch.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ROPackets\Packets.csproj" />
-  </ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="0Harmony">
@@ -38,7 +35,7 @@
 		<Reference Include="Assembly-CSharp">
  		  <HintPath>..\..\..\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
 		</Reference>
-		<Reference Include="..\BepInEx">
+		<Reference Include="BepInEx">
 		  <HintPath>..\..\..\BepInEx\core\BepInEx.dll</HintPath>
 		</Reference>
 		<Reference Include="bsg.console.core">

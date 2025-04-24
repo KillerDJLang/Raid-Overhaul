@@ -3,7 +3,7 @@ using RaidOverhaul.Models;
 
 namespace RaidOverhaul.Controllers
 {
-    public class ConfigController : MonoBehaviour
+    internal class ConfigController : MonoBehaviour
     {
         public static ServerConfigs ServerConfig = new ServerConfigs();
         public static DebugConfigs DebugConfig = new DebugConfigs();

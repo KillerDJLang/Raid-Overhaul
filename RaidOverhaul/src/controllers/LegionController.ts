@@ -117,7 +117,7 @@ export class LegionController {
                 Time: -1,
                 TriggerId: "",
                 TriggerName: "",
-                spawnMode: ["regular", "pve"],
+                SpawnMode: ["regular", "pve"],
             };
 
             for (const location of Object.values(tables.locations)) {
@@ -352,7 +352,7 @@ export class LegionController {
             Time: -1,
             TriggerId: "",
             TriggerName: "",
-            spawnMode: ["regular", "pve"],
+            SpawnMode: ["regular", "pve"],
         };
 
         for (const location of Object.values(tables.locations)) {

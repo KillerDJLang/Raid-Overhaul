@@ -162,7 +162,6 @@ export interface debugFile {
     baseLegionChance: number;
     debugMode: boolean;
     dumpData: boolean;
-    EnableTimeChanges: boolean;
 }
 
 export interface SwagCustomBossConfig {

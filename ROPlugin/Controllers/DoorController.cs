@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Collections;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Configs;
-//using RaidOverhaul.Fika;
+using RaidOverhaul.Fika;
 
 namespace RaidOverhaul.Controllers
 {
@@ -47,21 +47,21 @@ namespace RaidOverhaul.Controllers
             {
                 _kdoor = FindObjectsOfType<KeycardDoor>();
             }
-/*
-            if (!_dooreventisRunning && FikaInterface.IAmHost())
+
+            if (!_dooreventisRunning && FikaBridge.IAmHost())
             {
                 StaticManager.Instance.StartCoroutine(DoorEvents());
 
                 _dooreventisRunning = true;
             }
-*/
+
         }
 
         private IEnumerator DoorEvents()
         {
             yield return new WaitForSeconds(UnityEngine.Random.Range(ConfigController.EventConfig.DoorEventRangeMinimumServer, ConfigController.EventConfig.DoorEventRangeMaximumServer) * 60f);
 
-            if (Plugin.ROGameWorld != null && Plugin.ROGameWorld.AllAlivePlayersList != null && Plugin.ROGameWorld.AllAlivePlayersList.Count > 0 && !(Plugin.ROPlayer is HideoutPlayer)) //&& FikaInterface.IAmHost() removed from if statement for 311 testing
+            if (Ready() && FikaBridge.IAmHost())
             {
                 Weighting.DoRandomEvent(Weighting.weightedDoorMethods);
             }
@@ -104,7 +104,7 @@ namespace RaidOverhaul.Controllers
 
             if (_switch.DoorState == EDoorState.Shut)
             {
-                //FikaInterface.SendSwitchStateChangePacket(_switch.Id);
+                FikaBridge.SendSwitchStateChangePacket(_switch.Id);
                 typeof(Switch).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(_switch, null);
 
                 if (ConfigController.DebugConfig.DebugMode) {
@@ -145,7 +145,7 @@ namespace RaidOverhaul.Controllers
 
             if (door.DoorState == EDoorState.Locked && door.Operatable && door.enabled)
             {
-                //FikaInterface.SendDoorStateChangePacket(door.Id);
+                FikaBridge.SendDoorStateChangePacket(door.Id);
                 typeof(Door).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
                 typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
 
@@ -187,7 +187,7 @@ namespace RaidOverhaul.Controllers
 
             if (kdoor.DoorState == EDoorState.Locked)
             {
-                //FikaInterface.SendKeycardDoorStateChangePacket(kdoor.Id);
+                FikaBridge.SendKeycardDoorStateChangePacket(kdoor.Id);
                 typeof(KeycardDoor).GetMethod("Unlock", BindingFlags.Instance | BindingFlags.Public).Invoke(kdoor, null);
                 typeof(KeycardDoor).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(kdoor, null);
 
@@ -240,14 +240,14 @@ namespace RaidOverhaul.Controllers
 
                     if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Shut))
                     {
-                        //FikaInterface.SendRaidStartDoorStateChangePacket(door.Id);
+                        FikaBridge.SendRaidStartDoorStateChangePacket(door.Id);
                         typeof(Door).GetMethod("Open", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
                         _doorChangedCount++;
                     }
 
                     if (UnityEngine.Random.Range(0, 100) < 50 && (door.DoorState == EDoorState.Open))
                     {
-                        //FikaInterface.SendRaidStartDoorStateChangePacket(door.Id);
+                        FikaBridge.SendRaidStartDoorStateChangePacket(door.Id);
                         typeof(Door).GetMethod("Close", BindingFlags.Instance | BindingFlags.Public).Invoke(door, null);
                         _doorChangedCount++;
                     }
@@ -268,7 +268,7 @@ namespace RaidOverhaul.Controllers
                 {
                     if (UnityEngine.Random.Range(0, 100) < 25)
                     {
-                        //FikaInterface.SendRaidStartLampStateChangePacket(lamp.Id);
+                        FikaBridge.SendRaidStartLampStateChangePacket(lamp.Id);
                         lamp.Switch(Turnable.EState.Off);
                         lamp.enabled = false;
                         _lampCount++;

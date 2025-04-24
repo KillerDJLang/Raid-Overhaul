@@ -1,6 +1,6 @@
 namespace RaidOverhaul.Models
 {
-    public sealed class Flags
+    internal sealed class Flags
     {
         public bool traderRepFlag;
     }

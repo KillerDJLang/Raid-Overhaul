@@ -1,4 +1,3 @@
-/*
 using Comfort.Common;
 using EFT;
 using EFT.Interactive;
@@ -6,7 +5,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-namespace RaidOverhaul.Fika
+namespace RaidOverhaul.FikaModule.Components
 {
     internal class ROSession : MonoBehaviour
     {
@@ -71,4 +70,3 @@ namespace RaidOverhaul.Fika
         }
     }
 }
-*/

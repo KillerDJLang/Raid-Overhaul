@@ -13,7 +13,7 @@ using HarmonyLib;
 using UnityEngine;
 using SPT.Reflection.Utils;
 
-//using RaidOverhaul.Fika;
+using RaidOverhaul.Fika;
 using RaidOverhaul.Models;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Patches;
@@ -32,17 +32,17 @@ namespace RaidOverhaul
         public static string pluginPath = Path.Combine(Environment.CurrentDirectory, "BepInEx", "plugins", "RaidOverhaul");
         public static string resourcePath = Path.Combine(pluginPath, "Resources");
         public static string legionJsonPath = Path.Combine(resourcePath, "normalLegionSettings.json");
-        public static List<string> SoftDependancies = ["com.fika.core"];
-        public static TextAsset legionText;
+        internal static List<string> SoftDependancies = ["com.fika.core"];
+        internal static TextAsset legionText;
 
         internal static GameObject Hook;
-        internal static EventController ECScript;
+        public static EventController ECScript;
         internal static DoorController DCScript;
         internal static SeasonalWeatherController WScript;
         internal static BodyCleanup BCScript;
         internal static ManualLogSource Log;
 
-        public static ISession Session;
+        internal static ISession Session;
 
         public static GameWorld ROGameWorld
         { get => Singleton<GameWorld>.Instance; }
@@ -50,18 +50,20 @@ namespace RaidOverhaul
         public static Player ROPlayer
         { get => ROGameWorld.MainPlayer; }
 
-        public static SkillManager ROSkillManager
+        internal static SkillManager ROSkillManager
         { get => ROGameWorld.MainPlayer.Skills; }
 
-        public FieldInfo _FAS { get; set; }
-        public FieldInfo _AAS { get; set; }
+        internal static Player.FirearmController ROFirearmController
+        { get => ROPlayer.HandsController as Player.FirearmController; }
 
-        public static bool realismDetected { get; private set; }
-        public static bool standaloneDetected { get; private set; }
-        public static bool fikaDetected { get; private set; }
-        public static bool dedicatedClientDetected { get; private set; }
+        internal FieldInfo _FAS { get; set; }
+        internal FieldInfo _AAS { get; set; }
 
-        void Awake()
+        internal static bool realismDetected { get; private set; }
+        internal static bool standaloneDetected { get; private set; }
+        internal static bool fikaDetected { get; private set; }
+
+        private void Awake()
         {
             if (!VersionChecker.CheckEftVersion(Logger, Info, Config)) {
                 throw new Exception("Invalid EFT Version");
@@ -75,11 +77,6 @@ namespace RaidOverhaul
             if (Chainloader.PluginInfos.ContainsKey("com.fika.core"))
             {
                 fikaDetected = true;
-            }
-
-            if (Chainloader.PluginInfos.ContainsKey("com.fika.dedicated"))
-            {
-                dedicatedClientDetected = true;
             }
 
             // Bind the configs
@@ -120,12 +117,16 @@ namespace RaidOverhaul
 
             Utils.LoadLegionSettings();
 
-            if (ConfigController.DebugConfig.TimeChanges) {
-                new WatchPatch().Enable();
-                new TimePanelPatch().Enable();
-                new RaidSettingsPatch().Enable();
-                new LocationInfoPanelPatch().Enable();
+            if (DJConfig.TimeChanges.Value) {
+                new GameWorldPatch().Enable();
+                new GlobalsPatch().Enable();
+                new EnableEntryPointPatch().Enable();
+                new UIPanelPatch().Enable();
+                new TimerUIPatch().Enable();
+                new FactoryTimerPanelPatch().Enable();
+                //new ExitTimerUIPatch().Enable();
                 new WeatherControllerPatch().Enable();
+                new WatchPatch().Enable();
             }
 
             if (DJConfig.Deafness.Value && realismDetected == false) {
@@ -138,12 +139,14 @@ namespace RaidOverhaul
             }
 
             new KeyPatch().Enable();
+            new KeycardPatch().Enable();
             new OnDeadPatch().Enable();
             new EnableEntryPointPatch().Enable();
             new RandomizeDefaultStatePatch().Enable();
             new EventExfilPatch().Enable();
             new BundleLoaderPatch().Enable();
             new LegionSmethodPatch().Enable();
+            new SpecialSlotPatch().Enable();
 
             _FAS = _FAS ?? typeof(Inventory).GetField("FastAccessSlots");
             _FAS?.SetValue(_FAS, Utils._armbandFAS);
@@ -154,9 +157,11 @@ namespace RaidOverhaul
             if (ConfigController.DebugConfig.DebugMode) {
                 ConsoleCommands.RegisterCC();
             }
+
+            TryInitFikaAssembly();
         }
 
-        void Update()
+        private void Update()
         {
             if (Chainloader.PluginInfos.ContainsKey(Utils.RealismKey) && PreloaderUI.Instantiated && realismDetected == false) {
                 realismDetected = true;
@@ -179,11 +184,21 @@ namespace RaidOverhaul
                 Log.LogDebug("Session set");
             }
         }
-/*
+
         private void OnEnable()
         {
-            FikaInterface.InitOnPluginEnabled();
+            FikaBridge.PluginEnable();
         }
-*/
+
+        private static void TryInitFikaAssembly()
+        {
+            if (!fikaDetected) { return; }
+
+            Assembly fikaModuleAssembly = Assembly.Load("RaidOverhaulFika");
+            Type main = fikaModuleAssembly.GetType("RaidOverhaul.FikaModule.FikaMain");
+            MethodInfo init = main.GetMethod("Init");
+
+            init.Invoke(main, null);
+        }
     }
 }

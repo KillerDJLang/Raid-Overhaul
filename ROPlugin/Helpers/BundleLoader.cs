@@ -10,42 +10,27 @@ namespace RaidOverhaul.Helpers
 {
     internal class BundleLoader
     {
-        public static void LoadBundles()
+        public static void LoadLayouts()
         {
             string rigLayoutsDirectory = Path.Combine(Plugin.pluginPath, "bundles", "CustomLayouts");
-            string bundleDirectory = Path.Combine(Plugin.pluginPath, "bundles", "CustomAssets");
 
             if (!Directory.Exists(rigLayoutsDirectory))
             {
-                if (ConfigController.DebugConfig.DebugMode) {
-                    Plugin.Log.LogInfo("Rig layouts directory not found.");
-                    Utils.LogToServerConsole("Rig layouts directory not found.");
-                }
-                return;
-            }
-            if (!Directory.Exists(bundleDirectory))
-            {
-                if (ConfigController.DebugConfig.DebugMode) {
-                    Plugin.Log.LogInfo("Custom assets directory not found.");
-                    Utils.LogToServerConsole("Custom assets directory not found.");
-                }
+                Console.WriteLine("Rig layouts directory not found.");
                 return;
             }
 
             var rigLayoutBundles = Directory.GetFiles(rigLayoutsDirectory, "*.bundle");
-            var assetBundles = Directory.GetFiles(bundleDirectory, "*.bundle");
 
             foreach (var rigLayoutBundleFile in rigLayoutBundles)
             {
                 string bundleName = Path.GetFileNameWithoutExtension(rigLayoutBundleFile);
+
                 AssetBundle rigLayoutBundle = AssetBundle.LoadFromFile(rigLayoutBundleFile);
 
                 if (rigLayoutBundle == null)
                 {
-                    if (ConfigController.DebugConfig.DebugMode) {
-                        Plugin.Log.LogInfo($"Failed to load rig layout bundle: {bundleName}");
-                        Utils.LogToServerConsole($"Failed to load rig layout bundle: {bundleName}");
-                    }
+                    Console.WriteLine($"Failed to load rig layout bundle: {bundleName}");
                     continue;
                 }
 
@@ -58,10 +43,7 @@ namespace RaidOverhaul.Helpers
 
                     if (rigLayoutPrefab == null)
                     {
-                        if (ConfigController.DebugConfig.DebugMode) {
-                            Plugin.Log.LogInfo($"Failed to load rig layout prefab from bundle: {prefabName}");
-                            Utils.LogToServerConsole($"Failed to load rig layout prefab from bundle: {prefabName}");
-                        }
+                        Console.WriteLine($"Failed to load rig layout prefab from bundle: {prefabName}");
                         continue;
                     }
 
@@ -70,10 +52,7 @@ namespace RaidOverhaul.Helpers
 
                     if (gridView == null)
                     {
-                        if (ConfigController.DebugConfig.DebugMode) {
-                            Plugin.Log.LogInfo($"Rig layout prefab {prefabName} is missing ContainedGridsView component.");
-                            Utils.LogToServerConsole($"Rig layout prefab {prefabName} is missing ContainedGridsView component.");
-                        }
+                        Console.WriteLine($"Rig layout prefab {prefabName} is missing ContainedGridsView component.");
                         continue;
                     }
 
@@ -83,6 +62,19 @@ namespace RaidOverhaul.Helpers
 
                 rigLayoutBundle.Unload(false);
             }
+        }
+
+        public static void LoadAssets()
+        {
+            string bundleDirectory = Path.Combine(Plugin.pluginPath, "bundles", "CustomAssets");
+            
+            if (!Directory.Exists(bundleDirectory))
+            {
+                Plugin.Log.LogInfo("Custom assets directory not found.");
+                return;
+            }
+
+            var assetBundles = Directory.GetFiles(bundleDirectory, "*.bundle");
 
             foreach (var bundle in assetBundles)
             {
@@ -91,18 +83,15 @@ namespace RaidOverhaul.Helpers
 
                 if (assetBundle == null)
                 {
-                    if (ConfigController.DebugConfig.DebugMode) {
-                        Plugin.Log.LogInfo($"Failed to load custom asset bundle: {bundleName}");
-                        Utils.LogToServerConsole($"Failed to load custom asset bundle: {bundleName}");
-                    }
+                    Plugin.Log.LogInfo($"Failed to load custom asset bundle: {bundleName}");
                 }
             }
         }
 
-        public static void AddEntryToDictionary(string key, object value)
+        private static void AddEntryToDictionary(string key, object value)
         {
             Type type = typeof(CacheResourcesPopAbstractClass);
-            FieldInfo dictionaryField = type.GetField("dictionary_0", BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo dictionaryField = type.GetField("dictionary_0", BindingFlags.Public | BindingFlags.Static);
             if (dictionaryField != null)
             {
                 Dictionary<string, object> dictionary = (Dictionary<string, object>)dictionaryField.GetValue(null);

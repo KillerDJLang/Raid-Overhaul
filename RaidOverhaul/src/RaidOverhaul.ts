@@ -24,7 +24,7 @@ import type { TraderUtils } from "./utils/TraderUtils";
 import type { ROLogger } from "./utils/Logger";
 import type { Utils } from "./utils/Utils";
 //Json Imports
-const legionClothes = require("../db/ItemGen/Clothes/LegionClothing.json");
+//const legionClothes = require("../db/ItemGen/Clothes/LegionClothing.json");
 import * as baseJson from "../db/base.json";
 //Modules
 import fs from "node:fs";
@@ -160,8 +160,6 @@ export class RaidOverhaul {
 
     private loadCustomItems(): void {
         const tables = this.databaseService.getTables();
-        const apbsKey = "acidphantasm-progressivebotsystem";
-        const alpKey = "AlgorithmicLevelProgression";
         const realismKey = "SPT-Realism";
         //Load all custom items
         this.itemGenerator.createCustomItems("../../db/ItemGen/Currency");
@@ -178,11 +176,6 @@ export class RaidOverhaul {
             this.itemGenerator.createCustomItems("../../db/ItemGen/Weapons");
             this.itemGenerator.createCustomItems("../../db/ItemGen/Gear");
             this.slotGenerator.buildSlots();
-            /*
-            if (!this.utils.checkForMod(apbsKey) && !this.utils.checkForMod(alpKey)) {
-                this.itemController.pushCustomWeaponsToBots();
-            }
-*/
         }
         tables.locations.laboratory.base.AccessKeys.push(...["66a2fc9886fbd5d38c5ca2a6"]);
     }
@@ -221,8 +214,8 @@ export class RaidOverhaul {
     private pushBossData(): void {
         // Load custom boss data
         this.legionController.addBossToDb();
-        this.clothingGenerator.createClothingTop(legionClothes.Shirt);
-        this.clothingGenerator.createClothingBottom(legionClothes.Pants);
+        //this.clothingGenerator.createClothingTop(legionClothes.Shirt);
+        //this.clothingGenerator.createClothingBottom(legionClothes.Pants);
     }
 
     private fikaInstalled(): boolean {

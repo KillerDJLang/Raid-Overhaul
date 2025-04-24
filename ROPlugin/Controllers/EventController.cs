@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using RaidOverhaul.Helpers;
 using RaidOverhaul.Configs;
 using RaidOverhaul.Patches;
-//using RaidOverhaul.Fika;
+using RaidOverhaul.Fika;
 
 
 using static RaidOverhaul.Plugin;
@@ -88,7 +88,7 @@ namespace RaidOverhaul.Controllers
 
         void Update()
         {
-            if (ConfigController.DebugConfig.TimeChanges)
+            if (DJConfig.TimeChanges.Value)
             {
                 RaidTime.inverted = MonoBehaviourSingleton<MenuUI>.Instance == null || MonoBehaviourSingleton<MenuUI>.Instance.MatchMakerSelectionLocationScreen == null
                 ? RaidTime.inverted
@@ -133,7 +133,7 @@ namespace RaidOverhaul.Controllers
             }
 
 
-            if (!_eventIsRunning) //  && FikaInterface.IAmHost() removed from if for testing on 311
+            if (!_eventIsRunning && FikaBridge.IAmHost())
             {
                 StaticManager.Instance.StartCoroutine(StartEvents());
 
@@ -160,7 +160,7 @@ namespace RaidOverhaul.Controllers
         {
             yield return new WaitForSeconds(Random.Range(ConfigController.EventConfig.RandomEventRangeMinimumServer, ConfigController.EventConfig.RandomEventRangeMaximumServer) * 60f);
 
-            if (Ready())
+            if (Ready() && FikaBridge.IAmHost())
             {
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
@@ -214,7 +214,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_healthEventCount >= 2) { return; }
 
-            //FikaInterface.SendRandomEventPacket(Utils.Heal);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Heal); }
 
             NotificationManagerClass.DisplayMessageNotification("Heal Event: On your feet you ain't dead yet.", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.ActiveHealthController.RestoreFullHealth();
@@ -229,7 +229,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_damageEventCount >= 1) { return; }
 
-            //FikaInterface.SendRandomEventPacket(Utils.Damage);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Damage); }
 
             NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Better get to a medic quick, you don't have long left.", ENotificationDurationType.Long, ENotificationIconType.Alert);
             ROPlayer.ActiveHealthController.DoContusion(4f, 50f);
@@ -247,7 +247,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_repairEventCount >= 2) { return; }
 
-            //FikaInterface.SendRandomEventPacket(Utils.Repair);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Repair); }
 
             NotificationManagerClass.DisplayMessageNotification("Armor Repair Event: All equipped armor repaired... nice!", ENotificationDurationType.Long, ENotificationIconType.Default);
             ROPlayer.Profile.Inventory.GetPlayerItems().ExecuteForEach((item) =>
@@ -290,7 +290,7 @@ namespace RaidOverhaul.Controllers
         {
             if (!_jokeEventHasRun)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.Jokes);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Jokes); }
 
                 NotificationManagerClass.DisplayMessageNotification("Heart Attack Event: Nice knowing ya, you've got 10 seconds", ENotificationDurationType.Long, ENotificationIconType.Alert);
 
@@ -317,7 +317,7 @@ namespace RaidOverhaul.Controllers
 
         public async void DoBlackoutEvent()
         {
-                //FikaInterface.SendRandomEventPacket(Utils.Blackout);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Blackout); }
 
                 foreach (Switch pSwitch in _pswitchs)
                 {
@@ -370,7 +370,7 @@ namespace RaidOverhaul.Controllers
         {
             if (_skillEventCount >= 3) { return; }
 
-                //FikaInterface.SendRandomEventPacket(Utils.Skill);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Skill); }
 
                 System.Random random = new System.Random();
 
@@ -409,7 +409,7 @@ namespace RaidOverhaul.Controllers
         {
             if (!_metabolismDisabled)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.Metabolism);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Metabolism); }
 
                 System.Random random = new System.Random();
                 int chance = random.Next(0, 100 + 1);
@@ -460,7 +460,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_malfEventHasRun)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.Malf);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Malf); }
 
                 _malfEventHasRun = true;
 
@@ -527,7 +527,7 @@ namespace RaidOverhaul.Controllers
 
         public void DoLLEvent()
         {
-            //FikaInterface.SendRandomEventPacket(Utils.LoyaltyLevel);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.LoyaltyLevel); }
 
             System.Random random = new System.Random();
 
@@ -605,7 +605,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_berserkEventHasRun)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.Berserk);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Berserk); }
 
                 _berserkEventHasRun = true;
 
@@ -700,7 +700,7 @@ namespace RaidOverhaul.Controllers
 
             if (!_weightEventHasRun)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.Weight);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Weight); }
 
                 _weightEventHasRun = true;
 
@@ -791,7 +791,7 @@ namespace RaidOverhaul.Controllers
             {
                 JsonHandler.ReadFlagFile("TraderRep", "Flags");
 
-                //FikaInterface.SendRandomEventPacket(Utils.MaxLoyaltyLevel);
+                if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.MaxLoyaltyLevel); }
 
                 if (!ConfigController.flags.traderRepFlag)
                 {
@@ -897,7 +897,7 @@ namespace RaidOverhaul.Controllers
 
         public void CorrectRep()
         {
-            //FikaInterface.SendRandomEventPacket(Utils.CorrectRep);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.CorrectRep); }
 
             if (JsonHandler.CheckFilePath("TraderRep", "Flags"))
             {
@@ -916,8 +916,6 @@ namespace RaidOverhaul.Controllers
                             }
                         }
 
-                        Weighting.repCorrectWeight = 0;
-                        Weighting.InitWeightings();
                         ConfigController.flags.traderRepFlag = false;
                         JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
                         Weighting.DoRandomEvent(Weighting.weightedEvents);
@@ -933,8 +931,6 @@ namespace RaidOverhaul.Controllers
                             }
                         }
 
-                        Weighting.repCorrectWeight = 0;
-                        Weighting.InitWeightings();
                         ConfigController.flags.traderRepFlag = false;
                         JsonHandler.SaveToJson(ConfigController.flags, "TraderRep", "Flags");
                         Weighting.DoRandomEvent(Weighting.weightedEvents);
@@ -944,8 +940,6 @@ namespace RaidOverhaul.Controllers
             
             else
             {
-                Weighting.repCorrectWeight = 0;
-                Weighting.InitWeightings();
                 Weighting.DoRandomEvent(Weighting.weightedEvents);
             }
         }
@@ -957,7 +951,7 @@ namespace RaidOverhaul.Controllers
 
             if (_exfilEventCount >= 1) { return; }
 
-            //FikaInterface.SendRandomEventPacket(Utils.Lockdown);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Lockdown); }
 
             if (raidTimeLeft < 900 || ROPlayer.Location == "laboratory")
             {
@@ -979,13 +973,7 @@ namespace RaidOverhaul.Controllers
                 {
                     if (!exfil.Settings.Name.Contains("Elevator"))
                     {
-                        foreach (var req in exfil.Requirements)
-                        {
-                            if (req.Requirement == ERequirementState.TransferItem && req.Requirement == ERequirementState.WorldEvent && req.Requirement == ERequirementState.ScavCooperation)
-                            {
-                                exfil.Disable(AwaitsManualActivation);
-                            }
-                        }
+                        exfil.Disable();
                     }
                 }
                 _exfilEventCount++;
@@ -998,13 +986,7 @@ namespace RaidOverhaul.Controllers
                 {
                     if (!exfil.Settings.Name.Contains("Elevator"))
                     {
-                        foreach (var req in exfil.Requirements)
-                        {
-                            if (req.Requirement == ERequirementState.TransferItem && req.Requirement == ERequirementState.WorldEvent && req.Requirement == ERequirementState.ScavCooperation)
-                            {
-                                exfil.Enable();
-                            }
-                        }
+                        exfil.Enable();
                     }
                 }
 
@@ -1021,7 +1003,7 @@ namespace RaidOverhaul.Controllers
 
         public async void DoArtyEvent()
         {
-            //FikaInterface.SendRandomEventPacket(Utils.Artillery);
+            if (FikaBridge.IAmHost()) { FikaBridge.SendRandomEventPacket(Utils.Artillery); }
 
             if (ROPlayer.Location != "factory4_day" && ROPlayer.Location != "factory4_night" && ROPlayer.Location != "laboratory" && !_artyEventHasRun)
             {
@@ -1063,7 +1045,7 @@ namespace RaidOverhaul.Controllers
 
         public async void RunTrain()
         {
-            //FikaInterface.SendRandomEventPacket(Utils.Train);
+            FikaBridge.SendFlareEventPacket(Utils.Train);
             
             await Task.Delay(3000);
             Locomotive trainExfil = FindObjectOfType<Locomotive>();
@@ -1108,7 +1090,7 @@ namespace RaidOverhaul.Controllers
         {
             if (!_pmcExfilEventRunning)
             {
-                //FikaInterface.SendRandomEventPacket(Utils.PmcExfil);
+                FikaBridge.SendFlareEventPacket(Utils.PmcExfil);
 
                 _pmcExfilEventRunning = true;
 
@@ -1153,22 +1135,7 @@ namespace RaidOverhaul.Controllers
             EndByExitTrigerScenario.GInterface129 exfilSession = Singleton<AbstractGame>.Instance as EndByExitTrigerScenario.GInterface129;
             exfilSession.StopSession(GamePlayerOwner.MyPlayer.ProfileId, ExitStatus.Survived, Singleton<GameWorld>.Instance.ExfiltrationController.ExfiltrationPoints.FirstOrDefault().name);
         }
-/*
-        public async void DoGearExfilEvent()
-        {
-            var itemCrate = Singleton<ItemFactoryClass>.Instance.CreateItem("67cdb86dff473fb7786cdc9c", Utils.exfilCrate, null);
-            Utils.SpawnItem(itemCrate, ROPlayer);
 
-            NotificationManagerClass.DisplayMessageNotification("The extract crate is open, stash your loot while you can!", ENotificationDurationType.Long, ENotificationIconType.Default);
-
-            await Task.Delay(150000);
-
-            NotificationManagerClass.DisplayMessageNotification("The extract crate is locked, and any gear within it is now secured and will be returned to your stash at the end of the raid.", ENotificationDurationType.Long, ENotificationIconType.Default);
-
-            typeof(LootableContainer).GetMethod("Lock", BindingFlags.Instance | BindingFlags.Public).Invoke(itemCrate, null);
-            Utils.SendExfilBox(itemCrate);
-        }
-*/
         public void CleanForNewEvent()
         {
             _pswitchs = null;

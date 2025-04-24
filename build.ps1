@@ -19,7 +19,7 @@ foreach ($folder in $foldersToCreate) {
     if (-not (Test-Path "$folder")) { New-Item -Path "$folder" -ItemType Directory }
 }
 
-Copy-Item "$packetsFolder\RaidOverhaulPackets.dll" -Destination "$bepinexPluginFolder" -Force
+Copy-Item "$packetsFolder\RaidOverhaulFika.dll" -Destination "$bepinexPluginFolder" -Force
 Copy-Item "$prePatchFolder\LegionPrePatch.dll" -Destination "$bepinexPatchFolder" -Force
 Copy-Item "$pluginFolder\RaidOverhaul.dll" -Destination "$bepinexPluginFolder" -Force
 Copy-Item "$basePluginFolder\normalLegionSettings.json" -Destination "$bepinexResourcesFolder" -Force

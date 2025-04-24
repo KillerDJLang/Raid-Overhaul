@@ -3,7 +3,7 @@
         "ItemToClone": "BACKPACK_COMM_3",
         "OverrideProperties": {
             "Prefab": {
-                "path": "assets/content/items/equipment/backpack_mystery_ranch_terraframe/item_equipment_backpack_mystery_ranch_terraframe.bundle",
+                "path": "Backpacks/oakley_backpack.bundle",
                 "rcid": ""
             },
             "Grids": [
@@ -50,9 +50,9 @@
             ]
         },
         "LocalePush": {
-            "name": "Mystery Ranch Terraframe backpack (Modified)",
-            "shortName": "Terraframe (M)",
-            "description": "A comfortable and spacious backpack for its volume, it remained popular even in wartime. Judging by the attached antlers, this backpack used to belong to a hunter. Modified by the Requisitions Office to include more space for anything you find while out hunting."
+            "name": "Oakley Kitchen Sink support backpack",
+            "shortName": "OKSB (R)",
+            "description": "This backpack truly lives up to it's name. Meant for support forces carrying a large amount of supplies to stranded troops, it was been repurposed for more nefarious deeds in Tarkov."
         },
         "HandbookParent": "Backpacks",
         "HandbookPrice": 43999,

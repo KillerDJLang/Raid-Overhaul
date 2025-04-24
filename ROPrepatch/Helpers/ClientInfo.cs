@@ -6,8 +6,8 @@
 
         public const string ROGUID = "DJ.RaidOverhaul";
         public const string ROPreLoadGUID = "DJ.LegionPrePatch";
-        public const string ROPluginName = "DJs Raid Overhaul";
+        public const string ROPluginName = "Raid Overhaul";
         public const string ROPreLoadName = "Legion Boss PrePatch";
-        public const string PluginVersion = "2.7.0";
+        public const string PluginVersion = "2.7.1";
     }
 }

@@ -6,7 +6,7 @@ using SPT.Reflection.Patching;
 
 namespace RaidOverhaul.Patches
 {
-    public class EventExfilPatch : ModulePatch
+    internal class EventExfilPatch : ModulePatch
     {
         internal static bool IsLockdown = false;
 
@@ -15,7 +15,7 @@ namespace RaidOverhaul.Patches
         protected override MethodBase GetTargetMethod() => typeof(ExfiltrationRequirement).GetMethod("Met", BindingFlags.Instance | BindingFlags.Public);
 
         [PatchPostfix]
-        static void Postfix(Player player, ref bool __result)
+        private static void Postfix(Player player, ref bool __result)
         {
             if (player.IsYourPlayer)
             {

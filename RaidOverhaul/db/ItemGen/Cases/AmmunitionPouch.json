@@ -73,7 +73,7 @@
         },
         "LocalePush": {
             "name": "Ammunition Pouch (Req)",
-            "shortName": "AmmoPouch",
+            "shortName": "AmmoPouch (R)",
             "description": "A carrying case used by the wolves of the Requisitions Office to bring their spare ammunition into the field. This case was carried on the person of each member once they step foot outside."
         },
         "HandbookParent": "StorageContainers",

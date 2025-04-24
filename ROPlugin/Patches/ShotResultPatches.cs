@@ -2,7 +2,6 @@ using EFT;
 using System;
 using UnityEngine;
 using System.Linq;
-using Comfort.Common;
 using System.Reflection;
 using EFT.InventoryLogic;
 using SPT.Reflection.Patching;
@@ -11,23 +10,14 @@ namespace RaidOverhaul.Patches
 {
     internal struct PlayerInfo
     {
-        internal static GameWorld gameWorld
-        { get => Singleton<GameWorld>.Instance; }
-
-        internal static Player.FirearmController FC
-        { get => player.HandsController as Player.FirearmController; }
-
-        internal static Player player
-        { get => gameWorld.MainPlayer; }
-
         internal static bool PlayerHasEarPro()
         {
             CompoundItem helm;
 
-            if (player.Profile.Inventory.Equipment.GetSlot(EquipmentSlot.Earpiece).ContainedItem != null)
+            if (Plugin.ROPlayer.Profile.Inventory.Equipment.GetSlot(EquipmentSlot.Earpiece).ContainedItem != null)
                 return true;
 
-            if ((helm = player.Profile.Inventory.Equipment.GetSlot(EquipmentSlot.Headwear).ContainedItem as CompoundItem) != null)
+            if ((helm = Plugin.ROPlayer.Profile.Inventory.Equipment.GetSlot(EquipmentSlot.Headwear).ContainedItem as CompoundItem) != null)
             {
                 SlotBlockerComponent blocker = helm.GetItemComponent<SlotBlockerComponent>();
                 if (blocker != null && blocker.ConflictingSlotNames.Contains("Earpiece"))
@@ -40,35 +30,35 @@ namespace RaidOverhaul.Patches
         }
     }
 
-    public class DeafnessPatch : ModulePatch
+    internal class DeafnessPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod() => typeof(Player.FirearmController).GetMethod("RegisterShot", BindingFlags.Instance | BindingFlags.Public);
 
         [PatchPostfix]
-        static void Postfix(Player.FirearmController __instance, object shot)
+        private static void Postfix(Player.FirearmController __instance, object shot)
         {
-            if (PlayerInfo.player is HideoutPlayer) return;
+            if (Plugin.ROPlayer is HideoutPlayer) return;
 
             float bulletSpeed = (float)shot.GetType().GetField("Speed", BindingFlags.Instance | BindingFlags.Public).GetValue(shot);
 
-            if (PlayerInfo.FC == __instance && GoodToDeafen(bulletSpeed))
+            if (Plugin.ROFirearmController == __instance && GoodToDeafen(bulletSpeed))
                 DoEarDamage(false);
             else if (TargetGoodToDeafen(__instance, bulletSpeed))
                 DoEarDamage(true);
         }
 
-        static bool TargetGoodToDeafen(Player.FirearmController target, float bulletSpeed) => Vector3.Distance(target.gameObject.transform.position, PlayerInfo.player.Transform.position) <= 45 && !PlayerInfo.PlayerHasEarPro() && !target.IsSilenced && bulletSpeed > 343f;
+        private static bool TargetGoodToDeafen(Player.FirearmController target, float bulletSpeed) => Vector3.Distance(target.gameObject.transform.position, Plugin.ROPlayer.Transform.position) <= 45 && !PlayerInfo.PlayerHasEarPro() && !target.IsSilenced && bulletSpeed > 343f;
 
-        static bool GoodToDeafen(float bulletSpeed) => !PlayerInfo.PlayerHasEarPro() && !PlayerInfo.FC.IsSilenced && (bulletSpeed > 343f || PlayerInfo.player.Environment == EnvironmentType.Indoor);
+        private static bool GoodToDeafen(float bulletSpeed) => !PlayerInfo.PlayerHasEarPro() && !Plugin.ROFirearmController.IsSilenced && (bulletSpeed > 343f || Plugin.ROPlayer.Environment == EnvironmentType.Indoor);
 
-        static void DoEarDamage(bool invokedByBot)
+        private static void DoEarDamage(bool invokedByBot)
         {
-            if (!invokedByBot && PlayerInfo.FC.Item.AmmoCaliber == "86x70")
+            if (!invokedByBot && Plugin.ROFirearmController.Item.AmmoCaliber == "86x70")
             {
                 try
                 {
-                    PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
-                    PlayerInfo.player.ActiveHealthController.DoContusion(4, 50);
+                    Plugin.ROPlayer.ActiveHealthController.DoStun(1, 0);
+                    Plugin.ROPlayer.ActiveHealthController.DoContusion(4, 50);
                 }
                 catch (Exception ex)
                 {
@@ -77,8 +67,8 @@ namespace RaidOverhaul.Patches
             }
             try
             {
-                PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
-                PlayerInfo.player.ActiveHealthController.DoContusion(0, 100);
+                Plugin.ROPlayer.ActiveHealthController.DoStun(1, 0);
+                Plugin.ROPlayer.ActiveHealthController.DoContusion(0, 100);
             }
             catch (Exception ex)
             {
@@ -95,13 +85,13 @@ namespace RaidOverhaul.Patches
         }
 
         [PatchPrefix]
-        static void Prefix(Grenade __instance)
+        private static void Prefix(Grenade __instance)
         {
-            float dist = Vector3.Distance(__instance.transform.position, PlayerInfo.player.Transform.position);
+            float dist = Vector3.Distance(__instance.transform.position, Plugin.ROPlayer.Transform.position);
             if (!PlayerInfo.PlayerHasEarPro() && dist <= 30)
             {
-                PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
-                PlayerInfo.player.ActiveHealthController.DoContusion(30 / (dist / 2), 100 / dist);
+                Plugin.ROPlayer.ActiveHealthController.DoStun(1, 0);
+                Plugin.ROPlayer.ActiveHealthController.DoContusion(30 / (dist / 2), 100 / dist);
             }
         }
     }
@@ -128,8 +118,8 @@ namespace RaidOverhaul.Patches
                 
                 try
                 {
-                    PlayerInfo.player.ActiveHealthController.DoStun(1, 0);
-                    PlayerInfo.player.ActiveHealthController.DoContusion(4, hsDmg * 1.5f);
+                    Plugin.ROPlayer.ActiveHealthController.DoStun(1, 0);
+                    Plugin.ROPlayer.ActiveHealthController.DoContusion(4, hsDmg * 1.5f);
                 }
                 catch (Exception ex)
                 {

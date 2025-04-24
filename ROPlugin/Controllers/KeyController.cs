@@ -8,54 +8,49 @@ using RaidOverhaul.Helpers;
 
 namespace RaidOverhaul.Controllers
 {
-    public class KeyController : MonoBehaviour
+    internal class KeyController : MonoBehaviour
     {
         private static Door[] _door = null;
         private static KeycardDoor[] _kdoor = null;
 
         public static void PatchLocks()
         {
-            if (HasSkeletonKey())
+            if (HasKey(Utils.SkeletonKey))
             {
-                if (_door == null)
-                {
-                    _door = FindObjectsOfType<Door>();
-                }
+                _door ??= FindObjectsOfType<Door>();
 
                 foreach (Door door in _door)
                 {
-                    if (!door.KeyId.IsNullOrWhiteSpace() || !door.KeyId.IsNullOrEmpty())
+                    if (!door.KeyId.IsNullOrWhiteSpace())
                     {
-                        door.KeyId = Utils.SkeletonKey;
+                        if (!HasKey(door.KeyId))
+                        {
+                            door.KeyId = Utils.SkeletonKey;
+                        }
                     }
                 }
             }
 
-            if (HasKeycard())
+            if (HasKey(Utils.VipKeycard))
             {
-                if (_kdoor == null)
-                {
-                    _kdoor = FindObjectsOfType<KeycardDoor>();
-                }
+                _kdoor ??= FindObjectsOfType<KeycardDoor>();
 
                 foreach (KeycardDoor kDoor in _kdoor)
                 {
-                    if (!kDoor.KeyId.IsNullOrWhiteSpace() || !kDoor.KeyId.IsNullOrEmpty())
+                    if (!kDoor.KeyId.IsNullOrWhiteSpace())
                     {
-                        kDoor.KeyId = Utils.VipKeycard;
+                        if (!HasKey(kDoor.KeyId))
+                        {
+                            kDoor.KeyId = Utils.VipKeycard;
+                        }
                     }
                 }
             }
         }
 
-        private static bool HasSkeletonKey()
+        private static bool HasKey(string keyId)
         {
-            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.SkeletonKey);
-        }
-
-        private static bool HasKeycard()
-        {
-            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == Utils.VipKeycard);
+            return Singleton<GameWorld>.Instance.MainPlayer.Profile.Inventory.Equipment.GetAllItems().Any(x => x.TemplateId == keyId);
         }
     }
 }

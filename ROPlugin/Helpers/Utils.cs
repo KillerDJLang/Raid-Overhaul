@@ -62,7 +62,6 @@ namespace RaidOverhaul.Helpers
         public static readonly string BtrID = "656f0f98d80a697f855d34b1";
         public static readonly string SkeletonKey = "66a2fc926af26cc365283f23";
         public static readonly string VipKeycard = "66a2fc9886fbd5d38c5ca2a6";
-        public static readonly string ExfilCrate = "67c957ce411e6263333a1c38";
         public static readonly string SpecialExfilFlare = "67cda57f8f59300db5c0ec5b";
         public static readonly string TrainFlare = "67cde31eea2d15e888fa7dee";
         public static readonly string RedFlare = "624c09cfbc2e27219346d955";
@@ -89,7 +88,6 @@ namespace RaidOverhaul.Helpers
         public static readonly string Artillery = "Artillery";
 	    private static readonly Dictionary<string, ItemTemplate> templates = [];
         private static readonly JsonConverter[] _defaultJsonConverters;
-        public static AssetBundle Bundle;
 
         public static T Get<T>(string url) {
             var req = RequestHandler.GetJson(url);
@@ -165,25 +163,6 @@ namespace RaidOverhaul.Helpers
         //
         //
 
-        public static bool IsFactory(string location)
-        {
-            if (location == "factory4_day" || location == "factory4_night")
-            {
-                return true;
-            } 
-            else
-            {
-                return false;
-            }
-        }
-
-        public static DateTime GetDateTime()
-        {
-            TarkovApplication.Exist(out TarkovApplication tarkovApplication);
-            DateTime dateTime = tarkovApplication.Session.GetCurrentLocationTime;
-            return dateTime;
-        }
-
         private static void AddTemplatesToArray()
         {
             if (!Singleton<ItemFactoryClass>.Instantiated) { return; }
@@ -200,53 +179,6 @@ namespace RaidOverhaul.Helpers
             if (templates.TryGetValue(templateToFind, out var template)) { return [template]; }
             return [.. templates.Values.Where(t => t.ShortNameLocalizationKey.Localized().IndexOf(templateToFind, StringComparison.OrdinalIgnoreCase) >= 0
                                                 || t.NameLocalizationKey.Localized().IndexOf(templateToFind, StringComparison.OrdinalIgnoreCase) >= 0)];
-        }
-
-        public static void SpawnItem(Item itemToSpawn, Player player)
-        {
-            SpawnExfilItemTask(itemToSpawn, player);
-        }
-
-        private static IEnumerator SpawnExfilItemTask(Item itemToSpawn, Player player)
-        {
-            List<ResourceKey> keys = GetBundleResourceKeys(itemToSpawn);
-
-            Task loadTask = Singleton<PoolManagerClass>.Instance.LoadBundlesAndCreatePools(PoolManagerClass.PoolsCategory.Raid, PoolManagerClass.AssemblyType.Online, [.. keys], JobPriorityClass.Immediate);
-            while (!loadTask.IsCompleted)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-
-                var itemFactory = Singleton<ItemFactoryClass>.Instance;
-                var item = itemFactory.CreateItem(MongoID.Generate(), itemToSpawn.Id, null);
-
-                var lootItemGameObject = Singleton<PoolManagerClass>.Instance.CreateLootPrefab(item, ECameraType.Default);
-
-                lootItemGameObject.SetActive(value: true);
-                var lootItem = Singleton<GameWorld>.Instance.CreateLootWithRigidbody(lootItemGameObject, item, item.ShortName, randomRotation: false, null, out BoxCollider boxCollider, true);
-                var transform = player.Transform;
-                var position = transform.position
-                            + transform.right * UnityEngine.Random.Range(-1f, 1f)
-                            + transform.forward * 2f
-                            + transform.up * 0.5f;
-
-                lootItem.transform.SetPositionAndRotation(position, transform.rotation);
-                lootItem.LastOwner = player;
-        }
-
-        private static List<ResourceKey> GetBundleResourceKeys(Item item)
-        {
-            List<ResourceKey> collection = [];
-            IEnumerable<Item> items = item.GetAllItems();
-            foreach (Item subItem in items)
-            {
-                foreach (ResourceKey resourceKey in subItem.Template.AllResources)
-                {
-                    collection.Add(resourceKey);
-                }
-            }
-
-            return collection;
         }
 
         public static void SendExfilBox(LootableContainer exfilCrate)

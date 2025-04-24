@@ -1,7 +1,6 @@
-/*
 using LiteNetLib.Utils;
 
-namespace RaidOverhaul.Packets
+namespace RaidOverhaul.FikaModule.Packets
 {
     public struct RandomEventSyncPacket : INetSerializable
     {
@@ -93,4 +92,3 @@ namespace RaidOverhaul.Packets
         }
     }
 }
-*/

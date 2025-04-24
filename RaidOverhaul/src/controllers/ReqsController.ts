@@ -395,6 +395,8 @@ export class ReqsController {
         this.assortUtils.createSingleItemOffer("6722254fd847a7aafccfbb54", 1, 1, 10, Currency.ReqSlips);
         this.assortUtils.createSingleItemOffer("6722252e82ca09a7e62c4d84", 1, 3, 20, Currency.ReqSlips);
         this.assortUtils.createSingleItemOffer("67d4373526a3cfb1ff5338bb", 1, 2, 15, Currency.ReqSlips);
+        this.assortUtils.createSingleItemOffer("67fefea22cc2bce48d31e21f", 1, 2, 5, Currency.ReqSlips);
+        this.assortUtils.createSingleItemOffer("67fefe885041d8c121e93bf8", 1, 2, 20, Currency.ReqSlips);
     }
 
     //#endregion

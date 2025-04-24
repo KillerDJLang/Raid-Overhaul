@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ROPackets\Packets.csproj" />
     <ProjectReference Include="..\ROPlugin\RaidOverhaul.csproj" />
     <ProjectReference Include="..\ROPrepatch\LegionPrePatch.csproj" />
+    <ProjectReference Include="..\ROPackets\RaidOverhaulFika.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

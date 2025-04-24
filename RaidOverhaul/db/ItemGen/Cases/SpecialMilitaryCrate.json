@@ -70,7 +70,7 @@
         },
         "LocalePush": {
             "name": "Special Storage Crate (Requisitions)",
-            "shortName": "SpecCaseR",
+            "shortName": "SpecCase (R)",
             "description": "A special storage crate rarely used by the Requisitions Office to keep their rarest items safe and secure. The largest and most prized case in Tarkov as of now..."
         },
         "HandbookParent": "StorageContainers",

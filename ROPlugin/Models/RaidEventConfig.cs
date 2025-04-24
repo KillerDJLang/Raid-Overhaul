@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace RaidOverhaul.Models
 {
-    public struct EventsConfig
+    internal struct EventsConfig
     {
         public DoorWeightings DoorEvents;
 

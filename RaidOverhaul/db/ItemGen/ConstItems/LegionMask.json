@@ -3,7 +3,7 @@
         "ItemToClone": "FACECOVER_DEATH_KNIGHT",
         "OverrideProperties": {
             "Prefab": {
-                "path": "assets/content/items/equipment/facecover_boss_blackknight/item_equipment_facecover_boss_blackknight.bundle",
+                "path": "FaceCover/legion_facemask.bundle",
                 "rcid": ""
             },
             "BlocksEarpiece": false,
@@ -14,9 +14,9 @@
             "armorClass": 6
         },
         "LocalePush": {
-            "name": "Death Knight mask (Modified)",
-            "shortName": "Death Knight (M)",
-            "description": "A unique mask of the commander of the Goons squad, former USEC operators who decided not to flee Tarkov, but to create their own order. Compatible with headwear."
+            "name": "Legion Mask (Wrath)",
+            "shortName": "Wrath",
+            "description": "A haunting mask worn by the Legion as they stalk across Tarkov. If you are close enough to see this mask, it's too late."
         },
         "Handbook": {
             "HandbookParent": "Facecovers",

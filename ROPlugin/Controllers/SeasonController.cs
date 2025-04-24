@@ -8,7 +8,7 @@ using static RaidOverhaul.Plugin;
 
 namespace RaidOverhaul.Controllers
 {
-    public class SeasonalWeatherController : MonoBehaviour
+    internal class SeasonalWeatherController : MonoBehaviour
     {
         private static WeatherController weatherController => WeatherController.Instance;
         private static float cloudDensity;
@@ -21,7 +21,6 @@ namespace RaidOverhaul.Controllers
         private static Vector2 topWindDirection;
         private static bool weatherDebug = false;
         private static bool weatherChangesRun = false;
-
 
         public void DoStorm()
         {

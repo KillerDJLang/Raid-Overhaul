@@ -10,7 +10,6 @@ namespace RaidOverhaul.Helpers
     {
         public static List<(Action, int)> weightedEvents;
         public static List<(Action, int)> weightedDoorMethods;
-        public static int repCorrectWeight = 0;
 
         public static void InitWeightings()
         {
@@ -73,7 +72,6 @@ namespace RaidOverhaul.Helpers
             var _maxLLWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.ShoppingSpree) ? ConfigController.EventConfig.RaidEvents.MaxLLEventWeights : 0;
             var _exfilWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.ExfilLockdown) ? ConfigController.EventConfig.RaidEvents.ExfilEventWeights : 0;
             var _artyWeighting = DJConfig.RandomEventsToEnable.Value.HasFlag(DJConfig.RaidEvents.Artillery) ? ConfigController.EventConfig.RaidEvents.ArtilleryEventWeights : 0;
-            var _repCorrectWeighting = repCorrectWeight;
 
             weightedEvents = new List<(Action, int)>
             {
@@ -91,8 +89,7 @@ namespace RaidOverhaul.Helpers
                 (Plugin.ECScript.DoWeightEvent,     _weightWeightingLOL),
                 (Plugin.ECScript.DoMaxLLEvent,      _maxLLWeighting),
                 (Plugin.ECScript.DoLockDownEvent,   _exfilWeighting),
-                (Plugin.ECScript.DoArtyEvent,       _artyWeighting),
-                (Plugin.ECScript.CorrectRep,        _repCorrectWeighting)
+                (Plugin.ECScript.DoArtyEvent,       _artyWeighting)
             };
         }
     }

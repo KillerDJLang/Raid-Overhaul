@@ -5,7 +5,7 @@ using RaidOverhaul.Helpers;
 
 namespace RaidOverhaul.Patches
 {
-    public class BundleLoaderPatch : ModulePatch
+    internal class BundleLoaderPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -15,7 +15,8 @@ namespace RaidOverhaul.Patches
         [PatchPostfix]
         public static void Postfix(PreloaderUI __instance)
         {
-            BundleLoader.LoadBundles();
+            BundleLoader.LoadLayouts();
+            BundleLoader.LoadAssets();
         }
     }
 }

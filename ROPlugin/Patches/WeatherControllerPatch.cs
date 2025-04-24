@@ -4,11 +4,11 @@ using SPT.Reflection.Patching;
 
 namespace RaidOverhaul.Patches
 {
-    public class WeatherControllerPatch : ModulePatch
+    internal class WeatherControllerPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod() => typeof(WeatherController).GetMethod("Awake", BindingFlags.Instance | BindingFlags.Public);
 
         [PatchPostfix]
-        static void Postfix(ref WeatherController __instance) => __instance.WindController.CloudWindMultiplier = 1;
+        private static void Postfix(ref WeatherController __instance) => __instance.WindController.CloudWindMultiplier = 1;
     }
 }

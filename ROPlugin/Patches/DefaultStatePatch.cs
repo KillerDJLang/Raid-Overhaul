@@ -5,7 +5,7 @@ using RaidOverhaul.Controllers;
 
 namespace RaidOverhaul.Patches
 {
-    public class RandomizeDefaultStatePatch : ModulePatch
+    internal class RandomizeDefaultStatePatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
@@ -13,7 +13,7 @@ namespace RaidOverhaul.Patches
         }
 
         [PatchPrefix]
-        public static void PatchPrefix()
+        private static void PatchPrefix()
         {
             DoorController.RandomizeDefaultDoors();
             DoorController.RandomizeLampState();

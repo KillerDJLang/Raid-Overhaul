@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace RaidOverhaul.Models
 {
-    public struct SeasonalConfig
+    internal struct SeasonalConfig
     {
         [JsonProperty("seasonsProgression")]
         public int SeasonsProgression;

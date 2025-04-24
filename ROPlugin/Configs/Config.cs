@@ -55,10 +55,20 @@ namespace RaidOverhaul.Configs
         public static ConfigEntry<RaidEvents> RandomEventsToEnable;
 
         public static ConfigEntry<DoorEvents> DoorEventsToEnable;
+        
+        public static ConfigEntry<bool> TimeChanges;
 
         public static void BindConfig(ConfigFile cfg)
         {
             #region Core Events
+
+            TimeChanges = cfg.Bind(
+                "1. Core Events  (Changing Any Of These Options Requires Restart)",
+                "Time Changes",
+                true,
+                new ConfigDescription("Enable the syncing of in game time to your irl time.",
+                null,
+                new ConfigurationManagerAttributes { IsAdvanced = false, ShowRangeAsPercent = false, Order = 4 }));
 
             EnableRaidStartEvents = cfg.Bind(
                 "1. Core Events  (Changing Any Of These Options Requires Restart)",

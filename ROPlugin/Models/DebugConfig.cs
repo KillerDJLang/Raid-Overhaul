@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace RaidOverhaul.Models
 {
-    public struct DebugConfigs
+    internal struct DebugConfigs
     {
         [JsonProperty("baseLegionChance")]
         public int LegionBaseChance;
@@ -12,8 +12,5 @@ namespace RaidOverhaul.Models
 
         [JsonProperty("dumpData")]
         public bool DumpData;
-
-        [JsonProperty("EnableTimeChanges")]
-        public bool TimeChanges;
     }
 }
